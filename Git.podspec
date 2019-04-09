@@ -9,7 +9,7 @@ s.homepage         = 'https://github.com/gitmeta/git'
 s.license          = { :type => "MIT", :file => "LICENSE" }
 s.author           = { 'iturbide' => 'reach@iturbi.de' }
 s.platforms        = { :ios => "9.0", :osx => "10.11" }
-s.source           = { :git => 'https://github.com/gitmeta/git.git', :tag => "master" }
+s.source           = { :git => 'https://github.com/gitmeta/git.git', :tag => s.version }
 s.source_files     = 'Git/*.swift'
 s.swift_version    = '5'
 s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
