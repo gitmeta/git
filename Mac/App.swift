@@ -1,4 +1,4 @@
-import Pigit
+import Git
 import AppKit
 
 @NSApplicationMain class App: NSWindow, NSApplicationDelegate {

@@ -1,5 +1,5 @@
 import XCTest
-@testable import Pigit
+@testable import Git
 
 class TestAdd: XCTestCase {
     private var repository: Repository!

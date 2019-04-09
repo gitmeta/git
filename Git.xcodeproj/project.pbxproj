@@ -58,9 +58,9 @@
 		2048A134225C749200290E54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A12E225C749200290E54 /* Extensions.swift */; };
 		2048A136225C749200290E54 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A130225C749200290E54 /* App.swift */; };
 		2048A137225C749200290E54 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A131225C749200290E54 /* Button.swift */; };
-		2048A140225C778800290E54 /* libMac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2048A13E225C76DC00290E54 /* libMac.a */; };
-		2048A141225C778D00290E54 /* libiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2048A13D225C76DB00290E54 /* libiOS.a */; };
-		2048A142225C779500290E54 /* libMac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2048A13E225C76DC00290E54 /* libMac.a */; };
+		2051FABA225C78DD00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
+		2051FABB225C78E300BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB7225C78D000BC00BC /* libGit.a */; };
+		2051FABC225C78EA00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -121,10 +121,10 @@
 		2048A138225C74A300290E54 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		2048A139225C74A300290E54 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		2048A13A225C74A300290E54 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		2048A13B225C754100290E54 /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2048A13C225C754B00290E54 /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2048A13D225C76DB00290E54 /* libiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2048A13E225C76DC00290E54 /* libMac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMac.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2051FAB6225C78CF00BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2051FAB8225C78D000BC00BC /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,7 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2048A142225C779500290E54 /* libMac.a in Frameworks */,
+				2051FABC225C78EA00BC00BC /* libGit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,7 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2048A140225C778800290E54 /* libMac.a in Frameworks */,
+				2051FABA225C78DD00BC00BC /* libGit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +162,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2048A141225C778D00290E54 /* libiOS.a in Frameworks */,
+				2051FABB225C78E300BC00BC /* libGit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,10 +257,10 @@
 			children = (
 				2048A138225C74A300290E54 /* .gitignore */,
 				2048A139225C74A300290E54 /* LICENSE */,
-				2048A13D225C76DB00290E54 /* libiOS.a */,
-				2048A13E225C76DC00290E54 /* libMac.a */,
-				2048A13C225C754B00290E54 /* GitiOS.app */,
-				2048A13B225C754100290E54 /* GitMac.app */,
+				2051FAB6225C78CF00BC00BC /* libGit.a */,
+				2051FAB7225C78D000BC00BC /* libGit.a */,
+				2051FAB9225C78D000BC00BC /* GitiOS.app */,
+				2051FAB8225C78D000BC00BC /* GitMac.app */,
 				2048A13A225C74A300290E54 /* README.md */,
 				2048A0D8225C744400290E54 /* Tests.xctest */,
 				2048A13F225C778800290E54 /* Frameworks */,
@@ -299,7 +299,7 @@
 			);
 			name = Mac;
 			productName = Mac;
-			productReference = 2048A13E225C76DC00290E54 /* libMac.a */;
+			productReference = 2051FAB6225C78CF00BC00BC /* libGit.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		20F6E0A0225C72AC00418216 /* iOS */ = {
@@ -316,7 +316,7 @@
 			);
 			name = iOS;
 			productName = iOS;
-			productReference = 2048A13D225C76DB00290E54 /* libiOS.a */;
+			productReference = 2051FAB7225C78D000BC00BC /* libGit.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		20F6E0AB225C72BD00418216 /* Tests */ = {
@@ -350,7 +350,7 @@
 			);
 			name = MacApp;
 			productName = MacApp;
-			productReference = 2048A13B225C754100290E54 /* GitMac.app */;
+			productReference = 2051FAB8225C78D000BC00BC /* GitMac.app */;
 			productType = "com.apple.product-type.application";
 		};
 		20F6E0CE225C733600418216 /* iOSApp */ = {
@@ -367,7 +367,7 @@
 			);
 			name = iOSApp;
 			productName = iOSApp;
-			productReference = 2048A13C225C754B00290E54 /* GitiOS.app */;
+			productReference = 2051FAB9225C78D000BC00BC /* GitiOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -625,11 +625,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -681,10 +679,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -740,12 +736,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -798,11 +792,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -869,7 +861,6 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -933,7 +924,6 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = git.Tests;
@@ -947,7 +937,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1015,7 +1004,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1077,7 +1065,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1144,7 +1131,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

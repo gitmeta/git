@@ -1,5 +1,5 @@
 import XCTest
-@testable import Pigit
+@testable import Git
 
 class TestGit: XCTestCase {
     private var url: URL!

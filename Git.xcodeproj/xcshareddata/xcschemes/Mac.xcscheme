@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "20F6E0BA225C732200418216"
-               BuildableName = "MacApp.app"
+               BuildableName = "GitMac.app"
                BlueprintName = "MacApp"
                ReferencedContainer = "container:Git.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "20F6E0BA225C732200418216"
-            BuildableName = "MacApp.app"
+            BuildableName = "GitMac.app"
             BlueprintName = "MacApp"
             ReferencedContainer = "container:Git.xcodeproj">
          </BuildableReference>
@@ -67,7 +67,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "20F6E0BA225C732200418216"
-            BuildableName = "MacApp.app"
+            BuildableName = "GitMac.app"
             BlueprintName = "MacApp"
             ReferencedContainer = "container:Git.xcodeproj">
          </BuildableReference>
@@ -86,7 +86,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "20F6E0BA225C732200418216"
-            BuildableName = "MacApp.app"
+            BuildableName = "GitMac.app"
             BlueprintName = "MacApp"
             ReferencedContainer = "container:Git.xcodeproj">
          </BuildableReference>
