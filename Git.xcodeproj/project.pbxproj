@@ -6,20 +6,395 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2048A0D7225C744400290E54 /* Failure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CC225C744400290E54 /* Failure.swift */; };
+		2048A0D9225C744400290E54 /* Failure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CC225C744400290E54 /* Failure.swift */; };
+		2048A0DA225C744400290E54 /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CD225C744400290E54 /* Hash.swift */; };
+		2048A0DB225C744400290E54 /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CD225C744400290E54 /* Hash.swift */; };
+		2048A0DC225C744400290E54 /* Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CE225C744400290E54 /* Index.swift */; };
+		2048A0DD225C744400290E54 /* Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CE225C744400290E54 /* Index.swift */; };
+		2048A0DE225C744400290E54 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CF225C744400290E54 /* Commit.swift */; };
+		2048A0DF225C744400290E54 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CF225C744400290E54 /* Commit.swift */; };
+		2048A0E0225C744400290E54 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D0225C744400290E54 /* Blob.swift */; };
+		2048A0E1225C744400290E54 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D0225C744400290E54 /* Blob.swift */; };
+		2048A0E2225C744400290E54 /* Press.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D1225C744400290E54 /* Press.swift */; };
+		2048A0E3225C744400290E54 /* Press.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D1225C744400290E54 /* Press.swift */; };
+		2048A0E4225C744400290E54 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D2225C744400290E54 /* Repository.swift */; };
+		2048A0E5225C744400290E54 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D2225C744400290E54 /* Repository.swift */; };
+		2048A0E6225C744400290E54 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D3225C744400290E54 /* Tree.swift */; };
+		2048A0E7225C744400290E54 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D3225C744400290E54 /* Tree.swift */; };
+		2048A0E8225C744400290E54 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D4225C744400290E54 /* Status.swift */; };
+		2048A0E9225C744400290E54 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D4225C744400290E54 /* Status.swift */; };
+		2048A0EA225C744400290E54 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D5225C744400290E54 /* Git.swift */; };
+		2048A0EB225C744400290E54 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D5225C744400290E54 /* Git.swift */; };
+		2048A0EC225C744400290E54 /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D6225C744400290E54 /* Parse.swift */; };
+		2048A0ED225C744400290E54 /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D6225C744400290E54 /* Parse.swift */; };
+		2048A100225C745100290E54 /* commit1 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0EF225C745100290E54 /* commit1 */; };
+		2048A101225C745100290E54 /* TestIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0F0225C745100290E54 /* TestIndex.swift */; };
+		2048A102225C745100290E54 /* commit0 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0F1225C745100290E54 /* commit0 */; };
+		2048A103225C745100290E54 /* tree1 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0F2225C745100290E54 /* tree1 */; };
+		2048A104225C745100290E54 /* tree0 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0F3225C745100290E54 /* tree0 */; };
+		2048A105225C745100290E54 /* TestGit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0F4225C745100290E54 /* TestGit.swift */; };
+		2048A106225C745100290E54 /* index1 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0F5225C745100290E54 /* index1 */; };
+		2048A107225C745100290E54 /* TestPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0F6225C745100290E54 /* TestPress.swift */; };
+		2048A108225C745100290E54 /* index0 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0F7225C745100290E54 /* index0 */; };
+		2048A109225C745100290E54 /* TestHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0F8225C745100290E54 /* TestHash.swift */; };
+		2048A10B225C745100290E54 /* TestAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0FA225C745100290E54 /* TestAdd.swift */; };
+		2048A10C225C745100290E54 /* blob0 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0FB225C745100290E54 /* blob0 */; };
+		2048A10D225C745100290E54 /* tree2 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0FC225C745100290E54 /* tree2 */; };
+		2048A10E225C745100290E54 /* TestStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0FD225C745100290E54 /* TestStatus.swift */; };
+		2048A10F225C745100290E54 /* index2 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0FE225C745100290E54 /* index2 */; };
+		2048A110225C745100290E54 /* index3 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0FF225C745100290E54 /* index3 */; };
+		2048A116225C746200290E54 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2048A112225C746200290E54 /* Localizable.strings */; };
+		2048A117225C746200290E54 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2048A112225C746200290E54 /* Localizable.strings */; };
+		2048A118225C746200290E54 /* SFMono-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2048A114225C746200290E54 /* SFMono-Light.otf */; };
+		2048A119225C746200290E54 /* SFMono-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2048A114225C746200290E54 /* SFMono-Light.otf */; };
+		2048A11A225C746200290E54 /* SFMono-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2048A115225C746200290E54 /* SFMono-Bold.otf */; };
+		2048A11B225C746200290E54 /* SFMono-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2048A115225C746200290E54 /* SFMono-Bold.otf */; };
+		2048A127225C748900290E54 /* iOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2048A124225C748900290E54 /* iOS.storyboard */; };
+		2048A129225C748900290E54 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A126225C748900290E54 /* App.swift */; };
+		2048A132225C749200290E54 /* Mac.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2048A12C225C749200290E54 /* Mac.storyboard */; };
+		2048A133225C749200290E54 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A12D225C749200290E54 /* Console.swift */; };
+		2048A134225C749200290E54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A12E225C749200290E54 /* Extensions.swift */; };
+		2048A136225C749200290E54 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A130225C749200290E54 /* App.swift */; };
+		2048A137225C749200290E54 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A131225C749200290E54 /* Button.swift */; };
+		2048A140225C778800290E54 /* libMac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2048A13E225C76DC00290E54 /* libMac.a */; };
+		2048A141225C778D00290E54 /* libiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2048A13D225C76DB00290E54 /* libiOS.a */; };
+		2048A142225C779500290E54 /* libMac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2048A13E225C76DC00290E54 /* libMac.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		20F6E09F225C72AC00418216 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2048A0CC225C744400290E54 /* Failure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Failure.swift; sourceTree = "<group>"; };
+		2048A0CD225C744400290E54 /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
+		2048A0CE225C744400290E54 /* Index.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Index.swift; sourceTree = "<group>"; };
+		2048A0CF225C744400290E54 /* Commit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
+		2048A0D0225C744400290E54 /* Blob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
+		2048A0D1225C744400290E54 /* Press.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Press.swift; sourceTree = "<group>"; };
+		2048A0D2225C744400290E54 /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		2048A0D3225C744400290E54 /* Tree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tree.swift; sourceTree = "<group>"; };
+		2048A0D4225C744400290E54 /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
+		2048A0D5225C744400290E54 /* Git.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Git.swift; sourceTree = "<group>"; };
+		2048A0D6225C744400290E54 /* Parse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parse.swift; sourceTree = "<group>"; };
+		2048A0D8225C744400290E54 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2048A0EF225C745100290E54 /* commit1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = commit1; sourceTree = "<group>"; };
+		2048A0F0225C745100290E54 /* TestIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIndex.swift; sourceTree = "<group>"; };
+		2048A0F1225C745100290E54 /* commit0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = commit0; sourceTree = "<group>"; };
+		2048A0F2225C745100290E54 /* tree1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree1; sourceTree = "<group>"; };
+		2048A0F3225C745100290E54 /* tree0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree0; sourceTree = "<group>"; };
+		2048A0F4225C745100290E54 /* TestGit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestGit.swift; sourceTree = "<group>"; };
+		2048A0F5225C745100290E54 /* index1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index1; sourceTree = "<group>"; };
+		2048A0F6225C745100290E54 /* TestPress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPress.swift; sourceTree = "<group>"; };
+		2048A0F7225C745100290E54 /* index0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index0; sourceTree = "<group>"; };
+		2048A0F8225C745100290E54 /* TestHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHash.swift; sourceTree = "<group>"; };
+		2048A0F9225C745100290E54 /* Tests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Tests.plist; sourceTree = "<group>"; };
+		2048A0FA225C745100290E54 /* TestAdd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAdd.swift; sourceTree = "<group>"; };
+		2048A0FB225C745100290E54 /* blob0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = blob0; sourceTree = "<group>"; };
+		2048A0FC225C745100290E54 /* tree2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree2; sourceTree = "<group>"; };
+		2048A0FD225C745100290E54 /* TestStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestStatus.swift; sourceTree = "<group>"; };
+		2048A0FE225C745100290E54 /* index2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index2; sourceTree = "<group>"; };
+		2048A0FF225C745100290E54 /* index3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index3; sourceTree = "<group>"; };
+		2048A113225C746200290E54 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2048A114225C746200290E54 /* SFMono-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Light.otf"; sourceTree = "<group>"; };
+		2048A115225C746200290E54 /* SFMono-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Bold.otf"; sourceTree = "<group>"; };
+		2048A124225C748900290E54 /* iOS.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iOS.storyboard; sourceTree = "<group>"; };
+		2048A125225C748900290E54 /* iOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = iOS.plist; sourceTree = "<group>"; };
+		2048A126225C748900290E54 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		2048A12B225C749200290E54 /* Mac.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Mac.entitlements; sourceTree = "<group>"; };
+		2048A12C225C749200290E54 /* Mac.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Mac.storyboard; sourceTree = "<group>"; };
+		2048A12D225C749200290E54 /* Console.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
+		2048A12E225C749200290E54 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		2048A12F225C749200290E54 /* Mac.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Mac.plist; sourceTree = "<group>"; };
+		2048A130225C749200290E54 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		2048A131225C749200290E54 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		2048A138225C74A300290E54 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		2048A139225C74A300290E54 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		2048A13A225C74A300290E54 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		2048A13B225C754100290E54 /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2048A13C225C754B00290E54 /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2048A13D225C76DB00290E54 /* libiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2048A13E225C76DC00290E54 /* libMac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMac.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		20F6E091225C72A100418216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E09E225C72AC00418216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E0A9225C72BD00418216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A142225C779500290E54 /* libMac.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E0B8225C732200418216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A140225C778800290E54 /* libMac.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E0CC225C733600418216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A141225C778D00290E54 /* libiOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		2048A0CB225C744400290E54 /* Git */ = {
+			isa = PBXGroup;
+			children = (
+				2048A0D0225C744400290E54 /* Blob.swift */,
+				2048A0CF225C744400290E54 /* Commit.swift */,
+				2048A0CC225C744400290E54 /* Failure.swift */,
+				2048A0D5225C744400290E54 /* Git.swift */,
+				2048A0CD225C744400290E54 /* Hash.swift */,
+				2048A0CE225C744400290E54 /* Index.swift */,
+				2048A0D6225C744400290E54 /* Parse.swift */,
+				2048A0D1225C744400290E54 /* Press.swift */,
+				2048A0D2225C744400290E54 /* Repository.swift */,
+				2048A0D4225C744400290E54 /* Status.swift */,
+				2048A0D3225C744400290E54 /* Tree.swift */,
+			);
+			path = Git;
+			sourceTree = "<group>";
+		};
+		2048A0EE225C745100290E54 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2048A0FB225C745100290E54 /* blob0 */,
+				2048A0F1225C745100290E54 /* commit0 */,
+				2048A0EF225C745100290E54 /* commit1 */,
+				2048A0F7225C745100290E54 /* index0 */,
+				2048A0F5225C745100290E54 /* index1 */,
+				2048A0FE225C745100290E54 /* index2 */,
+				2048A0FF225C745100290E54 /* index3 */,
+				2048A0F3225C745100290E54 /* tree0 */,
+				2048A0F2225C745100290E54 /* tree1 */,
+				2048A0FC225C745100290E54 /* tree2 */,
+				2048A0F9225C745100290E54 /* Tests.plist */,
+				2048A0FA225C745100290E54 /* TestAdd.swift */,
+				2048A0F4225C745100290E54 /* TestGit.swift */,
+				2048A0F8225C745100290E54 /* TestHash.swift */,
+				2048A0F0225C745100290E54 /* TestIndex.swift */,
+				2048A0F6225C745100290E54 /* TestPress.swift */,
+				2048A0FD225C745100290E54 /* TestStatus.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		2048A111225C746200290E54 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				2048A115225C746200290E54 /* SFMono-Bold.otf */,
+				2048A114225C746200290E54 /* SFMono-Light.otf */,
+				2048A112225C746200290E54 /* Localizable.strings */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		2048A123225C748900290E54 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				2048A125225C748900290E54 /* iOS.plist */,
+				2048A124225C748900290E54 /* iOS.storyboard */,
+				2048A126225C748900290E54 /* App.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		2048A12A225C749200290E54 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				2048A12B225C749200290E54 /* Mac.entitlements */,
+				2048A12F225C749200290E54 /* Mac.plist */,
+				2048A12C225C749200290E54 /* Mac.storyboard */,
+				2048A130225C749200290E54 /* App.swift */,
+				2048A131225C749200290E54 /* Button.swift */,
+				2048A12D225C749200290E54 /* Console.swift */,
+				2048A12E225C749200290E54 /* Extensions.swift */,
+			);
+			path = Mac;
+			sourceTree = "<group>";
+		};
+		2048A13F225C778800290E54 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		20F6E088225C729200418216 = {
 			isa = PBXGroup;
 			children = (
+				2048A138225C74A300290E54 /* .gitignore */,
+				2048A139225C74A300290E54 /* LICENSE */,
+				2048A13D225C76DB00290E54 /* libiOS.a */,
+				2048A13E225C76DC00290E54 /* libMac.a */,
+				2048A13C225C754B00290E54 /* GitiOS.app */,
+				2048A13B225C754100290E54 /* GitMac.app */,
+				2048A13A225C74A300290E54 /* README.md */,
+				2048A0D8225C744400290E54 /* Tests.xctest */,
+				2048A13F225C778800290E54 /* Frameworks */,
+				2048A0CB225C744400290E54 /* Git */,
+				2048A123225C748900290E54 /* iOS */,
+				2048A12A225C749200290E54 /* Mac */,
+				2048A111225C746200290E54 /* Shared */,
+				2048A0EE225C745100290E54 /* Tests */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		20F6E08F225C72A100418216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		20F6E092225C72A100418216 /* Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20F6E09A225C72A100418216 /* Build configuration list for PBXNativeTarget "Mac" */;
+			buildPhases = (
+				20F6E08F225C72A100418216 /* Headers */,
+				20F6E090225C72A100418216 /* Sources */,
+				20F6E091225C72A100418216 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mac;
+			productName = Mac;
+			productReference = 2048A13E225C76DC00290E54 /* libMac.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		20F6E0A0225C72AC00418216 /* iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20F6E0A5225C72AC00418216 /* Build configuration list for PBXNativeTarget "iOS" */;
+			buildPhases = (
+				20F6E09D225C72AC00418216 /* Sources */,
+				20F6E09E225C72AC00418216 /* Frameworks */,
+				20F6E09F225C72AC00418216 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOS;
+			productName = iOS;
+			productReference = 2048A13D225C76DB00290E54 /* libiOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		20F6E0AB225C72BD00418216 /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20F6E0B4225C72BD00418216 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				20F6E0A8225C72BD00418216 /* Sources */,
+				20F6E0A9225C72BD00418216 /* Frameworks */,
+				20F6E0AA225C72BD00418216 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tests;
+			productName = Tests;
+			productReference = 2048A0D8225C744400290E54 /* Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		20F6E0BA225C732200418216 /* MacApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20F6E0C8225C732400418216 /* Build configuration list for PBXNativeTarget "MacApp" */;
+			buildPhases = (
+				20F6E0B7225C732200418216 /* Sources */,
+				20F6E0B8225C732200418216 /* Frameworks */,
+				20F6E0B9225C732200418216 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacApp;
+			productName = MacApp;
+			productReference = 2048A13B225C754100290E54 /* GitMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+		20F6E0CE225C733600418216 /* iOSApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20F6E0DE225C733600418216 /* Build configuration list for PBXNativeTarget "iOSApp" */;
+			buildPhases = (
+				20F6E0CB225C733600418216 /* Sources */,
+				20F6E0CC225C733600418216 /* Frameworks */,
+				20F6E0CD225C733600418216 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOSApp;
+			productName = iOSApp;
+			productReference = 2048A13C225C754B00290E54 /* GitiOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
 /* Begin PBXProject section */
 		20F6E089225C729200418216 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1020;
+				TargetAttributes = {
+					20F6E092225C72A100418216 = {
+						CreatedOnToolsVersion = 10.2;
+					};
+					20F6E0A0225C72AC00418216 = {
+						CreatedOnToolsVersion = 10.2;
+					};
+					20F6E0AB225C72BD00418216 = {
+						CreatedOnToolsVersion = 10.2;
+					};
+					20F6E0BA225C732200418216 = {
+						CreatedOnToolsVersion = 10.2;
+					};
+					20F6E0CE225C733600418216 = {
+						CreatedOnToolsVersion = 10.2;
+					};
+				};
 			};
 			buildConfigurationList = 20F6E08C225C729200418216 /* Build configuration list for PBXProject "Git" */;
 			compatibilityVersion = "Xcode 9.3";
@@ -27,25 +402,803 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 20F6E088225C729200418216;
+			productRefGroup = 20F6E088225C729200418216;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				20F6E092225C72A100418216 /* Mac */,
+				20F6E0A0225C72AC00418216 /* iOS */,
+				20F6E0AB225C72BD00418216 /* Tests */,
+				20F6E0BA225C732200418216 /* MacApp */,
+				20F6E0CE225C733600418216 /* iOSApp */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		20F6E0AA225C72BD00418216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A10F225C745100290E54 /* index2 in Resources */,
+				2048A110225C745100290E54 /* index3 in Resources */,
+				2048A108225C745100290E54 /* index0 in Resources */,
+				2048A106225C745100290E54 /* index1 in Resources */,
+				2048A103225C745100290E54 /* tree1 in Resources */,
+				2048A10C225C745100290E54 /* blob0 in Resources */,
+				2048A104225C745100290E54 /* tree0 in Resources */,
+				2048A10D225C745100290E54 /* tree2 in Resources */,
+				2048A102225C745100290E54 /* commit0 in Resources */,
+				2048A100225C745100290E54 /* commit1 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E0B9225C732200418216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A118225C746200290E54 /* SFMono-Light.otf in Resources */,
+				2048A116225C746200290E54 /* Localizable.strings in Resources */,
+				2048A132225C749200290E54 /* Mac.storyboard in Resources */,
+				2048A11A225C746200290E54 /* SFMono-Bold.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E0CD225C733600418216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A127225C748900290E54 /* iOS.storyboard in Resources */,
+				2048A119225C746200290E54 /* SFMono-Light.otf in Resources */,
+				2048A117225C746200290E54 /* Localizable.strings in Resources */,
+				2048A11B225C746200290E54 /* SFMono-Bold.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		20F6E090225C72A100418216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A0E4225C744400290E54 /* Repository.swift in Sources */,
+				2048A0DE225C744400290E54 /* Commit.swift in Sources */,
+				2048A0D7225C744400290E54 /* Failure.swift in Sources */,
+				2048A0E0225C744400290E54 /* Blob.swift in Sources */,
+				2048A0EA225C744400290E54 /* Git.swift in Sources */,
+				2048A0DA225C744400290E54 /* Hash.swift in Sources */,
+				2048A0E8225C744400290E54 /* Status.swift in Sources */,
+				2048A0E6225C744400290E54 /* Tree.swift in Sources */,
+				2048A0DC225C744400290E54 /* Index.swift in Sources */,
+				2048A0EC225C744400290E54 /* Parse.swift in Sources */,
+				2048A0E2225C744400290E54 /* Press.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E09D225C72AC00418216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A0E5225C744400290E54 /* Repository.swift in Sources */,
+				2048A0DF225C744400290E54 /* Commit.swift in Sources */,
+				2048A0D9225C744400290E54 /* Failure.swift in Sources */,
+				2048A0E1225C744400290E54 /* Blob.swift in Sources */,
+				2048A0EB225C744400290E54 /* Git.swift in Sources */,
+				2048A0DB225C744400290E54 /* Hash.swift in Sources */,
+				2048A0E9225C744400290E54 /* Status.swift in Sources */,
+				2048A0E7225C744400290E54 /* Tree.swift in Sources */,
+				2048A0DD225C744400290E54 /* Index.swift in Sources */,
+				2048A0ED225C744400290E54 /* Parse.swift in Sources */,
+				2048A0E3225C744400290E54 /* Press.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E0A8225C72BD00418216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A107225C745100290E54 /* TestPress.swift in Sources */,
+				2048A109225C745100290E54 /* TestHash.swift in Sources */,
+				2048A105225C745100290E54 /* TestGit.swift in Sources */,
+				2048A101225C745100290E54 /* TestIndex.swift in Sources */,
+				2048A10B225C745100290E54 /* TestAdd.swift in Sources */,
+				2048A10E225C745100290E54 /* TestStatus.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E0B7225C732200418216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A136225C749200290E54 /* App.swift in Sources */,
+				2048A133225C749200290E54 /* Console.swift in Sources */,
+				2048A134225C749200290E54 /* Extensions.swift in Sources */,
+				2048A137225C749200290E54 /* Button.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20F6E0CB225C733600418216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2048A129225C748900290E54 /* App.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2048A112225C746200290E54 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2048A113225C746200290E54 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		20F6E08D225C729200418216 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_NAME = Git;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		20F6E08E225C729200418216 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_NAME = Git;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		20F6E09B225C72A100418216 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		20F6E09C225C72A100418216 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		20F6E0A6225C72AC00418216 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		20F6E0A7225C72AC00418216 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		20F6E0B5225C72BD00418216 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Tests/Tests.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = git.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+			};
+			name = Debug;
+		};
+		20F6E0B6225C72BD00418216 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Tests/Tests.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = git.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		20F6E0C9225C732400418216 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = Mac/Mac.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Mac/Mac.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = git.mac;
+				PRODUCT_NAME = GitMac;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+			};
+			name = Debug;
+		};
+		20F6E0CA225C732400418216 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = Mac/Mac.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Mac/Mac.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = git.mac;
+				PRODUCT_NAME = GitMac;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		20F6E0DF225C733600418216 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = iOS/iOS.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = git.ios;
+				PRODUCT_NAME = GitiOS;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		20F6E0E0225C733600418216 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 7AMWG3RLHN;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = iOS/iOS.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = git.ios;
+				PRODUCT_NAME = GitiOS;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -57,6 +1210,51 @@
 			buildConfigurations = (
 				20F6E08D225C729200418216 /* Debug */,
 				20F6E08E225C729200418216 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20F6E09A225C72A100418216 /* Build configuration list for PBXNativeTarget "Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20F6E09B225C72A100418216 /* Debug */,
+				20F6E09C225C72A100418216 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20F6E0A5225C72AC00418216 /* Build configuration list for PBXNativeTarget "iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20F6E0A6225C72AC00418216 /* Debug */,
+				20F6E0A7225C72AC00418216 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20F6E0B4225C72BD00418216 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20F6E0B5225C72BD00418216 /* Debug */,
+				20F6E0B6225C72BD00418216 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20F6E0C8225C732400418216 /* Build configuration list for PBXNativeTarget "MacApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20F6E0C9225C732400418216 /* Debug */,
+				20F6E0CA225C732400418216 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20F6E0DE225C733600418216 /* Build configuration list for PBXNativeTarget "iOSApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20F6E0DF225C733600418216 /* Debug */,
+				20F6E0E0225C733600418216 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
