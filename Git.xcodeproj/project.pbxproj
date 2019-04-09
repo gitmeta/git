@@ -125,7 +125,6 @@
 		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB8225C78D000BC00BC /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		20BA6B5F225C7C7600635B01 /* Git.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Git.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,7 +262,6 @@
 				2051FAB9225C78D000BC00BC /* GitiOS.app */,
 				2051FAB8225C78D000BC00BC /* GitMac.app */,
 				2048A13A225C74A300290E54 /* README.md */,
-				20BA6B5F225C7C7600635B01 /* Git.podspec */,
 				2048A0D8225C744400290E54 /* Tests.xctest */,
 				2048A13F225C778800290E54 /* Frameworks */,
 				2048A0CB225C744400290E54 /* Git */,
