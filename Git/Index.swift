@@ -56,20 +56,19 @@ struct Index {
         blob.add(UInt32(index.version))
         blob.add(UInt32(index.entries.count))
         index.entries.sorted(by: { $0.name > $1.name }).forEach {
-            blob.add($0.created)
-            blob.add($0.modified)
+            blob.date($0.created)
+            blob.date($0.modified)
             blob.add(UInt32($0.device))
             blob.add(UInt32($0.inode))
             blob.add(UInt32(33188))
             blob.add(UInt32($0.user))
             blob.add(UInt32($0.group))
             blob.add(UInt32($0.size))
-            blob.add($0.container)
+            blob.hex($0.container)
             blob.add(UInt16($0.name.count))
             blob.name($0.name)
         }
-//        blob.hash()
-        blob.add(index.id)
+        blob.hash()
         try? blob.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
     }
     
