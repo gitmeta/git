@@ -117,6 +117,6 @@ import AppKit
     }
     
     @objc private func status() {
-//        guard let repository = self.repository else { return }
+        guard let repository = self.repository else { return }
     }
 }

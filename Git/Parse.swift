@@ -39,6 +39,7 @@ class Parse {
     
     func name() throws -> String {
         return try {
+            print("size: \($1)")
             index += $0 ? 4 : 2
             let result = String(decoding: try advance($1), as: UTF8.self)
             clean()
