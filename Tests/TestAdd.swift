@@ -24,8 +24,8 @@ class TestAdd: XCTestCase {
                 let index = Index.load(self.url)
                 XCTAssertEqual(Thread.main, Thread.current)
                 XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/index").path))
-                XCTAssertFalse(try! FileManager.default.contentsOfDirectory(atPath:
-                    self.url.appendingPathComponent(".git/objects").path).isEmpty)
+                XCTAssertTrue(FileManager.default.fileExists(atPath:
+                    self.url.appendingPathComponent(".git/objects/as/321231231232131212313").path))
                 XCTAssertEqual(32, data?.count)
                 XCTAssertEqual(2, index?.version)
                 XCTAssertEqual("39d890139ee5356c7ef572216cebcd27aa41f9df", index?.id)

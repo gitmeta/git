@@ -14,4 +14,14 @@ class Press {
         buffer.deallocate()
         return result
     }
+    
+    func compress(_ url: URL) -> Data {
+        let size = 8_000_000
+        let string = String(decoding: try! Data(contentsOf: url), as: UTF8.self)
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+        let wrote = compression_encode_buffer(buffer, size, Array(string.utf8), string.count, nil, COMPRESSION_ZLIB)
+        let result = Data(bytes: buffer, count: wrote)
+        buffer.deallocate()
+        return result
+    }
 }

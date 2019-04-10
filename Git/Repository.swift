@@ -3,6 +3,7 @@ import Foundation
 public class Repository {
     public let url: URL
     private let hasher = Hash()
+    private let press = Press()
     private let queue = DispatchQueue(label: "", qos: .background, target: .global(qos: .background))
     
     init(_ url: URL) {
@@ -40,14 +41,13 @@ public class Repository {
     }
     
     private func add(_ file: String) {
-        var index = Index.load(url) ?? Index.new(url)
+        let index = Index.load(url) ?? Index.new(url)
         let hash = try! hasher.file(url.appendingPathComponent(file))
         let directory = String(hash[hash.startIndex ..< hash.index(hash.startIndex, offsetBy: 2)])
         let name = String(hash[hash.index(hash.startIndex, offsetBy: 2)...])
         if !FileManager.default.fileExists(atPath: url.appendingPathComponent("\(directory)/\(name)").path) {
-            try! FileManager.default.createDirectory(atPath: String(hash[hash.startIndex ..< hash.index(hash.startIndex, offsetBy:
-                2)]), withIntermediateDirectories: true)
-            // save file compressed
+            try! FileManager.default.createDirectory(at: url.appendingPathComponent(directory), withIntermediateDirectories: true)
+            let blob = press.compress(url.appendingPathComponent(file))
         }
     }
 }
