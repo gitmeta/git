@@ -1,7 +1,7 @@
 import Foundation
 
 class Blob {
-    private(set) var data = Data("DIRC".utf8)
+    private(set) var data = Data()
     private let hasher = Hash()
     private static let map = [
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, // 01234567
@@ -11,8 +11,8 @@ class Blob {
     ] as [UInt8]
     
     func date(_ date: Date) {
-        add(UInt32(date.timeIntervalSince1970))
-        add(UInt32(0))
+        number(UInt32(date.timeIntervalSince1970))
+        number(UInt32(0))
     }
     
     func hex(_ string: String) {
@@ -25,7 +25,9 @@ class Blob {
             }.1)
     }
     
-    func name(_ string: String) { data.append(Data((string + "\u{0000}").utf8)) }
-    func add<T>(_ number: T) { withUnsafeBytes(of: number) { data.append(contentsOf: $0.reversed()) } }
+    func blob(_ blob: Blob) { data.append(blob.data) }
+    func nulled(_ string: String) { self.string(string + "\u{0000}") }
+    func string(_ string: String) { data.append(Data(string.utf8)) }
+    func number<T: BinaryInteger>(_ number: T) { withUnsafeBytes(of: number) { data.append(contentsOf: $0.reversed()) } }
     func hash() { data.append(contentsOf: hasher.digest(data)) }
 }

@@ -4,7 +4,7 @@ struct Index {
     struct Entry {
         fileprivate(set) var created = Date()
         fileprivate(set) var modified = Date()
-        fileprivate(set) var container = String()
+        fileprivate(set) var id = String()
         fileprivate(set) var name = String()
         fileprivate(set) var size = 0
         fileprivate(set) var device = 0
@@ -53,20 +53,33 @@ struct Index {
     
     static func save(_ index: Index, url: URL) {
         let blob = Blob()
-        blob.add(UInt32(index.version))
-        blob.add(UInt32(index.entries.count))
-        index.entries.sorted(by: { $0.name > $1.name }).forEach {
+        blob.string("DIRC")
+        blob.number(UInt32(index.version))
+        blob.number(UInt32(index.entries.count))
+        index.entries.sorted(by: { $0.name < $1.name }).forEach {
             blob.date($0.created)
             blob.date($0.modified)
-            blob.add(UInt32($0.device))
-            blob.add(UInt32($0.inode))
-            blob.add(UInt32(33188))
-            blob.add(UInt32($0.user))
-            blob.add(UInt32($0.group))
-            blob.add(UInt32($0.size))
-            blob.hex($0.container)
-            blob.add(UInt16($0.name.count))
-            blob.name($0.name)
+            blob.number(UInt32($0.device))
+            blob.number(UInt32($0.inode))
+            blob.number(UInt32(33188))
+            blob.number(UInt32($0.user))
+            blob.number(UInt32($0.group))
+            blob.number(UInt32($0.size))
+            blob.hex($0.id)
+            blob.number(UInt16($0.name.count))
+            blob.nulled($0.name)
+        }
+        if !index.trees.isEmpty {
+            let trees = Blob()
+            index.trees.sorted(by: { $0.name < $1.name }).forEach {
+                trees.nulled($0.name)
+                trees.string("\($0.entries) ")
+                trees.string("\($0.subtrees)\n")
+                trees.hex($0.id)
+            }
+            blob.string("TREE")
+            blob.number(UInt32(trees.data.count))
+            blob.blob(trees)
         }
         blob.hash()
         try? blob.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
@@ -82,7 +95,7 @@ struct Index {
         entry.user = try parse.number()
         entry.group = try parse.number()
         entry.size = try parse.number()
-        entry.container = try parse.hash()
+        entry.id = try parse.hash()
         entry.conflicts = try parse.conflict()
         entry.name = try parse.name()
         return entry

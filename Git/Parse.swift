@@ -7,8 +7,6 @@ class Parse {
     init?(_ url: URL) {
         if let data = try? Data(contentsOf: url) {
             self.data = data
-            print("size \(data.count)")
-            print(String(decoding: data, as: UTF8.self))
         } else {
             return nil
         }
@@ -88,10 +86,7 @@ class Parse {
     }
     
     private func clean() {
-        while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") {
-            index += 1
-            print("clean")
-        }
+        while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") { index += 1 }
     }
     
     private func not2() throws -> Bool {
