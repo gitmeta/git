@@ -8,6 +8,13 @@ class TestPress: XCTestCase {
         press = Press()
     }
     
+    func testCompressed0() {
+        XCTAssertEqual("""
+hello world
+""", String(decoding: press.decompress(try!
+    Data(contentsOf: Bundle(for: TestPress.self).url(forResource: "compressed0", withExtension: nil)!)), as: UTF8.self))
+    }
+    
     func testBlob0() {
         XCTAssertEqual("""
 blob 12\u{0000}hello rorld

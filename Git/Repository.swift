@@ -46,7 +46,7 @@ public class Repository {
         let hash = try! hasher.file(original)
         let directory = String(hash[hash.startIndex ..< hash.index(hash.startIndex, offsetBy: 2)])
         let name = String(hash[hash.index(hash.startIndex, offsetBy: 2)...])
-        let folder = url.appendingPathComponent(".git/objects/\(directory)/\(name)")
+        let folder = url.appendingPathComponent(".git/objects/\(directory)")
         let compressed = folder.appendingPathComponent(name)
         if !FileManager.default.fileExists(atPath: compressed.path) {
             try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)

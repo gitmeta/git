@@ -26,6 +26,8 @@ class TestAdd: XCTestCase {
                 XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/index").path))
                 XCTAssertTrue(FileManager.default.fileExists(atPath:
                     self.url.appendingPathComponent(".git/objects/95/d09f2b10159347eece71399a7e2e907ea3df4f").path))
+                XCTAssertNotEqual(0, (try? Data(contentsOf:
+                    self.url.appendingPathComponent(".git/objects/95/d09f2b10159347eece71399a7e2e907ea3df4f")))?.count)
                 XCTAssertEqual(32, data?.count)
                 XCTAssertEqual(2, index?.version)
                 XCTAssertEqual("39d890139ee5356c7ef572216cebcd27aa41f9df", index?.id)
