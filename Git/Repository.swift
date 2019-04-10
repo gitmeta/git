@@ -42,12 +42,16 @@ public class Repository {
     
     private func add(_ file: String) {
         let index = Index.load(url) ?? Index.new(url)
-        let hash = try! hasher.file(url.appendingPathComponent(file))
+        let original = url.appendingPathComponent(file)
+        let hash = try! hasher.file(original)
         let directory = String(hash[hash.startIndex ..< hash.index(hash.startIndex, offsetBy: 2)])
         let name = String(hash[hash.index(hash.startIndex, offsetBy: 2)...])
-        if !FileManager.default.fileExists(atPath: url.appendingPathComponent("\(directory)/\(name)").path) {
-            try! FileManager.default.createDirectory(at: url.appendingPathComponent(directory), withIntermediateDirectories: true)
-            let blob = press.compress(url.appendingPathComponent(file))
+        let folder = url.appendingPathComponent(".git/objects/\(directory)/\(name)")
+        let compressed = folder.appendingPathComponent(name)
+        if !FileManager.default.fileExists(atPath: compressed.path) {
+            try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+            try! press.compress(original).write(to: compressed, options: .atomic)
+            print(compressed)
         }
     }
 }
