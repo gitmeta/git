@@ -30,6 +30,22 @@ class TestStatus: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
+    func testEmpty() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
+            repository.status {
+                XCTAssertTrue($0.untracked.isEmpty)
+                XCTAssertTrue($0.added.isEmpty)
+                XCTAssertTrue($0.modified.isEmpty)
+                XCTAssertTrue($0.deleted.isEmpty)
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
     func testUntracked() {
         let expect = expectation(description: "")
         try! Data("hello world".utf8).write(to: url.appendingPathComponent("myfile.txt"))

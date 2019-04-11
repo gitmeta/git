@@ -1,27 +1,25 @@
 import Foundation
 
-struct Tree {
-    struct Blob: TreeItem {
+class Tree {
+    class Item {
         var id = String()
         var name = String()
     }
     
-    struct Tree: TreeItem {
-        var id = String()
-        var name = String()
-    }
+    class Blob: Item { }
+    class Sub: Item { }
     
-    private(set) var items = [TreeItem]()
+    private(set) var items = [Item]()
     
     init(_ data: Data) throws {
         let parse = Parse(data)
         guard "tree" == (try? parse.ascii(" ")) else { throw Failure.Tree.unreadable }
         _ = try parse.variable()
         while parse.index < data.count {
-            var item: TreeItem
+            let item: Item
             switch try parse.ascii(" ") {
             case "100644": item = Blob()
-            case "40000": item = Tree()
+            case "40000": item = Sub()
             default: throw Failure.Tree.unreadable
             }
             item.name = try parse.variable()
@@ -29,9 +27,4 @@ struct Tree {
             items.append(item)
         }
     }
-}
-
-protocol TreeItem {
-    var id: String { get set }
-    var name: String { get set }
 }

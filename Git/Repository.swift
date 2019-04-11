@@ -19,33 +19,40 @@ public class Repository {
         }
     }
     
-    public func add(_ file: String, done: (() -> Void)?) {
+    public func add(_ file: String, result: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         queue.async { [weak self] in
             self?.add(file)
             DispatchQueue.main.async { done?() }
         }
     }
     
+    func tree(_ id: String) throws -> Tree {
+        return try Tree(press.decompress(
+            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.suffix(id.count - 2))"))))
+    }
+    
     private var status: Status {
         var status = Status()
         var contents = self.contents
-        if let index = Index(url) {
-            
-        }
-        status.untracked.append(contentsOf: contents)
+        let index = Index(url)
+//        status.added = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
+//        status.modified = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
+        status.untracked = contents.filter({ file in index?.entries.first(where: { $0.name == file }) == nil })
         return status
     }
     
     private var contents: [String] {
-        return try! FileManager.default.contentsOfDirectory(atPath: url.path)
+        var result = try! FileManager.default.contentsOfDirectory(atPath: url.path)
+        result.removeAll(where: { $0 == ".git" })
+        return result
     }
     
     private func add(_ file: String) {
         let index = Index(url) ?? Index()
         let original = url.appendingPathComponent(file)
         let id = try! hasher.file(original)
-        let folder = url.appendingPathComponent(".git/objects/\(String(id[id.startIndex ..< id.index(id.startIndex, offsetBy: 2)]))")
-        let location = folder.appendingPathComponent(String(id[id.index(id.startIndex, offsetBy: 2)...]))
+        let folder = url.appendingPathComponent(".git/objects/\(id.prefix(2))")
+        let location = folder.appendingPathComponent(String(id.suffix(id.count - 2)))
         if !FileManager.default.fileExists(atPath: location.path) {
             try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
             let compressed = press.compress(original)

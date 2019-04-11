@@ -2,10 +2,19 @@ import XCTest
 @testable import Git
 
 class TestPress: XCTestCase {
+    private var repository: Repository!
     private var press: Press!
+    private var url: URL!
 
     override func setUp() {
         press = Press()
+        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
+        try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/objects/ab"), withIntermediateDirectories: true)
+        repository = Repository(url)
+    }
+    
+    override func tearDown() {
+        try? FileManager.default.removeItem(at: url)
     }
     
     func testCompressed0() {
@@ -29,8 +38,9 @@ blob 12\u{0000}hello rorld
     }
     
     func testTree1() {
-        let tree = try? Tree(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(forResource: "tree1",
-                                                                                                    withExtension: nil)!)))
+        try! Data(contentsOf: Bundle(for: TestPress.self).url(forResource: "tree1", withExtension: nil)!).write(to:
+            url.appendingPathComponent(".git/objects/ab/helloworld"))
+        let tree = try? repository.tree("abhelloworld")
         XCTAssertEqual(1, tree?.items.count)
         XCTAssertNotNil(tree?.items.first as? Tree.Blob)
         XCTAssertEqual("hello.json", tree?.items.first?.name)
@@ -38,11 +48,12 @@ blob 12\u{0000}hello rorld
     }
     
     func testTree2() {
-        let tree = try? Tree(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(forResource: "tree2",
-                                                                                                    withExtension: nil)!)))
+        try! Data(contentsOf: Bundle(for: TestPress.self).url(forResource: "tree2", withExtension: nil)!).write(to:
+            url.appendingPathComponent(".git/objects/ab/helloworld"))
+        let tree = try? repository.tree("abhelloworld")
         XCTAssertEqual(2, tree?.items.count)
         XCTAssertNotNil(tree?.items.first as? Tree.Blob)
-        XCTAssertNotNil(tree?.items.last as? Tree.Tree)
+        XCTAssertNotNil(tree?.items.last as? Tree.Sub)
         XCTAssertEqual("hello.json", tree?.items.first?.name)
         XCTAssertEqual("e0f1ee1826f922f041e557a16173f2a93835825e", tree?.items.first?.id)
         XCTAssertEqual("mydir", tree?.items.last?.name)
