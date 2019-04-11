@@ -1,6 +1,6 @@
 import Foundation
 
-struct Index {
+class Index {
     struct Entry {
         fileprivate(set) var created = Date()
         fileprivate(set) var modified = Date()
@@ -26,8 +26,9 @@ struct Index {
     private(set) var entries = [Entry]()
     private(set) var trees = [Tree]()
     
-    static func load(_ url: URL) -> Index? {
-        var index = Index()
+    init() { }
+    
+    init?(_ url: URL) {
         guard
             let parse = Parse(url.appendingPathComponent(".git/index")),
             "DIRC" == (try? parse.string()),
@@ -38,25 +39,26 @@ struct Index {
             let id = try? parse.hash(),
             parse.index == parse.data.count
         else { return nil }
-        index.version = version
-        index.entries = entries
-        index.trees = tree
-        index.id = id
-        return index
+        self.version = version
+        self.entries = entries
+        self.trees = tree
+        self.id = id
     }
     
-    static func new(_ url: URL) -> Index {
-        let index = Index()
-        save(index, url: url)
-        return index
+    func entry(_ id: String, name: String, size: Int) {
+        var entry = Entry()
+        entry.id = id
+        entry.name = name
+        entry.size = size
+        entries.append(entry)
     }
     
-    static func save(_ index: Index, url: URL) {
+    func save(_ url: URL) {
         let blob = Blob()
         blob.string("DIRC")
-        blob.number(UInt32(index.version))
-        blob.number(UInt32(index.entries.count))
-        index.entries.sorted(by: { $0.name < $1.name }).forEach {
+        blob.number(UInt32(version))
+        blob.number(UInt32(entries.count))
+        entries.sorted(by: { $0.name < $1.name }).forEach {
             blob.date($0.created)
             blob.date($0.modified)
             blob.number(UInt32($0.device))
@@ -69,9 +71,9 @@ struct Index {
             blob.number(UInt16($0.name.count))
             blob.nulled($0.name)
         }
-        if !index.trees.isEmpty {
+        if !trees.isEmpty {
             let trees = Blob()
-            index.trees.sorted(by: { $0.name < $1.name }).forEach {
+            self.trees.sorted(by: { $0.name < $1.name }).forEach {
                 trees.nulled($0.name)
                 trees.string("\($0.entries) ")
                 trees.string("\($0.subtrees)\n")
@@ -85,7 +87,7 @@ struct Index {
         try? blob.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
     }
     
-    private static func entry(_ parse: Parse) throws -> Entry {
+    private func entry(_ parse: Parse) throws -> Entry {
         var entry = Entry()
         entry.created = try parse.date()
         entry.modified = try parse.date()
@@ -101,14 +103,14 @@ struct Index {
         return entry
     }
     
-    private static func trees(_ parse: Parse) throws -> [Tree] {
+    private func trees(_ parse: Parse) throws -> [Tree] {
         let limit = (try parse.tree())
         var result = [Tree]()
         while parse.index < limit { result.append(try tree(parse)) }
         return result
     }
     
-    private static func tree(_ parse: Parse) throws -> Tree {
+    private func tree(_ parse: Parse) throws -> Tree {
         var tree = Tree()
         tree.name = try parse.variable()
         tree.entries = try {

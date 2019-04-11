@@ -17,17 +17,17 @@ class TestIndex: XCTestCase {
     
     func testIndexFails() {
         try! Data().write(to: url.appendingPathComponent(".git/index"))
-        XCTAssertNil(Index.load(url))
+        XCTAssertNil(Index(url))
     }
     
     func testIndexNoExists() {
-        XCTAssertNil(Index.load(url))
+        XCTAssertNil(Index(url))
     }
     
     func testIndex0() {
         try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index0", withExtension: nil)!)).write(to:
             url.appendingPathComponent(".git/index"))
-        let index = Index.load(url)
+        let index = Index(url)
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(1, index?.entries.count)
@@ -48,8 +48,10 @@ class TestIndex: XCTestCase {
     func testIndex0BackAndForth() {
         try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index0", withExtension: nil)!)).write(to:
             url.appendingPathComponent(".git/index"))
-        Index.save(Index.load(url)!, url: url)
-        let index = Index.load(url)
+        var index = Index(url)
+        try! FileManager.default.removeItem(at: url.appendingPathComponent(".git/index"))
+        index?.save(url)
+        index = Index(url)
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(1, index?.entries.count)
@@ -69,7 +71,7 @@ class TestIndex: XCTestCase {
     func testIndex1() {
         try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index1", withExtension: nil)!)).write(to:
             url.appendingPathComponent(".git/index"))
-        let index = Index.load(url)
+        let index = Index(url)
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
@@ -79,8 +81,10 @@ class TestIndex: XCTestCase {
     func testIndex1BackAndForth() {
         try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index1", withExtension: nil)!)).write(to:
             url.appendingPathComponent(".git/index"))
-        Index.save(Index.load(url)!, url: url)
-        let index = Index.load(url)
+        var index = Index(url)
+        try! FileManager.default.removeItem(at: url.appendingPathComponent(".git/index"))
+        index?.save(url)
+        index = Index(url)
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
@@ -89,7 +93,7 @@ class TestIndex: XCTestCase {
     func testIndex2() {
         try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index2", withExtension: nil)!)).write(to:
             url.appendingPathComponent(".git/index"))
-        let index = Index.load(url)
+        let index = Index(url)
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
@@ -108,8 +112,10 @@ class TestIndex: XCTestCase {
     func testIndex2BackAndForth() {
         try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index2", withExtension: nil)!)).write(to:
             url.appendingPathComponent(".git/index"))
-        Index.save(Index.load(url)!, url: url)
-        let index = Index.load(url)
+        var index = Index(url)
+        try! FileManager.default.removeItem(at: url.appendingPathComponent(".git/index"))
+        index?.save(url)
+        index = Index(url)
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
@@ -127,7 +133,7 @@ class TestIndex: XCTestCase {
     func testIndex3() {
         try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index3", withExtension: nil)!)).write(to:
             url.appendingPathComponent(".git/index"))
-        let index = Index.load(url)
+        let index = Index(url)
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
@@ -138,8 +144,10 @@ class TestIndex: XCTestCase {
     func testIndex3BackAndForth() {
         try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index3", withExtension: nil)!)).write(to:
             url.appendingPathComponent(".git/index"))
-        Index.save(Index.load(url)!, url: url)
-        let index = Index.load(url)
+        var index = Index(url)
+        try! FileManager.default.removeItem(at: url.appendingPathComponent(".git/index"))
+        index?.save(url)
+        index = Index(url)
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
