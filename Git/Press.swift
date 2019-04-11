@@ -31,20 +31,40 @@ class Press {
             let wrote = compression_encode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1),
                                                   source.count, nil, COMPRESSION_ZLIB)
             print("wrote \(wrote)")
-            return Data(bytes: buffer, count: wrote + 2)
+            return Data(bytes: buffer, count: wrote)
         } as Data
         
         buffer.deallocate()
-        var data = Data()
-        withUnsafeBytes(of: UInt8(120)) { data.append(contentsOf: $0) }
-        withUnsafeBytes(of: UInt8(1)) { data.append(contentsOf: $0) }
-        data.append(result)
-        data.append(contentsOf: "\u{01}\0\u{1A}\u{0B}\u{04}]".utf8)
+        var data = Data([0x78, 0x1])
+        data.append(result )
+        
+//        var adler = self.adler32().checksum.bigEndian
+//        result.append(Data(bytes: &adler, count: MemoryLayout<UInt32>.size))
+        
+//        print("adler: \(adler32(result).bigEndian)")
+//        data.append(contentsOf: "\u{01}\0\u{1A}\u{0B}\u{04}]".utf8)
+        var adler = adler32(source).bigEndian
+        print("adler: \(adler)")
+        data.append(Data(bytes: &adler, count: MemoryLayout<UInt32>.size))
         
         
         //"\u{01}\0\u{1A}\u{0B}\u{04}]"
         
         print("result \(data.count)")
         return data
+    }
+    
+    private func adler32(_ data: Data) -> UInt32 {
+        var s1: UInt32 = 1 & 0xffff
+        var s2: UInt32 = (1 >> 16) & 0xffff
+        let prime: UInt32 = 65521
+        
+        for byte in data {
+            s1 += UInt32(byte)
+            if s1 >= prime { s1 = s1 % prime }
+            s2 += s1
+            if s2 >= prime { s2 = s2 % prime }
+        }
+        return (s2 << 16) | s1
     }
 }
