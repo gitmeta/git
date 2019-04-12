@@ -58,4 +58,19 @@ class TestStatus: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testAdded() {
+        let expect = expectation(description: "")
+        try! Data("hello world".utf8).write(to: url.appendingPathComponent("myfile.txt"))
+        repository.add("myfile.txt") {
+            self.repository.status {
+                XCTAssertEqual(1, $0.added.count)
+                XCTAssertTrue($0.untracked.isEmpty)
+                XCTAssertTrue($0.modified.isEmpty)
+                XCTAssertTrue($0.deleted.isEmpty)
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

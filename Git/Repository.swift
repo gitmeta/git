@@ -19,7 +19,7 @@ public class Repository {
         }
     }
     
-    public func add(_ file: String, result: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+    public func add(_ file: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         queue.async { [weak self] in
             self?.add(file)
             DispatchQueue.main.async { done?() }
@@ -35,7 +35,7 @@ public class Repository {
         var status = Status()
         var contents = self.contents
         let index = Index(url)
-//        status.added = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
+        status.added = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
 //        status.modified = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
         status.untracked = contents.filter({ file in index?.entries.first(where: { $0.name == file }) == nil })
         return status
