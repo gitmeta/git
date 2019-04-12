@@ -4,20 +4,19 @@ class Button: NSButton {
     private(set) weak var width: NSLayoutConstraint!
     private(set) weak var height: NSLayoutConstraint!
     
-    init(_ title: String, target: AnyObject, action: Selector) {
+    init(_ title: String, color: NSColor = .white, target: AnyObject, action: Selector) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        layer!.backgroundColor = NSColor.shade.cgColor
         layer!.cornerRadius = 6
         isBordered = false
-        attributedTitle = NSAttributedString(string: title, attributes: [.font: NSFont.systemFont(ofSize: 12, weight: .medium),
-                                                                         .foregroundColor: NSColor.white])
+        attributedTitle = NSAttributedString(string: title, attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .medium),
+                                                                         .foregroundColor: color])
         self.target = target
         self.action = action
         
         width = widthAnchor.constraint(equalToConstant: 70)
-        height = heightAnchor.constraint(equalToConstant: 30)
+        height = heightAnchor.constraint(equalToConstant: 34)
         width.isActive = true
         height.isActive = true
     }

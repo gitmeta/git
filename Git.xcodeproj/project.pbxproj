@@ -61,6 +61,9 @@
 		2051FABA225C78DD00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
 		2051FABB225C78E300BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB7225C78D000BC00BC /* libGit.a */; };
 		2051FABC225C78EA00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
+		20CB6718226066470064C31C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6717226066470064C31C /* Bar.swift */; };
+		20CB671A226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
+		20CB671B226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
 		20E76BE6225E264300E023D8 /* compressed0 in Resources */ = {isa = PBXBuildFile; fileRef = 20E76BE5225E264300E023D8 /* compressed0 */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +129,8 @@
 		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB8225C78D000BC00BC /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20CB6717226066470064C31C /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
+		20CB6719226071CA0064C31C /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		20E76BE5225E264300E023D8 /* compressed0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = compressed0; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -219,6 +224,7 @@
 			children = (
 				2048A115225C746200290E54 /* SFMono-Bold.otf */,
 				2048A114225C746200290E54 /* SFMono-Light.otf */,
+				20CB6719226071CA0064C31C /* Shared.swift */,
 				2048A112225C746200290E54 /* Localizable.strings */,
 			);
 			path = Shared;
@@ -241,6 +247,7 @@
 				2048A12F225C749200290E54 /* Mac.plist */,
 				2048A12C225C749200290E54 /* Mac.storyboard */,
 				2048A130225C749200290E54 /* App.swift */,
+				20CB6717226066470064C31C /* Bar.swift */,
 				2048A131225C749200290E54 /* Button.swift */,
 				2048A12D225C749200290E54 /* Console.swift */,
 				2048A12E225C749200290E54 /* Extensions.swift */,
@@ -518,6 +525,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
+				20CB6718226066470064C31C /* Bar.swift in Sources */,
 				2048A136225C749200290E54 /* App.swift in Sources */,
 				2048A133225C749200290E54 /* Console.swift in Sources */,
 				2048A134225C749200290E54 /* Extensions.swift in Sources */,
@@ -529,6 +538,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20CB671B226071CA0064C31C /* Shared.swift in Sources */,
 				2048A129225C748900290E54 /* App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
