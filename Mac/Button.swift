@@ -8,17 +8,15 @@ class Button: NSButton {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        layer!.cornerRadius = 6
+        layer!.cornerRadius = 4
         isBordered = false
-        attributedTitle = NSAttributedString(string: title, attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .medium),
-                                                                         .foregroundColor: color])
-        self.target = target
-        self.action = action
-        
+        attributedTitle = NSAttributedString(string: title, attributes: [.font: NSFont.bold(14), .foregroundColor: color])
         width = widthAnchor.constraint(equalToConstant: 70)
-        height = heightAnchor.constraint(equalToConstant: 34)
+        height = heightAnchor.constraint(equalToConstant: 36)
         width.isActive = true
         height.isActive = true
+        self.target = target
+        self.action = action
     }
     
     required init?(coder: NSCoder) { return nil }

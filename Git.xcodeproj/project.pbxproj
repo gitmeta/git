@@ -54,7 +54,6 @@
 		2048A127225C748900290E54 /* iOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2048A124225C748900290E54 /* iOS.storyboard */; };
 		2048A129225C748900290E54 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A126225C748900290E54 /* App.swift */; };
 		2048A132225C749200290E54 /* Mac.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2048A12C225C749200290E54 /* Mac.storyboard */; };
-		2048A133225C749200290E54 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A12D225C749200290E54 /* Console.swift */; };
 		2048A134225C749200290E54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A12E225C749200290E54 /* Extensions.swift */; };
 		2048A136225C749200290E54 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A130225C749200290E54 /* App.swift */; };
 		2048A137225C749200290E54 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A131225C749200290E54 /* Button.swift */; };
@@ -64,6 +63,10 @@
 		20CB6718226066470064C31C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6717226066470064C31C /* Bar.swift */; };
 		20CB671A226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
 		20CB671B226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
+		20CB671D22607F940064C31C /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB671C22607F940064C31C /* Label.swift */; };
+		20CB671F2260857E0064C31C /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20CB671E2260857E0064C31C /* Shared.xcassets */; };
+		20CB67202260857E0064C31C /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20CB671E2260857E0064C31C /* Shared.xcassets */; };
+		20CB6722226086030064C31C /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6721226086030064C31C /* List.swift */; };
 		20E76BE6225E264300E023D8 /* compressed0 in Resources */ = {isa = PBXBuildFile; fileRef = 20E76BE5225E264300E023D8 /* compressed0 */; };
 /* End PBXBuildFile section */
 
@@ -117,7 +120,6 @@
 		2048A126225C748900290E54 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		2048A12B225C749200290E54 /* Mac.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Mac.entitlements; sourceTree = "<group>"; };
 		2048A12C225C749200290E54 /* Mac.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Mac.storyboard; sourceTree = "<group>"; };
-		2048A12D225C749200290E54 /* Console.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
 		2048A12E225C749200290E54 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2048A12F225C749200290E54 /* Mac.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Mac.plist; sourceTree = "<group>"; };
 		2048A130225C749200290E54 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -131,6 +133,9 @@
 		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20CB6717226066470064C31C /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		20CB6719226071CA0064C31C /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		20CB671C22607F940064C31C /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		20CB671E2260857E0064C31C /* Shared.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Shared.xcassets; sourceTree = "<group>"; };
+		20CB6721226086030064C31C /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20E76BE5225E264300E023D8 /* compressed0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = compressed0; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -225,6 +230,7 @@
 				2048A115225C746200290E54 /* SFMono-Bold.otf */,
 				2048A114225C746200290E54 /* SFMono-Light.otf */,
 				20CB6719226071CA0064C31C /* Shared.swift */,
+				20CB671E2260857E0064C31C /* Shared.xcassets */,
 				2048A112225C746200290E54 /* Localizable.strings */,
 			);
 			path = Shared;
@@ -249,8 +255,9 @@
 				2048A130225C749200290E54 /* App.swift */,
 				20CB6717226066470064C31C /* Bar.swift */,
 				2048A131225C749200290E54 /* Button.swift */,
-				2048A12D225C749200290E54 /* Console.swift */,
 				2048A12E225C749200290E54 /* Extensions.swift */,
+				20CB671C22607F940064C31C /* Label.swift */,
+				20CB6721226086030064C31C /* List.swift */,
 			);
 			path = Mac;
 			sourceTree = "<group>";
@@ -452,6 +459,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2048A118225C746200290E54 /* SFMono-Light.otf in Resources */,
+				20CB671F2260857E0064C31C /* Shared.xcassets in Resources */,
 				2048A116225C746200290E54 /* Localizable.strings in Resources */,
 				2048A132225C749200290E54 /* Mac.storyboard in Resources */,
 				2048A11A225C746200290E54 /* SFMono-Bold.otf in Resources */,
@@ -463,6 +471,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2048A127225C748900290E54 /* iOS.storyboard in Resources */,
+				20CB67202260857E0064C31C /* Shared.xcassets in Resources */,
 				2048A119225C746200290E54 /* SFMono-Light.otf in Resources */,
 				2048A117225C746200290E54 /* Localizable.strings in Resources */,
 				2048A11B225C746200290E54 /* SFMono-Bold.otf in Resources */,
@@ -528,8 +537,9 @@
 				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
 				20CB6718226066470064C31C /* Bar.swift in Sources */,
 				2048A136225C749200290E54 /* App.swift in Sources */,
-				2048A133225C749200290E54 /* Console.swift in Sources */,
+				20CB6722226086030064C31C /* List.swift in Sources */,
 				2048A134225C749200290E54 /* Extensions.swift in Sources */,
+				20CB671D22607F940064C31C /* Label.swift in Sources */,
 				2048A137225C749200290E54 /* Button.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

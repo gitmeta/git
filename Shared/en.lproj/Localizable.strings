@@ -1,1 +1,3 @@
-App.directory="Select directory";
+App.directory="Directory";
+List.not="Version Control has not been started in this directory.";
+List.start="Start";
