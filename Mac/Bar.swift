@@ -23,4 +23,5 @@ class Bar: NSControl {
     }
     
     required init?(coder: NSCoder) { return nil }
+    override func mouseDown(with: NSEvent) { sendAction(#selector(App.shared.prompt), to: App.shared) }
 }

@@ -2,10 +2,11 @@ import Git
 import AppKit
 import UserNotifications
 
-@NSApplicationMain class App: NSWindow, NSApplicationDelegate, UNUserNotificationCenterDelegate {
+@NSApplicationMain class App: NSWindow, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSUserNotificationCenterDelegate {
+    let alert = Alert()
     private(set) static var shared: App!
     private(set) var url: URL?
-    private(set) var repository: Repository?
+    private(set) var repository: Repository? { didSet { list.update() } }
     private weak var bar: Bar!
     private weak var list: List!
     private weak var directory: Button!
@@ -50,20 +51,11 @@ import UserNotifications
         directory.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         directory.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor).isActive = true
         
+        NSUserNotificationCenter.default.delegate = self
+        
         if #available(OSX 10.14, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge]) { (granted, error) in
-                if granted {
-                    print("Yay!")
-                    let center = UNUserNotificationCenter.current()
-                    center.delegate = self
-                    let show = UNNotificationAction(identifier: "show", title: "Tell me more…", options: .foreground)
-                    let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [])
-                    
-                    center.setNotificationCategories([category])
-                } else {
-                    print("D'oh")
-                }
-            }
+            UNUserNotificationCenter.current().delegate = self
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
         }
         
         DispatchQueue.global(qos: .background).async {
@@ -81,89 +73,43 @@ import UserNotifications
         }
     }
     
-    @objc func start() {
-        if #available(OSX 10.14, *) {
-        let center = UNUserNotificationCenter.current()
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Late wake up call"
-        content.body = "The early bird catches the worm, but the second mouse gets the cheese."
-        content.categoryIdentifier = "alarm"
-        content.userInfo = ["customData": "fizzbuzz"]
-
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        center.add(request)
-        }
-        /*Git.create(url!, error: {
-            
-        }) {
-            
-        }*/
+    func userNotificationCenter(_: NSUserNotificationCenter, shouldPresent: NSUserNotification) -> Bool { return true }
+    @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
+        UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        withCompletionHandler([.alert])
     }
     
-    @available(OSX 10.14, *)
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // pull out the buried userInfo dictionary
-        let userInfo = response.notification.request.content.userInfo
-        
-        if let customData = userInfo["customData"] as? String {
-            print("Custom data received: \(customData)")
-            
-            switch response.actionIdentifier {
-            case UNNotificationDefaultActionIdentifier:
-                // the user swiped to unlock
-                print("Default identifier")
-                
-            case "show":
-                // the user tapped our "show more info…" button
-                print("Show more information…")
-                break
-                
-            default:
-                break
-            }
-        }
-        
-        // you must call the completion handler when you're done
-        completionHandler()
-    }
-    
-    @available(OSX 10.14, *)
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .badge, .sound]) 
-    }
-    
-    private func select(_ url: URL) {
-        self.url = url
-        Git.repository(url) {
-            if $0 {
-                
-            } else {
-                
-            }
-        }
-        DispatchQueue.main.async {
-            self.bar.isHidden = false
-            self.directory.isHidden = true
-            self.bar.label.stringValue = url.path
-            self.list.update()
-        }
-    }
-    
-    @objc private func prompt() {
+    @objc func prompt() {
         let panel = NSOpenPanel()
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.begin {
             if $0 == .OK {
+                self.repository = nil
                 DispatchQueue.global(qos: .background).async {
                     UserDefaults.standard.set(panel.url, forKey: "url")
                     UserDefaults.standard.set((try! panel.url!.bookmarkData(options: .withSecurityScope)), forKey: "access")
                     self.select(panel.url!)
                 }
             }
+        }
+    }
+    
+    @objc func start() {
+        Git.create(url!, error: { self.alert.show($0.localizedDescription) }) {
+            self.repository = $0
+        }
+    }
+    
+    private func select(_ url: URL) {
+        self.url = url
+        Git.open(url, error: { self.alert.show($0.localizedDescription) }) {
+            self.repository = $0
+        }
+        DispatchQueue.main.async {
+            self.bar.isHidden = false
+            self.directory.isHidden = true
+            self.bar.label.stringValue = url.path
         }
     }
 }
