@@ -85,7 +85,6 @@ import UserNotifications
         panel.canChooseDirectories = true
         panel.begin {
             if $0 == .OK {
-                self.repository = nil
                 DispatchQueue.global(qos: .background).async {
                     UserDefaults.standard.set(panel.url, forKey: "url")
                     UserDefaults.standard.set((try! panel.url!.bookmarkData(options: .withSecurityScope)), forKey: "access")
@@ -103,7 +102,10 @@ import UserNotifications
     
     private func select(_ url: URL) {
         self.url = url
-        Git.open(url, error: { self.alert.show($0.localizedDescription) }) {
+        Git.open(url, error: {
+            self.alert.show($0.localizedDescription)
+            self.repository = nil
+        }) {
             self.repository = $0
         }
         DispatchQueue.main.async {

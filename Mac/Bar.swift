@@ -2,6 +2,7 @@ import AppKit
 
 class Bar: NSControl {
     private(set) weak var label: Label!
+    private var drag = CGFloat(0)
     
     init() {
         super.init(frame: .zero)
@@ -23,5 +24,19 @@ class Bar: NSControl {
     }
     
     required init?(coder: NSCoder) { return nil }
-    override func mouseDown(with: NSEvent) { sendAction(#selector(App.shared.prompt), to: App.shared) }
+    override func mouseDragged(with: NSEvent) {
+        drag += abs(with.deltaX) + abs(with.deltaY)
+    }
+    
+    override func mouseDown(with: NSEvent) {
+        layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
+    }
+    
+    override func mouseUp(with: NSEvent) {
+        if drag < 5 {
+            sendAction(#selector(App.shared.prompt), to: App.shared)
+        }
+        drag = 0
+        layer!.backgroundColor = NSColor.shade.cgColor
+    }
 }

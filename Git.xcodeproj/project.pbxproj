@@ -68,6 +68,7 @@
 		20CB67202260857E0064C31C /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20CB671E2260857E0064C31C /* Shared.xcassets */; };
 		20CB6722226086030064C31C /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6721226086030064C31C /* List.swift */; };
 		20CCE7402261D4840014CAC9 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CCE73F2261D4840014CAC9 /* Alert.swift */; };
+		20CCE7422261FF020014CAC9 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CCE7412261FF020014CAC9 /* Item.swift */; };
 		20E76BE6225E264300E023D8 /* compressed0 in Resources */ = {isa = PBXBuildFile; fileRef = 20E76BE5225E264300E023D8 /* compressed0 */; };
 /* End PBXBuildFile section */
 
@@ -138,6 +139,7 @@
 		20CB671E2260857E0064C31C /* Shared.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Shared.xcassets; sourceTree = "<group>"; };
 		20CB6721226086030064C31C /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20CCE73F2261D4840014CAC9 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		20CCE7412261FF020014CAC9 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		20E76BE5225E264300E023D8 /* compressed0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = compressed0; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -259,6 +261,7 @@
 				20CB6717226066470064C31C /* Bar.swift */,
 				2048A131225C749200290E54 /* Button.swift */,
 				2048A12E225C749200290E54 /* Extensions.swift */,
+				20CCE7412261FF020014CAC9 /* Item.swift */,
 				20CB671C22607F940064C31C /* Label.swift */,
 				20CB6721226086030064C31C /* List.swift */,
 			);
@@ -538,6 +541,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
+				20CCE7422261FF020014CAC9 /* Item.swift in Sources */,
 				20CB6718226066470064C31C /* Bar.swift in Sources */,
 				2048A136225C749200290E54 /* App.swift in Sources */,
 				20CB6722226086030064C31C /* List.swift in Sources */,
