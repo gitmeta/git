@@ -64,6 +64,33 @@ class List: NSScrollView {
         App.shared.repository == nil ? not() : load()
     }
     
+    func expand(_ item: Item) {
+        if let files = self.contents(item.url) {
+            let sibling = documentView!.subviews.first(where: { item === ($0 as? Item)?.top?.secondItem }) as? Item
+            guard let last = render(files, origin: item.bottomAnchor, parent: item) else { return }
+            if let sibling = sibling {
+                sibling.top = sibling.topAnchor.constraint(equalTo: last.bottomAnchor)
+            } else {
+                self.last(last)
+            }
+        }
+    }
+    
+    func collapse(_ item: Item) {
+        if let sibling = documentView!.subviews.compactMap({ $0 as? Item }).filter({ $0.parent !== item }).first(where:
+            { ($0.top?.secondItem as? Item)?.parent === item }) {
+            sibling.top = sibling.topAnchor.constraint(equalTo: item.bottomAnchor)
+        } else {
+            if (bottom?.secondItem as? Item)?.parent === item {
+                last(item)
+            }
+        }
+        documentView!.subviews.compactMap({ $0 as? Item }).filter({ $0.parent === item }).forEach {
+            collapse($0)
+            $0.removeFromSuperview()
+        }
+    }
+    
     private func not() {
         warning.isHidden = false
         message.isHidden = false
@@ -76,9 +103,8 @@ class List: NSScrollView {
         message.isHidden = true
         start.isHidden = true
         documentView!.subviews.forEach { ($0 as? Item)?.removeFromSuperview() }
-        DispatchQueue.global(qos: .background).async {
-            if let files = try? FileManager.default.contentsOfDirectory(at: App.shared.url!, includingPropertiesForKeys: nil, options:
-                [.skipsPackageDescendants, .skipsSubdirectoryDescendants]).sorted(by: { $0.path < $1.path }) {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            if let files = self?.contents(App.shared.url!) {
                 DispatchQueue.main.async { [weak self] in
                     guard
                         let top = self?.topAnchor,
@@ -94,6 +120,7 @@ class List: NSScrollView {
         return files.reduce((nil, origin)) {
             let item = Item($1, indent: parent == nil ? 0 : parent!.indent + 1)
             item.parent = parent
+            item.list = self
             documentView!.addSubview(item)
             
             item.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -105,6 +132,11 @@ class List: NSScrollView {
     
     private func last(_ bottom: NSView) {
         self.bottom = documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom.bottomAnchor, constant: 20)
+    }
+    
+    private func contents(_ url: URL) -> [URL]? {
+        return try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options:
+            [.skipsPackageDescendants, .skipsSubdirectoryDescendants]).sorted(by: { $0.path < $1.path })
     }
 }
 
