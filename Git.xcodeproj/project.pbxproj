@@ -140,6 +140,7 @@
 		20CB6721226086030064C31C /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20CCE73F2261D4840014CAC9 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		20CCE7412261FF020014CAC9 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		20CCE743226214270014CAC9 /* Git.sketch */ = {isa = PBXFileReference; lastKnownFileType = file; path = Git.sketch; sourceTree = "<group>"; };
 		20E76BE5225E264300E023D8 /* compressed0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = compressed0; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -285,6 +286,7 @@
 				2051FAB9225C78D000BC00BC /* GitiOS.app */,
 				2051FAB8225C78D000BC00BC /* GitMac.app */,
 				2048A13A225C74A300290E54 /* README.md */,
+				20CCE743226214270014CAC9 /* Git.sketch */,
 				2048A0D8225C744400290E54 /* Tests.xctest */,
 				2048A13F225C778800290E54 /* Frameworks */,
 				2048A0CB225C744400290E54 /* Git */,

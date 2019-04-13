@@ -6,6 +6,7 @@ class Item: NSControl {
     weak var list: List!
     let url: URL
     let indent: CGFloat
+    private weak var badge: NSView!
     private weak var label: Label!
     
     init(_ file: URL, indent: CGFloat) {
@@ -29,16 +30,28 @@ class Item: NSControl {
         image.imageScaling = .scaleProportionallyDown
         addSubview(image)
         
+        let badge = NSView()
+        badge.translatesAutoresizingMaskIntoConstraints = false
+        badge.wantsLayer = true
+        badge.layer!.cornerRadius = 7
+        badge.layer!.backgroundColor = NSColor.shade.cgColor
+        addSubview(badge)
+        self.badge = badge
+        
         heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         image.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        image.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 16).isActive = true
         image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        image.leftAnchor.constraint(equalTo: leftAnchor, constant: 42 + (indent * 40)).isActive = true
+        image.leftAnchor.constraint(equalTo: leftAnchor, constant: 42 + (indent * 20)).isActive = true
         
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         label.leftAnchor.constraint(equalTo: image.rightAnchor, constant: 2).isActive = true
-        label.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        
+        badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        badge.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+        badge.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        badge.heightAnchor.constraint(equalToConstant: 14).isActive = true
         
         if file.hasDirectoryPath {
             let handle = Button("", target: self, action: #selector(handle(_:)))
@@ -51,7 +64,7 @@ class Item: NSControl {
             handle.width.constant = 50
             handle.height.constant = 50
             handle.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-            handle.leftAnchor.constraint(equalTo: leftAnchor, constant: indent * 40).isActive = true
+            handle.leftAnchor.constraint(equalTo: leftAnchor, constant: indent * 20).isActive = true
         }
     }
     
