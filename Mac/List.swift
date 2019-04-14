@@ -67,7 +67,17 @@ class List: NSScrollView {
     
     func update(_ status: Status) {
         documentView!.subviews.compactMap({ $0 as? Item }).forEach {
-            print($0)
+            if status.untracked.contains($0.url) {
+                $0.untracked()
+            } else if status.added.contains($0.url) {
+                $0.added()
+            } else if status.modified.contains($0.url) {
+                $0.modified()
+            } else if status.deleted.contains($0.url) {
+                $0.deleted()
+            } else {
+                $0.none()
+            }
         }
     }
     

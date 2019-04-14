@@ -9,6 +9,7 @@ class Index {
         fileprivate(set) var size = 0
         fileprivate(set) var device = 0
         fileprivate(set) var inode = 0
+        fileprivate(set) var mode = 33188
         fileprivate(set) var user = 0
         fileprivate(set) var group = 0
         fileprivate(set) var conflicts = false
@@ -63,7 +64,7 @@ class Index {
             blob.date($0.modified)
             blob.number(UInt32($0.device))
             blob.number(UInt32($0.inode))
-            blob.number(UInt32(33188))
+            blob.number(UInt32($0.mode))
             blob.number(UInt32($0.user))
             blob.number(UInt32($0.group))
             blob.number(UInt32($0.size))
@@ -93,7 +94,7 @@ class Index {
         entry.modified = try parse.date()
         entry.device = try parse.number()
         entry.inode = try parse.number()
-        if (try? parse.number()) != 33188 { throw Failure.Index.malformed }
+        entry.mode = try parse.number()
         entry.user = try parse.number()
         entry.group = try parse.number()
         entry.size = try parse.number()

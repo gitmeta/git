@@ -72,7 +72,10 @@ class Item: NSControl {
     override func mouseUp(with: NSEvent) { layer!.backgroundColor = NSColor.clear.cgColor }
     
     func none() { badge.layer!.backgroundColor = NSColor.clear.cgColor }
-    func untracked() { badge.layer!.backgroundColor = NSColor.clear.cgColor }
+    func untracked() { badge.layer!.backgroundColor = NSColor.untracked.cgColor }
+    func added() { badge.layer!.backgroundColor = NSColor.added.cgColor }
+    func modified() { badge.layer!.backgroundColor = NSColor.modified.cgColor }
+    func deleted() { badge.layer!.backgroundColor = NSColor.deleted.cgColor }
     
     @objc private func handle(_ handle: Button) {
         if handle.state == .on {
