@@ -16,7 +16,7 @@ class Index {
     
     struct Tree {
         fileprivate(set) var id = ""
-        fileprivate(set) var name = ""
+        fileprivate(set) var url = URL(fileURLWithPath: "")
         fileprivate(set) var entries = 0
         fileprivate(set) var subtrees = 0
     }
@@ -35,7 +35,7 @@ class Index {
             let version = try? parse.number(),
             let count = try? parse.number(),
             let entries = try? (0 ..< count).map({ _ in try entry(parse, url: url) }),
-            let tree = try? trees(parse),
+            let tree = try? trees(parse, url: url),
             let id = try? parse.hash(),
             parse.index == parse.data.count
         else { return nil }
@@ -73,8 +73,8 @@ class Index {
         }
         if !trees.isEmpty {
             let trees = Blob()
-            self.trees.sorted(by: { $0.name < $1.name }).forEach {
-                trees.nulled($0.name)
+            self.trees.sorted(by: { $0.url.path < $1.url.path }).forEach {
+                trees.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
                 trees.string("\($0.entries) ")
                 trees.string("\($0.subtrees)\n")
                 trees.hex($0.id)
@@ -103,16 +103,16 @@ class Index {
         return entry
     }
     
-    private func trees(_ parse: Parse) throws -> [Tree] {
+    private func trees(_ parse: Parse, url: URL) throws -> [Tree] {
         let limit = (try parse.tree())
         var result = [Tree]()
-        while parse.index < limit { result.append(try tree(parse)) }
+        while parse.index < limit { result.append(try tree(parse, url: url)) }
         return result
     }
     
-    private func tree(_ parse: Parse) throws -> Tree {
+    private func tree(_ parse: Parse, url: URL) throws -> Tree {
         var tree = Tree()
-        tree.name = try parse.variable()
+        tree.url = url.appendingPathComponent(try parse.variable())
         tree.entries = try {
             if $0 == nil { throw Failure.Index.malformed }
             return $0!
