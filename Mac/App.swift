@@ -10,6 +10,7 @@ import UserNotifications
     private weak var bar: Bar!
     private weak var list: List!
     private weak var directory: Button!
+    private weak var tools: Tools!
     private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
@@ -40,6 +41,10 @@ import UserNotifications
         contentView!.addSubview(directory)
         self.directory = directory
         
+        let tools = Tools()
+        contentView!.addSubview(tools)
+        self.tools = tools
+        
         bar.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 5).isActive = true
         bar.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 72).isActive = true
         bar.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -5).isActive = true
@@ -47,10 +52,14 @@ import UserNotifications
         list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 5).isActive = true
         list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        list.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true
         
         directory.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         directory.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor).isActive = true
+        
+        tools.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
+        tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        tools.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
         
         timer.resume()
         timer.setEventHandler { self.repository?.status { self.list.update($0) } }

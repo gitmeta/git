@@ -24,6 +24,7 @@ class Bar: NSControl {
     }
     
     required init?(coder: NSCoder) { return nil }
+    
     override func mouseDragged(with: NSEvent) {
         drag += abs(with.deltaX) + abs(with.deltaY)
     }
@@ -33,7 +34,7 @@ class Bar: NSControl {
     }
     
     override func mouseUp(with: NSEvent) {
-        if drag < 5 {
+        if drag < 5 && with.clickCount < 2 {
             sendAction(#selector(App.shared.prompt), to: App.shared)
         }
         drag = 0

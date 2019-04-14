@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		201A413122636E72001C852A /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201A413022636E72001C852A /* Tools.swift */; };
 		2048A0D7225C744400290E54 /* Failure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CC225C744400290E54 /* Failure.swift */; };
 		2048A0D9225C744400290E54 /* Failure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CC225C744400290E54 /* Failure.swift */; };
 		2048A0DA225C744400290E54 /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CD225C744400290E54 /* Hash.swift */; };
@@ -85,6 +86,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		201A413022636E72001C852A /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		2048A0CC225C744400290E54 /* Failure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Failure.swift; sourceTree = "<group>"; };
 		2048A0CD225C744400290E54 /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
 		2048A0CE225C744400290E54 /* Index.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Index.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				20CCE7412261FF020014CAC9 /* Item.swift */,
 				20CB671C22607F940064C31C /* Label.swift */,
 				20CB6721226086030064C31C /* List.swift */,
+				201A413022636E72001C852A /* Tools.swift */,
 			);
 			path = Mac;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				20CB671D22607F940064C31C /* Label.swift in Sources */,
 				20CCE7402261D4840014CAC9 /* Alert.swift in Sources */,
 				2048A137225C749200290E54 /* Button.swift in Sources */,
+				201A413122636E72001C852A /* Tools.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
