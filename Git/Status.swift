@@ -1,6 +1,8 @@
+import Foundation
+
 public struct Status {
-    public internal(set) var untracked = [String]()
-    public internal(set) var added = [String]()
-    public internal(set) var modified = [String]()
-    public internal(set) var deleted = [String]()
+    public internal(set) var untracked = [URL]()
+    public internal(set) var added = [URL]()
+    public internal(set) var modified = [URL]()
+    public internal(set) var deleted = [URL]()
 }

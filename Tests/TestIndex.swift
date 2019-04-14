@@ -10,8 +10,8 @@ class TestIndex: XCTestCase {
     }
     
     override func tearDown() {
-        try! FileManager.default.contentsOfDirectory(atPath: url.path).forEach {
-            try! FileManager.default.removeItem(at: url.appendingPathComponent($0))
+        try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).forEach {
+            try! FileManager.default.removeItem(at: $0)
         }
     }
     
