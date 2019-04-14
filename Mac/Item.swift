@@ -6,9 +6,11 @@ class Item: NSControl {
     weak var list: List!
     let url: URL
     let indent: CGFloat
+    private(set) weak var stage: Button!
     private weak var badge: NSView!
     private weak var label: Label!
-    private weak var buttonAdd: Button!
+    private weak var hashtag: Label!
+    private var edited = false
     
     init(_ file: URL, indent: CGFloat) {
         self.url = file
@@ -34,16 +36,26 @@ class Item: NSControl {
         let badge = NSView()
         badge.translatesAutoresizingMaskIntoConstraints = false
         badge.wantsLayer = true
-        badge.layer!.cornerRadius = 7
+        badge.layer!.cornerRadius = 14
         addSubview(badge)
         self.badge = badge
         
-        let buttonAdd = Button(.local("Item.add"), color: .black, target: self, action: #selector(add))
-        buttonAdd.layer!.backgroundColor = NSColor.halo.cgColor
-        buttonAdd.isHidden = true
-        buttonAdd.height.constant = 24
-        addSubview(buttonAdd)
-        self.buttonAdd = buttonAdd
+        let hashtag = Label()
+        hashtag.textColor = .black
+        hashtag.font = .light(12)
+        addSubview(hashtag)
+        self.hashtag = hashtag
+        
+        let stage = Button("", target: self, action: #selector(check))
+        stage.setButtonType(.toggle)
+        stage.image = NSImage(named: "checkOff")
+        stage.alternateImage = NSImage(named: "checkOn")
+        stage.imageScaling = .scaleNone
+        stage.height.constant = 40
+        stage.width.constant = 40
+        stage.isHidden = true
+        addSubview(stage)
+        self.stage = stage
         
         heightAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -57,11 +69,14 @@ class Item: NSControl {
         
         badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         badge.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
-        badge.widthAnchor.constraint(equalToConstant: 14).isActive = true
-        badge.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        badge.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        badge.leftAnchor.constraint(equalTo: hashtag.leftAnchor, constant: -9).isActive = true
         
-        buttonAdd.rightAnchor.constraint(equalTo: badge.leftAnchor, constant: -10).isActive = true
-        buttonAdd.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        hashtag.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -1).isActive = true
+        hashtag.rightAnchor.constraint(equalTo: badge.rightAnchor, constant: -9).isActive = true
+        
+        stage.rightAnchor.constraint(equalTo: badge.leftAnchor).isActive = true
+        stage.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         if file.hasDirectoryPath {
             let handle = Button("", target: self, action: #selector(handle(_:)))
@@ -81,14 +96,38 @@ class Item: NSControl {
     required init?(coder: NSCoder) { return nil }
     override func mouseDown(with: NSEvent) { layer!.backgroundColor = NSColor.shade.cgColor }
     override func mouseUp(with: NSEvent) { layer!.backgroundColor = NSColor.clear.cgColor }
-    func none() { badge.layer!.backgroundColor = NSColor.clear.cgColor }
-    func added() { badge.layer!.backgroundColor = NSColor.added.cgColor }
-    func modified() { badge.layer!.backgroundColor = NSColor.modified.cgColor }
-    func deleted() { badge.layer!.backgroundColor = NSColor.deleted.cgColor }
+    
+    func none() {
+        stage.isHidden = true
+        badge.layer!.backgroundColor = NSColor.clear.cgColor
+        hashtag.stringValue = ""
+    }
+    
+    func added() {
+        stage.isHidden = false
+        if !edited {
+            stage.state = .on
+        }
+        badge.layer!.backgroundColor = NSColor.added.cgColor
+        hashtag.stringValue = .local("Item.added")
+    }
+    
+    func modified() {
+        stage.isHidden = false
+        if !edited {
+            stage.state = .on
+        }
+        badge.layer!.backgroundColor = NSColor.modified.cgColor
+        hashtag.stringValue = .local("Item.modified")
+    }
     
     func untracked() {
-        buttonAdd.isHidden = false
+        stage.isHidden = false
+        if !edited {
+            stage.state = .off
+        }
         badge.layer!.backgroundColor = NSColor.untracked.cgColor
+        hashtag.stringValue = .local("Item.untracked")
     }
     
     @objc private func handle(_ handle: Button) {
@@ -99,7 +138,7 @@ class Item: NSControl {
         }
     }
     
-    @objc private func add() {
-        
+    @objc private func check() {
+        edited = true
     }
 }

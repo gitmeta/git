@@ -73,8 +73,6 @@ class List: NSScrollView {
                 $0.added()
             } else if status.modified.contains($0.url) {
                 $0.modified()
-            } else if status.deleted.contains($0.url) {
-                $0.deleted()
             } else {
                 $0.none()
             }

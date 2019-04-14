@@ -1,4 +1,6 @@
 App.directory="Directory";
 List.not="Version Control has not been started in this directory.";
 List.start="Start";
-Item.add="Add";
+Item.added="#added";
+Item.modified="#modified";
+Item.untracked="#new";
