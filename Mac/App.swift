@@ -45,11 +45,11 @@ import UserNotifications
         contentView!.addSubview(tools)
         self.tools = tools
         
-        bar.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 5).isActive = true
-        bar.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 72).isActive = true
-        bar.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -5).isActive = true
+        bar.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
+        bar.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
+        bar.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         
-        list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 5).isActive = true
+        list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 1).isActive = true
         list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true
