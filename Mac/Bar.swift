@@ -15,7 +15,7 @@ class Bar: NSControl {
         background.translatesAutoresizingMaskIntoConstraints = false
         background.wantsLayer = true
         background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
-        background.layer!.cornerRadius = 5
+        background.layer!.cornerRadius = 4
         addSubview(background)
         self.background = background
         

@@ -46,7 +46,7 @@ class Item: NSControl {
         addSubview(hashtag)
         self.hashtag = hashtag
         
-        let stage = Button("", target: self, action: #selector(check))
+        let stage = Button(target: self, action: #selector(check))
         stage.setButtonType(.toggle)
         stage.image = NSImage(named: "checkOff")
         stage.alternateImage = NSImage(named: "checkOn")
@@ -79,7 +79,7 @@ class Item: NSControl {
         stage.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         if file.hasDirectoryPath {
-            let handle = Button("", target: self, action: #selector(handle(_:)))
+            let handle = Button(target: self, action: #selector(handle(_:)))
             handle.setButtonType(.toggle)
             handle.imageScaling = .scaleNone
             handle.image = NSImage(named: "expand")
