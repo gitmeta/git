@@ -1,3 +1,4 @@
+import Git
 import AppKit
 
 class List: NSScrollView {
@@ -64,6 +65,12 @@ class List: NSScrollView {
         App.shared.repository == nil ? not() : load()
     }
     
+    func update(_ status: Status) {
+        documentView!.subviews.compactMap({ $0 as? Item }).forEach {
+            print($0)
+        }
+    }
+    
     func expand(_ item: Item) {
         if let files = self.contents(item.url) {
             let sibling = documentView!.subviews.first(where: { item === ($0 as? Item)?.top?.secondItem }) as? Item
@@ -96,6 +103,7 @@ class List: NSScrollView {
         message.isHidden = false
         start.isHidden = false
         message.stringValue = .local("List.not")
+        documentView!.subviews.forEach { ($0 as? Item)?.removeFromSuperview() }
     }
     
     private func load() {

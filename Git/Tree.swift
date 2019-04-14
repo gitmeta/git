@@ -2,8 +2,8 @@ import Foundation
 
 class Tree {
     class Item {
-        var id = String()
-        var name = String()
+        var id = ""
+        var name = ""
     }
     
     class Blob: Item { }

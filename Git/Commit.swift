@@ -2,8 +2,8 @@ import Foundation
 
 struct Commit {
     struct User {
-        private(set) var name = String()
-        private(set) var email = String()
+        private(set) var name = ""
+        private(set) var email = ""
         private(set) var date = Date()
         
         init() { }
@@ -28,8 +28,8 @@ struct Commit {
     
     private(set) var author = User()
     private(set) var committer = User()
-    private(set) var tree = String()
-    private(set) var message = String()
+    private(set) var tree = ""
+    private(set) var message = ""
     private(set) var parent: String?
     
     init(_ data: Data) throws {

@@ -4,8 +4,8 @@ class Index {
     struct Entry {
         fileprivate(set) var created = Date()
         fileprivate(set) var modified = Date()
-        fileprivate(set) var id = String()
-        fileprivate(set) var name = String()
+        fileprivate(set) var id = ""
+        fileprivate(set) var url = URL(fileURLWithPath: "")
         fileprivate(set) var size = 0
         fileprivate(set) var device = 0
         fileprivate(set) var inode = 0
@@ -15,13 +15,13 @@ class Index {
     }
     
     struct Tree {
-        fileprivate(set) var id = String()
-        fileprivate(set) var name = String()
+        fileprivate(set) var id = ""
+        fileprivate(set) var name = ""
         fileprivate(set) var entries = 0
         fileprivate(set) var subtrees = 0
     }
     
-    private(set) var id = String()
+    private(set) var id = ""
     private(set) var version = 2
     private(set) var entries = [Entry]()
     private(set) var trees = [Tree]()
@@ -34,7 +34,7 @@ class Index {
             "DIRC" == (try? parse.string()),
             let version = try? parse.number(),
             let count = try? parse.number(),
-            let entries = try? (0 ..< count).map({ _ in try entry(parse) }),
+            let entries = try? (0 ..< count).map({ _ in try entry(parse, url: url) }),
             let tree = try? trees(parse),
             let id = try? parse.hash(),
             parse.index == parse.data.count
@@ -45,10 +45,10 @@ class Index {
         self.id = id
     }
     
-    func entry(_ id: String, name: String, size: Int) {
+    func entry(_ id: String, url: URL, size: Int) {
         var entry = Entry()
         entry.id = id
-        entry.name = name
+        entry.url = url
         entry.size = size
         entries.append(entry)
     }
@@ -58,7 +58,7 @@ class Index {
         blob.string("DIRC")
         blob.number(UInt32(version))
         blob.number(UInt32(entries.count))
-        entries.sorted(by: { $0.name < $1.name }).forEach {
+        entries.sorted(by: { $0.url.path < $1.url.path }).forEach {
             blob.date($0.created)
             blob.date($0.modified)
             blob.number(UInt32($0.device))
@@ -68,8 +68,8 @@ class Index {
             blob.number(UInt32($0.group))
             blob.number(UInt32($0.size))
             blob.hex($0.id)
-            blob.number(UInt16($0.name.count))
-            blob.nulled($0.name)
+            blob.number(UInt16($0.url.path.dropFirst(url.path.count + 1).count))
+            blob.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
         }
         if !trees.isEmpty {
             let trees = Blob()
@@ -87,7 +87,7 @@ class Index {
         try? blob.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
     }
     
-    private func entry(_ parse: Parse) throws -> Entry {
+    private func entry(_ parse: Parse, url: URL) throws -> Entry {
         var entry = Entry()
         entry.created = try parse.date()
         entry.modified = try parse.date()
@@ -99,7 +99,7 @@ class Index {
         entry.size = try parse.number()
         entry.id = try parse.hash()
         entry.conflicts = try parse.conflict()
-        entry.name = try parse.name()
+        entry.url = url.appendingPathComponent(try parse.name())
         return entry
     }
     

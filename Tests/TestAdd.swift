@@ -32,7 +32,7 @@ class TestAdd: XCTestCase {
                 XCTAssertEqual(2, index?.version)
                 XCTAssertEqual(40, index?.id.count)
                 XCTAssertEqual(1, index?.entries.count)
-                XCTAssertEqual("myfile.txt", index?.entries.first?.name)
+                XCTAssertEqual("myfile.txt", index?.entries.first?.url.path.dropFirst(self.url.path.count + 1))
                 XCTAssertEqual("95d09f2b10159347eece71399a7e2e907ea3df4f", index?.entries.first?.id)
                 XCTAssertEqual(19, index?.entries.first?.size)
                 expect.fulfill()

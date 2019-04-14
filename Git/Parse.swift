@@ -17,8 +17,8 @@ class Parse {
     }
     
     func ascii(_ limiter: String) throws -> String {
-        var result = String()
-        var character = String()
+        var result = ""
+        var character = ""
         while character != limiter {
             result += character
             character = try self.character()
@@ -27,8 +27,8 @@ class Parse {
     }
     
     func variable() throws -> String {
-        var result = String()
-        var byte = String()
+        var result = ""
+        var byte = ""
         repeat {
             result += byte
             byte = try character()

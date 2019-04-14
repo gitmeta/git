@@ -10,6 +10,7 @@ import UserNotifications
     private weak var bar: Bar!
     private weak var list: List!
     private weak var directory: Button!
+    private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
     override func cancelOperation(_: Any?) { makeFirstResponder(nil) }
@@ -50,6 +51,10 @@ import UserNotifications
         
         directory.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         directory.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor).isActive = true
+        
+        timer.resume()
+        timer.setEventHandler { self.repository?.status { self.list.update($0) } }
+        timer.schedule(deadline: .now() + 5, repeating: 5)
         
         NSUserNotificationCenter.default.delegate = self
         

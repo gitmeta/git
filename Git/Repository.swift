@@ -28,16 +28,16 @@ public class Repository {
     
     func tree(_ id: String) throws -> Tree {
         return try Tree(press.decompress(
-            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.suffix(id.count - 2))"))))
+            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
     }
     
     private var status: Status {
         var status = Status()
         var contents = self.contents
         let index = Index(url)
-        status.added = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
+//        status.added = contents.filter({ file in index?.entries.first(where: { $0.url == file }) != nil })
 //        status.modified = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
-        status.untracked = contents.filter({ file in index?.entries.first(where: { $0.name == file }) == nil })
+//        status.untracked = contents.filter({ file in index?.entries.first(where: { $0.url == file }) == nil })
         return status
     }
     
@@ -52,12 +52,12 @@ public class Repository {
         let original = url.appendingPathComponent(file)
         let id = try! hasher.file(original)
         let folder = url.appendingPathComponent(".git/objects/\(id.prefix(2))")
-        let location = folder.appendingPathComponent(String(id.suffix(id.count - 2)))
+        let location = folder.appendingPathComponent(String(id.dropFirst(2)))
         if !FileManager.default.fileExists(atPath: location.path) {
             try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
             let compressed = press.compress(original)
             try! compressed.write(to: location, options: .atomic)
-            index.entry(id, name: file, size: compressed.count)
+            index.entry(id, url: url.appendingPathComponent(file), size: compressed.count)
             index.save(url)
         }
     }

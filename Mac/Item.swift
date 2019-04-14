@@ -34,11 +34,10 @@ class Item: NSControl {
         badge.translatesAutoresizingMaskIntoConstraints = false
         badge.wantsLayer = true
         badge.layer!.cornerRadius = 7
-        badge.layer!.backgroundColor = NSColor.shade.cgColor
         addSubview(badge)
         self.badge = badge
         
-        heightAnchor.constraint(equalToConstant: 60).isActive = true
+        heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         image.widthAnchor.constraint(equalToConstant: 30).isActive = true
         image.heightAnchor.constraint(equalToConstant: 16).isActive = true
@@ -69,14 +68,11 @@ class Item: NSControl {
     }
     
     required init?(coder: NSCoder) { return nil }
+    override func mouseDown(with: NSEvent) { layer!.backgroundColor = NSColor.shade.cgColor }
+    override func mouseUp(with: NSEvent) { layer!.backgroundColor = NSColor.clear.cgColor }
     
-    override func mouseDown(with: NSEvent) {
-        layer!.backgroundColor = NSColor.shade.cgColor
-    }
-    
-    override func mouseUp(with: NSEvent) {
-        layer!.backgroundColor = NSColor.clear.cgColor
-    }
+    func none() { badge.layer!.backgroundColor = NSColor.clear.cgColor }
+    func untracked() { badge.layer!.backgroundColor = NSColor.clear.cgColor }
     
     @objc private func handle(_ handle: Button) {
         if handle.state == .on {
