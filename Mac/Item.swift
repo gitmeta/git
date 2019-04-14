@@ -8,6 +8,7 @@ class Item: NSControl {
     let indent: CGFloat
     private weak var badge: NSView!
     private weak var label: Label!
+    private weak var buttonAdd: Button!
     
     init(_ file: URL, indent: CGFloat) {
         self.url = file
@@ -37,6 +38,13 @@ class Item: NSControl {
         addSubview(badge)
         self.badge = badge
         
+        let buttonAdd = Button(.local("Item.add"), color: .black, target: self, action: #selector(add))
+        buttonAdd.layer!.backgroundColor = NSColor.halo.cgColor
+        buttonAdd.isHidden = true
+        buttonAdd.height.constant = 24
+        addSubview(buttonAdd)
+        self.buttonAdd = buttonAdd
+        
         heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         image.widthAnchor.constraint(equalToConstant: 30).isActive = true
@@ -51,6 +59,9 @@ class Item: NSControl {
         badge.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
         badge.widthAnchor.constraint(equalToConstant: 14).isActive = true
         badge.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        
+        buttonAdd.rightAnchor.constraint(equalTo: badge.leftAnchor, constant: -10).isActive = true
+        buttonAdd.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         if file.hasDirectoryPath {
             let handle = Button("", target: self, action: #selector(handle(_:)))
@@ -70,12 +81,15 @@ class Item: NSControl {
     required init?(coder: NSCoder) { return nil }
     override func mouseDown(with: NSEvent) { layer!.backgroundColor = NSColor.shade.cgColor }
     override func mouseUp(with: NSEvent) { layer!.backgroundColor = NSColor.clear.cgColor }
-    
     func none() { badge.layer!.backgroundColor = NSColor.clear.cgColor }
-    func untracked() { badge.layer!.backgroundColor = NSColor.untracked.cgColor }
     func added() { badge.layer!.backgroundColor = NSColor.added.cgColor }
     func modified() { badge.layer!.backgroundColor = NSColor.modified.cgColor }
     func deleted() { badge.layer!.backgroundColor = NSColor.deleted.cgColor }
+    
+    func untracked() {
+        buttonAdd.isHidden = false
+        badge.layer!.backgroundColor = NSColor.untracked.cgColor
+    }
     
     @objc private func handle(_ handle: Button) {
         if handle.state == .on {
@@ -83,5 +97,9 @@ class Item: NSControl {
         } else {
             list.collapse(self)
         }
+    }
+    
+    @objc private func add() {
+        
     }
 }

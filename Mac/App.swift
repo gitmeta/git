@@ -54,7 +54,7 @@ import UserNotifications
         
         timer.resume()
         timer.setEventHandler { self.repository?.status { self.list.update($0) } }
-        timer.schedule(deadline: .now() + 5, repeating: 5)
+        timer.schedule(deadline: .now() + 1, repeating: 3)
         
         NSUserNotificationCenter.default.delegate = self
         

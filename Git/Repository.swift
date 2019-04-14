@@ -33,7 +33,7 @@ public class Repository {
     
     private var status: Status {
         var status = Status()
-        var contents = self.contents
+        let contents = self.contents
         let index = Index(url)
         status.added = contents.filter({ file in index?.entries.contains(where: { $0.url == file }) == true })
 //        status.modified = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
@@ -43,7 +43,7 @@ public class Repository {
     
     private var contents: [URL] {
         var result = try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
-        result = result.map({ $0.resolvingSymlinksInPath() })
+        result = result.compactMap({ $0.hasDirectoryPath ? nil : $0.resolvingSymlinksInPath() })
         result.removeAll(where: { $0.path.contains(".git") })
         return result
     }
