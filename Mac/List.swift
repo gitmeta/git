@@ -38,20 +38,6 @@ class List: NSScrollView {
         }
     }
     
-    func update(_ status: Status) {
-        items.forEach {
-            if status.untracked.contains($0.url) {
-                $0.untracked()
-            } else if status.added.contains($0.url) {
-                $0.added()
-            } else if status.modified.contains($0.url) {
-                $0.modified()
-            } else {
-                $0.none()
-            }
-        }
-    }
-    
     func expand(_ item: Item) {
         if let files = self.contents(item.url) {
             let sibling = items.first { item === $0.top?.secondItem }

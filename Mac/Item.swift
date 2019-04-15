@@ -1,9 +1,11 @@
+import Git
 import AppKit
 
 class Item: NSControl {
     weak var parent: Item?
     weak var top: NSLayoutConstraint? { didSet { oldValue?.isActive = false; top?.isActive = true } }
     weak var list: List!
+    var status = Status.none { didSet { update() } }
     let url: URL
     let indent: CGFloat
     private(set) weak var stage: Button!
@@ -105,29 +107,44 @@ class Item: NSControl {
     
     func added() {
         stage.isHidden = false
-        if !edited {
-            stage.state = .on
-        }
-        badge.layer!.backgroundColor = NSColor.added.cgColor
-        hashtag.stringValue = .local("Item.added")
+        
     }
     
     func modified() {
         stage.isHidden = false
-        if !edited {
-            stage.state = .on
-        }
-        badge.layer!.backgroundColor = NSColor.modified.cgColor
-        hashtag.stringValue = .local("Item.modified")
+        
     }
     
     func untracked() {
         stage.isHidden = false
-        if !edited {
-            stage.state = .off
+        
+    }
+    
+    private func update() {
+        switch status {
+        case .none, .deleted:
+            badge.layer!.backgroundColor = NSColor.clear.cgColor
+            hashtag.stringValue = ""
+        case .added:
+            if !edited {
+                stage.state = .on
+            }
+            badge.layer!.backgroundColor = NSColor.added.cgColor
+            hashtag.stringValue = .local("Item.added")
+        case .modified:
+            if !edited {
+                stage.state = .on
+            }
+            badge.layer!.backgroundColor = NSColor.modified.cgColor
+            hashtag.stringValue = .local("Item.modified")
+        case .untracked:
+            if !edited {
+                stage.state = .off
+            }
+            badge.layer!.backgroundColor = NSColor.untracked.cgColor
+            hashtag.stringValue = .local("Item.untracked")
         }
-        badge.layer!.backgroundColor = NSColor.untracked.cgColor
-        hashtag.stringValue = .local("Item.untracked")
+        stage.isHidden = status == .none
     }
     
     @objc private func handle(_ handle: Button) {

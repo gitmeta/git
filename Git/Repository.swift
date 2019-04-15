@@ -10,7 +10,7 @@ public class Repository {
         self.url = url
     }
     
-    public func status(_ result: @escaping((Status) -> Void)) {
+    public func status(_ result: @escaping(([URL: Status]) -> Void)) {
         queue.async { [weak self] in
             guard let status = self?.status else { return }
             DispatchQueue.main.async {
@@ -31,13 +31,13 @@ public class Repository {
             try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
     }
     
-    private var status: Status {
-        var status = Status()
+    private var status: [URL: Status] {
+        var status = [URL: Status]()
         let contents = self.contents
         let index = Index(url)
-        status.added = contents.filter({ file in index?.entries.contains(where: { $0.url == file }) == true })
+//        status.added = contents.filter({ file in index?.entries.contains(where: { $0.url == file }) == true })
 //        status.modified = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
-        status.untracked = contents.filter({ file in index?.entries.contains(where: { $0.url == file }) != true })
+        contents.filter({ file in index?.entries.contains(where: { $0.url == file }) != true }).forEach { status[$0] = .untracked }
         return status
     }
     
