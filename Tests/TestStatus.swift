@@ -61,8 +61,9 @@ class TestStatus: XCTestCase {
     
     func testAdded() {
         let expect = expectation(description: "")
-        try! Data("hello world".utf8).write(to: url.appendingPathComponent("myfile.txt"))
-        repository.add("myfile.txt") {
+        let file = url.appendingPathComponent("myfile.txt")
+        try! Data("hello world".utf8).write(to: file)
+        repository.add(file) {
             self.repository.status {
                 XCTAssertEqual(1, $0.added.count)
                 XCTAssertTrue($0.untracked.isEmpty)

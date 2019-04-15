@@ -19,7 +19,7 @@ public class Repository {
         }
     }
     
-    public func add(_ file: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+    public func add(_ file: URL, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         queue.async { [weak self] in
             self?.add(file)
             DispatchQueue.main.async { done?() }
@@ -48,17 +48,16 @@ public class Repository {
         return result
     }
     
-    private func add(_ file: String) {
+    private func add(_ file: URL) {
         let index = Index(url) ?? Index()
-        let original = url.appendingPathComponent(file)
-        let id = try! hasher.file(original)
+        let id = try! hasher.file(file)
         let folder = url.appendingPathComponent(".git/objects/\(id.prefix(2))")
         let location = folder.appendingPathComponent(String(id.dropFirst(2)))
         if !FileManager.default.fileExists(atPath: location.path) {
             try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            let compressed = press.compress(original)
+            let compressed = press.compress(file)
             try! compressed.write(to: location, options: .atomic)
-            index.entry(id, url: url.appendingPathComponent(file), size: compressed.count)
+            index.entry(id, url: file, size: compressed.count)
             index.save(url)
         }
     }

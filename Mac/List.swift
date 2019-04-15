@@ -2,6 +2,7 @@ import Git
 import AppKit
 
 class List: NSScrollView {
+    var items: [Item] { return documentView!.subviews as! [Item] }
     private weak var bottom: NSLayoutConstraint? { didSet { oldValue?.isActive = false; bottom?.isActive = true } }
     
     init() {
@@ -23,7 +24,7 @@ class List: NSScrollView {
     required init?(coder: NSCoder) { return nil }
     
     func show() {
-        documentView!.subviews.forEach { $0.removeFromSuperview() }
+        items.forEach { $0.removeFromSuperview() }
         DispatchQueue.global(qos: .background).async { [weak self] in
             if let files = self?.contents(App.shared.url!) {
                 DispatchQueue.main.async { [weak self] in
@@ -38,7 +39,7 @@ class List: NSScrollView {
     }
     
     func update(_ status: Status) {
-        documentView!.subviews.compactMap({ $0 as? Item }).forEach {
+        items.forEach {
             if status.untracked.contains($0.url) {
                 $0.untracked()
             } else if status.added.contains($0.url) {
@@ -53,7 +54,7 @@ class List: NSScrollView {
     
     func expand(_ item: Item) {
         if let files = self.contents(item.url) {
-            let sibling = documentView!.subviews.first(where: { item === ($0 as? Item)?.top?.secondItem }) as? Item
+            let sibling = items.first { item === $0.top?.secondItem }
             guard let last = render(files, origin: item.bottomAnchor, parent: item) else { return }
             if let sibling = sibling {
                 sibling.top = sibling.topAnchor.constraint(equalTo: last.bottomAnchor)
@@ -64,15 +65,14 @@ class List: NSScrollView {
     }
     
     func collapse(_ item: Item) {
-        if let sibling = documentView!.subviews.compactMap({ $0 as? Item }).filter({ $0.parent !== item }).first(where:
-            { ($0.top?.secondItem as? Item)?.parent === item }) {
+        if let sibling = items.filter({ $0.parent !== item }).first(where: { ($0.top?.secondItem as? Item)?.parent === item }) {
             sibling.top = sibling.topAnchor.constraint(equalTo: item.bottomAnchor)
         } else {
             if (bottom?.secondItem as? Item)?.parent === item {
                 last(item)
             }
         }
-        documentView!.subviews.compactMap({ $0 as? Item }).filter({ $0.parent === item }).forEach {
+        items.filter({ $0.parent === item }).forEach {
             collapse($0)
             $0.removeFromSuperview()
         }

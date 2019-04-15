@@ -17,9 +17,10 @@ class TestAdd: XCTestCase {
     
     func testFirstFile() {
         let expect = expectation(description: "")
-        try! Data("hello world".utf8).write(to: url.appendingPathComponent("myfile.txt"))
+        let file = url.appendingPathComponent("myfile.txt")
+        try! Data("hello world".utf8).write(to: file)
         DispatchQueue.global(qos: .background).async {
-            self.repository.add("myfile.txt") {
+            self.repository.add(file) {
                 let data = try? Data(contentsOf: self.url.appendingPathComponent(".git/index"))
                 let index = Index(self.url)
                 XCTAssertEqual(Thread.main, Thread.current)

@@ -162,7 +162,7 @@ import UserNotifications
             list.alphaValue = 0
             none.alphaValue = 1
         }) {
-            self.list.documentView!.subviews.forEach { $0.removeFromSuperview() }
+            self.list.items.forEach { $0.removeFromSuperview() }
         }
     }
 }
