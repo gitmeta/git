@@ -16,9 +16,8 @@ class Press {
         return result
     }
     
-    func compress(_ url: URL) -> Data {
+    func compress(_ source: Data) -> Data {
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-        let source = try! Data(contentsOf: url)
         var data = Data([0x78, 0x1])
         data.append(source.withUnsafeBytes {
             let wrote = compression_encode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1),

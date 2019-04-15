@@ -4,8 +4,11 @@ import CommonCrypto
 class Hash {
     private var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
     
-    func file(_ url: URL) throws -> String {
-        return { hash(Data(("blob \($0.count)\u{0000}" + String(decoding: $0, as: UTF8.self)).utf8)) } (try Data(contentsOf: url))
+    func file(_ url: URL) -> (Data, String) {
+        return {
+            let packed = Data(("blob \($0.count)\u{0000}" + String(decoding: $0, as: UTF8.self)).utf8)
+            return (packed, hash(packed))
+        } (try! Data(contentsOf: url))
     }
     
     func digest(_ data: Data) -> Data {

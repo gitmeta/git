@@ -50,14 +50,14 @@ public class Repository {
     
     private func add(_ file: URL) {
         let index = Index(url) ?? Index()
-        let id = try! hasher.file(file)
-        let folder = url.appendingPathComponent(".git/objects/\(id.prefix(2))")
-        let location = folder.appendingPathComponent(String(id.dropFirst(2)))
+        let hash = hasher.file(file)
+        let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
+        let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))
         if !FileManager.default.fileExists(atPath: location.path) {
             try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            let compressed = press.compress(file)
+            let compressed = press.compress(hash.0)
             try! compressed.write(to: location, options: .atomic)
-            index.entry(id, url: file, size: compressed.count)
+            index.entry(hash.1, url: file)
             index.save(url)
         }
     }

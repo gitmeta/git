@@ -46,11 +46,11 @@ class Index {
         self.id = id
     }
     
-    func entry(_ id: String, url: URL, size: Int) {
+    func entry(_ id: String, url: URL) {
         var entry = Entry()
         entry.id = id
         entry.url = url
-        entry.size = size
+        entry.size = try! Data(contentsOf: url).count
         entries.append(entry)
     }
     

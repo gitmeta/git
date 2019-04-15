@@ -16,6 +16,6 @@ class TestHash: XCTestCase {
     }
     
     func testFile() {
-        XCTAssertEqual("3b18e512dba79e4c8300dd08aeb37f8e728b8dad", try? hasher.file(url))
+        XCTAssertEqual("3b18e512dba79e4c8300dd08aeb37f8e728b8dad", hasher.file(url).1)
     }
 }
