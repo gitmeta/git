@@ -2,14 +2,12 @@ import Git
 import AppKit
 
 class List: NSScrollView {
-    private weak var warning: NSImageView!
-    private weak var message: Label!
-    private weak var start: Button!
     private weak var bottom: NSLayoutConstraint? { didSet { oldValue?.isActive = false; bottom?.isActive = true } }
     
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        alphaValue = 0
         drawsBackground = false
         hasVerticalScroller = true
         verticalScroller!.controlSize = .mini
@@ -20,49 +18,23 @@ class List: NSScrollView {
         documentView!.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         documentView!.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor).isActive = true
-        
-        let warning = NSImageView()
-        warning.translatesAutoresizingMaskIntoConstraints = false
-        warning.image = NSImage(named: "not")
-        warning.imageScaling = .scaleNone
-        warning.isHidden = true
-        documentView!.addSubview(warning)
-        self.warning = warning
-        
-        let message = Label()
-        message.font = .light(14)
-        message.textColor = NSColor(white: 1, alpha: 0.5)
-        message.alignment = .center
-        message.isHidden = true
-        documentView!.addSubview(message)
-        self.message = message
-        
-        let start = Button(.local("List.start"), color: .black, target: App.shared, action: #selector(App.shared.start))
-        start.layer!.backgroundColor = NSColor.halo.cgColor
-        start.isHidden = true
-        start.width.constant = 90
-        start.height.constant = 40
-        documentView!.addSubview(start)
-        self.start = start
-        
-        warning.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        warning.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        warning.widthAnchor.constraint(equalToConstant: 42).isActive = true
-        warning.heightAnchor.constraint(equalToConstant: 42).isActive = true
-        
-        message.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        message.topAnchor.constraint(equalTo: warning.bottomAnchor, constant: 25).isActive = true
-        message.widthAnchor.constraint(equalToConstant: 280).isActive = true
-        
-        start.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        start.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
     
-    func update() {
-        isHidden = false
-        App.shared.repository == nil ? not() : load()
+    func show() {
+        documentView!.subviews.forEach { $0.removeFromSuperview() }
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            if let files = self?.contents(App.shared.url!) {
+                DispatchQueue.main.async { [weak self] in
+                    guard
+                        let top = self?.topAnchor,
+                        let last = self?.render(files, origin: top, parent: nil)
+                        else { return }
+                    self?.last(last)
+                }
+            }
+        }
     }
     
     func update(_ status: Status) {
@@ -103,32 +75,6 @@ class List: NSScrollView {
         documentView!.subviews.compactMap({ $0 as? Item }).filter({ $0.parent === item }).forEach {
             collapse($0)
             $0.removeFromSuperview()
-        }
-    }
-    
-    private func not() {
-        warning.isHidden = false
-        message.isHidden = false
-        start.isHidden = false
-        message.stringValue = .local("List.not")
-        documentView!.subviews.forEach { ($0 as? Item)?.removeFromSuperview() }
-    }
-    
-    private func load() {
-        warning.isHidden = true
-        message.isHidden = true
-        start.isHidden = true
-        documentView!.subviews.forEach { ($0 as? Item)?.removeFromSuperview() }
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            if let files = self?.contents(App.shared.url!) {
-                DispatchQueue.main.async { [weak self] in
-                    guard
-                        let top = self?.topAnchor,
-                        let last = self?.render(files, origin: top, parent: nil)
-                    else { return }
-                    self?.last(last)
-                }
-            }
         }
     }
     

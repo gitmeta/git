@@ -1,6 +1,8 @@
 import AppKit
 
 class Tools: NSView {
+    private(set) weak var height: NSLayoutConstraint!
+    
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -14,7 +16,8 @@ class Tools: NSView {
         commit.height.constant = 30
         addSubview(commit)
         
-        heightAnchor.constraint(equalToConstant: 140).isActive = true
+        height = heightAnchor.constraint(equalToConstant: 0)
+        height.isActive = true
         
         commit.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         commit.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
@@ -23,6 +26,6 @@ class Tools: NSView {
     required init?(coder: NSCoder) { return nil }
     
     @objc private func commit() {
-        
+        App.shared.list
     }
 }

@@ -61,6 +61,7 @@
 		2051FABA225C78DD00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
 		2051FABB225C78E300BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB7225C78D000BC00BC /* libGit.a */; };
 		2051FABC225C78EA00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
+		20B7D68122645EF800A1A802 /* None.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B7D68022645EF800A1A802 /* None.swift */; };
 		20CB6718226066470064C31C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6717226066470064C31C /* Bar.swift */; };
 		20CB671A226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
 		20CB671B226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
@@ -135,6 +136,7 @@
 		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB8225C78D000BC00BC /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20B7D68022645EF800A1A802 /* None.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = None.swift; sourceTree = "<group>"; };
 		20CB6717226066470064C31C /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		20CB6719226071CA0064C31C /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		20CB671C22607F940064C31C /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				20CCE7412261FF020014CAC9 /* Item.swift */,
 				20CB671C22607F940064C31C /* Label.swift */,
 				20CB6721226086030064C31C /* List.swift */,
+				20B7D68022645EF800A1A802 /* None.swift */,
 				201A413022636E72001C852A /* Tools.swift */,
 			);
 			path = Mac;
@@ -550,6 +553,7 @@
 				20CB6718226066470064C31C /* Bar.swift in Sources */,
 				2048A136225C749200290E54 /* App.swift in Sources */,
 				20CB6722226086030064C31C /* List.swift in Sources */,
+				20B7D68122645EF800A1A802 /* None.swift in Sources */,
 				2048A134225C749200290E54 /* Extensions.swift in Sources */,
 				20CB671D22607F940064C31C /* Label.swift in Sources */,
 				20CCE7402261D4840014CAC9 /* Alert.swift in Sources */,
