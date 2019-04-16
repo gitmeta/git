@@ -1,9 +1,9 @@
 import Foundation
 
-struct Commit {
-    struct User {
-        private(set) var name = ""
-        private(set) var email = ""
+public struct Commit {
+    public struct User {
+        var name = ""
+        var email = ""
         private(set) var date = Date()
         
         init() { }

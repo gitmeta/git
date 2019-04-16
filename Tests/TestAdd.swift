@@ -35,6 +35,13 @@ class TestAdd: XCTestCase {
         XCTAssertEqual(11, index?.entries.first?.size)
     }
     
+    func testDoubleAdd() {
+        let file = url.appendingPathComponent("myfile.txt")
+        try! Data("hello world".utf8).write(to: file)
+        try? repository.add(file)
+        XCTAssertThrowsError(try repository.add(file))
+    }
+    
     func testCompressDecompress() {
         try! Data("hello world".utf8).write(to: url.appendingPathComponent("myfile.txt"))
         let press = Press()

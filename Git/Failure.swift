@@ -20,6 +20,13 @@ public struct Failure: LocalizedError {
     
     public struct Commit {
         public static let unreadable = Failure("Unable to read commit.")
+        public static let empty = Failure("Nothing to commit.")
+        public static let credentials = Failure("Username and Email need to be configured.")
+        public static let message = Failure("Commit message can't be empty.")
+    }
+    
+    public struct Add {
+        public static let double = Failure("File has already being added.")
     }
     
     public var errorDescription: String? { return "Error: " + string }

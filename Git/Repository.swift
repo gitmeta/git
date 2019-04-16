@@ -1,6 +1,7 @@
 import Foundation
 
 public class Repository {
+    public var user = Commit.User()
     public let url: URL
     private let hasher = Hash()
     private let press = Press()
@@ -30,23 +31,40 @@ public class Repository {
         }
     }
     
+    public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+        queue.async { [weak self] in
+            do {
+                try self?.commit(files, message: message)
+                done?()
+            } catch let exception {
+                DispatchQueue.main.async { error?(exception) }
+            }
+        }
+    }
+    
     func add(_ file: URL) throws {
         let index = Index(url) ?? Index()
         let hash = hasher.file(file)
         let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))
-        if !FileManager.default.fileExists(atPath: location.path) {
-            try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            let compressed = press.compress(hash.0)
-            try! compressed.write(to: location, options: .atomic)
-            index.entry(hash.1, url: file)
-            index.save(url)
-        }
+        guard !FileManager.default.fileExists(atPath: location.path) else { throw Failure.Add.double }
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        let compressed = press.compress(hash.0)
+        try compressed.write(to: location, options: .atomic)
+        index.entry(hash.1, url: file)
+        index.save(url)
     }
     
     func tree(_ id: String) throws -> Tree {
         return try Tree(press.decompress(
             try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
+    }
+    
+    private func commit(_ files: [URL], message: String) throws {
+        guard !files.isEmpty else { throw Failure.Commit.empty }
+        guard !user.name.isEmpty && !user.email.isEmpty else { throw Failure.Commit.credentials }
+        guard !message.isEmpty else { throw Failure.Commit.message }
+        try files.forEach { try add($0) }
     }
     
     private var contents: [URL] {

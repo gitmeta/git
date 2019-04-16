@@ -57,12 +57,12 @@ public class Git {
         }
     }
     
-    public class func delete(_ repository: Repository, error: ((Error) -> Void)? = nil, result: (() -> Void)? = nil) {
+    public class func delete(_ repository: Repository, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         queue.async {
             do {
                 try FileManager.default.removeItem(at: repository.url.appendingPathComponent(".git"))
                 DispatchQueue.main.async {
-                    result?()
+                    done?()
                 }
             } catch let exception {
                 DispatchQueue.main.async {

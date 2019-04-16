@@ -99,27 +99,6 @@ class Item: NSControl {
     override func mouseDown(with: NSEvent) { layer!.backgroundColor = NSColor.shade.cgColor }
     override func mouseUp(with: NSEvent) { layer!.backgroundColor = NSColor.clear.cgColor }
     
-    func none() {
-        stage.isHidden = true
-        badge.layer!.backgroundColor = NSColor.clear.cgColor
-        hashtag.stringValue = ""
-    }
-    
-    func added() {
-        stage.isHidden = false
-        
-    }
-    
-    func modified() {
-        stage.isHidden = false
-        
-    }
-    
-    func untracked() {
-        stage.isHidden = false
-        
-    }
-    
     private func update() {
         switch status {
         case .none, .deleted:
