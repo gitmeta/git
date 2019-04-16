@@ -12,10 +12,21 @@ public class Repository {
     
     public func status(_ result: @escaping(([URL: Status]) -> Void)) {
         queue.async { [weak self] in
-            guard let status = self?.status else { return }
-            DispatchQueue.main.async {
-                result(status)
+            guard let contents = self?.contents, let location = self?.url else { return }
+            let index = Index(location)
+            let status = contents.reduce(into: [URL: Status]()) { result, url in
+                if let entries = index?.entries.filter({ $0.url == url }) {
+                    if let hash = self?.hasher.file(url).1,
+                        let tracked = entries.first(where: { $0.id == hash }) {
+                        result[url] = .added
+                    } else {
+                        result[url] = .modified
+                    }
+                } else {
+                    result[url] = .untracked
+                }
             }
+            DispatchQueue.main.async { result(status) }
         }
     }
     
@@ -36,16 +47,6 @@ public class Repository {
     func tree(_ id: String) throws -> Tree {
         return try Tree(press.decompress(
             try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
-    }
-    
-    private var status: [URL: Status] {
-        var status = [URL: Status]()
-        let contents = self.contents
-        let index = Index(url)
-//        status.added = contents.filter({ file in index?.entries.contains(where: { $0.url == file }) == true })
-//        status.modified = contents.filter({ file in index?.entries.first(where: { $0.name == file }) != nil })
-        contents.filter({ file in index?.entries.contains(where: { $0.url == file }) != true }).forEach { status[$0] = .untracked }
-        return status
     }
     
     private var contents: [URL] {
