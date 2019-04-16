@@ -83,8 +83,7 @@ class List: NSScrollView {
     }
     
     private func contents(_ url: URL) -> [URL]? {
-        return try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options:
-            [.skipsPackageDescendants, .skipsSubdirectoryDescendants]).sorted(by: { $0.path < $1.path })
+        return try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).sorted(by: { $0.path < $1.path })
     }
 }
 

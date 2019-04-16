@@ -55,37 +55,37 @@ class Index {
     }
     
     func save(_ url: URL) {
-        let blob = Blob()
-        blob.string("DIRC")
-        blob.number(UInt32(version))
-        blob.number(UInt32(entries.count))
+        let serial = Serial()
+        serial.string("DIRC")
+        serial.number(UInt32(version))
+        serial.number(UInt32(entries.count))
         entries.sorted(by: { $0.url.path < $1.url.path }).forEach {
-            blob.date($0.created)
-            blob.date($0.modified)
-            blob.number(UInt32($0.device))
-            blob.number(UInt32($0.inode))
-            blob.number(UInt32($0.mode))
-            blob.number(UInt32($0.user))
-            blob.number(UInt32($0.group))
-            blob.number(UInt32($0.size))
-            blob.hex($0.id)
-            blob.number(UInt16($0.url.path.dropFirst(url.path.count + 1).count))
-            blob.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
+            serial.date($0.created)
+            serial.date($0.modified)
+            serial.number(UInt32($0.device))
+            serial.number(UInt32($0.inode))
+            serial.number(UInt32($0.mode))
+            serial.number(UInt32($0.user))
+            serial.number(UInt32($0.group))
+            serial.number(UInt32($0.size))
+            serial.hex($0.id)
+            serial.number(UInt16($0.url.path.dropFirst(url.path.count + 1).count))
+            serial.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
         }
         if !trees.isEmpty {
-            let trees = Blob()
+            let trees = Serial()
             self.trees.sorted(by: { $0.url.path < $1.url.path }).forEach {
                 trees.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
                 trees.string("\($0.entries) ")
                 trees.string("\($0.subtrees)\n")
                 trees.hex($0.id)
             }
-            blob.string("TREE")
-            blob.number(UInt32(trees.data.count))
-            blob.blob(trees)
+            serial.string("TREE")
+            serial.number(UInt32(trees.data.count))
+            serial.serial(trees)
         }
-        blob.hash()
-        try? blob.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
+        serial.hash()
+        try? serial.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
     }
     
     private func entry(_ parse: Parse, url: URL) throws -> Entry {

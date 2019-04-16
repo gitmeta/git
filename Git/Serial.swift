@@ -1,6 +1,6 @@
 import Foundation
 
-class Blob {
+class Serial {
     private(set) var data = Data()
     private let hasher = Hash()
     private static let map = [
@@ -17,7 +17,7 @@ class Blob {
     
     func hex(_ string: String) {
         data.append(contentsOf: string.utf8.reduce(into: ([UInt8](), [UInt8]())) {
-            $0.0.append(Blob.map[Int($1 & 0x1F ^ 0x10)])
+            $0.0.append(Serial.map[Int($1 & 0x1F ^ 0x10)])
             if $0.0.count == 2 {
                 $0.1.append($0.0[0] << 4 | $0.0[1])
                 $0.0 = []
@@ -25,7 +25,7 @@ class Blob {
             }.1)
     }
     
-    func blob(_ blob: Blob) { data.append(blob.data) }
+    func serial(_ serial: Serial) { data.append(serial.data) }
     func nulled(_ string: String) { self.string(string + "\u{0000}") }
     func string(_ string: String) { data.append(Data(string.utf8)) }
     func number<T: BinaryInteger>(_ number: T) { withUnsafeBytes(of: number) { data.append(contentsOf: $0.reversed()) } }
