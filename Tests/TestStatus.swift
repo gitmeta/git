@@ -19,10 +19,7 @@ class TestStatus: XCTestCase {
         let expect = expectation(description: "")
         DispatchQueue.global(qos: .background).async {
             self.repository.status {
-                XCTAssertTrue($0.untracked.isEmpty)
-                XCTAssertTrue($0.added.isEmpty)
-                XCTAssertTrue($0.modified.isEmpty)
-                XCTAssertTrue($0.deleted.isEmpty)
+                XCTAssertTrue($0.isEmpty)
                 XCTAssertEqual(Thread.main, Thread.current)
                 expect.fulfill()
             }
@@ -36,10 +33,7 @@ class TestStatus: XCTestCase {
         Git.create(url) {
             repository = $0
             repository.status {
-                XCTAssertTrue($0.untracked.isEmpty)
-                XCTAssertTrue($0.added.isEmpty)
-                XCTAssertTrue($0.modified.isEmpty)
-                XCTAssertTrue($0.deleted.isEmpty)
+                XCTAssertTrue($0.isEmpty)
                 expect.fulfill()
             }
         }
@@ -50,10 +44,8 @@ class TestStatus: XCTestCase {
         let expect = expectation(description: "")
         try! Data("hello world".utf8).write(to: url.appendingPathComponent("myfile.txt"))
         repository.status {
-            XCTAssertEqual(1, $0.untracked.count)
-            XCTAssertTrue($0.added.isEmpty)
-            XCTAssertTrue($0.modified.isEmpty)
-            XCTAssertTrue($0.deleted.isEmpty)
+            XCTAssertEqual(1, $0.count)
+            XCTAssertEqual(.untracked, $0.first?.value)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -63,14 +55,11 @@ class TestStatus: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        repository.add(file) {
-            self.repository.status {
-                XCTAssertEqual(1, $0.added.count)
-                XCTAssertTrue($0.untracked.isEmpty)
-                XCTAssertTrue($0.modified.isEmpty)
-                XCTAssertTrue($0.deleted.isEmpty)
-                expect.fulfill()
-            }
+        try? repository.add(file)
+        repository.status {
+            XCTAssertEqual(1, $0.count)
+            XCTAssertEqual(.added, $0.first?.value)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }

@@ -27,7 +27,7 @@ class Tools: NSView {
     
     @objc private func commit() {
         App.shared.list.items.filter({ $0.stage.state == .on }).forEach {
-            App.shared.repository?.add($0.url)
+            print($0)
         }
     }
 }

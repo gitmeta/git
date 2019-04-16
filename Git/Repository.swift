@@ -19,10 +19,17 @@ public class Repository {
         }
     }
     
-    public func add(_ file: URL, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
-        queue.async { [weak self] in
-            self?.add(file)
-            DispatchQueue.main.async { done?() }
+    func add(_ file: URL) throws {
+        let index = Index(url) ?? Index()
+        let hash = hasher.file(file)
+        let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
+        let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))
+        if !FileManager.default.fileExists(atPath: location.path) {
+            try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+            let compressed = press.compress(hash.0)
+            try! compressed.write(to: location, options: .atomic)
+            index.entry(hash.1, url: file)
+            index.save(url)
         }
     }
     
@@ -46,19 +53,5 @@ public class Repository {
         result = result.compactMap({ $0.hasDirectoryPath ? nil : $0.resolvingSymlinksInPath() })
         result.removeAll(where: { $0.path.contains(".git") })
         return result
-    }
-    
-    private func add(_ file: URL) {
-        let index = Index(url) ?? Index()
-        let hash = hasher.file(file)
-        let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
-        let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))
-        if !FileManager.default.fileExists(atPath: location.path) {
-            try! FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            let compressed = press.compress(hash.0)
-            try! compressed.write(to: location, options: .atomic)
-            index.entry(hash.1, url: file)
-            index.save(url)
-        }
     }
 }
