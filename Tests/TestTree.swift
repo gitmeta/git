@@ -37,14 +37,11 @@ class TestTree: XCTestCase {
     
     func testSave() {
         let file = url.appendingPathComponent("myfile.txt")
-        try! Data("hello world".utf8).write(to: file)
+        try! Data("hello world\n".utf8).write(to: file)
         Tree(url).save(url)
         let object = try? Data(contentsOf: url.appendingPathComponent(
-            ".git/objects/74/8f7e72c315f737d829656b9ae627cc857031ed"))
+            ".git/objects/84/b5f2f96994db6b67f8a0ee508b1ebb8b633c15"))
         XCTAssertNotNil(object)
-        XCTAssertEqual(58, object?.count)
-        print(url.appendingPathComponent(
-            ".git/objects/74/8f7e72c315f737d829656b9ae627cc857031ed"))
-        print("url")
+        XCTAssertEqual(55, object?.count)
     }
 }

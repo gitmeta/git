@@ -199,7 +199,6 @@
 		2048A0CB225C744400290E54 /* Git */ = {
 			isa = PBXGroup;
 			children = (
-				2048A0D0225C744400290E54 /* Serial.swift */,
 				2048A0CF225C744400290E54 /* Commit.swift */,
 				2048A0CC225C744400290E54 /* Failure.swift */,
 				2048A0D5225C744400290E54 /* Git.swift */,
@@ -208,6 +207,7 @@
 				2048A0D6225C744400290E54 /* Parse.swift */,
 				2048A0D1225C744400290E54 /* Press.swift */,
 				2048A0D2225C744400290E54 /* Repository.swift */,
+				2048A0D0225C744400290E54 /* Serial.swift */,
 				2048A0D4225C744400290E54 /* Status.swift */,
 				2048A0D3225C744400290E54 /* Tree.swift */,
 			);

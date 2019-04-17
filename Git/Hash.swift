@@ -6,13 +6,13 @@ class Hash {
     
     func file(_ url: URL) -> (Data, String) {
         return {
-            let packed = Data(("blob \($0.count)\u{0000}" + String(decoding: $0, as: UTF8.self)).utf8)
+            let packed = Data(("blob \($0.count)\u{0000}").utf8) + $0
             return (packed, hash(packed))
         } (try! Data(contentsOf: url))
     }
     
     func tree(_ data: Data) -> (Data, String) {
-        let packed = Data(("tree \(data.count)\u{0000}" + String(decoding: data, as: UTF8.self)).utf8)
+        let packed = Data(("tree \(data.count)\u{0000}").utf8) + data
         return (packed, hash(packed))
     }
     
