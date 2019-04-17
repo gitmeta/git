@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Commit {
-    public struct User {
+public class Commit {
+    public class User {
         var name = ""
         var email = ""
         var date = Date()
@@ -52,5 +52,11 @@ public struct Commit {
         self.tree = tree
         self.author = author
         self.committer = committer
+    }
+    
+    init() { }
+    
+    var serial: String {
+        return ""
     }
 }

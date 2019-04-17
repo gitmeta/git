@@ -17,19 +17,23 @@ class TestCommit: XCTestCase {
     }
     
     func testCreate() {
-        var user = Commit.User()
-        user.name = "johnny"
-        user.email = "test"
-        user.date = Date(timeIntervalSince1970: 1494296655)
-        let commit = Commit("hello world", user: user, tree: "lorem ipsum")
-        XCTAssertEqual("johnny", commit.author.name)
-        XCTAssertEqual("johnny", commit.committer.name)
-        XCTAssertEqual("email", commit.author.email)
-        XCTAssertEqual("email", commit.committer.email)
-        XCTAssertEqual("lorem ipsum", commit.tree)
-        XCTAssertEqual("hello world", commit.message)
-        XCTAssertGreaterThan(commit.author.date, user.date)
-        XCTAssertGreaterThan(commit.committer.date, user.date)
+        let commit = Commit()
+        commit.author.name = "Johnny Test"
+        commit.author.email = "johnny@test.com"
+        commit.author.date = Date(timeIntervalSince1970: 1494296655)
+        commit.committer.name = "Johnny Test"
+        commit.committer.email = "johnny@test.com"
+        commit.committer.date = Date(timeIntervalSince1970: 1494296655)
+        commit.message = "Hello world"
+        commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
+        XCTAssertEqual("""
+tree 0d21e2f7f760f77ead2cb85cc128efb13f56401d
+author Johnny Test <johnny@test.com> 1494296655 +0200
+committer Johnny Test <johnny@test.com> 1494296655 +0200
+
+hello world
+
+""", commit.serial)
     }
     
     func testEmptyList() {
