@@ -9,7 +9,7 @@ class TestCommit: XCTestCase {
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         file = url.appendingPathComponent("myfile.txt")
-        try! Data("hello world".utf8).write(to: file)
+        try! Data("hello world\n".utf8).write(to: file)
     }
     
     override func tearDown() {

@@ -1,74 +1,54 @@
 import Foundation
 
 public class Git {
-    private static let queue = DispatchQueue(label: "", qos: .background, target: .global(qos: .background))
+    private static let dispatch = Dispatch()
     
     public class func repository(_ url: URL, result: @escaping((Bool) -> Void)) {
-        queue.async {
-            var directory: ObjCBool = false
-            if FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/refs").path, isDirectory: &directory),
-                directory.boolValue,
-                FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects").path, isDirectory: &directory),
-                directory.boolValue,
-                let head = try? Data(contentsOf: url.appendingPathComponent(".git/HEAD")),
-                String(decoding: head, as: UTF8.self).contains("ref: refs/") {
-                DispatchQueue.main.async { result(true) }
-            } else {
-                DispatchQueue.main.async { result(false) }
-            }
-        }
+        dispatch.background({ repository(url) }, success: result)
     }
     
     public class func create(_ url: URL, error: ((Error) -> Void)? = nil, result: ((Repository) -> Void)? = nil) {
-        queue.async {
-            repository(url) {
-                if $0 {
-                    error?(Failure.Repository.duplicating)
-                } else {
-                    queue.async {
-                        do {
-                            let root = url.appendingPathComponent(".git")
-                            let objects = root.appendingPathComponent("objects")
-                            let refs = root.appendingPathComponent("refs")
-                            let head = root.appendingPathComponent("HEAD")
-                            try FileManager.default.createDirectory(at: root, withIntermediateDirectories: false)
-                            try FileManager.default.createDirectory(at: refs, withIntermediateDirectories: false)
-                            try FileManager.default.createDirectory(at: objects, withIntermediateDirectories: false)
-                            try Data("ref: refs/heads/master".utf8).write(to: head, options: .atomic)
-                            open(url, error: error, result: result)
-                        } catch let exception {
-                            DispatchQueue.main.async { error?(exception) }
-                        }
-                    }
-                }
-            }
-        }
+        dispatch.background({
+            guard !repository(url) else { throw Failure.Repository.duplicating }
+            let root = url.appendingPathComponent(".git")
+            let objects = root.appendingPathComponent("objects")
+            let refs = root.appendingPathComponent("refs")
+            let head = root.appendingPathComponent("HEAD")
+            try FileManager.default.createDirectory(at: root, withIntermediateDirectories: false)
+            try FileManager.default.createDirectory(at: refs, withIntermediateDirectories: false)
+            try FileManager.default.createDirectory(at: objects, withIntermediateDirectories: false)
+            try Data("ref: refs/heads/master".utf8).write(to: head, options: .atomic)
+            return try open(url)
+        }, error: error, success: result ?? { _ in })
     }
     
-    public class func open(_ url: URL, error: ((Error) -> Void)? = nil, result: ((Repository) -> Void)? = nil) {
-        queue.async {
-            repository(url) {
-                if $0 {
-                    DispatchQueue.main.async { result?(Repository(url)) }
-                } else {
-                    DispatchQueue.main.async { error?(Failure.Repository.invalid) }
-                }
-            }
-        }
+    public class func open(_ url: URL, error: ((Error) -> Void)? = nil, result: @escaping((Repository) -> Void)) {
+        dispatch.background({
+            return try open(url)
+        }, error: error, success: result)
     }
     
     public class func delete(_ repository: Repository, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
-        queue.async {
-            do {
-                try FileManager.default.removeItem(at: repository.url.appendingPathComponent(".git"))
-                DispatchQueue.main.async {
-                    done?()
-                }
-            } catch let exception {
-                DispatchQueue.main.async {
-                    error?(exception)
-                }
-            }
+        dispatch.background({
+            try FileManager.default.removeItem(at: repository.url.appendingPathComponent(".git"))
+        }, error: error, success: done ?? { })
+    }
+    
+    private class func repository(_ url: URL) -> Bool {
+        var d: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/refs").path, isDirectory: &d),
+            d.boolValue,
+            FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects").path, isDirectory: &d),
+            d.boolValue,
+            let head = try? Data(contentsOf: url.appendingPathComponent(".git/HEAD")),
+            String(decoding: head, as: UTF8.self).contains("ref: refs/") else { return false }
+        return true
+    }
+    
+    private class func open(_ url: URL) throws -> Repository {
+        if repository(url) {
+            return Repository(url)
         }
+        throw Failure.Repository.invalid
     }
 }

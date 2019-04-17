@@ -61,6 +61,8 @@
 		2051FABA225C78DD00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
 		2051FABB225C78E300BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB7225C78D000BC00BC /* libGit.a */; };
 		2051FABC225C78EA00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
+		2073D8772267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
+		2073D8782267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
 		20AFB33B2265B77000A3ECC0 /* TestHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33A2265B77000A3ECC0 /* TestHead.swift */; };
 		20AFB33D2265BA7800A3ECC0 /* TestCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */; };
 		20AFB33F2265DA5200A3ECC0 /* TestTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33E2265DA5200A3ECC0 /* TestTree.swift */; };
@@ -139,6 +141,7 @@
 		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB8225C78D000BC00BC /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2073D8762267283E00631BCB /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		20AFB33A2265B77000A3ECC0 /* TestHead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHead.swift; sourceTree = "<group>"; };
 		20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCommit.swift; sourceTree = "<group>"; };
 		20AFB33E2265DA5200A3ECC0 /* TestTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTree.swift; sourceTree = "<group>"; };
@@ -200,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				2048A0CF225C744400290E54 /* Commit.swift */,
+				2073D8762267283E00631BCB /* Dispatch.swift */,
 				2048A0CC225C744400290E54 /* Failure.swift */,
 				2048A0D5225C744400290E54 /* Git.swift */,
 				2048A0CD225C744400290E54 /* Hash.swift */,
@@ -517,6 +521,7 @@
 				2048A0E8225C744400290E54 /* Status.swift in Sources */,
 				2048A0E6225C744400290E54 /* Tree.swift in Sources */,
 				2048A0DC225C744400290E54 /* Index.swift in Sources */,
+				2073D8772267283E00631BCB /* Dispatch.swift in Sources */,
 				2048A0EC225C744400290E54 /* Parse.swift in Sources */,
 				2048A0E2225C744400290E54 /* Press.swift in Sources */,
 			);
@@ -535,6 +540,7 @@
 				2048A0E9225C744400290E54 /* Status.swift in Sources */,
 				2048A0E7225C744400290E54 /* Tree.swift in Sources */,
 				2048A0DD225C744400290E54 /* Index.swift in Sources */,
+				2073D8782267283E00631BCB /* Dispatch.swift in Sources */,
 				2048A0ED225C744400290E54 /* Parse.swift in Sources */,
 				2048A0E3225C744400290E54 /* Press.swift in Sources */,
 			);

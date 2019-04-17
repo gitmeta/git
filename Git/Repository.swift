@@ -5,17 +5,17 @@ public class Repository {
     public let url: URL
     private let hasher = Hash()
     private let press = Press()
-    private let queue = DispatchQueue(label: "", qos: .background, target: .global(qos: .background))
+    private let dispatch = Dispatch()
     
     init(_ url: URL) {
         self.url = url
     }
     
     public func status(_ result: @escaping(([URL: Status]) -> Void)) {
-        queue.async { [weak self] in
-            guard let contents = self?.contents, let location = self?.url else { return }
+        dispatch.background({ [weak self] in
+            guard let contents = self?.contents, let location = self?.url else { return [:] }
             let index = Index(location)
-            let status = contents.reduce(into: [URL: Status]()) { result, url in
+            return contents.reduce(into: [URL: Status]()) { result, url in
                 if let entries = index?.entries.filter({ $0.url == url }) {
                     if let hash = self?.hasher.file(url).1,
                         let tracked = entries.first(where: { $0.id == hash }) {
@@ -27,19 +27,14 @@ public class Repository {
                     result[url] = .untracked
                 }
             }
-            DispatchQueue.main.async { result(status) }
-        }
+        }, success: result)
     }
     
     public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
-        queue.async { [weak self] in
-            do {
-                try self?.commit(files, message: message)
-                done?()
-            } catch let exception {
-                DispatchQueue.main.async { error?(exception) }
-            }
-        }
+        dispatch.background({ [weak self] in
+            try self?.commit(files, message: message)
+            print("")
+        }, error: error, success: done ?? { })
     }
     
     func add(_ file: URL) throws {

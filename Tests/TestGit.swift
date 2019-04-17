@@ -98,7 +98,7 @@ class TestGit: XCTestCase {
             XCTAssertEqual(Thread.main, Thread.current)
             
             expect.fulfill()
-        })
+        }) { _ in }
         waitForExpectations(timeout: 1)
     }
     
