@@ -4,7 +4,7 @@ public struct Commit {
     public struct User {
         var name = ""
         var email = ""
-        private(set) var date = Date()
+        var date = Date()
         
         init() { }
         
@@ -26,11 +26,11 @@ public struct Commit {
         }
     }
     
-    private(set) var author = User()
-    private(set) var committer = User()
-    private(set) var tree = ""
-    private(set) var message = ""
-    private(set) var parent: String?
+    var author = User()
+    var committer = User()
+    var tree = ""
+    var message = ""
+    var parent: String?
     
     init(_ data: Data) throws {
         let string = String(decoding: data, as: UTF8.self)

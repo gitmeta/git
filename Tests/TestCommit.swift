@@ -16,6 +16,22 @@ class TestCommit: XCTestCase {
         try? FileManager.default.removeItem(at: url)
     }
     
+    func testCreate() {
+        var user = Commit.User()
+        user.name = "johnny"
+        user.email = "test"
+        user.date = Date(timeIntervalSince1970: 1494296655)
+        let commit = Commit("hello world", user: user, tree: "lorem ipsum")
+        XCTAssertEqual("johnny", commit.author.name)
+        XCTAssertEqual("johnny", commit.committer.name)
+        XCTAssertEqual("email", commit.author.email)
+        XCTAssertEqual("email", commit.committer.email)
+        XCTAssertEqual("lorem ipsum", commit.tree)
+        XCTAssertEqual("hello world", commit.message)
+        XCTAssertGreaterThan(commit.author.date, user.date)
+        XCTAssertGreaterThan(commit.committer.date, user.date)
+    }
+    
     func testEmptyList() {
         let expect = expectation(description: "")
         let repository = Repository(url)

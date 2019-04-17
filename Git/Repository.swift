@@ -32,8 +32,17 @@ public class Repository {
     
     public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         dispatch.background({ [weak self] in
-            try self?.commit(files, message: message)
-            print("")
+            guard let url = self?.url else { return }
+            guard !files.isEmpty else { throw Failure.Commit.empty }
+            guard self?.user.name.isEmpty == false else { throw Failure.Commit.credentials }
+            guard self?.user.email.isEmpty == false else { throw Failure.Commit.credentials }
+            guard !message.isEmpty else { throw Failure.Commit.message }
+            try files.forEach { try self?.add($0) }
+            let tree = Tree.save(url)
+            
+            
+            
+            
         }, error: error, success: done ?? { })
     }
     
@@ -53,13 +62,6 @@ public class Repository {
     func tree(_ id: String) throws -> Tree {
         return try Tree(press.decompress(
             try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
-    }
-    
-    private func commit(_ files: [URL], message: String) throws {
-        guard !files.isEmpty else { throw Failure.Commit.empty }
-        guard !user.name.isEmpty && !user.email.isEmpty else { throw Failure.Commit.credentials }
-        guard !message.isEmpty else { throw Failure.Commit.message }
-        try files.forEach { try add($0) }
     }
     
     private var contents: [URL] {
