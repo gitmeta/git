@@ -11,6 +11,11 @@ class Hash {
         } (try! Data(contentsOf: url))
     }
     
+    func tree(_ data: Data) -> (Data, String) {
+        let packed = Data(("tree \(data.count)\u{0000}" + String(decoding: data, as: UTF8.self)).utf8)
+        return (packed, hash(packed))
+    }
+    
     func digest(_ data: Data) -> Data {
         _ = data.withUnsafeBytes { CC_SHA1($0.baseAddress, CC_LONG(data.count), &digest) }
         return Data(digest)

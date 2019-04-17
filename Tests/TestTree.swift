@@ -38,11 +38,13 @@ class TestTree: XCTestCase {
     func testSave() {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        let objects = url.appendingPathComponent(".git/objects")
-        try! FileManager.default.createDirectory(at: objects, withIntermediateDirectories: true)
         Tree(url).save(url)
-        let object = try? Data(contentsOf: objects.appendingPathComponent("na/asdasasdasdadasdas"))
+        let object = try? Data(contentsOf: url.appendingPathComponent(
+            ".git/objects/74/8f7e72c315f737d829656b9ae627cc857031ed"))
         XCTAssertNotNil(object)
-        XCTAssertEqual(20, object?.count)
+        XCTAssertEqual(58, object?.count)
+        print(url.appendingPathComponent(
+            ".git/objects/74/8f7e72c315f737d829656b9ae627cc857031ed"))
+        print("url")
     }
 }
