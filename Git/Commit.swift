@@ -4,6 +4,7 @@ public class Commit {
     public class User {
         var name = ""
         var email = ""
+        var timezone = TimeZone.current
         var date = Date()
         
         init() { }
@@ -23,6 +24,16 @@ public class Commit {
             self.name = name[1]
             self.email = second![0]
             self.date = Date(timeIntervalSince1970: date)
+        }
+        
+        fileprivate var serial: String { return "\(name) <\(email)> \(Int(date.timeIntervalSince1970)) \(zone)" }
+        
+        private var zone: String {
+            return {
+                $0.minimumIntegerDigits = 2
+                $0.maximumIntegerDigits = 2
+                return $0.string(from: NSNumber(value: $1 / 3600))! + $0.string(from: NSNumber(value: $1 % 60))!
+            } (NumberFormatter(), timezone.secondsFromGMT())
         }
     }
     
@@ -57,6 +68,11 @@ public class Commit {
     init() { }
     
     var serial: String {
-        return ""
+        var result = "tree \(tree)\n"
+        if let parent = self.parent {
+            result += "parent \(parent)\n"
+        }
+        result += "author \(author.serial)\ncommitter \(committer.serial)\n\n\(message)\n"
+        return result
     }
 }

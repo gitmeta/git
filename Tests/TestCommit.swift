@@ -18,22 +18,45 @@ class TestCommit: XCTestCase {
     
     func testCreate() {
         let commit = Commit()
-        commit.author.name = "Johnny Test"
-        commit.author.email = "johnny@test.com"
+        commit.author.name = "Jonathan Waldman"
+        commit.author.email = "jonathan.waldman@live.com"
         commit.author.date = Date(timeIntervalSince1970: 1494296655)
-        commit.committer.name = "Johnny Test"
-        commit.committer.email = "johnny@test.com"
-        commit.committer.date = Date(timeIntervalSince1970: 1494296655)
-        commit.message = "Hello world"
+        commit.author.timezone = TimeZone(identifier: "America/Chicago")!
+        commit.committer = commit.author
+        commit.message = "Add project files."
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
+        commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
         XCTAssertEqual("""
 tree 0d21e2f7f760f77ead2cb85cc128efb13f56401d
-author Johnny Test <johnny@test.com> 1494296655 +0200
-committer Johnny Test <johnny@test.com> 1494296655 +0200
+parent dc0d3343fa24e912f08bc18aaa6f664a4a020079
+author Jonathan Waldman <jonathan.waldman@live.com> 1494296655 -0500
+committer Jonathan Waldman <jonathan.waldman@live.com> 1494296655 -0500
 
-hello world
+Add project files.
 
 """, commit.serial)
+    }
+    
+    func testSave() {
+        let expect = expectation(description: "")
+        let commit = Commit()
+        commit.author.name = "Jonathan Waldman"
+        commit.author.email = "jonathan.waldman@live.com"
+        commit.author.date = Date(timeIntervalSince1970: 1494296655)
+        commit.author.timezone = TimeZone(identifier: "America/Chicago")!
+        commit.committer = commit.author
+        commit.message = "Add project files."
+        commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
+        commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
+        Git.create(url) { _ in
+            XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", commit.save(url))
+            let object = try? Data(contentsOf: self.url.appendingPathComponent(
+                ".git/objects/51/92391e9f907eeb47aa38d1c6a3a4ea78e33564"))
+            XCTAssertNotNil(object)
+            XCTAssertEqual(55, object?.count)
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
     }
     
     func testEmptyList() {
