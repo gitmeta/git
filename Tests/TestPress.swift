@@ -96,6 +96,7 @@ My second commit.
         XCTAssertEqual("zero.griffin@gmail.com", commit?.committer.email)
         XCTAssertEqual(Date(timeIntervalSince1970: 1554638195), commit?.author.date)
         XCTAssertEqual(Date(timeIntervalSince1970: 1554638195), commit?.committer.date)
+        XCTAssertEqual("This is my first commit.\n", commit?.message)
     }
     
     func testParseCommit1() {

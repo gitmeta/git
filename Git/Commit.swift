@@ -4,10 +4,17 @@ public class Commit {
     public class User {
         var name = ""
         var email = ""
-        var timezone = TimeZone.current
+        var timezone = ""
         var date = Date()
         
-        init() { }
+        init() {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "xx"
+            timezone = {
+                $0.dateFormat = "xx"
+                return $0.string(from: date)
+            } (DateFormatter())
+        }
         
         fileprivate init(_ string: String) throws {
             let first = string.components(separatedBy: " <")
@@ -17,24 +24,17 @@ public class Commit {
                 first.count == 2,
                 second?.count == 2,
                 third?.count == 2,
-                let name = first.first?.components(separatedBy: " "),
-                name.count == 2,
-                let date = TimeInterval(third![0])
+                let names = first.first?.components(separatedBy: " "),
+                names.count > 1,
+                let seconds = TimeInterval(third![0])
             else { throw Failure.Commit.unreadable }
-            self.name = name[1]
-            self.email = second![0]
-            self.date = Date(timeIntervalSince1970: date)
+            name = names.dropFirst().joined(separator: " ")
+            email = second![0]
+            date = Date(timeIntervalSince1970: seconds)
+            timezone = third![1]
         }
         
-        fileprivate var serial: String { return "\(name) <\(email)> \(Int(date.timeIntervalSince1970)) \(zone)" }
-        
-        private var zone: String {
-            return {
-                $0.minimumIntegerDigits = 2
-                $0.maximumIntegerDigits = 2
-                return $0.string(from: NSNumber(value: $1 / 3600))! + $0.string(from: NSNumber(value: $1 % 60))!
-            } (NumberFormatter(), timezone.secondsFromGMT())
-        }
+        fileprivate var serial: String { return "\(name) <\(email)> \(Int(date.timeIntervalSince1970)) \(timezone)" }
     }
     
     var author = User()
@@ -48,7 +48,7 @@ public class Commit {
         let split = string.components(separatedBy: "\n\n")
         let lines = split.first!.components(separatedBy: "\n")
         guard
-            split.count == 2,
+            split.count > 1,
             lines.count == 3 || lines.count == 4,
             let tree = lines[0].components(separatedBy: "tree ").last,
             tree.count == 40,
@@ -63,6 +63,7 @@ public class Commit {
         self.tree = tree
         self.author = author
         self.committer = committer
+        self.message = split.dropFirst().joined(separator: "\n\n")
     }
     
     init() { }
@@ -76,7 +77,7 @@ public class Commit {
         return result
     }
     
-    func save(_ url: URL) -> String {
+    @discardableResult func save(_ url: URL) -> String {
         let hash = Hash().commit(serial)
         let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

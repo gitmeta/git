@@ -13,12 +13,39 @@ class TestHead: XCTestCase {
         try? FileManager.default.removeItem(at: url)
     }
     
-    func testLastCommit() {
+    func testHEAD() {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
         Git.create(url) {
-            try? $0.add(file)
+            XCTAssertEqual("refs/heads/master", $0.HEAD)
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testHeadNone() {
+        let expect = expectation(description: "")
+        let file = url.appendingPathComponent("myfile.txt")
+        try! Data("hello world".utf8).write(to: file)
+        Git.create(url) {
+            XCTAssertNil($0.head)
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testLastCommit() {
+        let expect = expectation(description: "")
+        let file = url.appendingPathComponent("myfile.txt")
+        try! Data("hello world".utf8).write(to: file)
+        Git.create(url) { repo in
+            repo.user.name = "ab"
+            repo.user.email = "cd"
+            repo.commit([file], message: "hello world") {
+                XCTAssertEqual("hello world\n", repo.head?.message)
+                expect.fulfill()
+            }
         }
         waitForExpectations(timeout: 1)
     }

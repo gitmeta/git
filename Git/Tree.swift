@@ -13,7 +13,7 @@ class Tree {
     private(set) var items = [Item]()
     private static let map: [String: Item.Type] = ["100644": Blob.self, "40000": Sub.self]
     
-    class func save(_ url: URL) -> String {
+    @discardableResult class func save(_ url: URL) -> String {
         let tree = Tree(url)
         let serial = Serial()
         tree.items.sorted(by: { $0.name < $1.name }).forEach { item in
