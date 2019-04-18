@@ -25,4 +25,8 @@ class TestHash: XCTestCase {
     func testTree() {
         XCTAssertEqual("4b825dc642cb6eb9a060e54bf8d69288fbee4904", hasher.tree(Data()).1)
     }
+    
+    func testCommit() {
+        XCTAssertEqual("dcf5b16e76cce7425d0beaef62d79a7d10fce1f5", hasher.commit("").1)
+    }
 }

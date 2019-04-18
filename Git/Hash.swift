@@ -16,6 +16,13 @@ class Hash {
         return (packed, hash(packed))
     }
     
+    func commit(_ serial: String) -> (Data, String) {
+        return {
+            let packed = Data(("commit \($0.count)\u{0000}").utf8) + $0
+            return (packed, hash(packed))
+        } (Data(serial.utf8))
+    }
+    
     func digest(_ data: Data) -> Data {
         _ = data.withUnsafeBytes { CC_SHA1($0.baseAddress, CC_LONG(data.count), &digest) }
         return Data(digest)

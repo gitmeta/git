@@ -49,11 +49,13 @@ Add project files.
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
         Git.create(url) { _ in
-            XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", commit.save(url))
+            XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", commit.save(self.url))
             let object = try? Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/51/92391e9f907eeb47aa38d1c6a3a4ea78e33564"))
             XCTAssertNotNil(object)
-            XCTAssertEqual(55, object?.count)
+            XCTAssertEqual(173, object?.count)
+            XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", String(
+                decoding: try! Data(contentsOf: self.url.appendingPathComponent(".git/refs/heads/master")), as: UTF8.self))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
