@@ -11,24 +11,6 @@ public class Repository {
         self.url = url
     }
     
-    public var HEAD: String {
-        return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
-            UTF8.self).dropFirst(5))
-    }
-    
-    public var headId: String? {
-        guard let data = try? Data(contentsOf: url.appendingPathComponent(".git/" + HEAD)) else { return nil }
-        return String(decoding: data, as: UTF8.self)
-    }
-    
-    public var head: Commit? {
-        guard
-            let id = self.headId,
-            let raw = try? Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))
-        else { return nil }
-        return try? Commit(press.decompress(raw))
-    }
-    
     public func status(_ result: @escaping(([URL: Status]) -> Void)) {
         dispatch.background({ [weak self] in
             guard let contents = self?.contents, let location = self?.url else { return [:] }
@@ -56,16 +38,38 @@ public class Repository {
             guard !user.email.isEmpty else { throw Failure.Commit.credentials }
             guard !message.isEmpty else { throw Failure.Commit.message }
             try files.forEach { try self?.add($0) }
+            user.date = Date()
             let commit = Commit()
             commit.author = user
             commit.committer = user
-            commit.author.date = Date()
-            commit.committer.date = Date()
             commit.tree = Tree.save(url)
             commit.message = message
             commit.parent = self?.headId
             commit.save(url)
         }, error: error, success: done ?? { })
+    }
+    
+    var HEAD: String {
+        return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
+            UTF8.self).dropFirst(5))
+    }
+    
+    var headId: String? {
+        guard let data = try? Data(contentsOf: url.appendingPathComponent(".git/" + HEAD)) else { return nil }
+        return String(decoding: data, as: UTF8.self)
+    }
+    
+    var head: Commit? {
+        guard
+            let id = self.headId,
+            let raw = try? Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))
+        else { return nil }
+        return try? Commit(press.decompress(raw))
+    }
+    
+    var tree: Tree? {
+        guard let head = self.head else { return nil }
+        return try? tree(head.tree)
     }
     
     func add(_ file: URL) throws {

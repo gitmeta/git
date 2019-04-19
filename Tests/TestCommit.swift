@@ -185,7 +185,6 @@ Add project files.
     
     func testFirstCommit() {
         let expect = expectation(description: "")
-        let date = Date()
         Git.create(url) { repository in
             DispatchQueue.global(qos: .background).async {
                 repository.user.name = "hello"
@@ -201,6 +200,20 @@ Add project files.
                     XCTAssertNil(repository.head?.parent)
                     expect.fulfill()
                 }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testSecondCommitEmpty() {
+        let expect = expectation(description: "")
+        Git.create(url) { repository in
+            repository.user.name = "hello"
+            repository.user.email = "world"
+            repository.commit([self.file], message: "hello world") {
+                repository.commit([self.file], message: "second commit", error: { _ in
+                    expect.fulfill()
+                })
             }
         }
         waitForExpectations(timeout: 1)
