@@ -5,7 +5,7 @@ class Item: NSControl {
     weak var parent: Item?
     weak var top: NSLayoutConstraint? { didSet { oldValue?.isActive = false; top?.isActive = true } }
     weak var list: List!
-    var status = Status.none { didSet { update() } }
+    var status = Status.current { didSet { update() } }
     let url: URL
     let indent: CGFloat
     private(set) weak var stage: Button!
@@ -101,7 +101,7 @@ class Item: NSControl {
     
     private func update() {
         switch status {
-        case .none, .deleted:
+        case .current, .deleted:
             badge.layer!.backgroundColor = NSColor.clear.cgColor
             hashtag.stringValue = ""
         case .added:
@@ -123,7 +123,7 @@ class Item: NSControl {
             badge.layer!.backgroundColor = NSColor.untracked.cgColor
             hashtag.stringValue = .local("Item.untracked")
         }
-        stage.isHidden = status == .none
+        stage.isHidden = status == .current
     }
     
     @objc private func handle(_ handle: Button) {

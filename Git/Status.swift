@@ -1,5 +1,5 @@
 public enum Status {
-    case none
+    case current
     case untracked
     case added
     case modified

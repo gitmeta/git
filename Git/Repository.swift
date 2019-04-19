@@ -15,11 +15,16 @@ public class Repository {
         dispatch.background({ [weak self] in
             guard let contents = self?.contents, let location = self?.url else { return [:] }
             let index = Index(location)
+            let tree = self?.tree
             return contents.reduce(into: [URL: Status]()) { result, url in
                 if let entries = index?.entries.filter({ $0.url == url }) {
                     if let hash = self?.hasher.file(url).1,
-                        let tracked = entries.first(where: { $0.id == hash }) {
-                        result[url] = .added
+                        entries.contains(where: { $0.id == hash }) {
+                        if tree?.items.contains(where: { $0.id == hash }) == true {
+                            result[url] = .current
+                        } else {
+                            result[url] = .added
+                        }
                     } else {
                         result[url] = .modified
                     }
