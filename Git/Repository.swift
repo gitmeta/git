@@ -37,15 +37,18 @@ public class Repository {
             guard !user.name.isEmpty else { throw Failure.Commit.credentials }
             guard !user.email.isEmpty else { throw Failure.Commit.credentials }
             guard !message.isEmpty else { throw Failure.Commit.message }
-            try files.forEach { try self?.add($0) }
+            let index = Index(url) ?? Index()
+            let tree = Tree.save(url)
+            try files.forEach { try self?.add($0, index: index) }
             user.date = Date()
             let commit = Commit()
             commit.author = user
             commit.committer = user
-            commit.tree = Tree.save(url)
+            commit.tree = tree
             commit.message = message
             commit.parent = self?.headId
             commit.save(url)
+            index.save(url)
         }, error: error, success: done ?? { })
     }
     
@@ -74,6 +77,16 @@ public class Repository {
     
     func add(_ file: URL) throws {
         let index = Index(url) ?? Index()
+        try add(file, index: index)
+        index.save(url)
+    }
+    
+    func tree(_ id: String) throws -> Tree {
+        return try Tree(press.decompress(
+            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
+    }
+    
+    private func add(_ file: URL, index: Index) throws {
         guard file.path.contains(url.path) else { throw Failure.Add.outside }
         guard FileManager.default.fileExists(atPath: file.path) else { throw Failure.Add.not }
         let hash = hasher.file(file)
@@ -84,12 +97,6 @@ public class Repository {
         let compressed = press.compress(hash.0)
         try compressed.write(to: location, options: .atomic)
         index.entry(hash.1, url: file)
-        index.save(url)
-    }
-    
-    func tree(_ id: String) throws -> Tree {
-        return try Tree(press.decompress(
-            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
     }
     
     private var contents: [URL] {

@@ -54,6 +54,10 @@ class Index {
         entries.append(entry)
     }
     
+    func tree(_ id: String, url: URL, tree: Tree) {
+//        trees.append(Tree(id: id, url: url, entries: tree., subtrees: <#T##Int#>))
+    }
+    
     func save(_ url: URL) {
         let serial = Serial()
         serial.string("DIRC")

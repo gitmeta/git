@@ -5,14 +5,13 @@ class TestIndex: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        url = URL(fileURLWithPath: NSTemporaryDirectory())
+        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
+        try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         try? FileManager.default.createDirectory(at: url.appendingPathComponent(".git"), withIntermediateDirectories: false)
     }
     
     override func tearDown() {
-        try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).forEach {
-            try! FileManager.default.removeItem(at: $0)
-        }
+        try? FileManager.default.removeItem(at: url)
     }
     
     func testIndexFails() {
@@ -75,6 +74,7 @@ class TestIndex: XCTestCase {
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
+        XCTAssertTrue(index!.trees.isEmpty)
         XCTAssertEqual("be8343716dab3cb0a2f40813b3f0077bb0cb1a80", index?.id)
     }
     
@@ -88,6 +88,7 @@ class TestIndex: XCTestCase {
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
+        XCTAssertTrue(index!.trees.isEmpty)
     }
     
     func testIndex2() {
@@ -152,5 +153,29 @@ class TestIndex: XCTestCase {
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
         XCTAssertEqual(2, index?.trees.count)
+    }
+    
+    func testAddEntry() {
+        let file = url.appendingPathComponent("file.txt")
+        try! "hello world".write(to: file, atomically: true, encoding: .utf8)
+        let index = Index()
+        index.entry("asd", url: file)
+        XCTAssertEqual(1, index.entries.count)
+        XCTAssertEqual(file, index.entries.first?.url)
+        XCTAssertEqual("asd", index.entries.first?.id)
+        XCTAssertEqual(11, index.entries.first?.size)
+    }
+    
+    func testAddTree() {
+        let file = url.appendingPathComponent("file.txt")
+        try! "hello world".write(to: file, atomically: true, encoding: .utf8)
+        let index = Index()
+        let tree = Tree(url)
+        //index.tree("asd", url: url, tree: tree)
+        XCTAssertEqual(1, index.trees.count)
+        XCTAssertEqual(url, index.trees.first?.url)
+        XCTAssertEqual(1, index.trees.first?.entries)
+        XCTAssertEqual(0, index.trees.first?.subtrees)
+        XCTAssertEqual("asd", index.trees.first?.id)
     }
 }
