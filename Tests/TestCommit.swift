@@ -207,13 +207,45 @@ Add project files.
     
     func testSecondCommitEmpty() {
         let expect = expectation(description: "")
-        Git.create(url) { repository in
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
             repository.user.name = "hello"
             repository.user.email = "world"
             repository.commit([self.file], message: "hello world") {
                 repository.commit([self.file], message: "second commit", error: { _ in
                     expect.fulfill()
                 })
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testInvalidFile() {
+        let expect = expectation(description: "")
+        let repository = Repository(url)
+        repository.user.name = "hello"
+        repository.user.email = "world"
+        repository.commit([URL(fileURLWithPath: "/")], message: "A failed commmit", error: { _ in
+            expect.fulfill()
+        })
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testSecondCommit() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
+            repository.user.name = "hello"
+            repository.user.email = "world"
+            repository.commit([self.file], message: "hello world") {
+                let headId = repository.headId!
+                try! Data("modified\n".utf8).write(to: self.file)
+                repository.commit([self.file], message: "second commit") {
+                    XCTAssertEqual(headId, repository.head!.parent!)
+                    expect.fulfill()
+                }
             }
         }
         waitForExpectations(timeout: 1)

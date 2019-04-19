@@ -7,7 +7,8 @@ class TestAdd: XCTestCase {
     
     override func setUp() {
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
-        try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/objects"), withIntermediateDirectories: true)
+        try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/objects"),
+                                                 withIntermediateDirectories: true)
         repository = Repository(url)
     }
     
@@ -47,5 +48,16 @@ class TestAdd: XCTestCase {
         let press = Press()
         XCTAssertEqual("hello world", String(decoding: press.decompress(press.compress(
             try! Data(contentsOf: url.appendingPathComponent("myfile.txt")))), as: UTF8.self))
+    }
+    
+    func testNonExistingFile() {
+        let file = url.appendingPathComponent("myfile.txt")
+        XCTAssertThrowsError(try repository.add(file))
+    }
+    
+    func testOutsideProject() {
+        let file = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("myfile.txt")
+        try! Data("hello world".utf8).write(to: file)
+        XCTAssertThrowsError(try repository.add(file))
     }
 }

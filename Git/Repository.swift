@@ -74,6 +74,8 @@ public class Repository {
     
     func add(_ file: URL) throws {
         let index = Index(url) ?? Index()
+        guard file.path.contains(url.path) else { throw Failure.Add.outside }
+        guard FileManager.default.fileExists(atPath: file.path) else { throw Failure.Add.not }
         let hash = hasher.file(file)
         let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))
