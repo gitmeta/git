@@ -207,7 +207,9 @@ Add project files.
     
     func testCommitTree() {
         let expect = expectation(description: "")
-        Git.create(url) { repository in
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
             repository.user.name = "hello"
             repository.user.email = "world"
             repository.commit([self.file], message: "hello world") {

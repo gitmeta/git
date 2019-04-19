@@ -68,11 +68,13 @@ class TestHead: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        Git.create(url) { repo in
-            repo.user.name = "ab"
-            repo.user.email = "cd"
-            repo.commit([file], message: "hello world") {
-                let tree = repo.tree
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
+            repository.user.name = "ab"
+            repository.user.email = "cd"
+            repository.commit([file], message: "hello world") {
+                let tree = repository.tree
                 XCTAssertEqual(1, tree?.items.count)
                 XCTAssertNotNil(tree?.items.first as? Tree.Blob)
                 XCTAssertEqual("myfile.txt", tree?.items.first?.name)

@@ -36,13 +36,13 @@ class Index {
             let version = try? parse.number(),
             let count = try? parse.number(),
             let entries = try? (0 ..< count).map({ _ in try entry(parse, url: url) }),
-            let tree = try? directories(parse, url: url),
+            let directories = try? directories(parse, url: url),
             let id = try? parse.hash(),
             parse.index == parse.data.count
         else { return nil }
         self.version = version
         self.entries = entries
-        self.directories = tree
+        self.directories = directories
         self.id = id
     }
     
@@ -54,8 +54,9 @@ class Index {
         entries.append(entry)
     }
     
-    func tree(_ id: String, url: URL, tree: Directory) {
-//        trees.append(Tree(id: id, url: url, entries: tree., subtrees: <#T##Int#>))
+    func directory(_ id: String, url: URL, tree: Tree) {
+        directories.append(Directory(id: id, url: url, entries: tree.items.filter({ $0 is Tree.Blob }).count,
+                                     sub: tree.items.filter({ $0 is Tree.Sub }).count))
     }
     
     func save(_ url: URL) {
@@ -89,7 +90,7 @@ class Index {
             serial.serial(trees)
         }
         serial.hash()
-        try? serial.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
+        try! serial.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
     }
     
     private func entry(_ parse: Parse, url: URL) throws -> Entry {
@@ -117,7 +118,9 @@ class Index {
     
     private func directory(_ parse: Parse, url: URL) throws -> Directory {
         var tree = Directory()
-        tree.url = url.appendingPathComponent(try parse.variable())
+        tree.url = {
+            $0.isEmpty ? url : url.appendingPathComponent($0)
+        } (try parse.variable())
         tree.entries = try {
             if $0 == nil { throw Failure.Index.malformed }
             return $0!

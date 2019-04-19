@@ -102,6 +102,7 @@ class TestIndex: XCTestCase {
         XCTAssertEqual(2, index?.directories.count)
         XCTAssertEqual("9d59da034b57e98e13dacdb496202495332933e4", index?.directories.first?.id)
         XCTAssertEqual("", index?.directories.first?.url.path.dropFirst(url.path.count + 1))
+        XCTAssertEqual(url, index?.directories.first?.url)
         XCTAssertEqual(22, index?.directories.first?.entries)
         XCTAssertEqual(1, index?.directories.first?.sub)
         XCTAssertEqual("7a54af5932f25ec362249f33aa6b730bacdf58cb", index?.directories.last?.id)
@@ -171,11 +172,27 @@ class TestIndex: XCTestCase {
         try! "hello world".write(to: file, atomically: true, encoding: .utf8)
         let index = Index()
         let tree = Tree(url)
-        //index.tree("asd", url: url, tree: tree)
+        index.directory("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", url: url, tree: tree)
         XCTAssertEqual(1, index.directories.count)
         XCTAssertEqual(url, index.directories.first?.url)
         XCTAssertEqual(1, index.directories.first?.entries)
         XCTAssertEqual(0, index.directories.first?.sub)
-        XCTAssertEqual("asd", index.directories.first?.id)
+        XCTAssertEqual("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", index.directories.first?.id)
+    }
+    
+    func testAddTreeBackAndForth() {
+        let file = url.appendingPathComponent("file.txt")
+        try! "hello world".write(to: file, atomically: true, encoding: .utf8)
+        var index = Index()
+        let tree = Tree(url)
+        index.directory("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", url: url, tree: tree)
+        index.save(url)
+        index = Index(url)!
+        XCTAssertNotNil(index)
+        XCTAssertEqual(1, index.directories.count)
+        XCTAssertEqual(url, index.directories.first?.url)
+        XCTAssertEqual(1, index.directories.first?.entries)
+        XCTAssertEqual(0, index.directories.first?.sub)
+        XCTAssertEqual("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", index.directories.first?.id)
     }
 }

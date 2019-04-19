@@ -37,14 +37,16 @@ public class Repository {
             guard !user.name.isEmpty else { throw Failure.Commit.credentials }
             guard !user.email.isEmpty else { throw Failure.Commit.credentials }
             guard !message.isEmpty else { throw Failure.Commit.message }
-            let index = Index(url) ?? Index()
-            let tree = Tree.save(url)
-            try files.forEach { try self?.add($0, index: index) }
             user.date = Date()
+            let index = Index(url) ?? Index()
+            let tree = Tree(url)
+            let treeId = tree.save(url)
+            try files.forEach { try self?.add($0, index: index) }
+            index.directory(treeId, url: url, tree: tree)
             let commit = Commit()
             commit.author = user
             commit.committer = user
-            commit.tree = tree
+            commit.tree = treeId
             commit.message = message
             commit.parent = self?.headId
             commit.save(url)
@@ -71,8 +73,8 @@ public class Repository {
     }
     
     var tree: Tree? {
-        guard let head = self.head else { return nil }
-        return try? tree(head.tree)
+        guard let id = Index(url)?.directories.first?.id else { return nil }
+        return try? tree(id)
     }
     
     func add(_ file: URL) throws {

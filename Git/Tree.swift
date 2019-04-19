@@ -13,22 +13,6 @@ class Tree {
     private(set) var items = [Item]()
     private static let map: [String: Item.Type] = ["100644": Blob.self, "40000": Sub.self]
     
-    @discardableResult class func save(_ url: URL) -> String {
-        let tree = Tree(url)
-        let serial = Serial()
-        tree.items.sorted(by: { $0.name < $1.name }).forEach { item in
-            serial.string("\(Tree.map.first(where: { $0.1 == type(of: item) })!.key) ")
-            serial.nulled(item.name)
-            serial.hex(item.id)
-        }
-        let hash = Hash().tree(serial.data)
-        let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
-        try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try! Press().compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
-                                               options: .atomic)
-        return hash.1
-    }
-    
     init(_ data: Data) throws {
         let parse = Parse(data)
         guard "tree" == (try? parse.ascii(" ")) else { throw Failure.Tree.unreadable }
@@ -55,5 +39,20 @@ class Tree {
                 items.append(item)
             }
         }
+    }
+    
+    @discardableResult func save(_ url: URL) -> String {
+        let serial = Serial()
+        items.sorted(by: { $0.name < $1.name }).forEach { item in
+            serial.string("\(Tree.map.first(where: { $0.1 == type(of: item) })!.key) ")
+            serial.nulled(item.name)
+            serial.hex(item.id)
+        }
+        let hash = Hash().tree(serial.data)
+        let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
+        try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        try! Press().compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
+                                            options: .atomic)
+        return hash.1
     }
 }
