@@ -74,7 +74,7 @@ class TestIndex: XCTestCase {
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
-        XCTAssertTrue(index!.trees.isEmpty)
+        XCTAssertTrue(index!.directories.isEmpty)
         XCTAssertEqual("be8343716dab3cb0a2f40813b3f0077bb0cb1a80", index?.id)
     }
     
@@ -88,7 +88,7 @@ class TestIndex: XCTestCase {
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
-        XCTAssertTrue(index!.trees.isEmpty)
+        XCTAssertTrue(index!.directories.isEmpty)
     }
     
     func testIndex2() {
@@ -99,15 +99,15 @@ class TestIndex: XCTestCase {
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
         XCTAssertEqual("5b7d07ddf4a539c8344a734364ddc4b17099c5d7", index?.id)
-        XCTAssertEqual(2, index?.trees.count)
-        XCTAssertEqual("9d59da034b57e98e13dacdb496202495332933e4", index?.trees.first?.id)
-        XCTAssertEqual("", index?.trees.first?.url.path.dropFirst(url.path.count + 1))
-        XCTAssertEqual(22, index?.trees.first?.entries)
-        XCTAssertEqual(1, index?.trees.first?.subtrees)
-        XCTAssertEqual("7a54af5932f25ec362249f33aa6b730bacdf58cb", index?.trees.last?.id)
-        XCTAssertEqual("some directory", index?.trees.last?.url.path.dropFirst(url.path.count + 1))
-        XCTAssertEqual(2, index?.trees.last?.entries)
-        XCTAssertEqual(0, index?.trees.last?.subtrees)
+        XCTAssertEqual(2, index?.directories.count)
+        XCTAssertEqual("9d59da034b57e98e13dacdb496202495332933e4", index?.directories.first?.id)
+        XCTAssertEqual("", index?.directories.first?.url.path.dropFirst(url.path.count + 1))
+        XCTAssertEqual(22, index?.directories.first?.entries)
+        XCTAssertEqual(1, index?.directories.first?.sub)
+        XCTAssertEqual("7a54af5932f25ec362249f33aa6b730bacdf58cb", index?.directories.last?.id)
+        XCTAssertEqual("some directory", index?.directories.last?.url.path.dropFirst(url.path.count + 1))
+        XCTAssertEqual(2, index?.directories.last?.entries)
+        XCTAssertEqual(0, index?.directories.last?.sub)
     }
     
     func testIndex2BackAndForth() {
@@ -120,15 +120,15 @@ class TestIndex: XCTestCase {
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
-        XCTAssertEqual(2, index?.trees.count)
-        XCTAssertEqual("9d59da034b57e98e13dacdb496202495332933e4", index?.trees.first?.id)
-        XCTAssertEqual("", index?.trees.first?.url.path.dropFirst(url.path.count + 1))
-        XCTAssertEqual(22, index?.trees.first?.entries)
-        XCTAssertEqual(1, index?.trees.first?.subtrees)
-        XCTAssertEqual("7a54af5932f25ec362249f33aa6b730bacdf58cb", index?.trees.last?.id)
-        XCTAssertEqual("some directory", index?.trees.last?.url.path.dropFirst(url.path.count + 1))
-        XCTAssertEqual(2, index?.trees.last?.entries)
-        XCTAssertEqual(0, index?.trees.last?.subtrees)
+        XCTAssertEqual(2, index?.directories.count)
+        XCTAssertEqual("9d59da034b57e98e13dacdb496202495332933e4", index?.directories.first?.id)
+        XCTAssertEqual("", index?.directories.first?.url.path.dropFirst(url.path.count + 1))
+        XCTAssertEqual(22, index?.directories.first?.entries)
+        XCTAssertEqual(1, index?.directories.first?.sub)
+        XCTAssertEqual("7a54af5932f25ec362249f33aa6b730bacdf58cb", index?.directories.last?.id)
+        XCTAssertEqual("some directory", index?.directories.last?.url.path.dropFirst(url.path.count + 1))
+        XCTAssertEqual(2, index?.directories.last?.entries)
+        XCTAssertEqual(0, index?.directories.last?.sub)
     }
     
     func testIndex3() {
@@ -139,7 +139,7 @@ class TestIndex: XCTestCase {
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
         XCTAssertEqual("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", index?.id)
-        XCTAssertEqual(2, index?.trees.count)
+        XCTAssertEqual(2, index?.directories.count)
     }
     
     func testIndex3BackAndForth() {
@@ -152,7 +152,7 @@ class TestIndex: XCTestCase {
         XCTAssertNotNil(index)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(22, index?.entries.count)
-        XCTAssertEqual(2, index?.trees.count)
+        XCTAssertEqual(2, index?.directories.count)
     }
     
     func testAddEntry() {
@@ -172,10 +172,10 @@ class TestIndex: XCTestCase {
         let index = Index()
         let tree = Tree(url)
         //index.tree("asd", url: url, tree: tree)
-        XCTAssertEqual(1, index.trees.count)
-        XCTAssertEqual(url, index.trees.first?.url)
-        XCTAssertEqual(1, index.trees.first?.entries)
-        XCTAssertEqual(0, index.trees.first?.subtrees)
-        XCTAssertEqual("asd", index.trees.first?.id)
+        XCTAssertEqual(1, index.directories.count)
+        XCTAssertEqual(url, index.directories.first?.url)
+        XCTAssertEqual(1, index.directories.first?.entries)
+        XCTAssertEqual(0, index.directories.first?.sub)
+        XCTAssertEqual("asd", index.directories.first?.id)
     }
 }

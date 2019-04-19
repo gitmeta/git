@@ -15,17 +15,17 @@ class Index {
         fileprivate(set) var conflicts = false
     }
     
-    struct Tree {
+    struct Directory {
         fileprivate(set) var id = ""
         fileprivate(set) var url = URL(fileURLWithPath: "")
         fileprivate(set) var entries = 0
-        fileprivate(set) var subtrees = 0
+        fileprivate(set) var sub = 0
     }
     
     private(set) var id = ""
     private(set) var version = 2
     private(set) var entries = [Entry]()
-    private(set) var trees = [Tree]()
+    private(set) var directories = [Directory]()
     
     init() { }
     
@@ -36,13 +36,13 @@ class Index {
             let version = try? parse.number(),
             let count = try? parse.number(),
             let entries = try? (0 ..< count).map({ _ in try entry(parse, url: url) }),
-            let tree = try? trees(parse, url: url),
+            let tree = try? directories(parse, url: url),
             let id = try? parse.hash(),
             parse.index == parse.data.count
         else { return nil }
         self.version = version
         self.entries = entries
-        self.trees = tree
+        self.directories = tree
         self.id = id
     }
     
@@ -54,7 +54,7 @@ class Index {
         entries.append(entry)
     }
     
-    func tree(_ id: String, url: URL, tree: Tree) {
+    func tree(_ id: String, url: URL, tree: Directory) {
 //        trees.append(Tree(id: id, url: url, entries: tree., subtrees: <#T##Int#>))
     }
     
@@ -76,12 +76,12 @@ class Index {
             serial.number(UInt16($0.url.path.dropFirst(url.path.count + 1).count))
             serial.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
         }
-        if !trees.isEmpty {
+        if !directories.isEmpty {
             let trees = Serial()
-            self.trees.sorted(by: { $0.url.path < $1.url.path }).forEach {
+            self.directories.sorted(by: { $0.url.path < $1.url.path }).forEach {
                 trees.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
                 trees.string("\($0.entries) ")
-                trees.string("\($0.subtrees)\n")
+                trees.string("\($0.sub)\n")
                 trees.hex($0.id)
             }
             serial.string("TREE")
@@ -108,21 +108,21 @@ class Index {
         return entry
     }
     
-    private func trees(_ parse: Parse, url: URL) throws -> [Tree] {
+    private func directories(_ parse: Parse, url: URL) throws -> [Directory] {
         let limit = (try parse.tree())
-        var result = [Tree]()
-        while parse.index < limit { result.append(try tree(parse, url: url)) }
+        var result = [Directory]()
+        while parse.index < limit { result.append(try directory(parse, url: url)) }
         return result
     }
     
-    private func tree(_ parse: Parse, url: URL) throws -> Tree {
-        var tree = Tree()
+    private func directory(_ parse: Parse, url: URL) throws -> Directory {
+        var tree = Directory()
         tree.url = url.appendingPathComponent(try parse.variable())
         tree.entries = try {
             if $0 == nil { throw Failure.Index.malformed }
             return $0!
         } (Int(try parse.ascii(" ")))
-        tree.subtrees = try {
+        tree.sub = try {
             if $0 == nil { throw Failure.Index.malformed }
             return $0!
         } (Int(try parse.ascii("\n")))

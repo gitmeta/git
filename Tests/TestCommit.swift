@@ -211,7 +211,7 @@ Add project files.
             repository.user.name = "hello"
             repository.user.email = "world"
             repository.commit([self.file], message: "hello world") {
-                XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", Index(self.url)?.trees.first?.id)
+                XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", Index(self.url)?.directories.first?.id)
                 expect.fulfill()
             }
         }
