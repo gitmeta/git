@@ -112,24 +112,33 @@ class Index {
     private func directories(_ parse: Parse, url: URL) throws -> [Directory] {
         let limit = (try parse.tree())
         var result = [Directory]()
-        while parse.index < limit { result.append(try directory(parse, url: url)) }
+        while parse.index < limit { result.append(try directory(parse, limit: limit, url: url)) }
         return result
     }
     
-    private func directory(_ parse: Parse, url: URL) throws -> Directory {
+    private func directory(_ parse: Parse, limit: Int, url: URL) throws -> Directory {
         var tree = Directory()
         tree.url = {
             $0.isEmpty ? url : url.appendingPathComponent($0)
         } (try parse.variable())
-        tree.entries = try {
-            if $0 == nil { throw Failure.Index.malformed }
-            return $0!
-        } (Int(try parse.ascii(" ")))
-        tree.sub = try {
-            if $0 == nil { throw Failure.Index.malformed }
-            return $0!
-        } (Int(try parse.ascii("\n")))
-        tree.id = try parse.hash()
+        
+        if parse.index < limit {
+            tree.entries = try {
+                if $0 == nil { throw Failure.Index.malformed }
+                return $0!
+            } (Int(try parse.ascii(" ")))
+            
+            if parse.index < limit {
+                tree.sub = try {
+                    if $0 == nil { throw Failure.Index.malformed }
+                    return $0!
+                } (Int(try parse.ascii("\n")))
+                
+                if parse.index < limit {
+                    tree.id = try parse.hash()
+                }
+            }
+        }
         return tree
     }
 }

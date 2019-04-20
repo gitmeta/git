@@ -8,7 +8,6 @@ class TestStatus: XCTestCase {
     override func setUp() {
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
-        repository = Repository(url)
     }
     
     override func tearDown() {
@@ -17,11 +16,14 @@ class TestStatus: XCTestCase {
     
     func testNoChanges() {
         let expect = expectation(description: "")
-        DispatchQueue.global(qos: .background).async {
-            self.repository.status {
-                XCTAssertTrue($0.isEmpty)
-                XCTAssertEqual(Thread.main, Thread.current)
-                expect.fulfill()
+        Git.create(url) {
+            self.repository = $0
+            DispatchQueue.global(qos: .background).async {
+                self.repository.status {
+                    XCTAssertTrue($0.isEmpty)
+                    XCTAssertEqual(Thread.main, Thread.current)
+                    expect.fulfill()
+                }
             }
         }
         waitForExpectations(timeout: 1)
@@ -29,10 +31,9 @@ class TestStatus: XCTestCase {
     
     func testEmpty() {
         let expect = expectation(description: "")
-        var repository: Repository!
         Git.create(url) {
-            repository = $0
-            repository.status {
+            self.repository = $0
+            self.repository.status {
                 XCTAssertTrue($0.isEmpty)
                 expect.fulfill()
             }
@@ -43,10 +44,13 @@ class TestStatus: XCTestCase {
     func testUntracked() {
         let expect = expectation(description: "")
         try! Data("hello world".utf8).write(to: url.appendingPathComponent("myfile.txt"))
-        repository.status {
-            XCTAssertEqual(1, $0.count)
-            XCTAssertEqual(.untracked, $0.first?.value)
-            expect.fulfill()
+        Git.create(url) {
+            self.repository = $0
+            self.repository.status {
+                XCTAssertEqual(1, $0.count)
+                XCTAssertEqual(.untracked, $0.first?.value)
+                expect.fulfill()
+            }
         }
         waitForExpectations(timeout: 1)
     }
@@ -58,13 +62,16 @@ class TestStatus: XCTestCase {
         try! Data("hello world".utf8).write(to: file)
         try! Data("hello world 2".utf8).write(to: file2)
         let index = Index(url) ?? Index()
-        try? repository.add(file, index: index)
-        index.save(url)
-        repository.status {
-            XCTAssertEqual(2, $0.count)
-            XCTAssertEqual(.untracked, $0[file2])
-            XCTAssertEqual(.added, $0[file])
-            expect.fulfill()
+        Git.create(url) {
+            self.repository = $0
+            try? self.repository.add(file, index: index)
+            index.save(self.url)
+            self.repository.status {
+                XCTAssertEqual(2, $0.count)
+                XCTAssertEqual(.untracked, $0[file2])
+                XCTAssertEqual(.added, $0[file])
+                expect.fulfill()
+            }
         }
         waitForExpectations(timeout: 1)
     }
@@ -74,12 +81,15 @@ class TestStatus: XCTestCase {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
         let index = Index(url) ?? Index()
-        try? repository.add(file, index: index)
-        index.save(url)
-        repository.status {
-            XCTAssertEqual(1, $0.count)
-            XCTAssertEqual(.added, $0.first?.value)
-            expect.fulfill()
+        Git.create(url) {
+            self.repository = $0
+            try? self.repository.add(file, index: index)
+            index.save(self.url)
+            self.repository.status {
+                XCTAssertEqual(1, $0.count)
+                XCTAssertEqual(.added, $0.first?.value)
+                expect.fulfill()
+            }
         }
         waitForExpectations(timeout: 1)
     }

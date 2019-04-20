@@ -11,7 +11,7 @@ class Tree {
     class Sub: Item { }
     
     private(set) var items = [Item]()
-    private static let map: [String: Item.Type] = ["100644": Blob.self, "40000": Sub.self]
+    private static let map: [String: Item.Type] = ["100644": Blob.self, "100755": Blob.self, "40000": Sub.self]
     
     init(_ data: Data) throws {
         let parse = Parse(data)

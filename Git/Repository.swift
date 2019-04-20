@@ -62,12 +62,12 @@ public class Repository {
     
     var HEAD: String {
         return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
-            UTF8.self).dropFirst(5))
+            UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")
     }
     
     var headId: String? {
         guard let data = try? Data(contentsOf: url.appendingPathComponent(".git/" + HEAD)) else { return nil }
-        return String(decoding: data, as: UTF8.self)
+        return String(decoding: data, as: UTF8.self).replacingOccurrences(of: "\n", with: "")
     }
     
     var head: Commit? {
@@ -79,8 +79,8 @@ public class Repository {
     }
     
     var tree: Tree? {
-        guard let id = Index(url)?.directories.first?.id else { return nil }
-        return try? tree(id)
+        guard let head = self.head else { return nil }
+        return try? tree(head.tree)
     }
     
     func add(_ file: URL, index: Index) throws {
