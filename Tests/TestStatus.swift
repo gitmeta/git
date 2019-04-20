@@ -51,6 +51,24 @@ class TestStatus: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
+    func testAddedWithIndex() {
+        let expect = expectation(description: "")
+        let file = url.appendingPathComponent("myfile.txt")
+        let file2 = url.appendingPathComponent("myfile2.txt")
+        try! Data("hello world".utf8).write(to: file)
+        try! Data("hello world 2".utf8).write(to: file2)
+        let index = Index(url) ?? Index()
+        try? repository.add(file, index: index)
+        index.save(url)
+        repository.status {
+            XCTAssertEqual(2, $0.count)
+            XCTAssertEqual(.untracked, $0[file2])
+            XCTAssertEqual(.added, $0[file])
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
     func testAdded() {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")

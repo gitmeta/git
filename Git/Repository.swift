@@ -17,7 +17,8 @@ public class Repository {
             let index = Index(location)
             let tree = self?.tree
             return contents.reduce(into: [URL: Status]()) { result, url in
-                if let entries = index?.entries.filter({ $0.url == url }) {
+                if let entries = index?.entries.filter({ $0.url == url }),
+                    !entries.isEmpty {
                     if let hash = self?.hasher.file(url).1,
                         entries.contains(where: { $0.id == hash }) {
                         if tree?.items.contains(where: { $0.id == hash }) == true {
