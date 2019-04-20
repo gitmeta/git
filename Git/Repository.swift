@@ -82,18 +82,7 @@ public class Repository {
         return try? tree(id)
     }
     
-    func add(_ file: URL) throws {
-        let index = Index(url) ?? Index()
-        try add(file, index: index)
-        index.save(url)
-    }
-    
-    func tree(_ id: String) throws -> Tree {
-        return try Tree(press.decompress(
-            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
-    }
-    
-    private func add(_ file: URL, index: Index) throws {
+    func add(_ file: URL, index: Index) throws {
         guard file.path.contains(url.path) else { throw Failure.Add.outside }
         guard FileManager.default.fileExists(atPath: file.path) else { throw Failure.Add.not }
         let hash = hasher.file(file)
@@ -104,6 +93,11 @@ public class Repository {
         let compressed = press.compress(hash.0)
         try compressed.write(to: location, options: .atomic)
         index.entry(hash.1, url: file)
+    }
+    
+    func tree(_ id: String) throws -> Tree {
+        return try Tree(press.decompress(
+            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
     }
     
     private var contents: [URL] {

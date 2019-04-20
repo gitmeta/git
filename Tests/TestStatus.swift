@@ -55,7 +55,9 @@ class TestStatus: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        try? repository.add(file)
+        let index = Index(url) ?? Index()
+        try? repository.add(file, index: index)
+        index.save(url)
         repository.status {
             XCTAssertEqual(1, $0.count)
             XCTAssertEqual(.added, $0.first?.value)

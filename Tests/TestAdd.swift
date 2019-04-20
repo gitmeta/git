@@ -19,7 +19,9 @@ class TestAdd: XCTestCase {
     func testFirstFile() {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        try? repository.add(file)
+        let i = Index(url) ?? Index()
+        try? repository.add(file, index: i)
+        i.save(url)
         let data = try? Data(contentsOf: url.appendingPathComponent(".git/index"))
         let index = Index(url)
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/index").path))
@@ -39,8 +41,9 @@ class TestAdd: XCTestCase {
     func testDoubleAdd() {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        try? repository.add(file)
-        XCTAssertThrowsError(try repository.add(file))
+        let index = Index(url) ?? Index()
+        try? repository.add(file, index: index)
+        XCTAssertThrowsError(try repository.add(file, index: index))
     }
     
     func testCompressDecompress() {
@@ -52,12 +55,14 @@ class TestAdd: XCTestCase {
     
     func testNonExistingFile() {
         let file = url.appendingPathComponent("myfile.txt")
-        XCTAssertThrowsError(try repository.add(file))
+        let index = Index(url) ?? Index()
+        XCTAssertThrowsError(try repository.add(file, index: index))
     }
     
     func testOutsideProject() {
         let file = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        XCTAssertThrowsError(try repository.add(file))
+        let index = Index(url) ?? Index()
+        XCTAssertThrowsError(try repository.add(file, index: index))
     }
 }
