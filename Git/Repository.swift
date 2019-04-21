@@ -102,9 +102,7 @@ public class Repository {
     }
     
     private var contents: [URL] {
-        var result = try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
-        result = result.compactMap({ $0.hasDirectoryPath ? nil : $0.resolvingSymlinksInPath() })
-        result.removeAll(where: { $0.path.contains(".git") })
-        return result
+        return FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil)?.compactMap({ $0 as? URL })
+            .filter { $0 == $0 } ?? []
     }
 }

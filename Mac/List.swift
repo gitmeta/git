@@ -31,7 +31,7 @@ class List: NSScrollView {
                     guard
                         let top = self?.topAnchor,
                         let last = self?.render(files, origin: top, parent: nil)
-                        else { return }
+                    else { return }
                     self?.last(last)
                 }
             }

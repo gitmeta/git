@@ -61,6 +61,10 @@
 		2051FABA225C78DD00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
 		2051FABB225C78E300BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB7225C78D000BC00BC /* libGit.a */; };
 		2051FABC225C78EA00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
+		20671BE9226C70A700A74B7E /* TestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BE8226C70A700A74B7E /* TestList.swift */; };
+		20671BEB226C79E900A74B7E /* Ignore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BEA226C79E900A74B7E /* Ignore.swift */; };
+		20671BEC226C79E900A74B7E /* Ignore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BEA226C79E900A74B7E /* Ignore.swift */; };
+		20671BEE226C7A0000A74B7E /* TestIgnore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BED226C7A0000A74B7E /* TestIgnore.swift */; };
 		2073D8772267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
 		2073D8782267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
 		20AFB33B2265B77000A3ECC0 /* TestHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33A2265B77000A3ECC0 /* TestHead.swift */; };
@@ -142,6 +146,9 @@
 		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB8225C78D000BC00BC /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20671BE8226C70A700A74B7E /* TestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestList.swift; sourceTree = "<group>"; };
+		20671BEA226C79E900A74B7E /* Ignore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ignore.swift; sourceTree = "<group>"; };
+		20671BED226C7A0000A74B7E /* TestIgnore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestIgnore.swift; sourceTree = "<group>"; };
 		2073D8762267283E00631BCB /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		20AFB33A2265B77000A3ECC0 /* TestHead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHead.swift; sourceTree = "<group>"; };
 		20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCommit.swift; sourceTree = "<group>"; };
@@ -209,6 +216,7 @@
 				2048A0CC225C744400290E54 /* Failure.swift */,
 				2048A0D5225C744400290E54 /* Git.swift */,
 				2048A0CD225C744400290E54 /* Hash.swift */,
+				20671BEA226C79E900A74B7E /* Ignore.swift */,
 				2048A0CE225C744400290E54 /* Index.swift */,
 				2048A0D6225C744400290E54 /* Parse.swift */,
 				2048A0D1225C744400290E54 /* Press.swift */,
@@ -240,11 +248,13 @@
 				2048A0F4225C745100290E54 /* TestGit.swift */,
 				2048A0F8225C745100290E54 /* TestHash.swift */,
 				20AFB33A2265B77000A3ECC0 /* TestHead.swift */,
+				20671BED226C7A0000A74B7E /* TestIgnore.swift */,
 				2048A0F0225C745100290E54 /* TestIndex.swift */,
+				20671BE8226C70A700A74B7E /* TestList.swift */,
 				2048A0F6225C745100290E54 /* TestPress.swift */,
 				2048A0FD225C745100290E54 /* TestStatus.swift */,
-				20AFB33E2265DA5200A3ECC0 /* TestTree.swift */,
 				20B4F01D226B798F0033710D /* TestSubtree.swift */,
+				20AFB33E2265DA5200A3ECC0 /* TestTree.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -523,6 +533,7 @@
 				2048A0DA225C744400290E54 /* Hash.swift in Sources */,
 				2048A0E8225C744400290E54 /* Status.swift in Sources */,
 				2048A0E6225C744400290E54 /* Tree.swift in Sources */,
+				20671BEB226C79E900A74B7E /* Ignore.swift in Sources */,
 				2048A0DC225C744400290E54 /* Index.swift in Sources */,
 				2073D8772267283E00631BCB /* Dispatch.swift in Sources */,
 				2048A0EC225C744400290E54 /* Parse.swift in Sources */,
@@ -542,6 +553,7 @@
 				2048A0DB225C744400290E54 /* Hash.swift in Sources */,
 				2048A0E9225C744400290E54 /* Status.swift in Sources */,
 				2048A0E7225C744400290E54 /* Tree.swift in Sources */,
+				20671BEC226C79E900A74B7E /* Ignore.swift in Sources */,
 				2048A0DD225C744400290E54 /* Index.swift in Sources */,
 				2073D8782267283E00631BCB /* Dispatch.swift in Sources */,
 				2048A0ED225C744400290E54 /* Parse.swift in Sources */,
@@ -558,7 +570,9 @@
 				2048A105225C745100290E54 /* TestGit.swift in Sources */,
 				2048A101225C745100290E54 /* TestIndex.swift in Sources */,
 				20AFB33D2265BA7800A3ECC0 /* TestCommit.swift in Sources */,
+				20671BE9226C70A700A74B7E /* TestList.swift in Sources */,
 				2048A10B225C745100290E54 /* TestAdd.swift in Sources */,
+				20671BEE226C7A0000A74B7E /* TestIgnore.swift in Sources */,
 				20B4F01E226B798F0033710D /* TestSubtree.swift in Sources */,
 				20AFB33B2265B77000A3ECC0 /* TestHead.swift in Sources */,
 				2048A10E225C745100290E54 /* TestStatus.swift in Sources */,
