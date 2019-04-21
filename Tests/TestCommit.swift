@@ -7,13 +7,14 @@ class TestCommit: XCTestCase {
     
     override func setUp() {
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
+        try? FileManager.default.removeItem(at: url)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world\n".utf8).write(to: file)
     }
     
     override func tearDown() {
-        try? FileManager.default.removeItem(at: url)
+        try! FileManager.default.removeItem(at: url)
     }
     
     func testCreate() {

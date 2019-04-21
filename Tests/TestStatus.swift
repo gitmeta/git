@@ -48,7 +48,7 @@ class TestStatus: XCTestCase {
             self.repository = $0
             self.repository.status {
                 XCTAssertEqual(1, $0.count)
-                XCTAssertEqual(.untracked, $0.first?.value)
+                XCTAssertEqual(.untracked, $0.first?.1)
                 expect.fulfill()
             }
         }
@@ -57,19 +57,19 @@ class TestStatus: XCTestCase {
     
     func testAddedWithIndex() {
         let expect = expectation(description: "")
-        let file = url.appendingPathComponent("myfile.txt")
+        let file1 = url.appendingPathComponent("myfile.txt")
         let file2 = url.appendingPathComponent("myfile2.txt")
-        try! Data("hello world".utf8).write(to: file)
+        try! Data("hello world".utf8).write(to: file1)
         try! Data("hello world 2".utf8).write(to: file2)
         let index = Index(url) ?? Index()
         Git.create(url) {
             self.repository = $0
-            try? self.repository.add(file, index: index)
+            try? self.repository.add(file1, index: index)
             index.save(self.url)
             self.repository.status {
                 XCTAssertEqual(2, $0.count)
-                XCTAssertEqual(.untracked, $0[file2])
-                XCTAssertEqual(.added, $0[file])
+                XCTAssertEqual(.untracked, $0[1].1)
+                XCTAssertEqual(.added, $0[0].1)
                 expect.fulfill()
             }
         }
@@ -87,7 +87,7 @@ class TestStatus: XCTestCase {
             index.save(self.url)
             self.repository.status {
                 XCTAssertEqual(1, $0.count)
-                XCTAssertEqual(.added, $0.first?.value)
+                XCTAssertEqual(.added, $0.first?.1)
                 expect.fulfill()
             }
         }
@@ -106,7 +106,7 @@ class TestStatus: XCTestCase {
                 try! Data("modified".utf8).write(to: file)
                 self.repository.status {
                     XCTAssertEqual(1, $0.count)
-                    XCTAssertEqual(.modified, $0.first?.value)
+                    XCTAssertEqual(.modified, $0.first?.1)
                     expect.fulfill()
                 }
             }

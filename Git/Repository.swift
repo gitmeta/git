@@ -11,24 +11,24 @@ public class Repository {
         self.url = url
     }
     
-    public func status(_ result: @escaping(([URL: Status]) -> Void)) {
+    public func status(_ result: @escaping(([(URL, Status)]) -> Void)) {
         dispatch.background({ [weak self] in
-            guard let contents = self?.contents, let location = self?.url else { return [:] }
+            guard let location = self?.url, let contents = self?.contents else { return [] }
             let index = Index(location)
             let tree = self?.tree
-            return contents.reduce(into: [URL: Status]()) { result, url in
+            return contents.reduce(into: [(URL, Status)]()) { result, url in
                 if let entries = index?.entries.filter({ $0.url == url }),
                     !entries.isEmpty {
                     if let hash = self?.hasher.file(url).1,
                         entries.contains(where: { $0.id == hash }) {
                         if tree?.items.contains(where: { $0.id == hash }) != true {
-                            result[url] = .added
+                            result.append((url, .added))
                         }
                     } else {
-                        result[url] = .modified
+                        result.append((url, .modified))
                     }
                 } else {
-                    result[url] = .untracked
+                    result.append((url, .untracked))
                 }
             }
         }, success: result)
@@ -103,6 +103,7 @@ public class Repository {
         let ignore = Ignore(url)
         return FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil)?
             .map({ ($0 as! URL).resolvingSymlinksInPath() })
-            .filter { !ignore.url($0) } ?? []
+            .filter({ !ignore.url($0) })
+            .sorted(by: { $0.path.compare($1.path, options: .caseInsensitive) != .orderedDescending }) ?? []
     }
 }
