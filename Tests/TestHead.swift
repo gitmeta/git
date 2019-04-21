@@ -6,11 +6,12 @@ class TestHead: XCTestCase {
     
     override func setUp() {
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
+        try? FileManager.default.removeItem(at: url)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
     
     override func tearDown() {
-        try? FileManager.default.removeItem(at: url)
+        try! FileManager.default.removeItem(at: url)
     }
     
     func testHEAD() {

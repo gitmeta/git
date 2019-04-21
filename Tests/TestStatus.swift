@@ -124,8 +124,7 @@ class TestStatus: XCTestCase {
             self.repository.user.email = "df"
             self.repository.commit([file], message: "First commit") {
                 self.repository.status {
-                    XCTAssertEqual(1, $0.count)
-                    XCTAssertEqual(.current, $0.first?.value)
+                    XCTAssertTrue($0.isEmpty)
                     expect.fulfill()
                 }
             }

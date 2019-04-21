@@ -5,7 +5,6 @@ class Item: NSControl {
     weak var parent: Item?
     weak var top: NSLayoutConstraint? { didSet { oldValue?.isActive = false; top?.isActive = true } }
     weak var list: List!
-    var status = Status.current { didSet { update() } }
     let url: URL
     let indent: CGFloat
     private(set) weak var stage: Button!
@@ -14,7 +13,7 @@ class Item: NSControl {
     private weak var hashtag: Label!
     private var edited = false
     
-    init(_ file: URL, indent: CGFloat) {
+    init(_ file: URL, status: Status, indent: CGFloat) {
         self.url = file
         self.indent = indent
         super.init(frame: .zero)
@@ -55,7 +54,6 @@ class Item: NSControl {
         stage.imageScaling = .scaleNone
         stage.height.constant = 40
         stage.width.constant = 40
-        stage.isHidden = true
         addSubview(stage)
         self.stage = stage
         
@@ -93,15 +91,9 @@ class Item: NSControl {
             handle.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             handle.leftAnchor.constraint(equalTo: leftAnchor, constant: indent * 20).isActive = true
         }
-    }
-    
-    required init?(coder: NSCoder) { return nil }
-    override func mouseDown(with: NSEvent) { layer!.backgroundColor = NSColor.shade.cgColor }
-    override func mouseUp(with: NSEvent) { layer!.backgroundColor = NSColor.clear.cgColor }
-    
-    private func update() {
+        
         switch status {
-        case .current, .deleted:
+        case .deleted:
             badge.layer!.backgroundColor = NSColor.clear.cgColor
             hashtag.stringValue = ""
         case .added:
@@ -123,8 +115,11 @@ class Item: NSControl {
             badge.layer!.backgroundColor = NSColor.untracked.cgColor
             hashtag.stringValue = .local("Item.untracked")
         }
-        stage.isHidden = status == .current
     }
+    
+    required init?(coder: NSCoder) { return nil }
+    override func mouseDown(with: NSEvent) { layer!.backgroundColor = NSColor.shade.cgColor }
+    override func mouseUp(with: NSEvent) { layer!.backgroundColor = NSColor.clear.cgColor }
     
     @objc private func handle(_ handle: Button) {
         if handle.state == .on {

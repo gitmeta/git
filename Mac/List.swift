@@ -65,8 +65,8 @@ class List: NSScrollView {
     }
     
     private func render(_ files: [URL], origin: NSLayoutYAxisAnchor, parent: Item?) -> Item? {
-        return files.reduce((nil, origin)) {
-            let item = Item($1, indent: parent == nil ? 0 : parent!.indent + 1)
+        /*return files.reduce((nil, origin)) {
+            let item = Item($1, status: , indent: parent == nil ? 0 : parent!.indent + 1)
             item.parent = parent
             item.list = self
             documentView!.addSubview(item)
@@ -75,7 +75,8 @@ class List: NSScrollView {
             item.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             item.top = item.topAnchor.constraint(equalTo: $0.1)
             return (item, item.bottomAnchor)
-        }.0
+        }.0*/
+        return nil
     }
     
     private func last(_ bottom: NSView) {

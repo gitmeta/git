@@ -71,7 +71,7 @@ import UserNotifications
         tools.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
         
         timer.resume()
-        timer.setEventHandler { self.repository?.status { s in self.list.items.forEach { $0.status = s[$0.url] ?? .current } } }
+//        timer.setEventHandler { self.repository?.status { s in self.list.items.forEach { $0.status = s[$0.url] ?? .current } } }
         timer.schedule(deadline: .now(), repeating: 2)
         
         NSUserNotificationCenter.default.delegate = self

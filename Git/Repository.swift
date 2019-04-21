@@ -21,9 +21,7 @@ public class Repository {
                     !entries.isEmpty {
                     if let hash = self?.hasher.file(url).1,
                         entries.contains(where: { $0.id == hash }) {
-                        if tree?.items.contains(where: { $0.id == hash }) == true {
-                            result[url] = .current
-                        } else {
+                        if tree?.items.contains(where: { $0.id == hash }) != true {
                             result[url] = .added
                         }
                     } else {
@@ -102,7 +100,9 @@ public class Repository {
     }
     
     private var contents: [URL] {
-        return FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil)?.compactMap({ $0 as? URL })
-            .filter { $0 == $0 } ?? []
+        let ignore = Ignore(url)
+        return FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil)?
+            .map({ ($0 as! URL).resolvingSymlinksInPath() })
+            .filter { !ignore.url($0) } ?? []
     }
 }
