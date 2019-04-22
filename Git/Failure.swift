@@ -23,6 +23,7 @@ public struct Failure: LocalizedError {
         public static let empty = Failure("Nothing to commit.")
         public static let credentials = Failure("Username and Email need to be configured.")
         public static let message = Failure("Commit message can't be empty.")
+        public static let ignored = Failure("Attemping to commit ignored file.")
     }
     
     public struct Add {

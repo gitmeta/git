@@ -3,11 +3,13 @@ import XCTest
 
 class TestIndex: XCTestCase {
     private var url: URL!
+    private var ignore: Ignore!
     
     override func setUp() {
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         try? FileManager.default.createDirectory(at: url.appendingPathComponent(".git"), withIntermediateDirectories: false)
+        ignore = Ignore(url)
     }
     
     override func tearDown() {
@@ -171,7 +173,7 @@ class TestIndex: XCTestCase {
         let file = url.appendingPathComponent("file.txt")
         try! "hello world".write(to: file, atomically: true, encoding: .utf8)
         let index = Index()
-        let tree = Tree(url)
+        let tree = Tree(url, ignore: ignore)
         index.directory("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", url: url, tree: tree)
         XCTAssertEqual(1, index.directories.count)
         XCTAssertEqual(url, index.directories.first?.url)
@@ -184,7 +186,7 @@ class TestIndex: XCTestCase {
         let file = url.appendingPathComponent("file.txt")
         try! "hello world".write(to: file, atomically: true, encoding: .utf8)
         var index = Index()
-        let tree = Tree(url)
+        let tree = Tree(url, ignore: ignore)
         index.directory("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", url: url, tree: tree)
         index.save(url)
         index = Index(url)!

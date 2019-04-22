@@ -11,7 +11,9 @@ class Tree {
     class Sub: Item { }
     
     private(set) var items = [Item]()
+    private(set) var children = [Tree]()
     private static let map: [String: Item.Type] = ["100644": Blob.self, "100755": Blob.self, "40000": Sub.self]
+    private let hasher = Hash()
     
     init(_ data: Data, url: URL) throws {
         let parse = Parse(data)
@@ -25,35 +27,46 @@ class Tree {
         }
     }
     
-    init(_ url: URL) {
-        let hash = Hash()
+    init(_ url: URL, ignore: Ignore) {
         try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).forEach {
-            if $0.hasDirectoryPath {
-                if $0.lastPathComponent != ".git" {
-                    
+            let content = $0.resolvingSymlinksInPath()
+            if content.hasDirectoryPath {
+                let child = Tree(content, ignore: ignore)
+                if !child.items.isEmpty {
+                    let item = Sub()
+                    item.url = content
+                    item.id = child.hash.1
+                    items.append(item)
+                    children.append(child)
                 }
-            } else {
+            } else if !ignore.url(content) {
                 let item = Blob()
-                item.url = $0.resolvingSymlinksInPath()
-                item.id = hash.file($0).1
+                item.url = content
+                item.id = hasher.file(content).1
                 items.append(item)
             }
         }
     }
     
     @discardableResult func save(_ url: URL) -> String {
-        let serial = Serial()
-        items.sorted(by: { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending })
-            .forEach { item in
-            serial.string("\(Tree.map.first(where: { $0.1 == type(of: item) })!.key) ")
-            serial.nulled(String(item.url.path.dropFirst(url.path.count + 1)))
-            serial.hex(item.id)
-        }
-        let hash = Hash().tree(serial.data)
+        children.forEach({ $0.save(url) })
+        let hash = self.hash
         let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         try! Press().compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
                                             options: .atomic)
         return hash.1
+    }
+    
+    private var hash: (Data, String) {
+        let serial = Serial()
+        items.sorted(by:
+            { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending }).forEach { item in
+                serial.string("\(Tree.map.first(where: { $0.1 == type(of: item) })!.key) ")
+                serial.nulled(item.url.lastPathComponent)
+                serial.hex(item.id)
+                print(item.id)
+        }
+        return hasher.tree(serial.data)
     }
 }

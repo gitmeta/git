@@ -43,9 +43,13 @@ public class Repository {
             guard !message.isEmpty else { throw Failure.Commit.message }
             user.date = Date()
             let index = Index(url) ?? Index()
-            let tree = Tree(url)
+            let ignore = Ignore(url)
+            let tree = Tree(url, ignore: ignore)
             let treeId = tree.save(url)
-            try files.forEach { try self?.add($0, index: index) }
+            try files.forEach {
+                guard !ignore.url($0) else { throw Failure.Commit.ignored }
+                try self?.add($0, index: index)
+            }
             index.directory(treeId, url: url, tree: tree)
             let commit = Commit()
             commit.author = user

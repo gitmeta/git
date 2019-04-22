@@ -265,4 +265,52 @@ Add project files.
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testFirstCommitSubtree() {
+        let expect = expectation(description: "")
+        let abc = url.appendingPathComponent("abc")
+        try! FileManager.default.createDirectory(at: abc, withIntermediateDirectories: true)
+        let another = abc.appendingPathComponent("another.txt")
+        try! Data("lorem ipsum\n".utf8).write(to: another)
+        Git.create(url) { repository in
+            repository.user.name = "hello"
+            repository.user.email = "world"
+            repository.commit([self.file, another], message: "hello world") {
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
+                    ".git/objects/01/a59b011a48660bb3828ec72b2b08990b8cf56b").path))
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
+                    ".git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad").path))
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
+                    ".git/objects/12/b34e53d16df3d9f2dd6ad8a4c45af37e283dc1").path))
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
+                    ".git/objects/48/1fe7479499b1b5623dfef963b5802d87af8c94").path))
+                XCTAssertEqual("481fe7479499b1b5623dfef963b5802d87af8c94", repository.head?.tree)
+                XCTAssertNotNil(repository.tree)
+                XCTAssertEqual(2, repository.tree?.items.count)
+                XCTAssertNotNil(repository.tree?.items.first(where: { $0 is Tree.Sub }))
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testIgnoredFile() {
+        let expect = expectation(description: "")
+        try! """
+not.js
+
+""".write(to: url.appendingPathComponent(".gitignore"), atomically: true, encoding: .utf8)
+        let ignored = url.appendingPathComponent("not.js")
+        try! Data().write(to: ignored)
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
+            repository.user.name = "hello"
+            repository.user.email = "world"
+            repository.commit([ignored], message: "hello world", error: { _ in
+                expect.fulfill()
+            })
+        }
+        waitForExpectations(timeout: 1)
+    }
 }
