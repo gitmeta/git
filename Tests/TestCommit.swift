@@ -313,4 +313,32 @@ not.js
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testTreeIgnoredIfNotInCommit() {
+        let expect = expectation(description: "")
+        let abc = url.appendingPathComponent("abc")
+        try! FileManager.default.createDirectory(at: abc, withIntermediateDirectories: true)
+        let another = abc.appendingPathComponent("another.txt")
+        try! Data("lorem ipsum\n".utf8).write(to: another)
+        Git.create(url) { repository in
+            repository.user.name = "hello"
+            repository.user.email = "world"
+            repository.commit([self.file], message: "hello world") {
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
+                    ".git/objects/84/b5f2f96994db6b67f8a0ee508b1ebb8b633c15").path))
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
+                    ".git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad").path))
+                XCTAssertFalse(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
+                    ".git/objects/12/b34e53d16df3d9f2dd6ad8a4c45af37e283dc1").path))
+                XCTAssertFalse(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
+                    ".git/objects/48/1fe7479499b1b5623dfef963b5802d87af8c94").path))
+                XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", repository.head?.tree)
+                XCTAssertNotNil(repository.tree)
+                XCTAssertEqual(1, repository.tree?.items.count)
+                XCTAssertNotNil(repository.tree?.items.first(where: { $0 is Tree.Blob }))
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

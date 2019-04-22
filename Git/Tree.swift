@@ -27,11 +27,11 @@ class Tree {
         }
     }
     
-    init(_ url: URL, ignore: Ignore) {
+    init(_ url: URL, ignore: Ignore, valid: [URL]) {
         try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).forEach {
             let content = $0.resolvingSymlinksInPath()
             if content.hasDirectoryPath {
-                let child = Tree(content, ignore: ignore)
+                let child = Tree(content, ignore: ignore, valid: valid)
                 if !child.items.isEmpty {
                     let item = Sub()
                     item.url = content
@@ -39,7 +39,7 @@ class Tree {
                     items.append(item)
                     children.append(child)
                 }
-            } else if !ignore.url(content) {
+            } else if !ignore.url(content) && valid.contains(content) {
                 let item = Blob()
                 item.url = content
                 item.id = hasher.file(content).1

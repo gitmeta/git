@@ -44,7 +44,7 @@ public class Repository {
             user.date = Date()
             let index = Index(url) ?? Index()
             let ignore = Ignore(url)
-            let tree = Tree(url, ignore: ignore)
+            let tree = Tree(url, ignore: ignore, valid: files)
             let treeId = tree.save(url)
             try files.forEach {
                 guard !ignore.url($0) else { throw Failure.Commit.ignored }
