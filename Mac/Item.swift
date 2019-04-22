@@ -1,35 +1,40 @@
 import Git
 import AppKit
 
-class Item: NSControl {
-    weak var parent: Item?
-    weak var top: NSLayoutConstraint? { didSet { oldValue?.isActive = false; top?.isActive = true } }
-    weak var list: List!
+class Item: NSView {
     let url: URL
-    let indent: CGFloat
     private(set) weak var stage: Button!
+    private weak var previous: Item?
+    private weak var next: Item?
     private weak var badge: NSView!
     private weak var label: Label!
+    private weak var path: Label!
     private weak var hashtag: Label!
-    private var edited = false
+    private weak var top: NSLayoutConstraint? { didSet { oldValue?.isActive = false; top?.isActive = true } }
     
-    init(_ file: URL, status: Status, indent: CGFloat) {
-        self.url = file
-        self.indent = indent
+    init(_ url: URL) {
+        self.url = url
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
         
-        let label = Label(file.lastPathComponent)
-        label.lineBreakMode = .byTruncatingMiddle
+        let path = Label(String(url.deletingLastPathComponent().path.dropFirst(App.shared.url!.path.count + 1)))
+        path.lineBreakMode = .byTruncatingMiddle
+        path.maximumNumberOfLines = 1
+        path.textColor = NSColor(white: 1, alpha: 0.6)
+        path.font = .light(15)
+        addSubview(path)
+        self.path = path
+        
+        let label = Label(url.lastPathComponent)
         label.maximumNumberOfLines = 1
-        label.textColor = .white
-        label.font = .light(14)
+        label.textColor = .halo
+        label.font = .bold(15)
         addSubview(label)
         self.label = label
         
         let image = NSImageView()
-        image.image = NSWorkspace.shared.icon(forFile: file.path)
+        image.image = NSWorkspace.shared.icon(forFile: url.path)
         image.translatesAutoresizingMaskIntoConstraints = false
         image.imageScaling = .scaleProportionallyDown
         addSubview(image)
@@ -47,8 +52,9 @@ class Item: NSControl {
         addSubview(hashtag)
         self.hashtag = hashtag
         
-        let stage = Button(target: self, action: #selector(check))
+        let stage = Button(target: nil, action: nil)
         stage.setButtonType(.toggle)
+        stage.state = .on
         stage.image = NSImage(named: "checkOff")
         stage.alternateImage = NSImage(named: "checkOn")
         stage.imageScaling = .scaleNone
@@ -62,74 +68,63 @@ class Item: NSControl {
         image.widthAnchor.constraint(equalToConstant: 30).isActive = true
         image.heightAnchor.constraint(equalToConstant: 16).isActive = true
         image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        image.leftAnchor.constraint(equalTo: leftAnchor, constant: 42 + (indent * 20)).isActive = true
+        image.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        
+        path.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        path.leftAnchor.constraint(equalTo: image.rightAnchor, constant: 2).isActive = true
         
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        label.leftAnchor.constraint(equalTo: image.rightAnchor, constant: 2).isActive = true
+        label.leftAnchor.constraint(equalTo: path.rightAnchor, constant:
+            path.stringValue.isEmpty ? -5 : 5).isActive = true
         
         badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        badge.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+        badge.rightAnchor.constraint(equalTo: stage.leftAnchor, constant: -4).isActive = true
         badge.heightAnchor.constraint(equalToConstant: 28).isActive = true
         badge.leftAnchor.constraint(equalTo: hashtag.leftAnchor, constant: -9).isActive = true
         
         hashtag.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -1).isActive = true
         hashtag.rightAnchor.constraint(equalTo: badge.rightAnchor, constant: -9).isActive = true
         
-        stage.rightAnchor.constraint(equalTo: badge.leftAnchor).isActive = true
+        stage.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
         stage.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
-        if file.hasDirectoryPath {
-            let handle = Button(target: self, action: #selector(handle(_:)))
-            handle.setButtonType(.toggle)
-            handle.imageScaling = .scaleNone
-            handle.image = NSImage(named: "expand")
-            handle.alternateImage = NSImage(named: "collapse")
-            addSubview(handle)
-            
-            handle.width.constant = 50
-            handle.height.constant = 50
-            handle.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-            handle.leftAnchor.constraint(equalTo: leftAnchor, constant: indent * 20).isActive = true
-        }
-        
-        switch status {
+    }
+    
+    required init?(coder: NSCoder) { return nil }
+    
+    func status(_  current: Status) {
+        switch current {
         case .deleted:
-            badge.layer!.backgroundColor = NSColor.clear.cgColor
-            hashtag.stringValue = ""
+            badge.layer!.backgroundColor = NSColor.deleted.cgColor
+            hashtag.stringValue = .local("Item.deleted")
         case .added:
-            if !edited {
-                stage.state = .on
-            }
             badge.layer!.backgroundColor = NSColor.added.cgColor
             hashtag.stringValue = .local("Item.added")
         case .modified:
-            if !edited {
-                stage.state = .on
-            }
             badge.layer!.backgroundColor = NSColor.modified.cgColor
             hashtag.stringValue = .local("Item.modified")
         case .untracked:
-            if !edited {
-                stage.state = .off
-            }
             badge.layer!.backgroundColor = NSColor.untracked.cgColor
             hashtag.stringValue = .local("Item.untracked")
         }
     }
     
-    required init?(coder: NSCoder) { return nil }
-    override func mouseDown(with: NSEvent) { layer!.backgroundColor = NSColor.shade.cgColor }
-    override func mouseUp(with: NSEvent) { layer!.backgroundColor = NSColor.clear.cgColor }
-    
-    @objc private func handle(_ handle: Button) {
-        if handle.state == .on {
-            list.expand(self)
-        } else {
-            list.collapse(self)
-        }
+    func remove() {
+        disconnect()
+        removeFromSuperview()
     }
     
-    @objc private func check() {
-        edited = true
+    func disconnect() {
+        next?.top = next?.topAnchor.constraint(equalTo: previous?.bottomAnchor ?? superview!.topAnchor)
+        previous?.next = next
+        next?.previous = previous
+    }
+    
+    func connect(_ previous: Item?) {
+        top = topAnchor.constraint(equalTo: previous?.bottomAnchor ?? superview!.topAnchor)
+        previous?.next?.top = previous?.next?.topAnchor.constraint(equalTo: bottomAnchor)
+        next = previous?.next
+        next?.previous = self
+        previous?.next = self
+        self.previous = previous
     }
 }

@@ -12,7 +12,6 @@ import UserNotifications
     private weak var directory: Button!
     private weak var tools: Tools!
     private weak var none: None!
-    private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
     override func cancelOperation(_: Any?) { makeFirstResponder(nil) }
@@ -69,10 +68,6 @@ import UserNotifications
         tools.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         tools.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
-        
-        timer.resume()
-//        timer.setEventHandler { self.repository?.status { s in self.list.items.forEach { $0.status = s[$0.url] ?? .current } } }
-        timer.schedule(deadline: .now(), repeating: 2)
         
         NSUserNotificationCenter.default.delegate = self
         
@@ -142,7 +137,6 @@ import UserNotifications
     }
     
     private func show() {
-        list.show()
         tools.height.constant = 120
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
@@ -161,8 +155,6 @@ import UserNotifications
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 0
             none.alphaValue = 1
-        }) {
-            self.list.items.forEach { $0.removeFromSuperview() }
-        }
+        }) { }
     }
 }

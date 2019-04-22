@@ -2,8 +2,9 @@ import Git
 import AppKit
 
 class List: NSScrollView {
-    var items: [Item] { return documentView!.subviews as! [Item] }
     private weak var bottom: NSLayoutConstraint? { didSet { oldValue?.isActive = false; bottom?.isActive = true } }
+    private var items: [Item] { return documentView!.subviews as! [Item] }
+    private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     init() {
         super.init(frame: .zero)
@@ -19,72 +20,36 @@ class List: NSScrollView {
         documentView!.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         documentView!.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor).isActive = true
+        
+        timer.resume()
+        timer.setEventHandler { App.shared.repository?.status { [weak self] in self?.merge($0) } }
+        timer.schedule(deadline: .now(), repeating: 3)
     }
     
     required init?(coder: NSCoder) { return nil }
     
-    func show() {
-        items.forEach { $0.removeFromSuperview() }
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            if let files = self?.contents(App.shared.url!) {
-                DispatchQueue.main.async { [weak self] in
-                    guard
-                        let top = self?.topAnchor,
-                        let last = self?.render(files, origin: top, parent: nil)
-                    else { return }
-                    self?.last(last)
-                }
-            }
-        }
-    }
-    
-    func expand(_ item: Item) {
-        if let files = self.contents(item.url) {
-            let sibling = items.first { item === $0.top?.secondItem }
-            guard let last = render(files, origin: item.bottomAnchor, parent: item) else { return }
-            if let sibling = sibling {
-                sibling.top = sibling.topAnchor.constraint(equalTo: last.bottomAnchor)
+    private func merge(_ items: [(URL, Status)]) {
+        self.items.filter({ item in !items.contains(where: { $0.0 == item.url }) }).forEach { $0.remove() }
+        var previous: Item?
+        items.forEach { item in
+            if let exists = self.items.first(where: { $0.url == item.0 }) {
+                exists.disconnect()
+                exists.connect(previous)
+                exists.status(item.1)
+                previous = exists
             } else {
-                self.last(last)
+                let new = Item(item.0)
+                new.status(item.1)
+                documentView!.addSubview(new)
+                
+                new.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+                new.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+                new.connect(previous)
+                previous = new
             }
         }
-    }
-    
-    func collapse(_ item: Item) {
-        if let sibling = items.filter({ $0.parent !== item }).first(where: { ($0.top?.secondItem as? Item)?.parent === item }) {
-            sibling.top = sibling.topAnchor.constraint(equalTo: item.bottomAnchor)
-        } else {
-            if (bottom?.secondItem as? Item)?.parent === item {
-                last(item)
-            }
-        }
-        items.filter({ $0.parent === item }).forEach {
-            collapse($0)
-            $0.removeFromSuperview()
-        }
-    }
-    
-    private func render(_ files: [URL], origin: NSLayoutYAxisAnchor, parent: Item?) -> Item? {
-        /*return files.reduce((nil, origin)) {
-            let item = Item($1, status: , indent: parent == nil ? 0 : parent!.indent + 1)
-            item.parent = parent
-            item.list = self
-            documentView!.addSubview(item)
-            
-            item.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-            item.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-            item.top = item.topAnchor.constraint(equalTo: $0.1)
-            return (item, item.bottomAnchor)
-        }.0*/
-        return nil
-    }
-    
-    private func last(_ bottom: NSView) {
-        self.bottom = documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom.bottomAnchor, constant: 20)
-    }
-    
-    private func contents(_ url: URL) -> [URL]? {
-        return try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).sorted(by: { $0.path < $1.path })
+        bottom = documentView!.bottomAnchor.constraint(
+            greaterThanOrEqualTo: previous?.bottomAnchor ?? bottomAnchor, constant: 20)
     }
 }
 

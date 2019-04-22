@@ -4,7 +4,7 @@ class Button: NSButton {
     private(set) weak var width: NSLayoutConstraint!
     private(set) weak var height: NSLayoutConstraint!
     
-    init(_ title: String = "", color: NSColor = .white, target: AnyObject, action: Selector) {
+    init(_ title: String = "", color: NSColor = .white, target: AnyObject?, action: Selector?) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true

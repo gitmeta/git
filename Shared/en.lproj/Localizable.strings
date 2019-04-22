@@ -3,4 +3,5 @@ None.message="Version Control has not been started in this directory.";
 None.start="Start";
 Item.added="#added";
 Item.modified="#modified";
+Item.deleted="#deleted";
 Item.untracked="#new";

@@ -26,8 +26,8 @@ class Tools: NSView {
     required init?(coder: NSCoder) { return nil }
     
     @objc private func commit() {
-        App.shared.list.items.filter({ $0.stage.state == .on }).forEach {
-            print($0)
-        }
+//        App.shared.list.items.filter({ $0.stage.state == .on }).forEach {
+//            print($0)
+//        }
     }
 }
