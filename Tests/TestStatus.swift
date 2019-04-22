@@ -6,12 +6,12 @@ class TestStatus: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
+        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
     
     override func tearDown() {
-        try? FileManager.default.removeItem(at: url)
+        try! FileManager.default.removeItem(at: url)
     }
     
     func testNoChanges() {
@@ -125,6 +125,27 @@ class TestStatus: XCTestCase {
             self.repository.commit([file], message: "First commit") {
                 self.repository.status {
                     XCTAssertTrue($0.isEmpty)
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testDeleted() {
+        let expect = expectation(description: "")
+        let file = url.appendingPathComponent("myfile.txt")
+        try! Data("hello world".utf8).write(to: file)
+        Git.create(url) {
+            self.repository = $0
+            self.repository.user.name = "as"
+            self.repository.user.email = "df"
+            self.repository.commit([file], message: "First commit") {
+                try! FileManager.default.removeItem(at: file)
+                self.repository.status {
+                    XCTAssertEqual(1, $0.count)
+                    XCTAssertEqual(.deleted, $0.first?.1)
+                    XCTAssertEqual(file, $0.first?.0)
                     expect.fulfill()
                 }
             }

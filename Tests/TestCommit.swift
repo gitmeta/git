@@ -6,8 +6,7 @@ class TestCommit: XCTestCase {
     private var file: URL!
     
     override func setUp() {
-        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
-        try? FileManager.default.removeItem(at: url)
+        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world\n".utf8).write(to: file)

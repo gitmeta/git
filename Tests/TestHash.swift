@@ -7,7 +7,7 @@ class TestHash: XCTestCase {
     private var file: URL!
     
     override func setUp() {
-        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
+        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         file = url.appendingPathComponent("file.json")
         try! "hello world\n".write(to: file, atomically: true, encoding: .utf8)
@@ -15,7 +15,7 @@ class TestHash: XCTestCase {
     }
     
     override func tearDown() {
-        try? FileManager.default.removeItem(at: url)
+        try! FileManager.default.removeItem(at: url)
     }
     
     func testFile() {

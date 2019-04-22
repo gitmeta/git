@@ -6,14 +6,14 @@ class TestAdd: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
+        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/objects"),
                                                  withIntermediateDirectories: true)
         repository = Repository(url)
     }
     
     override func tearDown() {
-        try? FileManager.default.removeItem(at: url)
+        try! FileManager.default.removeItem(at: url)
     }
     
     func testFirstFile() {

@@ -5,8 +5,7 @@ class TestHead: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
-        try? FileManager.default.removeItem(at: url)
+        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
     
@@ -78,7 +77,7 @@ class TestHead: XCTestCase {
                 let tree = repository.tree
                 XCTAssertEqual(1, tree?.items.count)
                 XCTAssertNotNil(tree?.items.first as? Tree.Blob)
-                XCTAssertEqual("myfile.txt", tree?.items.first?.name)
+                XCTAssertEqual(file, tree?.items.first?.url)
                 XCTAssertEqual("95d09f2b10159347eece71399a7e2e907ea3df4f", tree?.items.first?.id)
                 expect.fulfill()
             }

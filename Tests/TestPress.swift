@@ -8,13 +8,13 @@ class TestPress: XCTestCase {
 
     override func setUp() {
         press = Press()
-        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test")
+        url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/objects/ab"), withIntermediateDirectories: true)
         repository = Repository(url)
     }
     
     override func tearDown() {
-        try? FileManager.default.removeItem(at: url)
+        try! FileManager.default.removeItem(at: url)
     }
     
     func testCompressed0() {
@@ -43,7 +43,7 @@ blob 12\u{0000}hello rorld
         let tree = try? repository.tree("abhelloworld")
         XCTAssertEqual(1, tree?.items.count)
         XCTAssertNotNil(tree?.items.first as? Tree.Blob)
-        XCTAssertEqual("hello.json", tree?.items.first?.name)
+        XCTAssertEqual("hello.json", tree?.items.first?.url.lastPathComponent)
         XCTAssertEqual("e0f1ee1826f922f041e557a16173f2a93835825e", tree?.items.first?.id)
     }
     
@@ -54,9 +54,9 @@ blob 12\u{0000}hello rorld
         XCTAssertEqual(2, tree?.items.count)
         XCTAssertNotNil(tree?.items.first as? Tree.Blob)
         XCTAssertNotNil(tree?.items.last as? Tree.Sub)
-        XCTAssertEqual("hello.json", tree?.items.first?.name)
+        XCTAssertEqual("hello.json", tree?.items.first?.url.lastPathComponent)
         XCTAssertEqual("e0f1ee1826f922f041e557a16173f2a93835825e", tree?.items.first?.id)
-        XCTAssertEqual("mydir", tree?.items.last?.name)
+        XCTAssertEqual("mydir", tree?.items.last?.url.lastPathComponent)
         XCTAssertEqual("213190a0fbccf0c01ebf2776edb8011fd935dbba", tree?.items.last?.id)
     }
     

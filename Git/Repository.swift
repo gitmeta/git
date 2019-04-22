@@ -13,24 +13,24 @@ public class Repository {
     
     public func status(_ result: @escaping(([(URL, Status)]) -> Void)) {
         dispatch.background({ [weak self] in
-            guard let location = self?.url, let contents = self?.contents else { return [] }
+            guard let location = self?.url, let contents = self?.contents, let hasher = self?.hasher else { return [] }
             let index = Index(location)
-            let tree = self?.tree
+            var tree = self?.tree?.items ?? []
             return contents.reduce(into: [(URL, Status)]()) { result, url in
-                if let entries = index?.entries.filter({ $0.url == url }),
-                    !entries.isEmpty {
-                    if let hash = self?.hasher.file(url).1,
-                        entries.contains(where: { $0.id == hash }) {
-                        if tree?.items.contains(where: { $0.id == hash }) != true {
+                if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
+                    let hash = hasher.file(url).1
+                    if entries.contains(where: { $0.id == hash }) {
+                        if !tree.contains(where: { $0.id == hash }) {
                             result.append((url, .added))
                         }
                     } else {
                         result.append((url, .modified))
                     }
+                    tree.removeAll { $0.url == url }
                 } else {
                     result.append((url, .untracked))
                 }
-            }
+            } + tree.map({ ($0.url, .deleted) })
         }, success: result)
     }
     
@@ -96,7 +96,7 @@ public class Repository {
     
     func tree(_ id: String) throws -> Tree {
         return try Tree(press.decompress(
-            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
+            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))), url: url)
     }
     
     private var contents: [URL] {
