@@ -47,6 +47,7 @@ class List: NSScrollView {
             last = new
         }
         bottom = documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: last?.bottomAnchor ?? bottomAnchor, constant: 20)
+        before.forEach({ $0.removeFromSuperview() })
     }
 }
 

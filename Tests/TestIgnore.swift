@@ -15,6 +15,7 @@ class TestIgnore: XCTestCase {
 /something
 Pods/
 /More/
+weird
 
 """.write(to: url.appendingPathComponent(".gitignore"), atomically: true, encoding: .utf8)
         ignore = Ignore(url)
@@ -59,6 +60,7 @@ Pods/
         XCTAssertFalse(ignore.url(url.appendingPathComponent("aPods/thing")))
         XCTAssertTrue(ignore.url(url.appendingPathComponent("Pods/thing")))
         XCTAssertTrue(ignore.url(url.appendingPathComponent("More/thing")))
+        XCTAssertTrue(ignore.url(url.appendingPathComponent("a/weird/thing")))
     }
     
     func testPrefixStar() {

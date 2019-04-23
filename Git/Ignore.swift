@@ -15,7 +15,7 @@ class Ignore {
             switch $0.last {
             case "*": contains.append({ $0.first == "/" ? $0 : "/" + $0 } (String($0.dropLast())))
             case "/": contains.append($0.first == "/" ? $0 : "/" + $0)
-            default: break
+            default: contains.append(($0.first == "/" ? $0 : "/" + $0) + "/")
             }
         }
     }
