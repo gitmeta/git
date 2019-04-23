@@ -1,6 +1,7 @@
 App.directory="Directory";
-None.message="Version Control has not been started in this directory.";
-None.start="Start";
+Display.notRepository="Version Control has not been started in this directory.";
+Display.start="Start";
+Display.upToDate="Nothing to commit.";
 Item.added="#added";
 Item.modified="#modified";
 Item.deleted="#deleted";

@@ -65,13 +65,13 @@ class Item: NSView {
         
         heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        image.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        image.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 26).isActive = true
         image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        image.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        image.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         
         path.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        path.leftAnchor.constraint(equalTo: image.rightAnchor, constant: 2).isActive = true
+        path.leftAnchor.constraint(equalTo: image.rightAnchor).isActive = true
         
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         label.leftAnchor.constraint(equalTo: path.rightAnchor, constant:

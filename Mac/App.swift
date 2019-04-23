@@ -11,7 +11,8 @@ import UserNotifications
     private weak var bar: Bar!
     private weak var directory: Button!
     private weak var tools: Tools!
-    private weak var none: None!
+    private weak var display: Display!
+    private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
     override func cancelOperation(_: Any?) { makeFirstResponder(nil) }
@@ -24,9 +25,9 @@ import UserNotifications
         backgroundColor = .black
         NSApp.delegate = self
         
-        let none = None()
-        contentView!.addSubview(none)
-        self.none = none
+        let display = Display()
+        contentView!.addSubview(display)
+        self.display = display
         
         let bar = Bar()
         bar.isHidden = true
@@ -57,10 +58,10 @@ import UserNotifications
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true
         
-        none.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        none.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        none.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        none.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        display.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
+        display.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
+        display.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        display.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
         
         directory.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         directory.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor).isActive = true
@@ -89,6 +90,10 @@ import UserNotifications
                 &stale))?.startAccessingSecurityScopedResource()
             self.select(url)
         }
+        
+        timer.resume()
+        timer.setEventHandler { self.repository?.status { self.update($0) } }
+        timer.schedule(deadline: .now(), repeating: 3)
     }
     
     func userNotificationCenter(_: NSUserNotificationCenter, shouldPresent: NSUserNotification) -> Bool { return true }
@@ -119,6 +124,15 @@ import UserNotifications
         }
     }
     
+    private func update(_ items: [(URL, Status)]) {
+        if items.isEmpty {
+            upToDate()
+        } else {
+            show()
+        }
+        list.update(items)
+    }
+    
     private func select(_ url: URL) {
         self.url = url
         Git.open(url, error: {
@@ -127,7 +141,6 @@ import UserNotifications
             self.hide()
         }) {
             self.repository = $0
-            self.show()
         }
         DispatchQueue.main.async {
             self.bar.isHidden = false
@@ -143,7 +156,7 @@ import UserNotifications
             context.allowsImplicitAnimation = true
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 1
-            none.alphaValue = 0
+            display.hide()
         }) { }
     }
     
@@ -154,7 +167,18 @@ import UserNotifications
             context.allowsImplicitAnimation = true
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 0
-            none.alphaValue = 1
+            display.notRepository()
+        }) { }
+    }
+    
+    private func upToDate() {
+        tools.height.constant = 0
+        NSAnimationContext.runAnimationGroup({ context in
+            context.duration = 0.6
+            context.allowsImplicitAnimation = true
+            contentView!.layoutSubtreeIfNeeded()
+            list.alphaValue = 1
+            display.upToDate()
         }) { }
     }
 }

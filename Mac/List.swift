@@ -3,7 +3,6 @@ import AppKit
 
 class List: NSScrollView {
     private weak var bottom: NSLayoutConstraint? { didSet { oldValue?.isActive = false; bottom?.isActive = true } }
-    private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     init() {
         super.init(frame: .zero)
@@ -19,15 +18,11 @@ class List: NSScrollView {
         documentView!.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         documentView!.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor).isActive = true
-        
-        timer.resume()
-        timer.setEventHandler { App.shared.repository?.status { [weak self] in self?.merge($0) } }
-        timer.schedule(deadline: .now(), repeating: 1)
     }
     
     required init?(coder: NSCoder) { return nil }
     
-    private func merge(_ items: [(URL, Status)]) {
+    func update(_ items: [(URL, Status)]) {
         var before = documentView!.subviews as! [Item]
         var last: Item?
         items.forEach { item in
