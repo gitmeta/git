@@ -98,4 +98,15 @@ class TestTree: XCTestCase {
         let tree = Tree(url, ignore: ignore, valid: [])
         XCTAssertTrue(tree.items.isEmpty)
     }
+    
+    func testLoadWithOneFileInSub() {
+        let sub = url.appendingPathComponent("abc", isDirectory: true)
+        try! FileManager.default.createDirectory(at: sub, withIntermediateDirectories: true)
+        let file = sub.appendingPathComponent("another.txt")
+        try! Data("lorem ipsum\n".utf8).write(to: file)
+        var tree = Tree(url, ignore: ignore, valid: [file])
+        let id = tree.save(url)
+        tree = try! Tree(id, url: url)
+        XCTAssertNotNil(tree.list(url).first(where: { $0.url == file }))
+    }
 }

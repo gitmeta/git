@@ -40,7 +40,7 @@ blob 12\u{0000}hello rorld
     func testTree1() {
         try! Data(contentsOf: Bundle(for: TestPress.self).url(forResource: "tree1", withExtension: nil)!).write(to:
             url.appendingPathComponent(".git/objects/ab/helloworld"))
-        let tree = try? repository.tree("abhelloworld")
+        let tree = try? Tree("abhelloworld", url: url)
         XCTAssertEqual(1, tree?.items.count)
         XCTAssertNotNil(tree?.items.first as? Tree.Blob)
         XCTAssertEqual("hello.json", tree?.items.first?.url.lastPathComponent)
@@ -50,7 +50,7 @@ blob 12\u{0000}hello rorld
     func testTree2() {
         try! Data(contentsOf: Bundle(for: TestPress.self).url(forResource: "tree2", withExtension: nil)!).write(to:
             url.appendingPathComponent(".git/objects/ab/helloworld"))
-        let tree = try? repository.tree("abhelloworld")
+        let tree = try? Tree("abhelloworld", url: url)
         XCTAssertEqual(2, tree?.items.count)
         XCTAssertNotNil(tree?.items.first as? Tree.Blob)
         XCTAssertNotNil(tree?.items.last as? Tree.Sub)

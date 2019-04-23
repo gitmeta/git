@@ -15,7 +15,7 @@ public class Repository {
         dispatch.background({ [weak self] in
             guard let location = self?.url, let contents = self?.contents, let hasher = self?.hasher else { return [] }
             let index = Index(location)
-            var tree = self?.tree?.items ?? []
+            var tree = self?.tree?.list(location) ?? []
             return contents.reduce(into: [(URL, Status)]()) { result, url in
                 if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
                     let hash = hasher.file(url).1
@@ -82,7 +82,7 @@ public class Repository {
     
     var tree: Tree? {
         guard let head = self.head else { return nil }
-        return try? tree(head.tree)
+        return try? Tree(head.tree, url: url)
     }
     
     func add(_ file: URL, index: Index) throws {
@@ -96,11 +96,6 @@ public class Repository {
         let compressed = press.compress(hash.0)
         try compressed.write(to: location, options: .atomic)
         index.entry(hash.1, url: file)
-    }
-    
-    func tree(_ id: String) throws -> Tree {
-        return try Tree(press.decompress(
-            try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))), url: url)
     }
     
     private var contents: [URL] {

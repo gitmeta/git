@@ -152,4 +152,26 @@ class TestStatus: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testNotEditedInSubtree() {
+        let expect = expectation(description: "")
+        let sub = url.appendingPathComponent("sub")
+        try! FileManager.default.createDirectory(at: sub, withIntermediateDirectories: true)
+        let file = sub.appendingPathComponent("myfile.txt")
+        let outside = url.appendingPathComponent("outside.txt")
+        try! Data("hello world\n".utf8).write(to: file)
+        try! Data("lorem ipsum\n".utf8).write(to: outside)
+        Git.create(url) {
+            self.repository = $0
+            self.repository.user.name = "as"
+            self.repository.user.email = "df"
+            self.repository.commit([outside, file], message: "First commit") {
+                self.repository.status {
+                    XCTAssertTrue($0.isEmpty)
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

@@ -15,6 +15,11 @@ class Tree {
     private static let map: [String: Item.Type] = ["100644": Blob.self, "100755": Blob.self, "40000": Sub.self]
     private let hasher = Hash()
     
+    convenience init(_ id: String, url: URL, trail: URL? = nil) throws {
+        try self.init(Press().decompress(try Data(contentsOf:
+            url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))), url: trail ?? url)
+    }
+    
     init(_ data: Data, url: URL) throws {
         let parse = Parse(data)
         guard "tree" == (try? parse.ascii(" ")) else { throw Failure.Tree.unreadable }
@@ -48,6 +53,10 @@ class Tree {
         }
     }
     
+    func list(_ url: URL) -> [Item] {
+        return items.flatMap { $0 is Blob ? [$0] : try! Tree($0.id, url: url, trail: $0.url).list(url) }
+    }
+    
     @discardableResult func save(_ url: URL) -> String {
         children.forEach({ $0.save(url) })
         let hash = self.hash
@@ -65,7 +74,6 @@ class Tree {
                 serial.string("\(Tree.map.first(where: { $0.1 == type(of: item) })!.key) ")
                 serial.nulled(item.url.lastPathComponent)
                 serial.hex(item.id)
-                print(item.id)
         }
         return hasher.tree(serial.data)
     }
