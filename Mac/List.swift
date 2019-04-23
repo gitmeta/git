@@ -22,7 +22,7 @@ class List: NSScrollView {
         
         timer.resume()
         timer.setEventHandler { App.shared.repository?.status { [weak self] in self?.merge($0) } }
-        timer.schedule(deadline: .now(), repeating: 3)
+        timer.schedule(deadline: .now(), repeating: 1)
     }
     
     required init?(coder: NSCoder) { return nil }
