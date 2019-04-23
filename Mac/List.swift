@@ -3,7 +3,6 @@ import AppKit
 
 class List: NSScrollView {
     private weak var bottom: NSLayoutConstraint? { didSet { oldValue?.isActive = false; bottom?.isActive = true } }
-    private var items: [Item] { return documentView!.subviews as! [Item] }
     private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     init() {
@@ -29,27 +28,25 @@ class List: NSScrollView {
     required init?(coder: NSCoder) { return nil }
     
     private func merge(_ items: [(URL, Status)]) {
-        self.items.filter({ item in !items.contains(where: { $0.0 == item.url }) }).forEach { $0.remove() }
-        var previous: Item?
+        var before = documentView!.subviews as! [Item]
+        var last: Item?
         items.forEach { item in
-            if let exists = self.items.first(where: { $0.url == item.0 }) {
-                exists.disconnect()
-                exists.connect(previous)
-                exists.status(item.1)
-                previous = exists
+            let new: Item
+            if let index = before.firstIndex(where: { $0.url == item.0 }) {
+                new = before.remove(at: index)
+                new.disconnect()
             } else {
-                let new = Item(item.0)
-                new.status(item.1)
+                new = Item(item.0)
                 documentView!.addSubview(new)
-                
+        
                 new.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
                 new.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-                new.connect(previous)
-                previous = new
             }
+            new.status(item.1)
+            new.connect(last)
+            last = new
         }
-        bottom = documentView!.bottomAnchor.constraint(
-            greaterThanOrEqualTo: previous?.bottomAnchor ?? bottomAnchor, constant: 20)
+        bottom = documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: last?.bottomAnchor ?? bottomAnchor, constant: 20)
     }
 }
 

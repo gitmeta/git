@@ -21,7 +21,7 @@ class Item: NSView {
         let path = Label(String(url.deletingLastPathComponent().path.dropFirst(App.shared.url!.path.count + 1)))
         path.lineBreakMode = .byTruncatingMiddle
         path.maximumNumberOfLines = 1
-        path.textColor = NSColor(white: 1, alpha: 0.6)
+        path.textColor = NSColor.halo.withAlphaComponent(0.6)
         path.font = .light(15)
         addSubview(path)
         self.path = path
