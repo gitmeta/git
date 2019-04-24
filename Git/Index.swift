@@ -57,6 +57,9 @@ class Index {
     func directory(_ id: String, url: URL, tree: Tree) {
         directories.append(Directory(id: id, url: url, entries: tree.items.filter({ $0 is Tree.Blob }).count,
                                      sub: tree.items.filter({ $0 is Tree.Sub }).count))
+//        tree.items.filter({ $0 is Tree.Sub }).forEach {
+//            
+//        }
     }
     
     func save(_ url: URL) {
