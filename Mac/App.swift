@@ -40,7 +40,7 @@ import UserNotifications
         
         let directory = Button(.local("App.directory"), target: self, action: #selector(self.prompt))
         directory.isHidden = true
-        directory.layer!.backgroundColor = NSColor.warning.cgColor
+        directory.layer!.backgroundColor = NSColor.halo.cgColor
         directory.width.constant = 120
         contentView!.addSubview(directory)
         self.directory = directory
@@ -64,7 +64,7 @@ import UserNotifications
         display.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
         
         directory.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        directory.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor).isActive = true
+        directory.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 80).isActive = true
         
         tools.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
@@ -82,7 +82,10 @@ import UserNotifications
                 let url = UserDefaults.standard.url(forKey: "url"),
                 let access = UserDefaults.standard.data(forKey: "access")
             else {
-                DispatchQueue.main.async { directory.isHidden = false }
+                DispatchQueue.main.async {
+                    directory.isHidden = false
+                    self.alert.show(.local("App.initial"))
+                }
                 return
             }
             var stale = false

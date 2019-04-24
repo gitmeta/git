@@ -73,6 +73,7 @@
 		20B7D68122645EF800A1A802 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B7D68022645EF800A1A802 /* Display.swift */; };
 		20B8327F22703C9200773058 /* tree4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B8327E22703C9200773058 /* tree4 */; };
 		20B83281227043D000773058 /* index4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B83280227043CF00773058 /* index4 */; };
+		20B8328322709EA700773058 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20B8328222709EA700773058 /* Mac.xcassets */; };
 		20CA59C4226F2EA90040992D /* tree3 in Resources */ = {isa = PBXBuildFile; fileRef = 20CA59C3226F2EA90040992D /* tree3 */; };
 		20CB6718226066470064C31C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6717226066470064C31C /* Bar.swift */; };
 		20CB671A226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
@@ -158,6 +159,7 @@
 		20B7D68022645EF800A1A802 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		20B8327E22703C9200773058 /* tree4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree4; sourceTree = "<group>"; };
 		20B83280227043CF00773058 /* index4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index4; sourceTree = "<group>"; };
+		20B8328222709EA700773058 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		20CA59C3226F2EA90040992D /* tree3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree3; sourceTree = "<group>"; };
 		20CB6717226066470064C31C /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		20CB6719226071CA0064C31C /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				20CB671C22607F940064C31C /* Label.swift */,
 				20CB6721226086030064C31C /* List.swift */,
 				201A413022636E72001C852A /* Tools.swift */,
+				20B8328222709EA700773058 /* Mac.xcassets */,
 			);
 			path = Mac;
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2048A118225C746200290E54 /* SFMono-Light.otf in Resources */,
+				20B8328322709EA700773058 /* Mac.xcassets in Resources */,
 				20CB671F2260857E0064C31C /* Shared.xcassets in Resources */,
 				2048A116225C746200290E54 /* Localizable.strings in Resources */,
 				2048A132225C749200290E54 /* Mac.storyboard in Resources */,
@@ -1023,6 +1027,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1090,6 +1095,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

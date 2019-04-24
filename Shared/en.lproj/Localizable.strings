@@ -1,4 +1,5 @@
 App.directory="Directory";
+App.initial="Select your initial working directory.";
 Display.notRepository="Version Control has not been started in this directory.";
 Display.start="Start";
 Display.upToDate="Nothing to commit.";
