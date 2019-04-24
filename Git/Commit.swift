@@ -2,8 +2,8 @@ import Foundation
 
 public class Commit {
     public class User {
-        var name = ""
-        var email = ""
+        public var name = ""
+        public var email = ""
         var timezone = ""
         var date = Date()
         

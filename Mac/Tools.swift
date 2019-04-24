@@ -26,8 +26,12 @@ class Tools: NSView {
     required init?(coder: NSCoder) { return nil }
     
     @objc private func commit() {
-//        App.shared.list.items.filter({ $0.stage.state == .on }).forEach {
-//            print($0)
-//        }
+        App.shared.repository?.user.name = "john"
+        App.shared.repository?.user.email = "john@mail.com"
+        App.shared.repository?.commit(
+            (App.shared.list.documentView!.subviews as! [Item]).filter({ $0.stage.state == .on }).map { $0.url },
+            message:"hello world", error: {
+                App.shared.alert.show($0.localizedDescription)
+        })
     }
 }

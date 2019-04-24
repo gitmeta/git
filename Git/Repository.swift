@@ -50,7 +50,6 @@ public class Repository {
                 guard !ignore.url($0) else { throw Failure.Commit.ignored }
                 try self?.add($0, index: index)
             }
-            index.directory(treeId, url: url, tree: tree)
             let commit = Commit()
             commit.author = user
             commit.committer = user
