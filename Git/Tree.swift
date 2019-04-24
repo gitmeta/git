@@ -54,7 +54,7 @@ class Tree {
     }
     
     func list(_ url: URL) -> [Item] {
-        return items.flatMap { $0 is Blob ? [$0] : try! Tree($0.id, url: url, trail: $0.url).list(url) }
+        return items.flatMap { $0 is Blob ? [$0] : (try? Tree($0.id, url: url, trail: $0.url))?.list(url) ?? [] }
     }
     
     @discardableResult func save(_ url: URL) -> String {

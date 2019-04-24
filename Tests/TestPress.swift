@@ -68,6 +68,13 @@ blob 12\u{0000}hello rorld
         XCTAssertEqual(11, tree?.items.filter({ $0 is Tree.Blob }).count)
     }
     
+    func testTree4() {
+        try! Data(contentsOf: Bundle(for: TestPress.self).url(forResource: "tree4", withExtension: nil)!).write(to:
+            url.appendingPathComponent(".git/objects/ab/helloworld"))
+        let tree = try? Tree("abhelloworld", url: url)
+        XCTAssertNotNil(tree?.items.first(where: { $0.id == "71637250a143a4c2eed7103f08b3610cd4f1f1f9" }))
+    }
+    
     func testCommit0() {
         XCTAssertEqual("""
 commit 191\u{0000}tree 99ff9f93b7f0f7d300dc3c42d16cdfcdf5c2a82f

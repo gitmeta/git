@@ -135,7 +135,15 @@ class Index {
                 } (Int(try parse.ascii("\n")))
                 
                 if parse.index < limit {
-                    tree.id = try parse.hash()
+                    if tree.entries == -1 {
+                        print("contains nil")
+                    } else {
+                        print("not nil")
+                        tree.id = try parse.hash()
+                    }
+                    print("yes \(tree.id) \(tree.url.lastPathComponent) \(tree.entries) \(tree.sub)")
+                } else {
+                    print("none")
                 }
             }
         }

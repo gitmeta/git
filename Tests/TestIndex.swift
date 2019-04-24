@@ -158,6 +158,19 @@ class TestIndex: XCTestCase {
         XCTAssertEqual(2, index?.directories.count)
     }
     
+    func testIndex4() {
+        try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index4", withExtension: nil)!)).write(to:
+            url.appendingPathComponent(".git/index"))
+        let index = Index(url)
+        XCTAssertNotNil(index?.entries.first(where: { $0.id == "4545025894f8bd0408a845a9072198a887245b29" }))
+        XCTAssertNotNil(index?.entries.first(where: { $0.url.path.contains("ARPresenter.swift") }))
+        XCTAssertNotNil(index?.directories.first(where: { $0.id == "74a0e95d56601e55663e28590304d8f9bcdd9ddf" }))
+        XCTAssertNotNil(index?.directories.first(where: { $0.id == "74a0e95d56601e55663e28590304d8f9bcdd9ddf" }))
+        XCTAssertEqual(334, index?.entries.count)
+        XCTAssertEqual(62, index?.directories.count)
+        index!.directories.forEach { print($0.id + " : " + $0.url.path) }
+    }
+    
     func testAddEntry() {
         let file = url.appendingPathComponent("file.txt")
         try! "hello world".write(to: file, atomically: true, encoding: .utf8)

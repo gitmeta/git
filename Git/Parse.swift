@@ -33,6 +33,7 @@ class Parse {
             result += byte
             byte = try character()
         } while(byte != "\u{0000}")
+        clean()
         return result
     }
     
