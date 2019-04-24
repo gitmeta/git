@@ -22,7 +22,7 @@ import UserNotifications
         super.awakeFromNib()
         App.shared = self
         UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
-        backgroundColor = .black
+        backgroundColor = .shade
         NSApp.delegate = self
         
         let display = Display()
@@ -93,7 +93,7 @@ import UserNotifications
         
         timer.resume()
         timer.setEventHandler { self.repository?.status { self.update($0) } }
-        timer.schedule(deadline: .now(), repeating: 3)
+        timer.schedule(deadline: .now(), repeating: 2)
     }
     
     func userNotificationCenter(_: NSUserNotificationCenter, shouldPresent: NSUserNotification) -> Bool { return true }

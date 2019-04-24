@@ -31,7 +31,7 @@ class Display: NSView {
         addSubview(start)
         self.start = start
         
-        image.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -40).isActive = true
+        image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         image.widthAnchor.constraint(equalToConstant: 42).isActive = true
         image.heightAnchor.constraint(equalToConstant: 42).isActive = true

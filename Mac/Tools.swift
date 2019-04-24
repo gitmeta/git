@@ -7,7 +7,7 @@ class Tools: NSView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        layer!.backgroundColor = NSColor.shade.cgColor
+        layer!.backgroundColor = NSColor.black.cgColor
         
         let commit = Button(target: self, action: #selector(self.commit))
         commit.image = NSImage(named: "commit")

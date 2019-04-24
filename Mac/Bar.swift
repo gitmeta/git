@@ -7,9 +7,7 @@ class Bar: NSControl {
     
     init() {
         super.init(frame: .zero)
-        wantsLayer = true
         translatesAutoresizingMaskIntoConstraints = false
-        layer!.backgroundColor = NSColor.shade.cgColor
         
         let background = NSView()
         background.translatesAutoresizingMaskIntoConstraints = false
@@ -21,7 +19,7 @@ class Bar: NSControl {
         
         let label = Label()
         label.font = .light(14)
-        label.textColor = NSColor(white: 1, alpha: 0.6)
+        label.textColor = NSColor(white: 1, alpha: 0.8)
         background.addSubview(label)
         self.label = label
         
