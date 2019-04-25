@@ -11,6 +11,7 @@ class Tools: NSView {
         layer!.backgroundColor = NSColor.black.cgColor
         
         let text = Text()
+        text.string = .local("Tools.message")
         self.text = text
         
         let scroll = NSScrollView()
@@ -56,7 +57,7 @@ class Tools: NSView {
         App.shared.repository?.user = user
         App.shared.repository?.commit(
             (App.shared.list.documentView!.subviews as! [Item]).filter({ $0.stage.state == .on }).map { $0.url },
-            message:"Git commit", error: {
+            message: text.string, error: {
                 App.shared.alert.show($0.localizedDescription)
         })
     }

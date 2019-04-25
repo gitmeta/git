@@ -12,3 +12,4 @@ Credentials.name="Name";
 Credentials.email="Email";
 Credentials.confirm="Save";
 Credentials.cancel="Cancel";
+Tools.message="Git commit";
