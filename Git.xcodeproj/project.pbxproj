@@ -147,7 +147,7 @@
 		2048A13A225C74A300290E54 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2051FAB6225C78CF00BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2051FAB8225C78D000BC00BC /* GitMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2051FAB8225C78D000BC00BC /* Git.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Git.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20671BE8226C70A700A74B7E /* TestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestList.swift; sourceTree = "<group>"; };
 		20671BEA226C79E900A74B7E /* Ignore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ignore.swift; sourceTree = "<group>"; };
@@ -325,7 +325,7 @@
 				2051FAB6225C78CF00BC00BC /* libGit.a */,
 				2051FAB7225C78D000BC00BC /* libGit.a */,
 				2051FAB9225C78D000BC00BC /* GitiOS.app */,
-				2051FAB8225C78D000BC00BC /* GitMac.app */,
+				2051FAB8225C78D000BC00BC /* Git.app */,
 				2048A13A225C74A300290E54 /* README.md */,
 				20CCE743226214270014CAC9 /* Git.sketch */,
 				2048A0D8225C744400290E54 /* Tests.xctest */,
@@ -416,7 +416,7 @@
 			);
 			name = MacApp;
 			productName = MacApp;
-			productReference = 2051FAB8225C78D000BC00BC /* GitMac.app */;
+			productReference = 2051FAB8225C78D000BC00BC /* Git.app */;
 			productType = "com.apple.product-type.application";
 		};
 		20F6E0CE225C733600418216 /* iOSApp */ = {
@@ -1085,7 +1085,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = git.mac;
-				PRODUCT_NAME = GitMac;
+				PRODUCT_MODULE_NAME = GitMac;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 			};
@@ -1139,6 +1139,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBSC_MODULE = Git;
 				INFOPLIST_FILE = Mac/Mac.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1147,7 +1148,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = git.mac;
-				PRODUCT_NAME = GitMac;
+				PRODUCT_MODULE_NAME = GitMac;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};

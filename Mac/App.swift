@@ -69,7 +69,7 @@ import UserNotifications
         tools.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         tools.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
-        
+
         NSUserNotificationCenter.default.delegate = self
         
         if #available(OSX 10.14, *) {
