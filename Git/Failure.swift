@@ -32,6 +32,11 @@ public struct Failure: LocalizedError {
         public static let outside = Failure("File is not in project's directory.")
     }
     
+    public struct User {
+        public static let name = Failure("Invalid name.")
+        public static let email = Failure("Invalid email.")
+    }
+    
     public var errorDescription: String? { return "Error: " + string }
     private let string: String
     private init(_ string: String) { self.string = string }

@@ -1,42 +1,6 @@
 import Foundation
 
 public class Commit {
-    public class User {
-        public var name = ""
-        public var email = ""
-        var timezone = ""
-        var date = Date()
-        
-        init() {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "xx"
-            timezone = {
-                $0.dateFormat = "xx"
-                return $0.string(from: date)
-            } (DateFormatter())
-        }
-        
-        fileprivate init(_ string: String) throws {
-            let first = string.components(separatedBy: " <")
-            let second = first.last?.components(separatedBy: "> ")
-            let third = second?.last?.components(separatedBy: " ")
-            guard
-                first.count == 2,
-                second?.count == 2,
-                third?.count == 2,
-                let names = first.first?.components(separatedBy: " "),
-                names.count > 1,
-                let seconds = TimeInterval(third![0])
-            else { throw Failure.Commit.unreadable }
-            name = names.dropFirst().joined(separator: " ")
-            email = second![0]
-            date = Date(timeIntervalSince1970: seconds)
-            timezone = third![1]
-        }
-        
-        fileprivate var serial: String { return "\(name) <\(email)> \(Int(date.timeIntervalSince1970)) \(timezone)" }
-    }
-    
     var author = User()
     var committer = User()
     var tree = ""

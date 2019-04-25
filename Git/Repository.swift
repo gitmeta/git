@@ -1,7 +1,7 @@
 import Foundation
 
 public class Repository {
-    public var user = Commit.User()
+    public var user = User()
     public let url: URL
     private let hasher = Hash()
     private let press = Press()

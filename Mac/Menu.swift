@@ -2,9 +2,9 @@ import AppKit
 
 class Menu: NSMenu {
     private(set) static var shared: Menu!
-    @IBOutlet private(set) weak var directory: NSMenuItem!
-    @IBOutlet private(set) weak var commit: NSMenuItem!
-    @IBOutlet private(set) weak var preferences: NSMenuItem!
+    @IBOutlet private weak var directory: NSMenuItem!
+    @IBOutlet private weak var commit: NSMenuItem!
+    @IBOutlet private weak var preferences: NSMenuItem!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -20,8 +20,12 @@ class Menu: NSMenu {
         preferences.action = #selector(showPreferences)
     }
     
+    func refresh() {
+        commit.isEnabled = App.shared.repository != nil
+    }
+    
     @objc private func showPreferences() {
-        User()
+        Credentials()
     }
     
     @objc private func changeDirectory() {

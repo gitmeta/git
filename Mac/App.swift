@@ -3,6 +3,7 @@ import AppKit
 import UserNotifications
 
 @NSApplicationMain class App: NSWindow, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSUserNotificationCenterDelegate {
+    var user: User?
     let alert = Alert()
     private(set) static var shared: App!
     private(set) var url: URL?
@@ -142,8 +143,10 @@ import UserNotifications
             self.alert.show($0.localizedDescription)
             self.repository = nil
             self.hide()
+            Menu.shared.refresh()
         }) {
             self.repository = $0
+            Menu.shared.refresh()
         }
         DispatchQueue.main.async {
             self.bar.isHidden = false
@@ -153,7 +156,7 @@ import UserNotifications
     }
     
     private func show() {
-        tools.height.constant = 120
+        tools.height.constant = 180
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
             context.allowsImplicitAnimation = true

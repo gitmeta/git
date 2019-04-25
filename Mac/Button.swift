@@ -11,8 +11,8 @@ class Button: NSButton {
         layer!.cornerRadius = 4
         isBordered = false
         attributedTitle = NSAttributedString(string: title, attributes: [.font: NSFont.bold(14), .foregroundColor: color])
-        width = widthAnchor.constraint(equalToConstant: 70)
-        height = heightAnchor.constraint(equalToConstant: 36)
+        width = widthAnchor.constraint(equalToConstant: 80)
+        height = heightAnchor.constraint(equalToConstant: 34)
         width.isActive = true
         height.isActive = true
         self.target = target

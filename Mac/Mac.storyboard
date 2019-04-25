@@ -55,13 +55,15 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Project" systemMenu="apple" autoenablesItems="NO" id="7B1-E3-p77">
                                     <items>
+                                        <menuItem isSeparatorItem="YES" id="yoi-6A-aJo"/>
                                         <menuItem title="Directory" keyEquivalent="o" id="CRk-Wp-OJO"/>
-                                        <menuItem title="Commit" id="4si-hn-P3i">
+                                        <menuItem isSeparatorItem="YES" id="d4c-E6-pB4"/>
+                                        <menuItem title="Commit" enabled="NO" id="4si-hn-P3i">
                                             <string key="keyEquivalent" base64-UTF8="YES">
 DQ
 </string>
                                         </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="d4c-E6-pB4"/>
+                                        <menuItem isSeparatorItem="YES" id="Unr-aZ-lQ9"/>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -74,8 +76,7 @@ DQ
                                                 <action selector="performMiniaturize:" target="Ady-hI-5gd" id="VwT-WD-YPe"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Zoom" id="R4o-n2-Eq4">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="Zoom" keyEquivalent="F" id="R4o-n2-Eq4">
                                             <connections>
                                                 <action selector="performZoom:" target="Ady-hI-5gd" id="DIl-cC-cCs"/>
                                             </connections>
