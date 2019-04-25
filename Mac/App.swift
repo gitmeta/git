@@ -8,9 +8,9 @@ import UserNotifications
     private(set) var url: URL?
     private(set) var repository: Repository?
     private(set) weak var list: List!
+    private(set) weak var tools: Tools!
     private weak var bar: Bar!
     private weak var directory: Button!
-    private weak var tools: Tools!
     private weak var display: Display!
     private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     

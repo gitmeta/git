@@ -25,7 +25,7 @@ class Tools: NSView {
     
     required init?(coder: NSCoder) { return nil }
     
-    @objc private func commit() {
+    @objc func commit() {
 //        App.shared.repository?.user.name = "john"
 //        App.shared.repository?.user.email = "john@mail.com"
         App.shared.repository?.commit(

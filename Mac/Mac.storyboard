@@ -10,7 +10,7 @@
         <scene sceneID="JPo-4y-FX3">
             <objects>
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
-                    <menu key="mainMenu" title="Main Menu" systemMenu="main" autoenablesItems="NO" id="AYu-sK-qS6">
+                    <menu key="mainMenu" title="Menu" systemMenu="main" autoenablesItems="NO" id="AYu-sK-qS6" userLabel="Menu" customClass="Menu" customModule="GitMac" customModuleProvider="target">
                         <items>
                             <menuItem title="Git" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -51,6 +51,20 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Project" id="eZp-fK-MyG">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Project" systemMenu="apple" autoenablesItems="NO" id="7B1-E3-p77">
+                                    <items>
+                                        <menuItem title="Directory" keyEquivalent="o" id="CRk-Wp-OJO"/>
+                                        <menuItem title="Commit" id="4si-hn-P3i">
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="d4c-E6-pB4"/>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Window" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Window" systemMenu="window" autoenablesItems="NO" id="Td7-aD-5lo">
@@ -77,6 +91,11 @@
                                 </menu>
                             </menuItem>
                         </items>
+                        <connections>
+                            <outlet property="commit" destination="4si-hn-P3i" id="XU9-G6-hfN"/>
+                            <outlet property="directory" destination="CRk-Wp-OJO" id="71M-Qi-67c"/>
+                            <outlet property="preferences" destination="BOF-NM-1cW" id="SMy-ht-TVI"/>
+                        </connections>
                     </menu>
                     <connections>
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
