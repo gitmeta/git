@@ -97,7 +97,7 @@ import UserNotifications
         
         timer.resume()
         timer.setEventHandler { self.repository?.status { self.update($0) } }
-        timer.schedule(deadline: .now(), repeating: 1)
+        timer.schedule(deadline: .now(), repeating: 3)
     }
     
     func userNotificationCenter(_: NSUserNotificationCenter, shouldPresent: NSUserNotification) -> Bool { return true }
