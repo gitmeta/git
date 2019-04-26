@@ -50,7 +50,7 @@ public class Repository {
                 guard !ignore.url($0) else { throw Failure.Commit.ignored }
                 try self?.add($0, index: index)
             }
-            index.directory(treeId, url: url, tree: tree)
+            index.main(treeId, url: url, tree: tree)
             let commit = Commit()
             commit.author = user
             commit.committer = user
@@ -91,10 +91,13 @@ public class Repository {
         let hash = hasher.file(file)
         let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))
-        guard !FileManager.default.fileExists(atPath: location.path) else { throw Failure.Add.double }
-        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        let compressed = press.compress(hash.0)
-        try compressed.write(to: location, options: .atomic)
+        guard index.entries.first(where: { $0.url.path == file.path && $0.id == hash.1 }) == nil
+            else { throw Failure.Add.double }
+        if !FileManager.default.fileExists(atPath: location.path) {
+            try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+            let compressed = press.compress(hash.0)
+            try compressed.write(to: location, options: .atomic)
+        }
         index.entry(hash.1, url: file)
     }
     

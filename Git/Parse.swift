@@ -39,6 +39,7 @@ class Parse {
     
     func name() throws -> String {
         return try {
+            print("length \($1)")
             index += $0 ? 4 : 2
             let result = String(decoding: try advance($1), as: UTF8.self)
             clean()
@@ -86,7 +87,10 @@ class Parse {
     }
     
     private func clean() {
-        while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") { index += 1 }
+        while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") {
+            print("clean -")
+            index += 1
+        }
     }
     
     private func not2() throws -> Bool {
@@ -97,8 +101,8 @@ class Parse {
     }
     
     private func length() throws -> Int {
-        guard let result = Int(data.subdata(in: index + 1 ..< index + 2).map { String(format: "%02hhx", $0) }.joined(), radix: 16)
-            else { throw Failure.Index.malformed }
+        guard let result = Int(data.subdata(in: index + 1 ..< index + 2).map { String(format: "%02hhx", $0) }.joined(),
+                               radix: 16) else { throw Failure.Index.malformed }
         return result
     }
     

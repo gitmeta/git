@@ -54,23 +54,8 @@ class Index {
         entries.append(entry)
     }
     
-    func directory(_ id: String, url: URL, tree: Tree) {
-        var main = Directory(id: id, url: url, entries: tree.items.filter({ $0 is Tree.Blob }).count,
-                             sub: tree.items.filter({ $0 is Tree.Sub }).count)
-        var directories = [Directory]()/*
-        tree.children.sorted(by: <#T##(Tree, Tree) throws -> Bool#>)
-        tree.items.sorted(by: { $0.url.path.compare($1.url.path) != .orderedDescending }).forEach {
-            let blob = $0.items.filter({ $0 is Tree.Blob }).count
-            directories.append(Directory(id: id, url: url, entries: tree.items.filter({ $0 is Tree.Blob }).count,
-                                         sub: tree.items.filter({ $0 is Tree.Sub }).count))
-        }
-        
-        
-        directories.append(Directory(id: id, url: url, entries: tree.items.filter({ $0 is Tree.Blob }).count,
-                                     sub: tree.items.filter({ $0 is Tree.Sub }).count))*/
-//        tree.items.filter({ $0 is Tree.Sub }).forEach {
-//            
-//        }
+    func main(_ id: String, url: URL, tree: Tree) {
+        directories = directories(id, url: url, tree: tree).reversed()
     }
     
     func save(_ url: URL) {
@@ -78,7 +63,7 @@ class Index {
         serial.string("DIRC")
         serial.number(UInt32(version))
         serial.number(UInt32(entries.count))
-        entries.sorted(by: { $0.url.path < $1.url.path }).forEach {
+        entries.sorted(by: { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending }).forEach {
             serial.date($0.created)
             serial.date($0.modified)
             serial.number(UInt32($0.device))
@@ -88,20 +73,16 @@ class Index {
             serial.number(UInt32($0.group))
             serial.number(UInt32($0.size))
             serial.hex($0.id)
-            serial.number(UInt16($0.url.path.dropFirst(url.path.count + 1).count))
-            serial.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
-        }
-        if !directories.isEmpty {
-            let trees = Serial()
-            self.directories.forEach {
-                trees.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
-                trees.string("\($0.entries) ")
-                trees.string("\($0.sub)\n")
-                trees.hex($0.id)
+            serial.number(UInt8(0))
+            
+            let name = String($0.url.path.dropFirst(url.path.count + 1))
+            var size = name.count
+            serial.number(UInt8(size))
+            serial.nulled(name)
+            while (size + 7) % 8 != 0 {
+                serial.string("\u{0000}")
+                size += 1
             }
-            serial.string("TREE")
-            serial.number(UInt32(trees.data.count))
-            serial.serial(trees)
         }
         serial.hash()
         try! serial.data.write(to: url.appendingPathComponent(".git/index"), options: .atomic)
@@ -121,6 +102,23 @@ class Index {
         entry.conflicts = try parse.conflict()
         entry.url = url.appendingPathComponent(try parse.name())
         return entry
+    }
+    
+    private func directories(_ id: String, url: URL, tree: Tree) -> [Directory] {
+        var directory = Directory()
+        directory.id = id
+        directory.url = url
+        directory.entries = tree.items.filter({ $0 is Tree.Blob }).count
+        var result = [Directory]()
+        tree.children.sorted(by: { $0.0.url.path.compare($1.0.url.path, options:
+            .caseInsensitive) == .orderedDescending }).forEach {
+                let child = directories($0.0.id, url: $0.0.url, tree: $0.1)
+                directory.entries += child.last!.entries
+                directory.sub += 1
+                result.append(contentsOf: child)
+        }
+        result.append(directory)
+        return result
     }
     
     private func directories(_ parse: Parse, url: URL) throws -> [Directory] {

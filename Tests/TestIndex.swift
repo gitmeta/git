@@ -171,6 +171,24 @@ class TestIndex: XCTestCase {
         index!.directories.forEach { print($0.id + " : " + $0.url.path) }
     }
     
+    func testIndex5() {
+        try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index5", withExtension: nil)!)).write(to:
+            url.appendingPathComponent(".git/index"))
+        let index = Index(url)
+        print(index!.id)
+        print(index!.version)
+        print(index!.entries.first!)
+    }
+    
+    func testIndex6() {
+        try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index6", withExtension: nil)!)).write(to:
+            url.appendingPathComponent(".git/index"))
+        let index = Index(url)
+        print(index!.id)
+        print(index!.version)
+        index!.entries.forEach({ print($0) })
+    }
+    
     func testAddEntry() {
         let file = url.appendingPathComponent("file.txt")
         try! "hello world".write(to: file, atomically: true, encoding: .utf8)
@@ -187,7 +205,7 @@ class TestIndex: XCTestCase {
         try! "hello world".write(to: file, atomically: true, encoding: .utf8)
         let index = Index()
         let tree = Tree(url, ignore: ignore, valid: [file])
-        index.directory("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", url: url, tree: tree)
+        index.main("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", url: url, tree: tree)
         XCTAssertEqual(1, index.directories.count)
         XCTAssertEqual(url, index.directories.first?.url)
         XCTAssertEqual(1, index.directories.first?.entries)
@@ -200,7 +218,7 @@ class TestIndex: XCTestCase {
         try! "hello world".write(to: file, atomically: true, encoding: .utf8)
         var index = Index()
         let tree = Tree(url, ignore: ignore, valid: [file])
-        index.directory("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", url: url, tree: tree)
+        index.main("22540a368e9c10d2ead5c097626cc2b2ea0cc0ac", url: url, tree: tree)
         index.save(url)
         index = Index(url)!
         XCTAssertNotNil(index)

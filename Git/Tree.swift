@@ -73,10 +73,10 @@ class Tree {
     private var hash: (Data, String) {
         let serial = Serial()
         items.sorted(by:
-            { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending }).forEach { item in
-                serial.string("\(Tree.map.first(where: { $0.1 == type(of: item) })!.key) ")
-                serial.nulled(item.url.lastPathComponent)
-                serial.hex(item.id)
+        { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending }).forEach { item in
+            serial.string("\(Tree.map.first(where: { $0.1 == type(of: item) })!.key) ")
+            serial.nulled(item.url.lastPathComponent)
+            serial.hex(item.id)
         }
         return hasher.tree(serial.data)
     }

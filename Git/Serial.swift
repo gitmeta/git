@@ -22,7 +22,7 @@ class Serial {
                 $0.1.append($0.0[0] << 4 | $0.0[1])
                 $0.0 = []
             }
-            }.1)
+        }.1)
     }
     
     func serial(_ serial: Serial) { data.append(serial.data) }
