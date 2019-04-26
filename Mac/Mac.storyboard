@@ -122,7 +122,7 @@ DQ
                             <defaultToolbarItems/>
                         </toolbar>
                         <connections>
-                            <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
+                            <outlet property="delegate" destination="B8D-0N-5wS" id="7UI-nO-hcw"/>
                         </connections>
                     </window>
                     <connections>

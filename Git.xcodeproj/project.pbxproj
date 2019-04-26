@@ -54,7 +54,6 @@
 		2048A11B225C746200290E54 /* SFMono-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2048A115225C746200290E54 /* SFMono-Bold.otf */; };
 		2048A127225C748900290E54 /* iOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2048A124225C748900290E54 /* iOS.storyboard */; };
 		2048A129225C748900290E54 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A126225C748900290E54 /* App.swift */; };
-		2048A132225C749200290E54 /* Mac.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2048A12C225C749200290E54 /* Mac.storyboard */; };
 		2048A134225C749200290E54 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A12E225C749200290E54 /* Extensions.swift */; };
 		2048A136225C749200290E54 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A130225C749200290E54 /* App.swift */; };
 		2048A137225C749200290E54 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A131225C749200290E54 /* Button.swift */; };
@@ -76,6 +75,7 @@
 		20948B8022719E0B00B1987D /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7F22719E0B00B1987D /* Layout.swift */; };
 		20948B8222719E1A00B1987D /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B8122719E1A00B1987D /* Storage.swift */; };
 		20948B8422719E8900B1987D /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B8322719E8900B1987D /* Text.swift */; };
+		20A37BEB2272D98400850D12 /* Mac.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2048A12C225C749200290E54 /* Mac.storyboard */; };
 		20AFB33B2265B77000A3ECC0 /* TestHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33A2265B77000A3ECC0 /* TestHead.swift */; };
 		20AFB33D2265BA7800A3ECC0 /* TestCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */; };
 		20AFB33F2265DA5200A3ECC0 /* TestTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33E2265DA5200A3ECC0 /* TestTree.swift */; };
@@ -539,7 +539,7 @@
 				20B8328322709EA700773058 /* Mac.xcassets in Resources */,
 				20CB671F2260857E0064C31C /* Shared.xcassets in Resources */,
 				2048A116225C746200290E54 /* Localizable.strings in Resources */,
-				2048A132225C749200290E54 /* Mac.storyboard in Resources */,
+				20A37BEB2272D98400850D12 /* Mac.storyboard in Resources */,
 				2048A11A225C746200290E54 /* SFMono-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1173,7 +1173,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IBSC_MODULE = Git;
 				INFOPLIST_FILE = Mac/Mac.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
