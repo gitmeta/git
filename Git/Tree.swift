@@ -8,10 +8,13 @@ class Tree {
     }
     
     class Blob: Item { }
-    class Sub: Item { }
+    class Sub: Item, Hashable {
+        static func == (lhs: Tree.Sub, rhs: Tree.Sub) -> Bool { return lhs.id == rhs.id }
+        func hash(into: inout Hasher) { into.combine(id) }
+    }
     
     private(set) var items = [Item]()
-    private(set) var children = [Tree]()
+    private(set) var children = [Sub: Tree]()
     private static let map: [String: Item.Type] = ["100644": Blob.self, "100755": Blob.self, "40000": Sub.self]
     private let hasher = Hash()
     
@@ -42,7 +45,7 @@ class Tree {
                     item.url = content
                     item.id = child.hash.1
                     items.append(item)
-                    children.append(child)
+                    children[item] = child
                 }
             } else if !ignore.url(content) && valid.contains(content) {
                 let item = Blob()
@@ -58,7 +61,7 @@ class Tree {
     }
     
     @discardableResult func save(_ url: URL) -> String {
-        children.forEach({ $0.save(url) })
+        children.values.forEach({ $0.save(url) })
         let hash = self.hash
         let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

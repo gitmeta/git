@@ -55,8 +55,19 @@ class Index {
     }
     
     func directory(_ id: String, url: URL, tree: Tree) {
+        var main = Directory(id: id, url: url, entries: tree.items.filter({ $0 is Tree.Blob }).count,
+                             sub: tree.items.filter({ $0 is Tree.Sub }).count)
+        var directories = [Directory]()/*
+        tree.children.sorted(by: <#T##(Tree, Tree) throws -> Bool#>)
+        tree.items.sorted(by: { $0.url.path.compare($1.url.path) != .orderedDescending }).forEach {
+            let blob = $0.items.filter({ $0 is Tree.Blob }).count
+            directories.append(Directory(id: id, url: url, entries: tree.items.filter({ $0 is Tree.Blob }).count,
+                                         sub: tree.items.filter({ $0 is Tree.Sub }).count))
+        }
+        
+        
         directories.append(Directory(id: id, url: url, entries: tree.items.filter({ $0 is Tree.Blob }).count,
-                                     sub: tree.items.filter({ $0 is Tree.Sub }).count))
+                                     sub: tree.items.filter({ $0 is Tree.Sub }).count))*/
 //        tree.items.filter({ $0 is Tree.Sub }).forEach {
 //            
 //        }
@@ -82,7 +93,7 @@ class Index {
         }
         if !directories.isEmpty {
             let trees = Serial()
-            self.directories.sorted(by: { $0.url.path < $1.url.path }).forEach {
+            self.directories.forEach {
                 trees.nulled(String($0.url.path.dropFirst(url.path.count + 1)))
                 trees.string("\($0.entries) ")
                 trees.string("\($0.sub)\n")

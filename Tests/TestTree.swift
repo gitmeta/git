@@ -66,9 +66,9 @@ class TestTree: XCTestCase {
         XCTAssertEqual("12b34e53d16df3d9f2dd6ad8a4c45af37e283dc1", tree.items.first?.id)
         XCTAssertEqual(sub, tree.items.first?.url)
         XCTAssertEqual(1, tree.children.count)
-        XCTAssertNotNil(tree.children.first?.items.first as? Tree.Blob)
-        XCTAssertEqual("01a59b011a48660bb3828ec72b2b08990b8cf56b", tree.children.first?.items.first?.id)
-        XCTAssertEqual(file, tree.children.first?.items.first?.url)
+        XCTAssertNotNil(tree.children.values.first?.items.first as? Tree.Blob)
+        XCTAssertEqual("01a59b011a48660bb3828ec72b2b08990b8cf56b", tree.children.values.first?.items.first?.id)
+        XCTAssertEqual(file, tree.children.values.first?.items.first?.url)
     }
     
     func testSaveSub() {
