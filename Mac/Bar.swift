@@ -45,7 +45,7 @@ class Bar: NSControl {
     }
     
     override func mouseUp(with: NSEvent) {
-        if drag < 5 && with.clickCount < 2 {
+        if drag < 1 && with.clickCount < 2 {
             sendAction(#selector(App.shared.prompt), to: App.shared)
         }
         drag = 0

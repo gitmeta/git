@@ -119,4 +119,35 @@ class TestStaging: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testIndexSubtree() {
+        let expect = expectation(description: "")
+        let a = url.appendingPathComponent("a")
+        let b = a.appendingPathComponent("b")
+        let c = a.appendingPathComponent("c")
+        try! FileManager.default.createDirectory(at: b, withIntermediateDirectories: true)
+        try! FileManager.default.createDirectory(at: c, withIntermediateDirectories: true)
+        let file1 = b.appendingPathComponent("myfile1.txt")
+        let file2 = c.appendingPathComponent("myfile2.txt")
+        try! Data("hello world\n".utf8).write(to: file1)
+        try! Data("lorem ipsum\n".utf8).write(to: file2)
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
+            repository.user.name = "asd"
+            repository.user.email = "my@email.com"
+            repository.commit([file1, file2], message: "hello") {
+                let index = Index(self.url)
+                XCTAssertEqual(2, index?.entries.count)
+                XCTAssertEqual("3b18e512dba79e4c8300dd08aeb37f8e728b8dad", index?.entries.first?.id)
+                XCTAssertEqual(file1.path, index?.entries.first?.url.path)
+                XCTAssertEqual(12, index?.entries.first?.size)
+                XCTAssertEqual("01a59b011a48660bb3828ec72b2b08990b8cf56b", index?.entries.last?.id)
+                XCTAssertEqual(file2.path, index?.entries.last?.url.path)
+                XCTAssertEqual(12, index?.entries.last?.size)
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

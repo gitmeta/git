@@ -44,7 +44,7 @@ public class Repository {
             user.date = Date()
             let index = Index(url) ?? Index()
             let ignore = Ignore(url)
-            let tree = Tree(url, ignore: ignore, valid: files)
+            let tree = Tree(url, ignore: ignore, update: files, entries: index.entries)
             let treeId = tree.save(url)
             try files.forEach {
                 guard !ignore.url($0) else { throw Failure.Commit.ignored }
@@ -91,8 +91,6 @@ public class Repository {
         let hash = hasher.file(file)
         let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))
-        guard index.entries.first(where: { $0.url.path == file.path && $0.id == hash.1 }) == nil
-            else { throw Failure.Add.double }
         if !FileManager.default.fileExists(atPath: location.path) {
             try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
             let compressed = press.compress(hash.0)

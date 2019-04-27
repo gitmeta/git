@@ -189,6 +189,16 @@ class TestIndex: XCTestCase {
         index!.entries.forEach({ print($0) })
     }
     
+    func testIndex7() {
+        try! (try! Data(contentsOf: Bundle(for: TestIndex.self).url(forResource: "index7", withExtension: nil)!)).write(to:
+            url.appendingPathComponent(".git/index"))
+        let index = Index(url)
+        XCTAssertEqual(2, index?.entries.count)
+        print(index!.id)
+        print(index!.version)
+        index!.entries.forEach({ print($0) })
+    }
+    
     func testAddEntry() {
         let file = url.appendingPathComponent("file.txt")
         try! "hello world".write(to: file, atomically: true, encoding: .utf8)

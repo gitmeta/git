@@ -10,6 +10,7 @@
 		201A413122636E72001C852A /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201A413022636E72001C852A /* Tools.swift */; };
 		202F7F97227382C000AF9B99 /* index5 in Resources */ = {isa = PBXBuildFile; fileRef = 202F7F96227382C000AF9B99 /* index5 */; };
 		202F7F992273909900AF9B99 /* index6 in Resources */ = {isa = PBXBuildFile; fileRef = 202F7F982273909900AF9B99 /* index6 */; };
+		202F7F9B2273A32A00AF9B99 /* index7 in Resources */ = {isa = PBXBuildFile; fileRef = 202F7F9A2273A32A00AF9B99 /* index7 */; };
 		2048A0D7225C744400290E54 /* Failure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CC225C744400290E54 /* Failure.swift */; };
 		2048A0D9225C744400290E54 /* Failure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CC225C744400290E54 /* Failure.swift */; };
 		2048A0DA225C744400290E54 /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0CD225C744400290E54 /* Hash.swift */; };
@@ -115,6 +116,7 @@
 		201A413022636E72001C852A /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		202F7F96227382C000AF9B99 /* index5 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index5; sourceTree = "<group>"; };
 		202F7F982273909900AF9B99 /* index6 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index6; sourceTree = "<group>"; };
+		202F7F9A2273A32A00AF9B99 /* index7 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index7; sourceTree = "<group>"; };
 		2048A0CC225C744400290E54 /* Failure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Failure.swift; sourceTree = "<group>"; };
 		2048A0CD225C744400290E54 /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
 		2048A0CE225C744400290E54 /* Index.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Index.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				20B83280227043CF00773058 /* index4 */,
 				202F7F96227382C000AF9B99 /* index5 */,
 				202F7F982273909900AF9B99 /* index6 */,
+				202F7F9A2273A32A00AF9B99 /* index7 */,
 				2048A0F3225C745100290E54 /* tree0 */,
 				2048A0F2225C745100290E54 /* tree1 */,
 				2048A0FC225C745100290E54 /* tree2 */,
@@ -530,6 +533,7 @@
 				202F7F992273909900AF9B99 /* index6 in Resources */,
 				2048A108225C745100290E54 /* index0 in Resources */,
 				2048A106225C745100290E54 /* index1 in Resources */,
+				202F7F9B2273A32A00AF9B99 /* index7 in Resources */,
 				20E76BE6225E264300E023D8 /* compressed0 in Resources */,
 				2048A103225C745100290E54 /* tree1 in Resources */,
 				2048A10C225C745100290E54 /* blob0 in Resources */,

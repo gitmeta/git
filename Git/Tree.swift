@@ -4,18 +4,34 @@ class Tree {
     class Item {
         var id = ""
         var url = URL(fileURLWithPath: "")
-        required init() { }
+        var category: Category { return Category.other }
     }
     
-    class Blob: Item { }
+    class Blob: Item {
+        override var category: Tree.Category { return .blob }
+    }
+    
     class Sub: Item, Hashable {
         static func == (lhs: Tree.Sub, rhs: Tree.Sub) -> Bool { return lhs.id == rhs.id }
+        override var category: Tree.Category { return .sub }
         func hash(into: inout Hasher) { into.combine(id) }
+    }
+    
+    enum Category: String {
+        case blob = "100644"
+        case sub = "40000"
+        case other = "100755"
+        
+        func make() -> Item {
+            switch self {
+            case .sub: return Sub()
+            default: return Blob()
+            }
+        }
     }
     
     private(set) var items = [Item]()
     private(set) var children = [Sub: Tree]()
-    private static let map: [String: Item.Type] = ["100644": Blob.self, "100755": Blob.self, "40000": Sub.self]
     private let hasher = Hash()
     
     convenience init(_ id: String, url: URL, trail: URL? = nil) throws {
@@ -28,18 +44,18 @@ class Tree {
         guard "tree" == (try? parse.ascii(" ")) else { throw Failure.Tree.unreadable }
         _ = try parse.variable()
         while parse.index < data.count {
-            guard let item = Tree.map[try parse.ascii(" ")]?.init() else { throw Failure.Tree.unreadable }
+            guard let item = Category(rawValue: try parse.ascii(" "))?.make() else { throw Failure.Tree.unreadable }
             item.url = url.appendingPathComponent(try parse.variable())
             item.id = try parse.hash()
             items.append(item)
         }
     }
     
-    init(_ url: URL, ignore: Ignore, valid: [URL]) {
+    init(_ url: URL, ignore: Ignore, update: [URL], entries: [Index.Entry]) {
         try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).forEach {
             let content = $0.resolvingSymlinksInPath()
             if content.hasDirectoryPath {
-                let child = Tree(content, ignore: ignore, valid: valid)
+                let child = Tree(content, ignore: ignore, update: update, entries: entries)
                 if !child.items.isEmpty {
                     let item = Sub()
                     item.url = content
@@ -47,11 +63,18 @@ class Tree {
                     items.append(item)
                     children[item] = child
                 }
-            } else if !ignore.url(content) && valid.contains(content) {
-                let item = Blob()
-                item.url = content
-                item.id = hasher.file(content).1
-                items.append(item)
+            } else if !ignore.url(content) {
+                if update.contains(where: { $0.path == content.path }) {
+                    let item = Blob()
+                    item.url = content
+                    item.id = hasher.file(content).1
+                    items.append(item)
+                } else if let entry = entries.first(where: { $0.url.path == content.path }) {
+                    let item = Blob()
+                    item.url = entry.url
+                    item.id = entry.id
+                    items.append(item)
+                }
             }
         }
     }
@@ -73,10 +96,10 @@ class Tree {
     private var hash: (Data, String) {
         let serial = Serial()
         items.sorted(by:
-        { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending }).forEach { item in
-            serial.string("\(Tree.map.first(where: { $0.1 == type(of: item) })!.key) ")
-            serial.nulled(item.url.lastPathComponent)
-            serial.hex(item.id)
+        { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending }).forEach {
+            serial.string($0.category.rawValue + " ")
+            serial.nulled($0.url.lastPathComponent)
+            serial.hex($0.id)
         }
         return hasher.tree(serial.data)
     }

@@ -3,13 +3,13 @@ import UserNotifications
 
 class Alert {
     func show(_ message: String) {
-//        DispatchQueue.main.async { [weak self] in
-//            if #available(OSX 10.14, *) {
-//                self?.notify(message)
-//            } else {
-//                self?.fallback(message)
-//            }
-//        }
+        DispatchQueue.main.async { [weak self] in
+            if #available(OSX 10.14, *) {
+                self?.notify(message)
+            } else {
+                self?.fallback(message)
+            }
+        }
     }
     
     @available(OSX 10.14, *) private func notify(_ message: String) {

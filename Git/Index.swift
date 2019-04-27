@@ -51,6 +51,7 @@ class Index {
         entry.id = id
         entry.url = url
         entry.size = try! Data(contentsOf: url).count
+        entries.removeAll(where: { $0.url.path == url.path })
         entries.append(entry)
     }
     
@@ -81,6 +82,7 @@ class Index {
             serial.nulled(name)
             while (size + 7) % 8 != 0 {
                 serial.string("\u{0000}")
+                print("add nil")
                 size += 1
             }
         }
