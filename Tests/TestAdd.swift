@@ -29,7 +29,7 @@ class TestAdd: XCTestCase {
             url.appendingPathComponent(".git/objects/95/d09f2b10159347eece71399a7e2e907ea3df4f").path))
         XCTAssertEqual(27, (try? Data(contentsOf:
             url.appendingPathComponent(".git/objects/95/d09f2b10159347eece71399a7e2e907ea3df4f")))?.count)
-        XCTAssertEqual(105, data?.count)
+        XCTAssertEqual(112, data?.count)
         XCTAssertEqual(2, index?.version)
         XCTAssertEqual(40, index?.id.count)
         XCTAssertEqual(1, index?.entries.count)
@@ -43,7 +43,8 @@ class TestAdd: XCTestCase {
         try! Data("hello world".utf8).write(to: file)
         let index = Index(url) ?? Index()
         try? repository.add(file, index: index)
-        XCTAssertThrowsError(try repository.add(file, index: index))
+        try? repository.add(file, index: index)
+        XCTAssertEqual(1, index.entries.count)
     }
     
     func testCompressDecompress() {

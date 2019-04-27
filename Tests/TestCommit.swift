@@ -205,21 +205,6 @@ Add project files.
         waitForExpectations(timeout: 1)
     }
     
-    func testCommitTree() {
-        let expect = expectation(description: "")
-        var repository: Repository!
-        Git.create(url) {
-            repository = $0
-            repository.user.name = "hello"
-            repository.user.email = "world"
-            repository.commit([self.file], message: "hello world") {
-                XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", Index(self.url)?.directories.first?.id)
-                expect.fulfill()
-            }
-        }
-        waitForExpectations(timeout: 1)
-    }
-    
     func testSecondCommitEmpty() {
         let expect = expectation(description: "")
         var repository: Repository!

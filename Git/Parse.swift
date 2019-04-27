@@ -33,13 +33,11 @@ class Parse {
             result += byte
             byte = try character()
         } while(byte != "\u{0000}")
-        clean()
         return result
     }
     
     func name() throws -> String {
         return try {
-            print("length \($1)")
             index += $0 ? 4 : 2
             let result = String(decoding: try advance($1), as: UTF8.self)
             clean()
@@ -50,20 +48,13 @@ class Parse {
     func string() throws -> String { return String(decoding: try advance(4), as: UTF8.self) }
     func character() throws -> String { return String(decoding: try advance(1), as: UTF8.self) }
     func hash() throws -> String { return (try advance(20)).map { String(format: "%02hhx", $0) }.joined() }
+    func skipExtensions() { index = data.count - 20 }
     
     func number() throws -> Int {
         if let result = Int(try advance(4).map { String(format: "%02hhx", $0) }.joined(), radix: 16) {
             return result
         }
         throw Failure.Index.malformed
-    }
-    
-    func tree() throws -> Int {
-        guard data.count > index + 4 else { throw Failure.Index.malformed }
-        return String(decoding: data.subdata(in: index ..< index + 4), as: UTF8.self) == "TREE" ? try {
-                index += 4
-                return try number() + index
-        } () : 0
     }
     
     func date() throws -> Date {
@@ -87,10 +78,7 @@ class Parse {
     }
     
     private func clean() {
-        while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") {
-            print("clean -")
-            index += 1
-        }
+        while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") { index += 1 }
     }
     
     private func not2() throws -> Bool {

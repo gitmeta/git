@@ -15,17 +15,9 @@ class Index {
         fileprivate(set) var conflicts = false
     }
     
-    struct Directory {
-        fileprivate(set) var id = ""
-        fileprivate(set) var url = URL(fileURLWithPath: "")
-        fileprivate(set) var entries = 0
-        fileprivate(set) var sub = 0
-    }
-    
     private(set) var id = ""
     private(set) var version = 2
     private(set) var entries = [Entry]()
-    private(set) var directories = [Directory]()
     
     init() { }
     
@@ -35,15 +27,12 @@ class Index {
             "DIRC" == (try? parse.string()),
             let version = try? parse.number(),
             let count = try? parse.number(),
-            let entries = try? (0 ..< count).map({ _ in try entry(parse, url: url) }),
-            let directories = try? directories(parse, url: url),
-            let id = try? parse.hash(),
-            parse.index == parse.data.count
+            let entries = try? (0 ..< count).map({ _ in try entry(parse, url: url) })
         else { return nil }
+        parse.skipExtensions()
+        id = (try? parse.hash()) ?? ""
         self.version = version
         self.entries = entries
-        self.directories = directories
-        self.id = id
     }
     
     func entry(_ id: String, url: URL) {
@@ -53,10 +42,6 @@ class Index {
         entry.size = try! Data(contentsOf: url).count
         entries.removeAll(where: { $0.url.path == url.path })
         entries.append(entry)
-    }
-    
-    func main(_ id: String, url: URL, tree: Tree) {
-        directories = directories(id, url: url, tree: tree).reversed()
     }
     
     func save(_ url: URL) {
@@ -82,7 +67,6 @@ class Index {
             serial.nulled(name)
             while (size + 7) % 8 != 0 {
                 serial.string("\u{0000}")
-                print("add nil")
                 size += 1
             }
         }
@@ -104,63 +88,5 @@ class Index {
         entry.conflicts = try parse.conflict()
         entry.url = url.appendingPathComponent(try parse.name())
         return entry
-    }
-    
-    private func directories(_ id: String, url: URL, tree: Tree) -> [Directory] {
-        var directory = Directory()
-        directory.id = id
-        directory.url = url
-        directory.entries = tree.items.filter({ $0 is Tree.Blob }).count
-        var result = [Directory]()
-        tree.children.sorted(by: { $0.0.url.path.compare($1.0.url.path, options:
-            .caseInsensitive) == .orderedDescending }).forEach {
-                let child = directories($0.0.id, url: $0.0.url, tree: $0.1)
-                directory.entries += child.last!.entries
-                directory.sub += 1
-                result.append(contentsOf: child)
-        }
-        result.append(directory)
-        return result
-    }
-    
-    private func directories(_ parse: Parse, url: URL) throws -> [Directory] {
-        let limit = (try parse.tree())
-        var result = [Directory]()
-        while parse.index < limit { result.append(try directory(parse, limit: limit, url: url)) }
-        return result
-    }
-    
-    private func directory(_ parse: Parse, limit: Int, url: URL) throws -> Directory {
-        var tree = Directory()
-        tree.url = {
-            $0.isEmpty ? url : url.appendingPathComponent($0)
-        } (try parse.variable())
-        
-        if parse.index < limit {
-            tree.entries = try {
-                if $0 == nil { throw Failure.Index.malformed }
-                return $0!
-            } (Int(try parse.ascii(" ")))
-            
-            if parse.index < limit {
-                tree.sub = try {
-                    if $0 == nil { throw Failure.Index.malformed }
-                    return $0!
-                } (Int(try parse.ascii("\n")))
-                
-                if parse.index < limit {
-                    if tree.entries == -1 {
-                        print("contains nil")
-                    } else {
-                        print("not nil")
-                        tree.id = try parse.hash()
-                    }
-                    print("yes \(tree.id) \(tree.url.lastPathComponent) \(tree.entries) \(tree.sub)")
-                } else {
-                    print("none")
-                }
-            }
-        }
-        return tree
     }
 }
