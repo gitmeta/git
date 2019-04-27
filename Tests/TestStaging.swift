@@ -111,4 +111,26 @@ class TestStaging: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testTreeAfterPartialUpdate() {
+        let expect = expectation(description: "")
+        let file1 = url.appendingPathComponent("file1")
+        let file2 = url.appendingPathComponent("file2")
+        try! Data("hello world\n".utf8).write(to: file1)
+        try! Data("lorem ipsum\n".utf8).write(to: file2)
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
+            repository.user.name = "asd"
+            repository.user.email = "my@email.com"
+            repository.commit([file1, file2], message: "hello") {
+                try! Data("hello world updated\n".utf8).write(to: file1)
+                repository.commit([file1], message: "hello") {
+                    XCTAssertEqual(2, repository.tree?.items.count)
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

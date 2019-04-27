@@ -221,6 +221,24 @@ Add project files.
         waitForExpectations(timeout: 1)
     }
     
+    func testSecondCommitUpdate() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        Git.create(url) {
+            repository = $0
+            repository.user.name = "hello"
+            repository.user.email = "world"
+            repository.commit([self.file], message: "hello world") {
+                try! Data("lorem ipsum\n".utf8).write(to: self.file)
+                repository.commit([self.file], message: "second commit") {
+                    XCTAssertEqual(1, Index(self.url)?.entries.count)
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
     func testInvalidFile() {
         let expect = expectation(description: "")
         let repository = Repository(url)
