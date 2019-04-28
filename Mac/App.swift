@@ -7,13 +7,31 @@ import UserNotifications
     let alert = Alert()
     private(set) static var shared: App!
     private(set) var url: URL?
-    private(set) var repository: Repository?
     private(set) weak var list: List!
     private(set) weak var tools: Tools!
     private weak var bar: Bar!
     private weak var directory: Button!
     private weak var display: Display!
-    private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
+    
+    private(set) var repository: Repository? {
+        didSet {
+            Menu.shared.refresh()
+            if repository == nil {
+                hide()
+                list.update([])
+            } else {
+                repository!.updateStatus()
+                repository!.status = { [weak self] in
+                    if $0.isEmpty {
+                        self?.upToDate()
+                    } else {
+                        self?.show()
+                    }
+                    self?.list.update($0)
+                }
+            }
+        }
+    }
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
     override func cancelOperation(_: Any?) { makeFirstResponder(nil) }
@@ -94,10 +112,6 @@ import UserNotifications
                 &stale))?.startAccessingSecurityScopedResource()
             self.select(url)
         }
-        
-        timer.resume()
-        timer.setEventHandler { self.repository?.status { self.update($0) } }
-        timer.schedule(deadline: .now(), repeating: 1)
     }
     
     func userNotificationCenter(_: NSUserNotificationCenter, shouldPresent: NSUserNotification) -> Bool { return true }
@@ -122,19 +136,7 @@ import UserNotifications
     }
     
     @objc func start() {
-        Git.create(url!, error: { self.alert.show($0.localizedDescription) }) {
-            self.repository = $0
-            self.show()
-        }
-    }
-    
-    private func update(_ items: [(URL, Status)]) {
-        if items.isEmpty {
-            upToDate()
-        } else {
-            show()
-        }
-        list.update(items)
+        Git.create(url!, error: { self.alert.show($0.localizedDescription) }) { self.repository = $0 }
     }
     
     private func select(_ url: URL) {
@@ -142,11 +144,8 @@ import UserNotifications
         Git.open(url, error: {
             self.alert.show($0.localizedDescription)
             self.repository = nil
-            self.hide()
-            Menu.shared.refresh()
         }) {
             self.repository = $0
-            Menu.shared.refresh()
         }
         DispatchQueue.main.async {
             self.bar.isHidden = false

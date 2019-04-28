@@ -17,11 +17,8 @@ class TestList: XCTestCase {
     func testEmpty() {
         let expect = expectation(description: "")
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertTrue($0.isEmpty)
-                expect.fulfill()
-            }
+            XCTAssertTrue($0.statusList.isEmpty)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -31,12 +28,10 @@ class TestList: XCTestCase {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertEqual(1, $0.count)
-                XCTAssertEqual(file, $0[0].0)
-                expect.fulfill()
-            }
+            let status = $0.statusList
+            XCTAssertEqual(1, status.count)
+            XCTAssertEqual(file, status[0].0)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -48,13 +43,11 @@ class TestList: XCTestCase {
         try! Data().write(to: file1)
         try! Data().write(to: file2)
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertEqual(2, $0.count)
-                XCTAssertEqual(file1, $0[0].0)
-                XCTAssertEqual(file2, $0[1].0)
-                expect.fulfill()
-            }
+            let status = $0.statusList
+            XCTAssertEqual(2, status.count)
+            XCTAssertEqual(file1, status[0].0)
+            XCTAssertEqual(file2, status[1].0)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -64,11 +57,8 @@ class TestList: XCTestCase {
         let directory = url.appendingPathComponent("folder")
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertTrue($0.isEmpty)
-                expect.fulfill()
-            }
+            XCTAssertTrue($0.statusList.isEmpty)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -80,12 +70,10 @@ class TestList: XCTestCase {
         let file = directory.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertEqual(1, $0.count)
-                XCTAssertEqual(file, $0[0].0)
-                expect.fulfill()
-            }
+            let status = $0.statusList
+            XCTAssertEqual(1, status.count)
+            XCTAssertEqual(file, status[0].0)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -98,12 +86,10 @@ class TestList: XCTestCase {
         let file = sub.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertEqual(1, $0.count)
-                XCTAssertEqual(file, $0[0].0)
-                expect.fulfill()
-            }
+            let status = $0.statusList
+            XCTAssertEqual(1, status.count)
+            XCTAssertEqual(file, status[0].0)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -117,13 +103,11 @@ class TestList: XCTestCase {
         try! Data().write(to: file1)
         try! Data().write(to: file2)
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertEqual(2, $0.count)
-                XCTAssertEqual(file1, $0[0].0)
-                XCTAssertEqual(file2, $0[1].0)
-                expect.fulfill()
-            }
+            let status = $0.statusList
+            XCTAssertEqual(2, status.count)
+            XCTAssertEqual(file1, status[0].0)
+            XCTAssertEqual(file2, status[1].0)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -147,18 +131,16 @@ class TestList: XCTestCase {
         try! Data().write(to: file7)
         try! Data().write(to: file8)
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertEqual(file1, $0[0].0)
-                XCTAssertEqual(file2, $0[1].0)
-                XCTAssertEqual(file3, $0[2].0)
-                XCTAssertEqual(file4, $0[3].0)
-                XCTAssertEqual(file5, $0[4].0)
-                XCTAssertEqual(file6, $0[5].0)
-                XCTAssertEqual(file7, $0[6].0)
-                XCTAssertEqual(file8, $0[7].0)
-                expect.fulfill()
-            }
+            let status = $0.statusList
+            XCTAssertEqual(file1, status[0].0)
+            XCTAssertEqual(file2, status[1].0)
+            XCTAssertEqual(file3, status[2].0)
+            XCTAssertEqual(file4, status[3].0)
+            XCTAssertEqual(file5, status[4].0)
+            XCTAssertEqual(file6, status[5].0)
+            XCTAssertEqual(file7, status[6].0)
+            XCTAssertEqual(file8, status[7].0)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -191,19 +173,17 @@ class TestList: XCTestCase {
         try! Data().write(to: file8)
         try! Data().write(to: file9)
         Git.create(url) {
-            self.repository = $0
-            self.repository.status {
-                XCTAssertEqual(file1, $0[0].0)
-                XCTAssertEqual(file2, $0[1].0)
-                XCTAssertEqual(file3, $0[2].0)
-                XCTAssertEqual(file4, $0[3].0)
-                XCTAssertEqual(file5, $0[4].0)
-                XCTAssertEqual(file6, $0[5].0)
-                XCTAssertEqual(file7, $0[6].0)
-                XCTAssertEqual(file8, $0[7].0)
-                XCTAssertEqual(file9, $0[8].0)
-                expect.fulfill()
-            }
+            let status = $0.statusList
+            XCTAssertEqual(file1, status[0].0)
+            XCTAssertEqual(file2, status[1].0)
+            XCTAssertEqual(file3, status[2].0)
+            XCTAssertEqual(file4, status[3].0)
+            XCTAssertEqual(file5, status[4].0)
+            XCTAssertEqual(file6, status[5].0)
+            XCTAssertEqual(file7, status[6].0)
+            XCTAssertEqual(file8, status[7].0)
+            XCTAssertEqual(file9, status[8].0)
+            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }

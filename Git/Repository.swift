@@ -2,36 +2,19 @@ import Foundation
 
 public class Repository {
     public var user = User()
+    public var status: (([(URL, Status)]) -> Void)?
     public let url: URL
+    private var lastStatus = Date.distantPast
     private let hasher = Hash()
     private let press = Press()
     private let dispatch = Dispatch()
+    private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     init(_ url: URL) {
         self.url = url
-    }
-    
-    public func status(_ result: @escaping(([(URL, Status)]) -> Void)) {
-        dispatch.background({ [weak self] in
-            guard let location = self?.url, let contents = self?.contents, let hasher = self?.hasher else { return [] }
-            let index = Index(location)
-            var tree = self?.tree?.list(location) ?? []
-            return contents.reduce(into: [(URL, Status)]()) { result, url in
-                if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
-                    let hash = hasher.file(url).1
-                    if entries.contains(where: { $0.id == hash }) {
-                        if !tree.contains(where: { $0.id == hash }) {
-                            result.append((url, .added))
-                        }
-                    } else {
-                        result.append((url, .modified))
-                    }
-                    tree.removeAll { $0.url == url }
-                } else {
-                    result.append((url, .untracked))
-                }
-            } + tree.map({ ($0.url, .deleted) })
-        }, success: result)
+        timer.resume()
+        timer.schedule(deadline: .distantFuture)
+        timer.setEventHandler { [weak self] in self?.updateStatus() }
     }
     
     public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
@@ -61,6 +44,17 @@ public class Repository {
         }, error: error, success: done ?? { })
     }
     
+    public func updateStatus() {
+        dispatch.background({ [weak self] in
+            return self?.needsStatus == true ? self?.statusList : nil
+        }) { [weak self] in
+            if let changes = $0 {
+                self?.status?(changes)
+            }
+            self?.timer.schedule(deadline: .now() + 1)
+        }
+    }
+    
     var HEAD: String {
         return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
             UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")
@@ -82,6 +76,41 @@ public class Repository {
     var tree: Tree? {
         guard let head = self.head else { return nil }
         return try? Tree(head.tree, url: url)
+    }
+    
+    var needsStatus: Bool {
+        if let modified = (try? FileManager.default.attributesOfItem(atPath: url.path))?[.modificationDate] as? Date,
+            modified > lastStatus { return true }
+        let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: [.contentModificationDateKey])
+        while let url = enumerator?.nextObject() as? URL {
+            if let modified = try? url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate,
+                modified > lastStatus {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var statusList: [(URL, Status)] {
+        lastStatus = Date()
+        let contents = self.contents
+        let index = Index(url)
+        var tree = self.tree?.list(url) ?? []
+        return contents.reduce(into: [(URL, Status)]()) { result, url in
+            if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
+                let hash = hasher.file(url).1
+                if entries.contains(where: { $0.id == hash }) {
+                    if !tree.contains(where: { $0.id == hash }) {
+                        result.append((url, .added))
+                    }
+                } else {
+                    result.append((url, .modified))
+                }
+                tree.removeAll { $0.url == url }
+            } else {
+                result.append((url, .untracked))
+            }
+        } + tree.map({ ($0.url, .deleted) })
     }
     
     func add(_ file: URL, index: Index) throws {
