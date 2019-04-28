@@ -95,13 +95,16 @@ public class Repository {
         lastStatus = Date()
         let contents = self.contents
         let index = Index(url)
+        let pack = Pack.load(url)
         var tree = self.tree?.list(url) ?? []
         return contents.reduce(into: [(URL, Status)]()) { result, url in
             if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
                 let hash = hasher.file(url).1
                 if entries.contains(where: { $0.id == hash }) {
                     if !tree.contains(where: { $0.id == hash }) {
-                        result.append((url, .added))
+                        if !pack.contains(where: { packed in packed.entries.contains(where: { $0.0 == hash } ) }) {
+                            result.append((url, .added))
+                        }
                     }
                 } else {
                     result.append((url, .modified))
