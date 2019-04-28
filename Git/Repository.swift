@@ -81,14 +81,7 @@ public class Repository {
     var needsStatus: Bool {
         if let modified = (try? FileManager.default.attributesOfItem(atPath: url.path))?[.modificationDate] as? Date,
             modified > lastStatus { return true }
-        let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: [.contentModificationDateKey])
-        while let url = enumerator?.nextObject() as? URL {
-            if let modified = try? url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate,
-                modified > lastStatus {
-                return true
-            }
-        }
-        return false
+        return modified([url])
     }
     
     var statusList: [(URL, Status)] {
@@ -137,5 +130,24 @@ public class Repository {
             .map({ ($0 as! URL).resolvingSymlinksInPath() })
             .filter({ !ignore.url($0) })
             .sorted(by: { $0.path.compare($1.path, options: .caseInsensitive) != .orderedDescending }) ?? []
+    }
+    
+    private func modified(_ urls: [URL]) -> Bool {
+        var urls = urls
+        guard
+            !urls.isEmpty,
+            let contents = try? FileManager.default.contentsOfDirectory(at: urls.first!, includingPropertiesForKeys:
+                [.contentModificationDateKey])
+        else { return false }
+        for item in contents {
+            if item.hasDirectoryPath {
+                if let modified = try? item.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate,
+                    modified > lastStatus {
+                    return true
+                }
+            }
+            urls.append(item)
+        }
+        return modified(Array(urls.dropFirst()))
     }
 }

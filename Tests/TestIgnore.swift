@@ -65,9 +65,9 @@ weird
     
     func testPrefixStar() {
         XCTAssertFalse(ignore.url(url.appendingPathComponent(".xcuserstatea")))
-        XCTAssertFalse(ignore.url(url.appendingPathComponent(".xcuserstate/a")))
         XCTAssertTrue(ignore.url(url.appendingPathComponent("hallo.xcuserstate")))
         XCTAssertTrue(ignore.url(url.appendingPathComponent(".xcuserstate")))
+        XCTAssertTrue(ignore.url(url.appendingPathComponent(".xcuserstate/a")))
         XCTAssertTrue(ignore.url(url.appendingPathComponent("hello/world/.xcuserstate")))
     }
     

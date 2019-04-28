@@ -8,7 +8,9 @@ class Ignore {
         guard let data = try? Data(contentsOf: url.appendingPathComponent(".gitignore")) else { return }
         String(decoding: data, as: UTF8.self).components(separatedBy: "\n").filter({ !$0.isEmpty }).forEach {
             switch $0.first {
-            case "*": suffix.append(String($0.dropFirst()))
+            case "*":
+                suffix.append(String($0.dropFirst()))
+                contains.append({ $0.last == "/" ? $0 : $0 + "/" } (String($0.dropFirst())))
             case "/": suffix.append($0)
             default: suffix.append("/" + $0)
             }

@@ -76,4 +76,21 @@ class TestContents: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testAfterSubSubtreeEdition() {
+        let expect = expectation(description: "")
+        let dir = url.appendingPathComponent("adir/inside/another")
+        try! FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let file = dir.appendingPathComponent("file.txt")
+        try! "hello\n".write(to: file, atomically: true, encoding: .utf8)
+        Git.create(url) {
+            _ = $0.statusList
+            try! "world\n".write(to: file, atomically: true, encoding: .utf8)
+            _ = $0.statusList
+            try! "lorem ipsum\n".write(to: file, atomically: true, encoding: .utf8)
+            XCTAssertTrue($0.needsStatus)
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
 }
