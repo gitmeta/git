@@ -7,8 +7,7 @@ class TestIndex: XCTestCase {
     
     override func setUp() {
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
-        try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
-        try? FileManager.default.createDirectory(at: url.appendingPathComponent(".git"), withIntermediateDirectories: false)
+        try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git"), withIntermediateDirectories: true)
         ignore = Ignore(url)
     }
     

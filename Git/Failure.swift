@@ -6,8 +6,8 @@ public struct Failure: LocalizedError {
         public static let invalid = Failure("This is not a repository.")
     }
     
-    public struct Index {
-        public static let malformed = Failure("Unable to read index.")
+    public struct Parsing {
+        public static let malformed = Failure("Unable to read file.")
     }
     
     public struct Press {
@@ -35,6 +35,12 @@ public struct Failure: LocalizedError {
     public struct User {
         public static let name = Failure("Invalid name.")
         public static let email = Failure("Invalid email.")
+    }
+    
+    public struct Pack {
+        public static let indexNotFound = Failure("Index file for pack not found.")
+        public static let packNotFound = Failure("Pack file not found.")
+        public static let invalidIndex = Failure("Index file for pack malformed.")
     }
     
     public var errorDescription: String? { return "Error: " + string }

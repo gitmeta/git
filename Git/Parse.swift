@@ -38,34 +38,36 @@ class Parse {
     
     func name() throws -> String {
         return try {
-            index += $0 ? 4 : 2
+            discard($0 ? 4 : 2)
             let result = String(decoding: try advance($1), as: UTF8.self)
             clean()
             return result
         } (try not2(), try length())
     }
     
+    func byte() throws -> UInt8 { return try advance(1).first! }
     func string() throws -> String { return String(decoding: try advance(4), as: UTF8.self) }
     func character() throws -> String { return String(decoding: try advance(1), as: UTF8.self) }
     func hash() throws -> String { return (try advance(20)).map { String(format: "%02hhx", $0) }.joined() }
-    func skipExtensions() { index = data.count - 20 }
+    func crc() throws -> String { return (try advance(4)).map { String(format: "%02hhx", $0) }.joined() }
+    func skipExtensions() { discard((data.count - 20) - index) }
+    func discard(_ bytes: Int) { index += bytes }
     
     func number() throws -> Int {
         if let result = Int(try advance(4).map { String(format: "%02hhx", $0) }.joined(), radix: 16) {
             return result
         }
-        throw Failure.Index.malformed
+        throw Failure.Parsing.malformed
     }
     
     func date() throws -> Date {
         let result = Date(timeIntervalSince1970: TimeInterval(try number()))
-        index += 4
+        discard(4)
         return result
     }
     
     func conflict() throws -> Bool {
-        var byte = data.subdata(in:
-            index ..< index + 1).withUnsafeBytes { $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1).pointee }
+        var byte = data.subdata(in: index ..< index + 1).first!
         byte >>= 2
         if byte & 0x01 == 1 {
             return true
@@ -78,7 +80,7 @@ class Parse {
     }
     
     private func clean() {
-        while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") { index += 1 }
+        while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") { discard(1) }
     }
     
     private func not2() throws -> Bool {
@@ -90,13 +92,13 @@ class Parse {
     
     private func length() throws -> Int {
         guard let result = Int(data.subdata(in: index + 1 ..< index + 2).map { String(format: "%02hhx", $0) }.joined(),
-                               radix: 16) else { throw Failure.Index.malformed }
+                               radix: 16) else { throw Failure.Parsing.malformed }
         return result
     }
     
     private func advance(_ bytes: Int) throws -> Data {
         let index = self.index + bytes
-        guard data.count >= index else { throw Failure.Index.malformed }
+        guard data.count >= index else { throw Failure.Parsing.malformed }
         let result = data.subdata(in: self.index ..< index)
         self.index = index
         return result
