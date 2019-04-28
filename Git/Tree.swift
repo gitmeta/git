@@ -4,7 +4,7 @@ class Tree {
     class Item {
         var id = ""
         var url = URL(fileURLWithPath: "")
-        var category: Category { return Category.other }
+        var category: Category { return .unknown }
     }
     
     class Blob: Item {
@@ -18,9 +18,9 @@ class Tree {
     }
     
     enum Category: String {
+        case unknown
         case blob = "100644"
         case sub = "40000"
-        case other = "100755"
         
         func make() -> Item {
             switch self {
@@ -44,7 +44,7 @@ class Tree {
         guard "tree" == (try? parse.ascii(" ")) else { throw Failure.Tree.unreadable }
         _ = try parse.variable()
         while parse.index < data.count {
-            guard let item = Category(rawValue: try parse.ascii(" "))?.make() else { throw Failure.Tree.unreadable }
+            let item = (Category(rawValue: try parse.ascii(" ")) ?? .blob).make()
             item.url = url.appendingPathComponent(try parse.variable())
             item.id = try parse.hash()
             items.append(item)
