@@ -31,7 +31,7 @@ public class Repository {
             let treeId = tree.save(url)
             try files.forEach {
                 guard !ignore.url($0) else { throw Failure.Commit.ignored }
-                try self?.add($0, index: index)
+                try? self?.add($0, index: index)
             }
             let commit = Commit()
             commit.author = user

@@ -205,7 +205,7 @@ Add project files.
         waitForExpectations(timeout: 1)
     }
     
-    func testSecondCommitEmpty() {
+    func testAllowSecondCommitEmpty() {
         let expect = expectation(description: "")
         var repository: Repository!
         Git.create(url) {
@@ -213,9 +213,9 @@ Add project files.
             repository.user.name = "hello"
             repository.user.email = "world"
             repository.commit([self.file], message: "hello world") {
-                repository.commit([self.file], message: "second commit", error: { _ in
+                repository.commit([self.file], message: "second commit") {
                     expect.fulfill()
-                })
+                }
             }
         }
         waitForExpectations(timeout: 1)
