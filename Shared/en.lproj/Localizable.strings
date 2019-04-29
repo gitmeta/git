@@ -1,7 +1,8 @@
 App.directory="Directory";
 App.initial="Select your initial working directory.";
-Display.notRepository="Version Control has not been started in this directory.";
-Display.start="Start";
+Alert.error="Error";
+Display.notRepository="This directory is not a repository yet.";
+Display.create="Create";
 Display.upToDate="Nothing to commit.";
 Item.added="#added";
 Item.modified="#modified";

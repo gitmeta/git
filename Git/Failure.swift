@@ -43,7 +43,7 @@ public struct Failure: LocalizedError {
         public static let invalidIndex = Failure("Index file for pack malformed.")
     }
     
-    public var errorDescription: String? { return "Error: " + string }
+    public var errorDescription: String? { return string }
     private let string: String
     private init(_ string: String) { self.string = string }
 }

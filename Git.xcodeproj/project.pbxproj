@@ -101,6 +101,10 @@
 		20CCE7402261D4840014CAC9 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CCE73F2261D4840014CAC9 /* Alert.swift */; };
 		20CCE7422261FF020014CAC9 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CCE7412261FF020014CAC9 /* Item.swift */; };
 		20E76BE6225E264300E023D8 /* compressed0 in Resources */ = {isa = PBXBuildFile; fileRef = 20E76BE5225E264300E023D8 /* compressed0 */; };
+		20EB250222770C790043EBD2 /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB250122770C790043EBD2 /* Onboard.swift */; };
+		20EB2504227711E20043EBD2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2503227711E20043EBD2 /* Session.swift */; };
+		20EB2505227711E20043EBD2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2503227711E20043EBD2 /* Session.swift */; };
+		20EB2507227713010043EBD2 /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2506227713010043EBD2 /* TestSession.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -200,6 +204,9 @@
 		20CCE7412261FF020014CAC9 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		20CCE743226214270014CAC9 /* Git.sketch */ = {isa = PBXFileReference; lastKnownFileType = file; path = Git.sketch; sourceTree = "<group>"; };
 		20E76BE5225E264300E023D8 /* compressed0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = compressed0; sourceTree = "<group>"; };
+		20EB250122770C790043EBD2 /* Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
+		20EB2503227711E20043EBD2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		20EB2506227713010043EBD2 /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +266,7 @@
 				2048A0D1225C744400290E54 /* Press.swift */,
 				2048A0D2225C744400290E54 /* Repository.swift */,
 				2048A0D0225C744400290E54 /* Serial.swift */,
+				20EB2503227711E20043EBD2 /* Session.swift */,
 				2048A0D4225C744400290E54 /* Status.swift */,
 				2048A0D3225C744400290E54 /* Tree.swift */,
 				20948B792271985B00B1987D /* User.swift */,
@@ -297,6 +305,7 @@
 				20671BE8226C70A700A74B7E /* TestList.swift */,
 				206F2E5D2275DDFD0058DA7E /* TestPack.swift */,
 				2048A0F6225C745100290E54 /* TestPress.swift */,
+				20EB2506227713010043EBD2 /* TestSession.swift */,
 				20A37BEC2272E1E100850D12 /* TestStaging.swift */,
 				2048A0FD225C745100290E54 /* TestStatus.swift */,
 				20AFB33E2265DA5200A3ECC0 /* TestTree.swift */,
@@ -344,6 +353,7 @@
 				20948B7F22719E0B00B1987D /* Layout.swift */,
 				20CB6721226086030064C31C /* List.swift */,
 				20948B7722718AEE00B1987D /* Menu.swift */,
+				20EB250122770C790043EBD2 /* Onboard.swift */,
 				20948B73227189B700B1987D /* Sheet.swift */,
 				20948B8122719E1A00B1987D /* Storage.swift */,
 				20948B8322719E8900B1987D /* Text.swift */,
@@ -595,6 +605,7 @@
 				20671BEB226C79E900A74B7E /* Ignore.swift in Sources */,
 				2048A0DC225C744400290E54 /* Index.swift in Sources */,
 				2073D8772267283E00631BCB /* Dispatch.swift in Sources */,
+				20EB2504227711E20043EBD2 /* Session.swift in Sources */,
 				2048A0EC225C744400290E54 /* Parse.swift in Sources */,
 				2048A0E2225C744400290E54 /* Press.swift in Sources */,
 				206F2E642275E7E50058DA7E /* Pack.swift in Sources */,
@@ -617,6 +628,7 @@
 				20671BEC226C79E900A74B7E /* Ignore.swift in Sources */,
 				2048A0DD225C744400290E54 /* Index.swift in Sources */,
 				2073D8782267283E00631BCB /* Dispatch.swift in Sources */,
+				20EB2505227711E20043EBD2 /* Session.swift in Sources */,
 				2048A0ED225C744400290E54 /* Parse.swift in Sources */,
 				2048A0E3225C744400290E54 /* Press.swift in Sources */,
 				206F2E652275E7E50058DA7E /* Pack.swift in Sources */,
@@ -627,6 +639,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20EB2507227713010043EBD2 /* TestSession.swift in Sources */,
 				2048A107225C745100290E54 /* TestPress.swift in Sources */,
 				2048A109225C745100290E54 /* TestHash.swift in Sources */,
 				206F2E5E2275DDFD0058DA7E /* TestPack.swift in Sources */,
@@ -656,6 +669,7 @@
 				20CB6718226066470064C31C /* Bar.swift in Sources */,
 				20948B8022719E0B00B1987D /* Layout.swift in Sources */,
 				20948B74227189B700B1987D /* Sheet.swift in Sources */,
+				20EB250222770C790043EBD2 /* Onboard.swift in Sources */,
 				2055EFDC2276C9C000658C04 /* Window.swift in Sources */,
 				2048A136225C749200290E54 /* App.swift in Sources */,
 				20CB6722226086030064C31C /* List.swift in Sources */,

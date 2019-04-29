@@ -2,209 +2,86 @@ import Git
 import AppKit
 
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate {
-    private(set) static var global: App!
-    private(set) var url: URL?
-    private(set) weak var list: List!
-    private(set) weak var tools: Tools!
-    private weak var bar: Bar!
-    private weak var directory: Button!
-    private weak var display: Display!
+    private(set) static var main: App!
+    var session: Session!
+    private(set) var window: Window!
+    
+    private(set) var repository: Repository? {
+        didSet {
+            if repository == nil {
+                (mainMenu as! Menu).project.isEnabled = false
+                window.notRepository()
+                window.list.update([])
+            } else {
+                (mainMenu as! Menu).project.isEnabled = true
+                repository!.updateStatus()
+                repository!.status = { [weak self] in
+                    if $0.isEmpty {
+                        self?.window.upToDate()
+                    } else {
+                        self?.window.repository()
+                    }
+                    self?.window.list.update($0)
+                }
+            }
+        }
+    }
     
     override init() {
         super.init()
         delegate = self
+        App.main = self
     }
     
     required init?(coder: NSCoder) { return nil }
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
     
     func applicationDidFinishLaunching(_: Notification) {
-        Window().makeKeyAndOrderFront(nil)
+        let window = Window()
+        window.makeKeyAndOrderFront(nil)
+        self.window = window
+        
         mainMenu = Menu()
-    }
-    
-    
-}
-
-/*
-
-@NSApplicationMain class App: NSWindow, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSUserNotificationCenterDelegate {
-    var user: User?
-    let alert = Alert()
- 
-    
-    private(set) var repository: Repository? {
-        didSet {
-            Menu.shared.refresh()
-            if repository == nil {
-                hide()
-                list.update([])
-            } else {
-                repository!.updateStatus()
-                repository!.status = { [weak self] in
-                    if $0.isEmpty {
-                        self?.upToDate()
-                    } else {
-                        self?.show()
-                    }
-                    self?.list.update($0)
-                }
-            }
-        }
-    }
-    
-    func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
-    override func cancelOperation(_: Any?) { makeFirstResponder(nil) }
-    override func mouseDown(with: NSEvent) { makeFirstResponder(nil) }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        App.shared = self
-        UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
-        backgroundColor = .shade
-        NSApp.delegate = self
         
-        let display = Display()
-        contentView!.addSubview(display)
-        self.display = display
-        
-        let bar = Bar()
-        bar.isHidden = true
-        contentView!.addSubview(bar)
-        self.bar = bar
-        
-        let list = List()
-        contentView!.addSubview(list)
-        self.list = list
-        
-        let directory = Button(.local("App.directory"), target: self, action: #selector(self.prompt))
-        directory.isHidden = true
-        directory.layer!.backgroundColor = NSColor.halo.cgColor
-        directory.width.constant = 120
-        contentView!.addSubview(directory)
-        self.directory = directory
-        
-        let tools = Tools()
-        contentView!.addSubview(tools)
-        self.tools = tools
-        
-        bar.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        bar.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        bar.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        
-        list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 1).isActive = true
-        list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true
-        
-        display.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        display.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        display.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        display.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
-        
-        directory.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        directory.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 80).isActive = true
-        
-        tools.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        tools.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
-
-        NSUserNotificationCenter.default.delegate = self
-        
-        if #available(OSX 10.14, *) {
-            UNUserNotificationCenter.current().delegate = self
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
-        }
-        
-        DispatchQueue.global(qos: .background).async {
-            guard
-                let url = UserDefaults.standard.url(forKey: "url"),
-                let access = UserDefaults.standard.data(forKey: "access")
-            else {
-                DispatchQueue.main.async {
-                    directory.isHidden = false
-                    self.alert.show(.local("App.initial"))
-                }
-                return
-            }
+        Git.session { [weak self] in
+            self?.session = $0
+            guard !$0.bookmark.isEmpty else { return }
             var stale = false
-            _ = (try? URL(resolvingBookmarkData: access, options: .withSecurityScope, bookmarkDataIsStale:
+            _ = (try? URL(resolvingBookmarkData: $0.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
                 &stale))?.startAccessingSecurityScopedResource()
-            self.select(url)
+            self?.open($0.url)
         }
     }
     
-    func userNotificationCenter(_: NSUserNotificationCenter, shouldPresent: NSUserNotification) -> Bool { return true }
-    @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
-        UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        withCompletionHandler([.alert])
+    @objc func create() {
+        Git.create(session.url, error: { [weak self] in
+            self?.window.alert.error($0.localizedDescription)
+        }) { [weak self] in self?.repository = $0 }
     }
     
-    @objc func prompt() {
+    @objc func panel() {
         let panel = NSOpenPanel()
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
-        panel.begin {
+        panel.begin { [weak self] in
             if $0 == .OK {
-                DispatchQueue.global(qos: .background).async {
-                    UserDefaults.standard.set(panel.url, forKey: "url")
-                    UserDefaults.standard.set((try! panel.url!.bookmarkData(options: .withSecurityScope)), forKey: "access")
-                    self.select(panel.url!)
+                self?.session.url = panel.url!
+                self?.session.bookmark = (try! panel.url!.bookmarkData(options: .withSecurityScope))
+                self?.open(panel.url!)
+                if let session = self?.session {
+                    Git.update(session)
                 }
             }
         }
     }
     
-    @objc func start() {
-        Git.create(url!, error: { self.alert.show($0.localizedDescription) }) { self.repository = $0 }
-    }
-    
-    private func select(_ url: URL) {
-        self.url = url
-        Git.open(url, error: {
-            self.alert.show($0.localizedDescription)
-            self.repository = nil
-        }) {
-            self.repository = $0
+    private func open(_ url: URL) {
+        window.bar.label.stringValue = url.path
+        Git.open(url, error: { [weak self] in
+            self?.window.alert.error($0.localizedDescription)
+            self?.repository = nil
+        }) { [weak self] in
+            self?.repository = $0
         }
-        DispatchQueue.main.async {
-            self.bar.isHidden = false
-            self.directory.isHidden = true
-            self.bar.label.stringValue = url.path
-        }
-    }
-    
-    private func show() {
-        tools.height.constant = 180
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.6
-            context.allowsImplicitAnimation = true
-            contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 1
-            display.hide()
-        }) { }
-    }
-    
-    private func hide() {
-        tools.height.constant = 0
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.6
-            context.allowsImplicitAnimation = true
-            contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 0
-            display.notRepository()
-        }) { }
-    }
-    
-    private func upToDate() {
-        tools.height.constant = 0
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.6
-            context.allowsImplicitAnimation = true
-            contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 1
-            display.upToDate()
-        }) { }
     }
 }
-*/

@@ -34,6 +34,16 @@ public class Git {
         }, error: error, success: done ?? { })
     }
     
+    public class func session(_ result: @escaping((Session) -> Void)) {
+        dispatch.background({ Session.load() }, success: result)
+    }
+    
+    public class func update(_ session: Session) {
+        dispatch.background({
+            Session.update(session)
+        }) { }
+    }
+    
     private class func repository(_ url: URL) -> Bool {
         var d: ObjCBool = false
         guard FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/refs").path, isDirectory: &d),

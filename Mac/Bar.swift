@@ -41,14 +41,16 @@ class Bar: NSControl {
     }
     
     override func mouseDown(with: NSEvent) {
-        background.layer!.backgroundColor = NSColor.clear.cgColor
+        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.5).cgColor
+        NSCursor.pointingHand.set()
     }
     
     override func mouseUp(with: NSEvent) {
-        if drag < 1 && with.clickCount < 2 {
-//            sendAction(#selector(App.shared.prompt), to: App.shared)
+        if drag < 2 && with.clickCount < 2 {
+            sendAction(#selector(App.panel), to: App.main)
         }
         drag = 0
         background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
+        NSCursor.arrow.set()
     }
 }

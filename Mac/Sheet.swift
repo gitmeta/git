@@ -5,15 +5,14 @@ class Sheet: NSView {
     override var acceptsFirstResponder: Bool { return true }
     
     init() {
-//        App.shared.makeFirstResponder(nil)
+        NSApp.mainWindow!.makeFirstResponder(nil)
         super.init(frame: .zero)
+        wantsLayer = true
         if Sheet.presented == nil {
             Sheet.presented = self
             translatesAutoresizingMaskIntoConstraints = false
-            wantsLayer = true
-            layer!.backgroundColor = NSColor.shade.cgColor
             alphaValue = 0
-//            App.shared.contentView!.addSubview(self)
+            NSApp.mainWindow!.contentView!.addSubview(self)
             
             let terminate = NSButton()
             terminate.title = String()
@@ -22,17 +21,17 @@ class Sheet: NSView {
             terminate.isBordered = false
             terminate.keyEquivalent = "\u{1b}"
             addSubview(terminate)
-            /*
-            topAnchor.constraint(equalTo: App.shared.contentView!.topAnchor).isActive = true
-            bottomAnchor.constraint(equalTo: App.shared.contentView!.bottomAnchor).isActive = true
-            leftAnchor .constraint(equalTo: App.shared.contentView!.leftAnchor).isActive = true
-            rightAnchor.constraint(equalTo: App.shared.contentView!.rightAnchor).isActive = true
+            
+            topAnchor.constraint(equalTo: NSApp.mainWindow!.contentView!.topAnchor).isActive = true
+            bottomAnchor.constraint(equalTo: NSApp.mainWindow!.contentView!.bottomAnchor).isActive = true
+            leftAnchor .constraint(equalTo: NSApp.mainWindow!.contentView!.leftAnchor).isActive = true
+            rightAnchor.constraint(equalTo: NSApp.mainWindow!.contentView!.rightAnchor).isActive = true
             
             NSAnimationContext.runAnimationGroup({ context in
-                context.duration = 0.4
+                context.duration = 0.5
                 context.allowsImplicitAnimation = true
                 alphaValue = 1
-            }) { App.shared.makeFirstResponder(self) }*/
+            }) { NSApp.mainWindow!.makeFirstResponder(self) }
         }
     }
     
@@ -50,9 +49,9 @@ class Sheet: NSView {
     }
     
     @objc func close() {
-//        App.shared.makeFirstResponder(nil)
+        NSApp.mainWindow!.makeFirstResponder(nil)
         NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.3
+            context.duration = 0.4
             context.allowsImplicitAnimation = true
             alphaValue = 0
         }) { [weak self] in self?.removeFromSuperview() }

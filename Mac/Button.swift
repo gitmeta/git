@@ -20,4 +20,5 @@ class Button: NSButton {
     }
     
     required init?(coder: NSCoder) { return nil }
+    override func resetCursorRects() { addCursorRect(bounds, cursor: .pointingHand) }
 }

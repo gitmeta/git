@@ -64,7 +64,7 @@ class Menu: NSMenu {
         
         addItem({
             $0.submenu = {
-                $0.addItem(withTitle: .local("Menu.showHelp"), action: #selector(App.showHelp(_:)), keyEquivalent: "")
+                $0.addItem(withTitle: .local("Menu.showHelp"), action: #selector(App.showHelp(_:)), keyEquivalent: "/")
                 return $0
             } (NSMenu(title: .local("Menu.help")))
             return $0
