@@ -46,7 +46,7 @@ class Bar: NSControl {
     
     override func mouseUp(with: NSEvent) {
         if drag < 1 && with.clickCount < 2 {
-            sendAction(#selector(App.shared.prompt), to: App.shared)
+//            sendAction(#selector(App.shared.prompt), to: App.shared)
         }
         drag = 0
         background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor

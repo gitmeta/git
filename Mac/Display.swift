@@ -22,7 +22,7 @@ class Display: NSView {
         message.alignment = .center
         addSubview(message)
         self.message = message
-        
+        /*
         let start = Button(.local("Display.start"), color: .black, target: App.shared, action: #selector(App.shared.start))
         start.layer!.backgroundColor = NSColor.halo.cgColor
         start.width.constant = 82
@@ -41,7 +41,7 @@ class Display: NSView {
         message.widthAnchor.constraint(equalToConstant: 280).isActive = true
         
         start.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        start.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
+        start.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true*/
     }
     
     required init?(coder: NSCoder) { return nil }

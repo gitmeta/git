@@ -1,17 +1,37 @@
 import Git
 import AppKit
-import UserNotifications
 
-@NSApplicationMain class App: NSWindow, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSUserNotificationCenterDelegate {
-    var user: User?
-    let alert = Alert()
-    private(set) static var shared: App!
+@NSApplicationMain class App: NSApplication, NSApplicationDelegate {
+    private(set) static var global: App!
     private(set) var url: URL?
     private(set) weak var list: List!
     private(set) weak var tools: Tools!
     private weak var bar: Bar!
     private weak var directory: Button!
     private weak var display: Display!
+    
+    override init() {
+        super.init()
+        delegate = self
+    }
+    
+    required init?(coder: NSCoder) { return nil }
+    func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
+    
+    func applicationDidFinishLaunching(_: Notification) {
+        Window().makeKeyAndOrderFront(nil)
+        mainMenu = Menu()
+    }
+    
+    
+}
+
+/*
+
+@NSApplicationMain class App: NSWindow, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSUserNotificationCenterDelegate {
+    var user: User?
+    let alert = Alert()
+ 
     
     private(set) var repository: Repository? {
         didSet {
@@ -187,3 +207,4 @@ import UserNotifications
         }) { }
     }
 }
+*/

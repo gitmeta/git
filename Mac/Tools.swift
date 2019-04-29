@@ -54,12 +54,13 @@ class Tools: NSView {
 //            Credentials()
 //            return
 //        }
+        /*
         App.shared.repository?.user.name = "hello"
         App.shared.repository?.user.email = "hello@mail.com"
         App.shared.repository?.commit(
             (App.shared.list.documentView!.subviews as! [Item]).filter({ $0.stage.state == .on }).map { $0.url },
             message: text.string, error: {
                 App.shared.alert.show($0.localizedDescription)
-        })
+        })*/
     }
 }

@@ -24,10 +24,8 @@
 	<string>public.app-category.developer-tools</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
-	<key>NSMainStoryboardFile</key>
-	<string>Mac</string>
 	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
+	<string>GitMac.App</string>
 	<key>NSUserNotificationAlertStyle</key>
 	<string>alert</string>
 </dict>

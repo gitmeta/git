@@ -46,7 +46,7 @@ class Text: NSTextView {
     }
     
     private func adjust() {
-        textContainer!.size.width = App.shared.tools.frame.width - 40
+//        textContainer!.size.width = App.shared.tools.frame.width - 40
         layoutManager!.ensureLayout(for: textContainer!)
         height.constant = layoutManager!.usedRect(for: textContainer!).size.height + (textContainerInset.height * 2)
     }
