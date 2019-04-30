@@ -31,7 +31,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         name.maximumNumberOfLines = 1
         name.lineBreakMode = .byTruncatingHead
         name.placeholderString = .local("Credentials.name")
-//        name.stringValue = App.shared.user?.name ?? ""
+        name.stringValue = App.session.name
         name.delegate = self
         addSubview(name)
         (name.window?.fieldEditor(true, for: name) as? NSTextView)?.insertionPointColor = .halo
@@ -54,7 +54,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         email.maximumNumberOfLines = 1
         email.lineBreakMode = .byTruncatingHead
         email.placeholderString = .local("Credentials.email")
-//        email.stringValue = App.shared.user?.email ?? ""
+        email.stringValue = App.session.email
         email.delegate = self
         addSubview(email)
         (email.window?.fieldEditor(true, for: email) as? NSTextView)?.insertionPointColor = .halo
@@ -98,7 +98,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 20).isActive = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak name] in
-//            App.shared.makeFirstResponder(name)
+            App.window.makeFirstResponder(name)
         }
     }
     
@@ -107,7 +107,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
     func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
         if (doCommandBy == #selector(NSResponder.insertNewline(_:))) {
             if control == name {
-//                App.shared.makeFirstResponder(email)
+                App.window.makeFirstResponder(email)
             } else {
                 confirm()
             }

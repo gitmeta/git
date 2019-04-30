@@ -46,18 +46,17 @@ class Tools: NSView {
     required init?(coder: NSCoder) { return nil }
     
     @objc func commit() {
-//        guard let user = App.shared.user
-//        else {
-//            Credentials()
-//            return
-//        }
-        /*
-        App.shared.repository?.user.name = "hello"
-        App.shared.repository?.user.email = "hello@mail.com"
-        App.shared.repository?.commit(
-            (App.shared.list.documentView!.subviews as! [Item]).filter({ $0.stage.state == .on }).map { $0.url },
-            message: text.string, error: {
-                App.shared.alert.show($0.localizedDescription)
-        })*/
+        guard !App.session.email.isEmpty, !App.session.name.isEmpty
+        else {
+            Credentials()
+            return
+        }
+//        App.repository?.user.name = App.session.name
+//        App.repository?.user.email = App.session.email
+//        App.shared.repository?.commit(
+//            (App.shared.list.documentView!.subviews as! [Item]).filter({ $0.stage.state == .on }).map { $0.url },
+//            message: text.string, error: {
+//                App.shared.alert.show($0.localizedDescription)
+//        })
     }
 }

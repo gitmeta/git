@@ -5,7 +5,7 @@ class Sheet: NSView {
     override var acceptsFirstResponder: Bool { return true }
     
     init() {
-        NSApp.mainWindow!.makeFirstResponder(nil)
+        App.window.makeFirstResponder(nil)
         super.init(frame: .zero)
         wantsLayer = true
         if Sheet.presented == nil {
@@ -32,7 +32,7 @@ class Sheet: NSView {
                 context.duration = 0.5
                 context.allowsImplicitAnimation = true
                 alphaValue = 1
-            }) { NSApp.mainWindow!.makeFirstResponder(self) }
+            }) { App.window.makeFirstResponder(self) }
         }
     }
     
@@ -50,7 +50,7 @@ class Sheet: NSView {
     }
     
     @objc func close() {
-        NSApp.mainWindow!.makeFirstResponder(nil)
+        App.window.makeFirstResponder(nil)
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.4
             context.allowsImplicitAnimation = true

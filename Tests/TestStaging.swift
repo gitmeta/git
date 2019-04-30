@@ -20,9 +20,10 @@ class TestStaging: XCTestCase {
         var repository: Repository!
         Git.create(url) {
             repository = $0
-            repository.user.name = "asd"
-            repository.user.email = "my@email.com"
-            repository.commit([file], message: "hello") {
+            let user = User()
+            user.name = "asd"
+            user.email = "my@email.com"
+            repository.commit([file], user: user, message: "hello") {
                 XCTAssertEqual(96, try! Data(contentsOf: self.url.appendingPathComponent(".git/index")).count)
                 expect.fulfill()
             }
@@ -37,9 +38,10 @@ class TestStaging: XCTestCase {
         var repository: Repository!
         Git.create(url) {
             repository = $0
-            repository.user.name = "asd"
-            repository.user.email = "my@email.com"
-            repository.commit([file], message: "hello") {
+            let user = User()
+            user.name = "asd"
+            user.email = "my@email.com"
+            repository.commit([file], user: user, message: "hello") {
                 XCTAssertEqual(104, try! Data(contentsOf: self.url.appendingPathComponent(".git/index")).count)
                 expect.fulfill()
             }
@@ -54,9 +56,10 @@ class TestStaging: XCTestCase {
         var repository: Repository!
         Git.create(url) {
             repository = $0
-            repository.user.name = "asd"
-            repository.user.email = "my@email.com"
-            repository.commit([file], message: "hello") {
+            let user = User()
+            user.name = "asd"
+            user.email = "my@email.com"
+            repository.commit([file], user: user, message: "hello") {
                 XCTAssertEqual(104, try! Data(contentsOf: self.url.appendingPathComponent(".git/index")).count)
                 expect.fulfill()
             }
@@ -71,9 +74,10 @@ class TestStaging: XCTestCase {
         var repository: Repository!
         Git.create(url) {
             repository = $0
-            repository.user.name = "asd"
-            repository.user.email = "my@email.com"
-            repository.commit([file], message: "hello") {
+            let user = User()
+            user.name = "asd"
+            user.email = "my@email.com"
+            repository.commit([file], user: user, message: "hello") {
                 XCTAssertEqual(112, try! Data(contentsOf: self.url.appendingPathComponent(".git/index")).count)
                 expect.fulfill()
             }
@@ -95,9 +99,10 @@ class TestStaging: XCTestCase {
         var repository: Repository!
         Git.create(url) {
             repository = $0
-            repository.user.name = "asd"
-            repository.user.email = "my@email.com"
-            repository.commit([file1, file2], message: "hello") {
+            let user = User()
+            user.name = "asd"
+            user.email = "my@email.com"
+            repository.commit([file1, file2], user: user, message: "hello") {
                 let index = Index(self.url)
                 XCTAssertEqual(2, index?.entries.count)
                 XCTAssertEqual("3b18e512dba79e4c8300dd08aeb37f8e728b8dad", index?.entries.first?.id)
@@ -121,11 +126,12 @@ class TestStaging: XCTestCase {
         var repository: Repository!
         Git.create(url) {
             repository = $0
-            repository.user.name = "asd"
-            repository.user.email = "my@email.com"
-            repository.commit([file1, file2], message: "hello") {
+            let user = User()
+            user.name = "asd"
+            user.email = "my@email.com"
+            repository.commit([file1, file2], user: user, message: "hello") {
                 try! Data("hello world updated\n".utf8).write(to: file1)
-                repository.commit([file1], message: "hello") {
+                repository.commit([file1], user: user, message: "hello") {
                     XCTAssertEqual(2, repository.tree?.items.count)
                     expect.fulfill()
                 }

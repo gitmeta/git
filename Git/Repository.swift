@@ -1,7 +1,6 @@
 import Foundation
 
 public class Repository {
-    public var user = User()
     public var status: (([(URL, Status)]) -> Void)?
     public let url: URL
     private var lastStatus = Date.distantPast
@@ -17,9 +16,10 @@ public class Repository {
         timer.setEventHandler { [weak self] in self?.updateStatus() }
     }
     
-    public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+    public func commit(_ files: [URL], user: User, message: String,
+                       error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         dispatch.background({ [weak self] in
-            guard let url = self?.url, let user = self?.user else { return }
+            guard let url = self?.url else { return }
             guard !files.isEmpty else { throw Failure.Commit.empty }
             guard !user.name.isEmpty else { throw Failure.Commit.credentials }
             guard !user.email.isEmpty else { throw Failure.Commit.credentials }

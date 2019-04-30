@@ -46,10 +46,11 @@ class TestHead: XCTestCase {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
         Git.create(url) { repo in
-            repo.user.name = "ab"
-            repo.user.email = "cd"
-            repo.user.date = Date(timeIntervalSince1970: 0)
-            repo.commit([file], message: "hello world") {
+            let user = User()
+            user.name = "ab"
+            user.email = "cd"
+            user.date = Date(timeIntervalSince1970: 0)
+            repo.commit([file], user: user, message: "hello world") {
                 XCTAssertEqual("ab", repo.head?.author.name)
                 XCTAssertEqual("ab", repo.head?.committer.name)
                 XCTAssertEqual("cd", repo.head?.author.email)
@@ -71,9 +72,10 @@ class TestHead: XCTestCase {
         var repository: Repository!
         Git.create(url) {
             repository = $0
-            repository.user.name = "ab"
-            repository.user.email = "cd"
-            repository.commit([file], message: "hello world") {
+            let user = User()
+            user.name = "ab"
+            user.email = "cd"
+            repository.commit([file], user: user, message: "hello world") {
                 let tree = repository.tree
                 XCTAssertEqual(1, tree?.items.count)
                 XCTAssertNotNil(tree?.items.first as? Tree.Blob)

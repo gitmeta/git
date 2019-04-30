@@ -72,7 +72,7 @@ import AppKit
     private func open() {
         guard !App.session.bookmark.isEmpty
         else {
-//            App.window.showHelp(nil)
+            App.window.showHelp(nil)
             return
         }
         var stale = false
