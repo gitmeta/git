@@ -65,7 +65,11 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         }
     }
     
-    @objc private func showHelp(_ : Any?) { Onboard() }
+    func userNotificationCenter(_: NSUserNotificationCenter, shouldPresent: NSUserNotification) -> Bool { return true }
+    @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
+        UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        withCompletionHandler([.alert])
+    }
     
     func repository() {
         tools.height.constant = 180
@@ -99,4 +103,6 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
             display.upToDate()
         }) { }
     }
+    
+    @objc private func showHelp(_ : Any?) { Onboard() }
 }

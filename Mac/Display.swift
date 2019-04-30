@@ -24,7 +24,7 @@ class Display: NSView {
         addSubview(message)
         self.message = message
         
-        let createButton = Button(target: App.main, action: #selector(App.create))
+        let createButton = Button(target: NSApp, action: #selector(App.create))
         createButton.setButtonType(.momentaryChange)
         createButton.image = NSImage(named: "createOff")
         createButton.alternateImage = NSImage(named: "createOn")
@@ -63,7 +63,7 @@ class Display: NSView {
     
     func upToDate() {
         alphaValue = 1
-        image.image = NSImage(named: "logo")
+        image.image = NSImage(named: "updated")
         message.stringValue = .local("Display.upToDate")
         createButton.isHidden = true
     }

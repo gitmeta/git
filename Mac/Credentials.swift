@@ -7,6 +7,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
     
     @discardableResult override init() {
         super.init()
+        layer!.backgroundColor = NSColor.shade.cgColor
         let title = Label(.local("Credentials.title"))
         title.font = .bold(18)
         title.textColor = .halo

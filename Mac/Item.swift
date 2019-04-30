@@ -17,14 +17,14 @@ class Item: NSView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        /*
-        let path = Label(String(url.deletingLastPathComponent().path.dropFirst(App.shared.url!.path.count + 1)))
+        
+        let path = Label(String(url.deletingLastPathComponent().path.dropFirst(App.session.url.path.count + 1)))
         path.lineBreakMode = .byTruncatingMiddle
         path.maximumNumberOfLines = 1
         path.textColor = NSColor.halo.withAlphaComponent(0.75)
         path.font = .light(15)
         addSubview(path)
-        self.path = path*/
+        self.path = path
         
         let label = Label(url.lastPathComponent)
         label.maximumNumberOfLines = 1

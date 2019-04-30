@@ -2,26 +2,25 @@ import Git
 import AppKit
 
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate {
-    private(set) static var main: App!
-    var session: Session!
-    private(set) var window: Window!
-    
-    private(set) var repository: Repository? {
+    private(set) static var menu: Menu!
+    private(set) static var session: Session!
+    private(set) static var window: Window!
+    private(set) static var repository: Repository? {
         didSet {
             if repository == nil {
-                (mainMenu as! Menu).project.isEnabled = false
+                App.menu.project.isEnabled = false
                 window.notRepository()
                 window.list.update([])
             } else {
-                (mainMenu as! Menu).project.isEnabled = true
+                App.menu.project.isEnabled = true
                 repository!.updateStatus()
-                repository!.status = { [weak self] in
+                repository!.status = {
                     if $0.isEmpty {
-                        self?.window.upToDate()
+                        App.window.upToDate()
                     } else {
-                        self?.window.repository()
+                        App.window.repository()
                     }
-                    self?.window.list.update($0)
+                    App.window.list.update($0)
                 }
             }
         }
@@ -30,7 +29,6 @@ import AppKit
     override init() {
         super.init()
         delegate = self
-        App.main = self
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -39,12 +37,14 @@ import AppKit
     func applicationDidFinishLaunching(_: Notification) {
         let window = Window()
         window.makeKeyAndOrderFront(nil)
-        self.window = window
+        App.window = window
         
-        mainMenu = Menu()
+        let menu = Menu()
+        mainMenu = menu
+        App.menu = menu
         
         Git.session { [weak self] in
-            self?.session = $0
+            App.session = $0
             guard !$0.bookmark.isEmpty else { return }
             var stale = false
             _ = (try? URL(resolvingBookmarkData: $0.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
@@ -54,9 +54,9 @@ import AppKit
     }
     
     @objc func create() {
-        Git.create(session.url, error: { [weak self] in
-            self?.window.alert.error($0.localizedDescription)
-        }) { [weak self] in self?.repository = $0 }
+        Git.create(App.session.url, error: {
+            App.window.alert.error($0.localizedDescription)
+        }) { App.repository = $0 }
     }
     
     @objc func panel() {
@@ -65,23 +65,19 @@ import AppKit
         panel.canChooseDirectories = true
         panel.begin { [weak self] in
             if $0 == .OK {
-                self?.session.url = panel.url!
-                self?.session.bookmark = (try! panel.url!.bookmarkData(options: .withSecurityScope))
+                App.session.url = panel.url!
+                App.session.bookmark = (try! panel.url!.bookmarkData(options: .withSecurityScope))
+                Git.update(App.session)
                 self?.open(panel.url!)
-                if let session = self?.session {
-                    Git.update(session)
-                }
             }
         }
     }
     
     private func open(_ url: URL) {
-        window.bar.label.stringValue = url.path
-        Git.open(url, error: { [weak self] in
-            self?.window.alert.error($0.localizedDescription)
-            self?.repository = nil
-        }) { [weak self] in
-            self?.repository = $0
-        }
+        App.window.bar.label.stringValue = url.lastPathComponent
+        Git.open(url, error: {
+            App.window.alert.error($0.localizedDescription)
+            App.repository = nil
+        }) { App.repository = $0 }
     }
 }

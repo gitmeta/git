@@ -12,14 +12,14 @@ class Bar: NSControl {
         let background = NSView()
         background.translatesAutoresizingMaskIntoConstraints = false
         background.wantsLayer = true
-        background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
+        background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
         background.layer!.cornerRadius = 4
         addSubview(background)
         self.background = background
         
         let label = Label()
         label.font = .light(14)
-        label.textColor = NSColor(white: 1, alpha: 0.8)
+        label.textColor = NSColor(white: 1, alpha: 0.6)
         background.addSubview(label)
         self.label = label
         
@@ -47,10 +47,10 @@ class Bar: NSControl {
     
     override func mouseUp(with: NSEvent) {
         if drag < 2 && with.clickCount < 2 {
-            sendAction(#selector(App.panel), to: App.main)
+            sendAction(#selector(App.panel), to: NSApp)
         }
         drag = 0
-        background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
+        background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
         NSCursor.arrow.set()
     }
 }
