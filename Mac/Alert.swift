@@ -12,6 +12,16 @@ class Alert {
         }
     }
     
+    func commit(_ message: String) {
+        DispatchQueue.main.async { [weak self] in
+            if #available(OSX 10.14, *) {
+                self?.notify(.local("Alert.commit"), message: message)
+            } else {
+                self?.fallback(.local("Alert.commit"), message: message)
+            }
+        }
+    }
+    
     @available(OSX 10.14, *) private func notify(_ title: String, message: String) {
         UNUserNotificationCenter.current().add({
             $0.title = title

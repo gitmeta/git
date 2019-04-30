@@ -2,8 +2,8 @@ import Git
 import AppKit
 
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate {
+    static var session: Session!
     private(set) static var menu: Menu!
-    private(set) static var session: Session!
     private(set) static var window: Window!
     private(set) static var repository: Repository? {
         didSet {

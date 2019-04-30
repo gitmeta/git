@@ -105,7 +105,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
     required init?(coder: NSCoder) { return nil }
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
-        if (doCommandBy == #selector(NSResponder.insertNewline(_:))) {
+        if (doCommandBy == #selector(NSResponder.insertNewline(_:)) || doCommandBy == #selector(NSResponder.insertTab(_:))) {
             if control == name {
                 App.window.makeFirstResponder(email)
             } else {
@@ -117,12 +117,15 @@ class Credentials: Sheet, NSTextFieldDelegate {
     }
     
     @objc private func confirm() {
-//        App.shared.makeFirstResponder(nil)
+        App.window.makeFirstResponder(nil)
         do {
-//            App.shared.user = try User(name.stringValue, email: email.stringValue)
+            let user = try User(name.stringValue, email: email.stringValue)
+            App.session.name = user.name
+            App.session.email = user.email
+            Git.update(App.session)
             close()
         } catch {
-//            App.shared.alert.show(error.localizedDescription)
+            App.window.alert.error(error.localizedDescription)
         }
     }
 }

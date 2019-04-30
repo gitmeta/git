@@ -1,3 +1,4 @@
+import Git
 import AppKit
 
 class Tools: NSView {
@@ -51,12 +52,16 @@ class Tools: NSView {
             Credentials()
             return
         }
-//        App.repository?.user.name = App.session.name
-//        App.repository?.user.email = App.session.email
-//        App.shared.repository?.commit(
-//            (App.shared.list.documentView!.subviews as! [Item]).filter({ $0.stage.state == .on }).map { $0.url },
-//            message: text.string, error: {
-//                App.shared.alert.show($0.localizedDescription)
-//        })
+        let message = text.string
+        do {
+            let user = try User(App.session.name, email: App.session.email)
+            App.repository?.commit(
+                (App.window.list.documentView!.subviews as! [Item]).filter({ $0.stage.state == .on }).map { $0.url },
+                user: user, message: message, error: { App.window.alert.error($0.localizedDescription) }) {
+                    App.window.alert.commit(message)
+            }
+        } catch {
+            App.window.alert.error(error.localizedDescription)
+        }
     }
 }

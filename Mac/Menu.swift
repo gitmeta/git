@@ -34,14 +34,16 @@ class Menu: NSMenu {
         addItem({
             $0.submenu = {
                 $0.addItem({
-                    $0.target = self
+                    $0.target = NSApp
+                    $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.directory"), action: #selector(directory), keyEquivalent: ",")))
+                } (NSMenuItem(title: .local("Menu.directory"), action: #selector(App.panel), keyEquivalent: "o")))
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
-                    $0.keyEquivalentModifierMask = [.option, .command]
+                    $0.keyEquivalentModifierMask = [.command]
+                    $0.target = App.window.tools
                     return $0
-                } (NSMenuItem(title: .local("Menu.commit"), action: #selector(commit), keyEquivalent: "h")))
+                } (NSMenuItem(title: .local("Menu.commit"), action: #selector(Tools.commit), keyEquivalent: "\r")))
                 return $0
             } (NSMenu(title: .local("Menu.project")))
             project = $0
