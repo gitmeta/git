@@ -1,22 +1,21 @@
 import AppKit
 
 class Tools: NSView {
-    private(set) weak var height: NSLayoutConstraint!
+    weak var bottom: NSLayoutConstraint! { didSet { bottom.isActive = true } }
     private weak var text: NSTextView!
     
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        wantsLayer = true
-        layer!.backgroundColor = NSColor.black.cgColor
         
         let text = Text()
-        text.string = .local("Tools.message")
         self.text = text
         
         let scroll = NSScrollView()
+        scroll.wantsLayer = true
+        scroll.layer!.cornerRadius = 8
         scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.drawsBackground = false
+        scroll.backgroundColor = .black
         scroll.documentView = text
         scroll.hasVerticalScroller = true
         scroll.verticalScroller!.controlSize = .mini
@@ -25,22 +24,20 @@ class Tools: NSView {
         addSubview(scroll)
         
         let commit = Button(target: self, action: #selector(self.commit))
-        commit.image = NSImage(named: "commit")
+        commit.image = NSImage(named: "commitOff")
+        commit.alternateImage = NSImage(named: "commitOn")
         commit.imageScaling = .scaleNone
         commit.width.constant = 65
         commit.height.constant = 65
         addSubview(commit)
         
         scroll.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        scroll.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        scroll.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        scroll.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        scroll.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -80).isActive = true
+        scroll.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+        scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         
-        text.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
-        text.heightAnchor.constraint(greaterThanOrEqualTo: heightAnchor).isActive = true
-        
-        height = heightAnchor.constraint(equalToConstant: 0)
-        height.isActive = true
+        text.widthAnchor.constraint(equalTo: scroll.widthAnchor).isActive = true
+        text.heightAnchor.constraint(greaterThanOrEqualTo: scroll.heightAnchor).isActive = true
         
         commit.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -10).isActive = true
         commit.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true

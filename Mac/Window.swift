@@ -20,7 +20,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         isReleasedWhenClosed = false
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false
-        
+
         UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
         
         let display = Display()
@@ -55,7 +55,8 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         
         tools.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        tools.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        tools.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        tools.bottom = tools.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: 200)
         
         NSUserNotificationCenter.default.delegate = self
         
@@ -72,7 +73,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
     }
     
     func repository() {
-        tools.height.constant = 180
+        tools.bottom.constant = 0
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
             context.allowsImplicitAnimation = true
@@ -83,7 +84,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
     }
     
     func notRepository() {
-        tools.height.constant = 0
+        tools.bottom.constant = tools.frame.height
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
             context.allowsImplicitAnimation = true
@@ -94,7 +95,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
     }
     
     func upToDate() {
-        tools.height.constant = 0
+        tools.bottom.constant = tools.frame.height
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
             context.allowsImplicitAnimation = true
@@ -104,5 +105,5 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         }) { }
     }
     
-    @objc private func showHelp(_ : Any?) { Onboard() }
+    @objc func showHelp(_: Any?) { Onboard() }
 }

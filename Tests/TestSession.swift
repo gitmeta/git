@@ -2,6 +2,14 @@ import XCTest
 @testable import Git
 
 class TestSession: XCTestCase {
+    override func setUp() {
+        UserDefaults.standard.removeObject(forKey: "session")
+    }
+    
+    override func tearDown() {
+        UserDefaults.standard.removeObject(forKey: "session")
+    }
+    
     func testFirstTime() {
         XCTAssertEqual("", Session.load().name)
     }

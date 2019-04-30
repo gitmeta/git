@@ -21,15 +21,16 @@ class Item: NSView {
         let path = Label(String(url.deletingLastPathComponent().path.dropFirst(App.session.url.path.count + 1)))
         path.lineBreakMode = .byTruncatingMiddle
         path.maximumNumberOfLines = 1
-        path.textColor = NSColor.halo.withAlphaComponent(0.75)
-        path.font = .light(15)
+        path.textColor = NSColor.halo.withAlphaComponent(0.85)
+        path.font = .light(14)
+        path.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         addSubview(path)
         self.path = path
         
         let label = Label(url.lastPathComponent)
         label.maximumNumberOfLines = 1
         label.textColor = .halo
-        label.font = .bold(15)
+        label.font = .bold(16)
         addSubview(label)
         self.label = label
         
@@ -76,6 +77,8 @@ class Item: NSView {
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         label.leftAnchor.constraint(equalTo: path.rightAnchor, constant:
             path.stringValue.isEmpty ? -5 : 5).isActive = true
+        label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -20).isActive = true
+        label.widthAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
         
         badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         badge.rightAnchor.constraint(equalTo: stage.leftAnchor, constant: -4).isActive = true

@@ -26,6 +26,7 @@ class Sheet: NSView {
             bottomAnchor.constraint(equalTo: NSApp.mainWindow!.contentView!.bottomAnchor).isActive = true
             leftAnchor .constraint(equalTo: NSApp.mainWindow!.contentView!.leftAnchor).isActive = true
             rightAnchor.constraint(equalTo: NSApp.mainWindow!.contentView!.rightAnchor).isActive = true
+            NSApp.mainWindow!.contentView!.layoutSubtreeIfNeeded()
             
             NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.5

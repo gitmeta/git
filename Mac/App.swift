@@ -36,20 +36,16 @@ import AppKit
     
     func applicationDidFinishLaunching(_: Notification) {
         let window = Window()
-        window.makeKeyAndOrderFront(nil)
         App.window = window
+        window.makeKeyAndOrderFront(nil)
         
         let menu = Menu()
-        mainMenu = menu
         App.menu = menu
+        mainMenu = menu
         
         Git.session { [weak self] in
             App.session = $0
-            guard !$0.bookmark.isEmpty else { return }
-            var stale = false
-            _ = (try? URL(resolvingBookmarkData: $0.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
-                &stale))?.startAccessingSecurityScopedResource()
-            self?.open($0.url)
+            self?.open()
         }
     }
     
@@ -68,14 +64,22 @@ import AppKit
                 App.session.url = panel.url!
                 App.session.bookmark = (try! panel.url!.bookmarkData(options: .withSecurityScope))
                 Git.update(App.session)
-                self?.open(panel.url!)
+                self?.open()
             }
         }
     }
     
-    private func open(_ url: URL) {
-        App.window.bar.label.stringValue = url.lastPathComponent
-        Git.open(url, error: {
+    private func open() {
+        guard !App.session.bookmark.isEmpty
+        else {
+//            App.window.showHelp(nil)
+            return
+        }
+        var stale = false
+        _ = (try? URL(resolvingBookmarkData: App.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
+            &stale))?.startAccessingSecurityScopedResource()
+        App.window.bar.label.stringValue = App.session.url.lastPathComponent
+        Git.open(App.session.url, error: {
             App.window.alert.error($0.localizedDescription)
             App.repository = nil
         }) { App.repository = $0 }

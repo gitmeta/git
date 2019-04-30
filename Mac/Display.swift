@@ -25,9 +25,9 @@ class Display: NSView {
         self.message = message
         
         let createButton = Button(target: NSApp, action: #selector(App.create))
-        createButton.setButtonType(.momentaryChange)
         createButton.image = NSImage(named: "createOff")
         createButton.alternateImage = NSImage(named: "createOn")
+        createButton.imageScaling = .scaleNone
         createButton.width.constant = 60
         createButton.height.constant = 60
         createButton.isHidden = true
