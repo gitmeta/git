@@ -36,17 +36,18 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         self.list = list
         
         let tools = Tools()
+        tools.isHidden = true
         contentView!.addSubview(tools)
         self.tools = tools
         
-        bar.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        bar.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        bar.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        bar.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 5).isActive = true
+        bar.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 72).isActive = true
+        bar.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -5).isActive = true
         
-        list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 1).isActive = true
+        list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 10).isActive = true
         list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true
+        list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -10).isActive = true
         
         display.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
         display.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
@@ -73,6 +74,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
     }
     
     func repository() {
+        tools.isHidden = false
         tools.bottom.constant = 0
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
@@ -91,7 +93,9 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 0
             display.notRepository()
-        }) { }
+        }) { [weak self] in
+            self?.tools.isHidden = true
+        }
     }
     
     func upToDate() {
@@ -102,7 +106,9 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 1
             display.upToDate()
-        }) { }
+        }) { [weak self] in
+            self?.tools.isHidden = true
+        }
     }
     
     @objc func showHelp(_: Any?) { Onboard() }

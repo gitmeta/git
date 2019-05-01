@@ -43,9 +43,9 @@ import AppKit
         App.menu = menu
         mainMenu = menu
         
-        Git.session { [weak self] in
+        Git.session {
             App.session = $0
-            self?.open()
+            self.open()
         }
     }
     
@@ -59,12 +59,12 @@ import AppKit
         let panel = NSOpenPanel()
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
-        panel.begin { [weak self] in
+        panel.begin {
             if $0 == .OK {
                 App.session.url = panel.url!
                 App.session.bookmark = (try! panel.url!.bookmarkData(options: .withSecurityScope))
                 Git.update(App.session)
-                self?.open()
+                self.open()
             }
         }
     }

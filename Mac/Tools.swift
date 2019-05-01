@@ -42,6 +42,10 @@ class Tools: NSView {
         
         commit.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -10).isActive = true
         commit.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            commit.isHidden = false
+        }
     }
     
     required init?(coder: NSCoder) { return nil }

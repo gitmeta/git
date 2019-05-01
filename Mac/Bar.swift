@@ -1,56 +1,43 @@
 import AppKit
 
-class Bar: NSControl {
+class Bar: NSView {
     private(set) weak var label: Label!
-    private weak var background: NSView!
     private var drag = CGFloat(0)
     
     init() {
         super.init(frame: .zero)
+        wantsLayer = true
         translatesAutoresizingMaskIntoConstraints = false
-        
-        let background = NSView()
-        background.translatesAutoresizingMaskIntoConstraints = false
-        background.wantsLayer = true
-        background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
-        background.layer!.cornerRadius = 4
-        addSubview(background)
-        self.background = background
+        layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
+        layer!.cornerRadius = 4
         
         let label = Label()
         label.font = .light(14)
-        label.textColor = NSColor(white: 1, alpha: 0.6)
-        background.addSubview(label)
+        label.textColor = NSColor(white: 1, alpha: 0.7)
+        addSubview(label)
         self.label = label
         
-        background.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
-        background.leftAnchor.constraint(equalTo: leftAnchor, constant: 72).isActive = true
-        background.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
-        background.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
-        
-        label.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 10).isActive = true
+        label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        heightAnchor.constraint(equalToConstant: 40).isActive = true
+        heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
-    
+
     override func mouseDragged(with: NSEvent) {
         drag += abs(with.deltaX) + abs(with.deltaY)
     }
-    
+
     override func mouseDown(with: NSEvent) {
-        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.5).cgColor
-        NSCursor.pointingHand.set()
+        layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.5).cgColor
     }
-    
+
     override func mouseUp(with: NSEvent) {
         if drag < 2 && with.clickCount < 2 {
-            sendAction(#selector(App.panel), to: NSApp)
+            (NSApp as! App).panel()
         }
         drag = 0
-        background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
-        NSCursor.arrow.set()
+        layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
     }
 }
