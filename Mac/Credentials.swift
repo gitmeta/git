@@ -28,7 +28,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         let nameBackground = NSView()
         nameBackground.translatesAutoresizingMaskIntoConstraints = false
         nameBackground.wantsLayer = true
-        nameBackground.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
+        nameBackground.layer!.backgroundColor = NSColor.shade.cgColor
         nameBackground.layer!.cornerRadius = 4
         addSubview(nameBackground)
         
@@ -50,7 +50,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         let emailBackground = NSView()
         emailBackground.translatesAutoresizingMaskIntoConstraints = false
         emailBackground.wantsLayer = true
-        emailBackground.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
+        emailBackground.layer!.backgroundColor = NSColor.shade.cgColor
         emailBackground.layer!.cornerRadius = 4
         addSubview(emailBackground)
         
@@ -80,7 +80,11 @@ class Credentials: Sheet, NSTextFieldDelegate {
         addSubview(confirm)
         
         let cancel = Button.Text(self, action: #selector(close))
+        cancel.label.textColor = NSColor(white: 1, alpha: 0.6)
+        cancel.label.font = .systemFont(ofSize: 16, weight: .light)
         cancel.label.stringValue = .local("Credentials.cancel")
+        cancel.width.constant = 140
+        cancel.height.constant = 36
         addSubview(cancel)
         
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -116,7 +120,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         confirm.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 40).isActive = true
         
         cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 20).isActive = true
+        cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 10).isActive = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak name] in
             App.window.makeFirstResponder(name)
