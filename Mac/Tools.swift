@@ -24,10 +24,9 @@ class Tools: NSView {
         scroll.verticalScrollElasticity = .allowed
         addSubview(scroll)
         
-        let commit = Button(target: self, action: #selector(self.commit))
-        commit.image = NSImage(named: "commitOff")
-        commit.alternateImage = NSImage(named: "commitOn")
-        commit.imageScaling = .scaleNone
+        let commit = Button.Image(self, action: #selector(self.commit))
+        commit.off = NSImage(named: "commitOff")
+        commit.on = NSImage(named: "commitOn")
         commit.width.constant = 65
         commit.height.constant = 65
         addSubview(commit)
@@ -42,10 +41,6 @@ class Tools: NSView {
         
         commit.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -10).isActive = true
         commit.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            commit.isHidden = false
-        }
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -57,11 +52,13 @@ class Tools: NSView {
             return
         }
         let message = text.string
+        
         do {
             let user = try User(App.session.name, email: App.session.email)
             App.repository?.commit(
-                (App.window.list.documentView!.subviews as! [Item]).filter({ $0.stage.state == .on }).map { $0.url },
-                user: user, message: message, error: { App.window.alert.error($0.localizedDescription) }) {
+                (App.window.list.documentView!.subviews as! [Item]).filter({ $0.stage.checked }).map { $0.url },
+                user: user, message: message, error: { App.window.alert.error($0.localizedDescription) }) { [weak self] in
+                    self?.text.string = ""
                     App.window.alert.commit(message)
             }
         } catch {

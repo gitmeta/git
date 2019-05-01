@@ -1,7 +1,6 @@
 import AppKit
 
 class Text: NSTextView {
-    private weak var placeholder: Label!
     private weak var height: NSLayoutConstraint!
     
     init() {
@@ -17,19 +16,10 @@ class Text: NSTextView {
         drawsBackground = false
         isRichText = false
         insertionPointColor = .halo
-        font = .light(16)
+        font = .light(18)
         textContainerInset = NSSize(width: 15, height: 15)
         height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
         height.isActive = true
-        
-        let placeholder = Label(.local("Text.placeholder"))
-        placeholder.textColor = NSColor(white: 1, alpha: 0.5)
-        placeholder.font = .light(18)
-        addSubview(placeholder)
-        self.placeholder = placeholder
-        
-        placeholder.leftAnchor.constraint(equalTo: leftAnchor, constant: 24).isActive = true
-        placeholder.topAnchor.constraint(equalTo: topAnchor, constant: 14).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -47,7 +37,6 @@ class Text: NSTextView {
     
     override func didChangeText() {
         super.didChangeText()
-        placeholder.isHidden = !string.isEmpty
         adjust()
     }
     

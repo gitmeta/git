@@ -24,10 +24,9 @@ class Display: NSView {
         addSubview(message)
         self.message = message
         
-        let createButton = Button(target: NSApp, action: #selector(App.create))
-        createButton.image = NSImage(named: "createOff")
-        createButton.alternateImage = NSImage(named: "createOn")
-        createButton.imageScaling = .scaleNone
+        let createButton = Button.Image(NSApp, action: #selector(App.create))
+        createButton.off = NSImage(named: "createOff")
+        createButton.on = NSImage(named: "createOn")
         createButton.width.constant = 60
         createButton.height.constant = 60
         createButton.isHidden = true
@@ -41,10 +40,10 @@ class Display: NSView {
         
         message.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         message.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 10).isActive = true
-        message.widthAnchor.constraint(equalToConstant: 260).isActive = true
+        message.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
         createButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        createButton.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 60).isActive = true
+        createButton.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

@@ -8,11 +8,11 @@ import AppKit
     private(set) static var repository: Repository? {
         didSet {
             if repository == nil {
-                App.menu.project.isEnabled = false
+                App.menu.commit.isEnabled = false
                 window.notRepository()
                 window.list.update([])
             } else {
-                App.menu.project.isEnabled = true
+                App.menu.commit.isEnabled = true
                 repository!.updateStatus()
                 repository!.status = {
                     if $0.isEmpty {
@@ -68,6 +68,8 @@ import AppKit
             }
         }
     }
+    
+    @objc func preferences() { Credentials() }
     
     private func open() {
         guard !App.session.bookmark.isEmpty

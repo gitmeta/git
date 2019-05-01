@@ -3,7 +3,7 @@ import AppKit
 
 class Item: NSView {
     let url: URL
-    private(set) weak var stage: Button!
+    private(set) weak var stage: Button.Check!
     private weak var previous: Item?
     private weak var next: Item?
     private weak var badge: NSView!
@@ -21,8 +21,8 @@ class Item: NSView {
         let path = Label(String(url.deletingLastPathComponent().path.dropFirst(App.session.url.path.count + 1)))
         path.lineBreakMode = .byTruncatingMiddle
         path.maximumNumberOfLines = 1
-        path.textColor = NSColor.halo.withAlphaComponent(0.85)
-        path.font = .light(14)
+        path.textColor = NSColor.halo.withAlphaComponent(0.7)
+        path.font = .light(16)
         path.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         addSubview(path)
         self.path = path
@@ -33,12 +33,6 @@ class Item: NSView {
         label.font = .bold(16)
         addSubview(label)
         self.label = label
-        
-        let image = NSImageView()
-        image.image = NSWorkspace.shared.icon(forFile: url.path)
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.imageScaling = .scaleProportionallyDown
-        addSubview(image)
         
         let badge = NSView()
         badge.translatesAutoresizingMaskIntoConstraints = false
@@ -53,12 +47,10 @@ class Item: NSView {
         addSubview(hashtag)
         self.hashtag = hashtag
         
-        let stage = Button(target: nil, action: nil)
-        stage.setButtonType(.toggle)
-        stage.state = .on
-        stage.image = NSImage(named: "checkOff")
-        stage.alternateImage = NSImage(named: "checkOn")
-        stage.imageScaling = .scaleNone
+        let stage = Button.Check()
+        stage.off = NSImage(named: "checkOff")
+        stage.on = NSImage(named: "checkOn")
+        stage.checked = true
         stage.height.constant = 40
         stage.width.constant = 40
         addSubview(stage)
@@ -66,13 +58,8 @@ class Item: NSView {
         
         heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        image.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        image.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        image.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
-        
         path.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        path.leftAnchor.constraint(equalTo: image.rightAnchor).isActive = true
+        path.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
         
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         label.leftAnchor.constraint(equalTo: path.rightAnchor, constant:

@@ -9,13 +9,18 @@ class Onboard: Sheet {
     private weak var image0: NSImageView!
     private weak var image1: NSImageView!
     private weak var image2: NSImageView!
+    private var index = 0
     
     @discardableResult override init() {
         super.init()
         layer!.backgroundColor = NSColor.black.cgColor
         
-        let done = Button(.local("Onboard.done"), target: self, action: #selector(close))
-        done.keyEquivalent = "\r"
+        let done = Button.Text(self, action: #selector(close))
+        done.label.stringValue = .local("Onboard.done")
+        done.label.textColor = NSColor(white: 1, alpha: 0.6)
+        done.label.font = .systemFont(ofSize: 16, weight: .light)
+        done.width.constant = 100
+        done.height.constant = 40
         addSubview(done)
         
         let label = Label()
@@ -49,24 +54,24 @@ class Onboard: Sheet {
         addSubview(image2)
         self.image2 = image2
         
-        let point0 = Button(target: self, action: #selector(self.show0))
-        point0.layer!.backgroundColor = NSColor.white.cgColor
+        let point0 = Button(self, action: #selector(show0))
+        point0.layer!.backgroundColor = NSColor.halo.cgColor
         point0.layer!.cornerRadius = 10
         point0.width.constant = 20
         point0.height.constant = 20
         addSubview(point0)
         self.point0 = point0
         
-        let point1 = Button(target: self, action: #selector(self.show1))
-        point1.layer!.backgroundColor = NSColor.white.cgColor
+        let point1 = Button(self, action: #selector(show1))
+        point1.layer!.backgroundColor = NSColor.halo.cgColor
         point1.layer!.cornerRadius = 10
         point1.width.constant = 20
         point1.height.constant = 20
         addSubview(point1)
         self.point1 = point1
         
-        let point2 = Button(target: self, action: #selector(self.show2))
-        point2.layer!.backgroundColor = NSColor.white.cgColor
+        let point2 = Button(self, action: #selector(show2))
+        point2.layer!.backgroundColor = NSColor.halo.cgColor
         point2.layer!.cornerRadius = 10
         point2.width.constant = 20
         point2.height.constant = 20
@@ -104,17 +109,35 @@ class Onboard: Sheet {
         
         done.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         done.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
-        DispatchQueue.main.async { [weak self] in
-            self?.show0()
-        }
+        DispatchQueue.main.async { [weak self] in self?.show0() }
     }
     
     required init?(coder: NSCoder) { return nil }
     
+    override func keyDown(with: NSEvent) {
+        switch with.keyCode {
+        case 36: close()
+        case 123:
+            switch index {
+            case 0: show2()
+            case 1: show0()
+            default: show1()
+            }
+        case 124:
+            switch index {
+            case 0: show1()
+            case 1: show2()
+            default: show0()
+            }
+        default: super.keyDown(with: with)
+        }
+    }
+    
     @objc private func show0() {
+        index = 0
         point0.alphaValue = 1
-        point1.alphaValue = 0.4
-        point2.alphaValue = 0.4
+        point1.alphaValue = 0.3
+        point2.alphaValue = 0.3
         label.stringValue = .local("Onboard.0")
         centerX.constant = 0
         NSAnimationContext.runAnimationGroup({ context in
@@ -124,13 +147,16 @@ class Onboard: Sheet {
             image1.alphaValue = 0
             image2.alphaValue = 0
             layoutSubtreeIfNeeded()
-        }) { }
+        }) { [weak self] in
+            self?.point0.isHidden = false
+        }
     }
     
     @objc private func show1() {
-        point0.alphaValue = 0.4
+        index = 1
+        point0.alphaValue = 0.3
         point1.alphaValue = 1
-        point2.alphaValue = 0.4
+        point2.alphaValue = 0.3
         label.stringValue = .local("Onboard.1")
         centerX.constant = -200
         NSAnimationContext.runAnimationGroup({ context in
@@ -144,8 +170,9 @@ class Onboard: Sheet {
     }
     
     @objc private func show2() {
-        point0.alphaValue = 0.4
-        point1.alphaValue = 0.4
+        index = 2
+        point0.alphaValue = 0.3
+        point1.alphaValue = 0.3
         point2.alphaValue = 1
         label.stringValue = .local("Onboard.2")
         centerX.constant = -400

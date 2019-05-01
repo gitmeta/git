@@ -16,7 +16,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         titleVisibility = .hidden
         backgroundColor = .shade
         collectionBehavior = .fullScreenNone
-        minSize = NSSize(width: 250, height: 250)
+        minSize = NSSize(width: 50, height: 50)
         isReleasedWhenClosed = false
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false

@@ -7,17 +7,28 @@ class Credentials: Sheet, NSTextFieldDelegate {
     
     @discardableResult override init() {
         super.init()
-        layer!.backgroundColor = NSColor.shade.cgColor
-        let title = Label(.local("Credentials.title"))
-        title.font = .bold(18)
-        title.textColor = .halo
-        title.alignment = .center
-        addSubview(title)
+        layer!.backgroundColor = NSColor.black.cgColor
+        
+        let image = NSImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = NSImage(named: "users")
+        image.imageScaling = .scaleNone
+        addSubview(image)
+        
+        let nameTitle = Label(.local("Credentials.name"))
+        nameTitle.font = .systemFont(ofSize: 18, weight: .bold)
+        nameTitle.textColor = .halo
+        addSubview(nameTitle)
+        
+        let emailTitle = Label(.local("Credentials.email"))
+        emailTitle.font = .systemFont(ofSize: 18, weight: .bold)
+        emailTitle.textColor = .halo
+        addSubview(emailTitle)
         
         let nameBackground = NSView()
         nameBackground.translatesAutoresizingMaskIntoConstraints = false
         nameBackground.wantsLayer = true
-        nameBackground.layer!.backgroundColor = NSColor(white: 0, alpha: 0.4).cgColor
+        nameBackground.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
         nameBackground.layer!.cornerRadius = 4
         addSubview(nameBackground)
         
@@ -30,7 +41,6 @@ class Credentials: Sheet, NSTextFieldDelegate {
         name.textColor = .white
         name.maximumNumberOfLines = 1
         name.lineBreakMode = .byTruncatingHead
-        name.placeholderString = .local("Credentials.name")
         name.stringValue = App.session.name
         name.delegate = self
         addSubview(name)
@@ -40,7 +50,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         let emailBackground = NSView()
         emailBackground.translatesAutoresizingMaskIntoConstraints = false
         emailBackground.wantsLayer = true
-        emailBackground.layer!.backgroundColor = NSColor(white: 0, alpha: 0.4).cgColor
+        emailBackground.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
         emailBackground.layer!.cornerRadius = 4
         addSubview(emailBackground)
         
@@ -53,26 +63,31 @@ class Credentials: Sheet, NSTextFieldDelegate {
         email.textColor = .white
         email.maximumNumberOfLines = 1
         email.lineBreakMode = .byTruncatingHead
-        email.placeholderString = .local("Credentials.email")
         email.stringValue = App.session.email
         email.delegate = self
         addSubview(email)
         (email.window?.fieldEditor(true, for: email) as? NSTextView)?.insertionPointColor = .halo
         self.email = email
         
-        let confirm = Button(.local("Credentials.confirm"), target: self, action: #selector(self.confirm))
+        let confirm = Button.Text(self, action: #selector(self.confirm))
+        confirm.label.textColor = .black
+        confirm.label.font = .systemFont(ofSize: 16, weight: .medium)
+        confirm.label.stringValue = .local("Credentials.confirm")
         confirm.layer!.backgroundColor = NSColor.halo.cgColor
+        confirm.layer!.cornerRadius = 6
+        confirm.width.constant = 100
+        confirm.height.constant = 36
         addSubview(confirm)
         
-        let cancel = Button(.local("Credentials.cancel"),
-                            color: NSColor(white: 1, alpha: 0.5), target: self, action: #selector(close))
+        let cancel = Button.Text(self, action: #selector(close))
+        cancel.label.stringValue = .local("Credentials.cancel")
         addSubview(cancel)
         
-        title.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        title.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -80).isActive = true
+        image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        image.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -80).isActive = true
         
-        name.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        name.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 40).isActive = true
+        name.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 50).isActive = true
+        name.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 40).isActive = true
         name.widthAnchor.constraint(equalToConstant: 280).isActive = true
         name.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -81,7 +96,13 @@ class Credentials: Sheet, NSTextFieldDelegate {
         nameBackground.leftAnchor.constraint(equalTo: name.leftAnchor, constant: -8).isActive = true
         nameBackground.rightAnchor.constraint(equalTo: name.rightAnchor, constant: 8).isActive = true
         
-        email.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        nameTitle.rightAnchor.constraint(equalTo: nameBackground.leftAnchor, constant: -10).isActive = true
+        nameTitle.centerYAnchor.constraint(equalTo: nameBackground.centerYAnchor).isActive = true
+        
+        emailTitle.rightAnchor.constraint(equalTo: emailBackground.leftAnchor, constant: -10).isActive = true
+        emailTitle.centerYAnchor.constraint(equalTo: emailBackground.centerYAnchor).isActive = true
+        
+        email.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 50).isActive = true
         email.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 14).isActive = true
         email.widthAnchor.constraint(equalToConstant: 280).isActive = true
         email.heightAnchor.constraint(equalToConstant: 40).isActive = true

@@ -8,7 +8,7 @@ class Bar: NSView {
         super.init(frame: .zero)
         wantsLayer = true
         translatesAutoresizingMaskIntoConstraints = false
-        layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
+        layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.4).cgColor
         layer!.cornerRadius = 4
         
         let label = Label()
@@ -30,7 +30,7 @@ class Bar: NSView {
     }
 
     override func mouseDown(with: NSEvent) {
-        layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.5).cgColor
+        layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
     }
 
     override func mouseUp(with: NSEvent) {
@@ -38,6 +38,6 @@ class Bar: NSView {
             (NSApp as! App).panel()
         }
         drag = 0
-        layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
+        layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.4).cgColor
     }
 }

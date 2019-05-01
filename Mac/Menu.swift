@@ -1,7 +1,7 @@
 import AppKit
 
 class Menu: NSMenu {
-    private(set) weak var project: NSMenuItem!
+    private(set) weak var commit: NSMenuItem!
     
     init() {
         super.init(title: "")
@@ -12,9 +12,9 @@ class Menu: NSMenu {
                     #selector(App.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
-                    $0.target = self
+                    $0.target = NSApp
                     return $0
-                } (NSMenuItem(title: .local("Menu.preferences"), action: #selector(preferences), keyEquivalent: ",")))
+                } (NSMenuItem(title: .local("Menu.preferences"), action: #selector(App.preferences), keyEquivalent: ",")))
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem(withTitle: .local("Menu.hide"), action: #selector(App.hide(_:)), keyEquivalent: "h")
                 $0.addItem({
@@ -26,6 +26,7 @@ class Menu: NSMenu {
                     #selector(App.unhideAllApplications(_:)), keyEquivalent: "")
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem(withTitle: .local("Menu.quit"), action: #selector(App.terminate(_:)), keyEquivalent: "q")
+                $0.autoenablesItems = false
                 return $0
             } (NSMenu(title: .local("Menu.git")))
             return $0
@@ -42,12 +43,13 @@ class Menu: NSMenu {
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command]
                     $0.target = App.window.tools
+                    $0.isEnabled = false
+                    commit = $0
                     return $0
                 } (NSMenuItem(title: .local("Menu.commit"), action: #selector(Tools.commit), keyEquivalent: "\r")))
+                $0.autoenablesItems = false
                 return $0
             } (NSMenu(title: .local("Menu.project")))
-            project = $0
-            $0.isEnabled = false
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
@@ -59,6 +61,7 @@ class Menu: NSMenu {
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem(withTitle: .local("Menu.bringAllToFront"), action:
                     #selector(App.arrangeInFront(_:)), keyEquivalent: "")
+                $0.autoenablesItems = false
                 return $0
             } (NSMenu(title: .local("Menu.window")))
             return $0
@@ -67,6 +70,7 @@ class Menu: NSMenu {
         addItem({
             $0.submenu = {
                 $0.addItem(withTitle: .local("Menu.showHelp"), action: #selector(App.showHelp(_:)), keyEquivalent: "/")
+                $0.autoenablesItems = false
                 return $0
             } (NSMenu(title: .local("Menu.help")))
             return $0
@@ -74,7 +78,4 @@ class Menu: NSMenu {
     }
     
     required init(coder: NSCoder) { fatalError() }
-    @objc private func preferences() { Credentials() }
-    @objc private func directory() { }
-    @objc private func commit() { }
 }
