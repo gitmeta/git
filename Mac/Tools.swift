@@ -9,6 +9,7 @@ class Tools: NSView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
+        isHidden = true
         layer!.backgroundColor = NSColor.black.cgColor
         
         let text = Text()
@@ -28,8 +29,8 @@ class Tools: NSView {
         addSubview(scroll)
         
         let commit = Button.Image(self, action: #selector(self.commit))
-        commit.off = NSImage(named: "commitOff")
-        commit.on = NSImage(named: "commitOn")
+        commit.off = NSImage(named: "addOff")
+        commit.on = NSImage(named: "addOn")
         commit.width.constant = 65
         commit.height.constant = 65
         addSubview(commit)

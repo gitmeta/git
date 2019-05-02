@@ -17,8 +17,8 @@ class Onboard: Sheet {
         
         let done = Button.Text(self, action: #selector(close))
         done.label.stringValue = .local("Onboard.done")
-        done.label.textColor = NSColor(white: 1, alpha: 0.6)
-        done.label.font = .systemFont(ofSize: 16, weight: .light)
+        done.label.textColor = NSColor(white: 1, alpha: 0.5)
+        done.label.font = .systemFont(ofSize: 16, weight: .medium)
         done.width.constant = 100
         done.height.constant = 40
         addSubview(done)
@@ -55,6 +55,7 @@ class Onboard: Sheet {
         self.image2 = image2
         
         let point0 = Button(self, action: #selector(show0))
+        point0.wantsLayer = true
         point0.layer!.backgroundColor = NSColor.halo.cgColor
         point0.layer!.cornerRadius = 10
         point0.width.constant = 20
@@ -63,6 +64,7 @@ class Onboard: Sheet {
         self.point0 = point0
         
         let point1 = Button(self, action: #selector(show1))
+        point1.wantsLayer = true
         point1.layer!.backgroundColor = NSColor.halo.cgColor
         point1.layer!.cornerRadius = 10
         point1.width.constant = 20
@@ -71,6 +73,7 @@ class Onboard: Sheet {
         self.point1 = point1
         
         let point2 = Button(self, action: #selector(show2))
+        point2.wantsLayer = true
         point2.layer!.backgroundColor = NSColor.halo.cgColor
         point2.layer!.cornerRadius = 10
         point2.width.constant = 20

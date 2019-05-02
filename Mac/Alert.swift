@@ -12,7 +12,7 @@ class Alert {
     private func show(_ title: String, message: String) {
         if #available(OSX 10.14, *) {
             UNUserNotificationCenter.current().getNotificationSettings { [weak self] in
-                if $0.authorizationStatus == .authorized && false {
+                if $0.authorizationStatus == .authorized {
                     self?.notify(title, message: message)
                 } else {
                     self?.fallback(title, message: message)

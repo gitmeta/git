@@ -43,10 +43,10 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
         bar.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 72).isActive = true
         bar.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -5).isActive = true
         
-        list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 10).isActive = true
+        list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 2).isActive = true
         list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -10).isActive = true
+        list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true
         
         display.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
         display.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
@@ -69,6 +69,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
     }
     
     func repository() {
+        tools.isHidden = false
         tools.top.constant = -tools.frame.height
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
@@ -87,10 +88,13 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 0
             display.notRepository()
-        }) { }
+        }) { [weak self] in
+            self?.tools.isHidden = true
+        }
     }
     
     func upToDate() {
+        tools.isHidden = false
         tools.top.constant = -tools.frame.height
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
@@ -111,7 +115,9 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 0
             display.logo()
-        }) { }
+        }) { [weak self] in
+            self?.tools.isHidden = true
+        }
     }
     
     @objc func showHelp(_: Any?) { Onboard() }

@@ -81,8 +81,8 @@ class Credentials: Sheet, NSTextFieldDelegate {
         addSubview(confirm)
         
         let cancel = Button.Text(self, action: #selector(close))
-        cancel.label.textColor = NSColor(white: 1, alpha: 0.6)
-        cancel.label.font = .systemFont(ofSize: 16, weight: .light)
+        cancel.label.textColor = NSColor(white: 1, alpha: 0.5)
+        cancel.label.font = .systemFont(ofSize: 16, weight: .medium)
         cancel.label.stringValue = .local("Credentials.cancel")
         cancel.width.constant = 140
         cancel.height.constant = 36
