@@ -1,6 +1,7 @@
 import AppKit
 
 class Sheet: NSView {
+    var ready: (() -> Void)?
     private static weak var presented: Sheet?
     override var acceptsFirstResponder: Bool { return true }
     
@@ -32,7 +33,10 @@ class Sheet: NSView {
                 context.duration = 0.5
                 context.allowsImplicitAnimation = true
                 alphaValue = 1
-            }) { App.window.makeFirstResponder(self) }
+            }) { [weak self] in
+                App.window.makeFirstResponder(self)
+                self?.ready?()
+            }
         }
     }
     

@@ -17,7 +17,7 @@ class Text: NSTextView {
         isRichText = false
         insertionPointColor = .halo
         font = .light(18)
-        textContainerInset = NSSize(width: 15, height: 15)
+        textContainerInset = NSSize(width: 20, height: 20)
         height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
         height.isActive = true
     }

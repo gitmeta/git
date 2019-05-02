@@ -1,9 +1,7 @@
-import Git
 import AppKit
 
 class Tools: NSView {
     weak var top: NSLayoutConstraint! { didSet { top.isActive = true } }
-    private weak var text: NSTextView!
     
     init() {
         super.init(frame: .zero)
@@ -11,22 +9,6 @@ class Tools: NSView {
         wantsLayer = true
         isHidden = true
         layer!.backgroundColor = NSColor.black.cgColor
-        
-        let text = Text()
-        self.text = text
-        
-        let scroll = NSScrollView()
-        scroll.wantsLayer = true
-        scroll.layer!.cornerRadius = 8
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.backgroundColor = .black
-        scroll.documentView = text
-        scroll.hasVerticalScroller = true
-        scroll.verticalScroller!.controlSize = .mini
-        scroll.horizontalScrollElasticity = .none
-        scroll.verticalScrollElasticity = .allowed
-        scroll.isHidden = true
-        addSubview(scroll)
         
         let commit = Button.Image(self, action: #selector(self.commit))
         commit.off = NSImage(named: "addOff")
@@ -37,20 +19,15 @@ class Tools: NSView {
         
         heightAnchor.constraint(equalToConstant: 80).isActive = true
         
-        scroll.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        scroll.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -80).isActive = true
-        scroll.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        
-        text.widthAnchor.constraint(equalTo: scroll.widthAnchor).isActive = true
-        text.heightAnchor.constraint(greaterThanOrEqualTo: scroll.heightAnchor).isActive = true
-        
         commit.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         commit.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
     
+    @objc func commit() { Commit() }
+    
+    /*
     @objc func commit() {
         guard !App.session.email.isEmpty, !App.session.name.isEmpty
         else {
@@ -70,5 +47,5 @@ class Tools: NSView {
         } catch {
             App.window.alert.error(error.localizedDescription)
         }
-    }
+    }*/
 }

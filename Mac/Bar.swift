@@ -13,7 +13,7 @@ class Bar: NSView {
         
         let label = Label()
         label.font = .light(14)
-        label.textColor = NSColor(white: 1, alpha: 0.7)
+        label.textColor = NSColor(white: 1, alpha: 0.8)
         addSubview(label)
         self.label = label
         
