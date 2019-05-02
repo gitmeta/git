@@ -7,6 +7,7 @@ class TestPress: XCTestCase {
     private var url: URL!
 
     override func setUp() {
+        Git.session = Session()
         press = Press()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/objects/ab"), withIntermediateDirectories: true)

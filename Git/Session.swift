@@ -11,8 +11,8 @@ public struct Session: Codable {
         } (UserDefaults.standard.data(forKey: "session"))
     }
     
-    public var url = URL(fileURLWithPath: "")
-    public var bookmark = Data()
-    public var name = ""
-    public var email = ""
+    public internal(set) var url = URL(fileURLWithPath: "")
+    public internal(set) var bookmark = Data()
+    public internal(set) var name = ""
+    public internal(set) var email = ""
 }

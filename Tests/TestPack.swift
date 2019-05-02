@@ -5,6 +5,7 @@ class TestPack: XCTestCase {
     private var url: URL!
     
     override func setUp() {
+        Git.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at:
             url.appendingPathComponent(".git/objects/pack"), withIntermediateDirectories: true)

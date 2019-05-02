@@ -1,44 +1,12 @@
 import Foundation
 
-public class User {
+public struct User {
     public var name = ""
     public var email = ""
     var timezone = ""
     var date = Date()
     
-    public init(_ name: String, email: String) throws {
-        guard !name.isEmpty else { throw Failure.User.name }
-        
-        try name.forEach {
-            switch $0 {
-            case "<", ">", "\n", "\t": throw Failure.User.name
-            default: break
-            }
-        }
-        
-        try email.forEach {
-            switch $0 {
-            case " ", "*", "\\", "/", "$", "%", ";", ",", "!", "?", "~", "<", ">", "\n", "\t": throw Failure.User.email
-            default: break
-            }
-        }
-        
-        let at = email.components(separatedBy: "@")
-        let dot = at.last!.components(separatedBy: ".")
-        guard at.count == 2, dot.count > 1, !dot.first!.isEmpty, !dot.last!.isEmpty else { throw Failure.User.email }
-        
-        self.name = name
-        self.email = email
-    }
-    
-    init() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "xx"
-        timezone = {
-            $0.dateFormat = "xx"
-            return $0.string(from: date)
-        } (DateFormatter())
-    }
+    init() { }
     
     init(_ string: String) throws {
         let first = string.components(separatedBy: " <")
@@ -58,5 +26,8 @@ public class User {
         timezone = third![1]
     }
     
-    var serial: String { return "\(name) <\(email)> \(Int(date.timeIntervalSince1970)) \(timezone)" }
+    var serial: String { return "\(name) <\(email)> \(Int(date.timeIntervalSince1970)) " + (timezone.isEmpty ? {
+            $0.dateFormat = "xx"
+            return $0.string(from: date)
+        } (DateFormatter()) : timezone) }
 }

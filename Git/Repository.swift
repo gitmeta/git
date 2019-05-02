@@ -25,15 +25,13 @@ public class Repository {
         }
     }
     
-    public func commit(_ files: [URL], user: User, message: String,
-                       error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+    public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         dispatch.background({ [weak self] in
             guard let url = self?.url else { return }
             guard !files.isEmpty else { throw Failure.Commit.empty }
-            guard !user.name.isEmpty else { throw Failure.Commit.credentials }
-            guard !user.email.isEmpty else { throw Failure.Commit.credentials }
+            guard !Git.session.name.isEmpty else { throw Failure.Commit.credentials }
+            guard !Git.session.email.isEmpty else { throw Failure.Commit.credentials }
             guard !message.isEmpty else { throw Failure.Commit.message }
-            user.date = Date()
             let index = Index(url) ?? Index()
             let ignore = Ignore(url)
             let tree = Tree(url, ignore: ignore, update: files, entries: index.entries)
@@ -43,8 +41,10 @@ public class Repository {
                 try? self?.add($0, index: index)
             }
             let commit = Commit()
-            commit.author = user
-            commit.committer = user
+            commit.author.name = Git.session.name
+            commit.author.email = Git.session.email
+            commit.committer.name = Git.session.name
+            commit.committer.email = Git.session.email
             commit.tree = treeId
             commit.message = message
             commit.parent = self?.headId

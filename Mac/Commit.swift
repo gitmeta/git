@@ -74,19 +74,14 @@ class Commit: Sheet {
     required init?(coder: NSCoder) { return nil }
 
     @objc private func save() {
-        do {
-            let user = try User(App.session.name, email: App.session.email)
-            App.repository?.commit(
-                (App.window.list.documentView!.subviews as! [Item]).filter({ $0.stage.checked }).map { $0.url },
-                user: user, message: text.string, error: {
-                    App.window.alert.error($0.localizedDescription)
-            }) { [weak self] in
-                App.window.refresh()
-                App.window.alert.commit(self?.text.string ?? "")
-                self?.close()
-            }
-        } catch {
-            App.window.alert.error(error.localizedDescription)
+        App.repository?.commit(
+            (App.window.list.documentView!.subviews as! [Item]).filter({ $0.stage.checked }).map { $0.url },
+            message: text.string, error: {
+                App.window.alert.error($0.localizedDescription)
+        }) { [weak self] in
+            App.window.refresh()
+            App.window.alert.commit(self?.text.string ?? "")
+            self?.close()
         }
     }
 }

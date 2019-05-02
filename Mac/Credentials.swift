@@ -41,7 +41,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         name.textColor = .white
         name.maximumNumberOfLines = 1
         name.lineBreakMode = .byTruncatingHead
-        name.stringValue = App.session.name
+        name.stringValue = Git.session.name
         name.delegate = self
         addSubview(name)
         (name.window?.fieldEditor(true, for: name) as? NSTextView)?.insertionPointColor = .halo
@@ -63,7 +63,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         email.textColor = .white
         email.maximumNumberOfLines = 1
         email.lineBreakMode = .byTruncatingHead
-        email.stringValue = App.session.email
+        email.stringValue = Git.session.email
         email.delegate = self
         addSubview(email)
         (email.window?.fieldEditor(true, for: email) as? NSTextView)?.insertionPointColor = .halo
@@ -144,14 +144,10 @@ class Credentials: Sheet, NSTextFieldDelegate {
     
     @objc private func confirm() {
         App.window.makeFirstResponder(nil)
-        do {
-            let user = try User(name.stringValue, email: email.stringValue)
-            App.session.name = user.name
-            App.session.email = user.email
-            Git.update(App.session)
-            close()
-        } catch {
-            App.window.alert.error(error.localizedDescription)
+        Git.update(name.stringValue, email: email.stringValue, error: {
+            App.window.alert.error($0.localizedDescription)
+        }) { [weak self] in
+            self?.close()
         }
     }
 }

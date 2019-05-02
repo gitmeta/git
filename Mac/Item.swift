@@ -18,7 +18,7 @@ class Item: NSView {
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
         
-        let path = Label(String(url.deletingLastPathComponent().path.dropFirst(App.session.url.path.count + 1)))
+        let path = Label(String(url.deletingLastPathComponent().path.dropFirst(Git.session.url.path.count + 1)))
         path.lineBreakMode = .byTruncatingMiddle
         path.maximumNumberOfLines = 1
         path.textColor = NSColor.halo.withAlphaComponent(0.7)

@@ -2,7 +2,6 @@ import Git
 import AppKit
 
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate {
-    static var session: Session!
     private(set) static var menu: Menu!
     private(set) static var window: Window!
     private(set) static var repository: Repository? {
@@ -43,14 +42,11 @@ import AppKit
         App.menu = menu
         mainMenu = menu
         
-        Git.session {
-            App.session = $0
-            self.open()
-        }
+        Git.loadSession { self.open() }
     }
     
     @objc func create() {
-        Git.create(App.session.url, error: {
+        Git.create(Git.session.url, error: {
             App.window.alert.error($0.localizedDescription)
         }) { App.repository = $0 }
     }
@@ -61,10 +57,9 @@ import AppKit
         panel.canChooseDirectories = true
         panel.begin {
             if $0 == .OK {
-                App.session.url = panel.url!
-                App.session.bookmark = (try! panel.url!.bookmarkData(options: .withSecurityScope))
-                Git.update(App.session)
-                self.open()
+                Git.update(panel.url!, bookmark: (try! panel.url!.bookmarkData(options: .withSecurityScope))) {
+                    self.open()
+                }
             }
         }
     }
@@ -72,16 +67,16 @@ import AppKit
     @objc func preferences() { Credentials() }
     
     private func open() {
-        guard !App.session.bookmark.isEmpty
+        guard !Git.session.bookmark.isEmpty
         else {
             App.window.showHelp(nil)
             return
         }
         var stale = false
-        _ = (try? URL(resolvingBookmarkData: App.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
+        _ = (try? URL(resolvingBookmarkData: Git.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
             &stale))?.startAccessingSecurityScopedResource()
-        App.window.bar.label.stringValue = App.session.url.lastPathComponent
-        Git.open(App.session.url, error: {
+        App.window.bar.label.stringValue = Git.session.url.lastPathComponent
+        Git.open(Git.session.url, error: {
             App.window.alert.error($0.localizedDescription)
             App.repository = nil
         }) { App.repository = $0 }

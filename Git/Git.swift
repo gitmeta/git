@@ -1,6 +1,7 @@
 import Foundation
 
 public class Git {
+    public static var session = Session()
     private static let dispatch = Dispatch()
     
     public class func repository(_ url: URL, result: @escaping((Bool) -> Void)) {
@@ -34,14 +35,44 @@ public class Git {
         }, error: error, success: done ?? { })
     }
     
-    public class func session(_ result: @escaping((Session) -> Void)) {
-        dispatch.background({ Session.load() }, success: result)
+    public class func loadSession(_ result: @escaping(() -> Void)) {
+        dispatch.background({ session = Session.load() }, success: result)
     }
     
-    public class func update(_ session: Session) {
+    public class func update(_ name: String, email: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         dispatch.background({
+            guard !name.isEmpty else { throw Failure.User.name }
+            
+            try name.forEach {
+                switch $0 {
+                case "<", ">", "\n", "\t": throw Failure.User.name
+                default: break
+                }
+            }
+            
+            try email.forEach {
+                switch $0 {
+                case " ", "*", "\\", "/", "$", "%", ";", ",", "!", "?", "~", "<", ">", "\n", "\t": throw Failure.User.email
+                default: break
+                }
+            }
+            
+            let at = email.components(separatedBy: "@")
+            let dot = at.last!.components(separatedBy: ".")
+            guard at.count == 2, dot.count > 1, !dot.first!.isEmpty, !dot.last!.isEmpty else { throw Failure.User.email }
+            
+            session.name = name
+            session.email = email
             Session.update(session)
-        }) { }
+        }, error: error, success: done ?? { })
+    }
+    
+    public class func update(_ url: URL, bookmark: Data, done: (() -> Void)? = nil) {
+        dispatch.background({
+            session.url = url
+            session.bookmark = bookmark
+            Session.update(session)
+        }, success: done ?? { })
     }
     
     private class func repository(_ url: URL) -> Bool {

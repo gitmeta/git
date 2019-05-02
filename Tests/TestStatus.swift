@@ -6,6 +6,7 @@ class TestStatus: XCTestCase {
     private var url: URL!
     
     override func setUp() {
+        Git.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -90,10 +91,9 @@ class TestStatus: XCTestCase {
         try! Data("hello world".utf8).write(to: file)
         Git.create(url) {
             self.repository = $0
-            let user = User()
-            user.name = "as"
-            user.email = "df"
-            self.repository.commit([file], user: user, message: "First commit") {
+            Git.session.name = "asd"
+            Git.session.email = "my@email.com"
+            self.repository.commit([file], message: "First commit") {
                 try! Data("modified".utf8).write(to: file)
                 let status = self.repository.statusList
                 XCTAssertEqual(1, status.count)
@@ -110,10 +110,9 @@ class TestStatus: XCTestCase {
         try! Data("hello world".utf8).write(to: file)
         Git.create(url) {
             self.repository = $0
-            let user = User()
-            user.name = "as"
-            user.email = "df"
-            self.repository.commit([file], user: user, message: "First commit") {
+            Git.session.name = "asd"
+            Git.session.email = "my@email.com"
+            self.repository.commit([file], message: "First commit") {
                 let status = self.repository.statusList
                 XCTAssertTrue(status.isEmpty)
                 expect.fulfill()
@@ -128,10 +127,9 @@ class TestStatus: XCTestCase {
         try! Data("hello world".utf8).write(to: file)
         Git.create(url) {
             self.repository = $0
-            let user = User()
-            user.name = "as"
-            user.email = "df"
-            self.repository.commit([file], user: user, message: "First commit") {
+            Git.session.name = "asd"
+            Git.session.email = "my@email.com"
+            self.repository.commit([file], message: "First commit") {
                 try! FileManager.default.removeItem(at: file)
                 let status = self.repository.statusList
                 XCTAssertEqual(1, status.count)
@@ -153,10 +151,9 @@ class TestStatus: XCTestCase {
         try! Data("lorem ipsum\n".utf8).write(to: outside)
         Git.create(url) {
             self.repository = $0
-            let user = User()
-            user.name = "as"
-            user.email = "df"
-            self.repository.commit([outside, file], user: user, message: "First commit") {
+            Git.session.name = "asd"
+            Git.session.email = "my@email.com"
+            self.repository.commit([outside, file], message: "First commit") {
                 XCTAssertTrue(self.repository.statusList.isEmpty)
                 expect.fulfill()
             }
