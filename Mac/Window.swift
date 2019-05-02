@@ -1,7 +1,7 @@
 import AppKit
 import UserNotifications
 
-class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCenterDelegate {
+class Window: NSWindow, UNUserNotificationCenterDelegate {
     let alert = Alert()
     private(set) weak var list: List!
     private(set) weak var tools: Tools!
@@ -57,15 +57,12 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         tools.top = tools.topAnchor.constraint(equalTo: contentView!.bottomAnchor)
         
-        NSUserNotificationCenter.default.delegate = self
-        
         if #available(OSX 10.14, *) {
             UNUserNotificationCenter.current().delegate = self
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
         }
     }
     
-    func userNotificationCenter(_: NSUserNotificationCenter, shouldPresent: NSUserNotification) -> Bool { return true }
     @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
         UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         withCompletionHandler([.alert])
