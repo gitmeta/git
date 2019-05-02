@@ -8,12 +8,12 @@ import AppKit
     private(set) static var repository: Repository? {
         didSet {
             if repository == nil {
-                App.menu.commit.isEnabled = false
+                App.menu.project = false
                 window.notRepository()
                 window.list.update([])
             } else {
-                App.menu.commit.isEnabled = true
-                repository!.updateStatus()
+                App.menu.project = true
+                repository!.refresh()
                 repository!.status = {
                     if $0.isEmpty {
                         App.window.upToDate()

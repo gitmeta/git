@@ -26,6 +26,7 @@ Menu.showAll="Show all";
 Menu.quit="Quit";
 Menu.git="Git";
 Menu.directory="Directory";
+Menu.refresh="Refresh";
 Menu.commit="Commit";
 Menu.project="Project";
 Menu.minimize="Minimize";

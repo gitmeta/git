@@ -3,17 +3,26 @@ import Foundation
 public class Repository {
     public var status: (([(URL, Status)]) -> Void)?
     public let url: URL
-    private var lastStatus = Date.distantPast
+    var updated = Date.distantPast
+    let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     private let hasher = Hash()
     private let press = Press()
     private let dispatch = Dispatch()
-    private let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     init(_ url: URL) {
         self.url = url
         timer.resume()
         timer.schedule(deadline: .distantFuture)
-        timer.setEventHandler { [weak self] in self?.updateStatus() }
+        timer.setEventHandler { [weak self] in
+            self?.dispatch.background({ [weak self] in
+                return self?.needsStatus == true ? self?.statusList : nil
+            }) { [weak self] in
+                if let changes = $0 {
+                    self?.status?(changes)
+                }
+                self?.timer.schedule(deadline: .now() + 1)
+            }
+        }
     }
     
     public func commit(_ files: [URL], user: User, message: String,
@@ -44,15 +53,9 @@ public class Repository {
         }, error: error, success: done ?? { })
     }
     
-    public func updateStatus() {
-        dispatch.background({ [weak self] in
-            return self?.needsStatus == true ? self?.statusList : nil
-        }) { [weak self] in
-            if let changes = $0 {
-                self?.status?(changes)
-            }
-            self?.timer.schedule(deadline: .now() + 1)
-        }
+    public func refresh() {
+        updated = Date.distantPast
+        timer.schedule(deadline: .now() + 1)
     }
     
     var HEAD: String {
@@ -80,12 +83,12 @@ public class Repository {
     
     var needsStatus: Bool {
         if let modified = (try? FileManager.default.attributesOfItem(atPath: url.path))?[.modificationDate] as? Date,
-            modified > lastStatus { return true }
+            modified > updated { return true }
         return modified([url])
     }
     
     var statusList: [(URL, Status)] {
-        lastStatus = Date()
+        updated = Date()
         let contents = self.contents
         let index = Index(url)
         let pack = Pack.load(url)
@@ -142,7 +145,7 @@ public class Repository {
         for item in contents {
             if item.hasDirectoryPath {
                 if let modified = try? item.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate,
-                    modified > lastStatus {
+                    modified > updated {
                     return true
                 }
             }

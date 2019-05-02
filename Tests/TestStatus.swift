@@ -18,12 +18,12 @@ class TestStatus: XCTestCase {
         let expect = expectation(description: "")
         Git.create(url) {
             self.repository = $0
-            self.repository.updateStatus()
             self.repository.status = {
                 XCTAssertTrue($0.isEmpty)
                 XCTAssertEqual(Thread.main, Thread.current)
                 expect.fulfill()
             }
+            self.repository.timer.schedule(deadline: .now())
         }
         waitForExpectations(timeout: 1)
     }
