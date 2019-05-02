@@ -92,7 +92,6 @@ class Button: NSView {
     
     init(_ target: AnyObject?, action: Selector?) {
         super.init(frame: .zero)
-        wantsLayer = true
         translatesAutoresizingMaskIntoConstraints = false
         self.target = target
         self.action = action

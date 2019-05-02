@@ -51,11 +51,11 @@ class Menu: NSMenu {
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command]
-                    $0.target = self
+                    $0.target = App.window
                     $0.isEnabled = false
                     refresh = $0
                     return $0
-                    } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(forceRefresh), keyEquivalent: "r")))
+                    } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(Window.refresh), keyEquivalent: "r")))
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command]
                     $0.target = App.window.tools
@@ -94,5 +94,4 @@ class Menu: NSMenu {
     }
     
     required init(coder: NSCoder) { fatalError() }
-    @objc private func forceRefresh() { App.repository?.refresh() }
 }

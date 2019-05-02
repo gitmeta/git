@@ -48,8 +48,17 @@ class Display: NSView {
     
     required init?(coder: NSCoder) { return nil }
     
+    func logo() {
+        alphaValue = 1
+        image.image = NSImage(named: "logo")
+        message.stringValue = ""
+        createButton.isHidden = true
+    }
+    
     func repository() {
         alphaValue = 0
+        image.image = nil
+        message.stringValue = ""
         createButton.isHidden = true
     }
     

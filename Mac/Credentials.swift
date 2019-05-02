@@ -73,6 +73,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         confirm.label.textColor = .black
         confirm.label.font = .systemFont(ofSize: 16, weight: .medium)
         confirm.label.stringValue = .local("Credentials.confirm")
+        confirm.wantsLayer = true
         confirm.layer!.backgroundColor = NSColor.halo.cgColor
         confirm.layer!.cornerRadius = 6
         confirm.width.constant = 100

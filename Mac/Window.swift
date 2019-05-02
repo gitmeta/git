@@ -16,7 +16,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         titleVisibility = .hidden
         backgroundColor = .shade
         collectionBehavior = .fullScreenNone
-        minSize = NSSize(width: 50, height: 50)
+        minSize = NSSize(width: 400, height: 400)
         isReleasedWhenClosed = false
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false
@@ -36,7 +36,6 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         self.list = list
         
         let tools = Tools()
-        tools.isHidden = true
         contentView!.addSubview(tools)
         self.tools = tools
         
@@ -56,8 +55,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
         
         tools.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        tools.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        tools.bottom = tools.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: 200)
+        tools.top = tools.topAnchor.constraint(equalTo: contentView!.bottomAnchor)
         
         NSUserNotificationCenter.default.delegate = self
         
@@ -74,8 +72,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
     }
     
     func repository() {
-        tools.isHidden = false
-        tools.bottom.constant = 0
+        tools.top.constant = -tools.frame.height
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
             context.allowsImplicitAnimation = true
@@ -86,29 +83,38 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSUserNotificationCent
     }
     
     func notRepository() {
-        tools.bottom.constant = tools.frame.height
+        tools.top.constant = 0
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
             context.allowsImplicitAnimation = true
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 0
             display.notRepository()
-        }) { [weak self] in
-            self?.tools.isHidden = true
-        }
+        }) { }
     }
     
     func upToDate() {
-        tools.bottom.constant = tools.frame.height
+        tools.top.constant = -tools.frame.height
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.6
             context.allowsImplicitAnimation = true
             contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 1
+            list.alphaValue = 0
             display.upToDate()
-        }) { [weak self] in
-            self?.tools.isHidden = true
-        }
+        }) { }
+    }
+    
+    @objc func refresh() {
+        App.repository?.refresh()
+        tools.top.constant = 0
+        list.documentView!.subviews.forEach { $0.removeFromSuperview() }
+        NSAnimationContext.runAnimationGroup({ context in
+            context.duration = 0.6
+            context.allowsImplicitAnimation = true
+            contentView!.layoutSubtreeIfNeeded()
+            list.alphaValue = 0
+            display.logo()
+        }) { }
     }
     
     @objc func showHelp(_: Any?) { Onboard() }

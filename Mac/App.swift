@@ -8,19 +8,19 @@ import AppKit
     private(set) static var repository: Repository? {
         didSet {
             if repository == nil {
-                App.menu.project = false
+                menu.project = false
                 window.notRepository()
                 window.list.update([])
             } else {
-                App.menu.project = true
-                repository!.refresh()
+                menu.project = true
+                window.refresh()
                 repository!.status = {
                     if $0.isEmpty {
-                        App.window.upToDate()
+                        window.upToDate()
                     } else {
-                        App.window.repository()
+                        window.repository()
                     }
-                    App.window.list.update($0)
+                    window.list.update($0)
                 }
             }
         }
