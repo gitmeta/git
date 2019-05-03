@@ -28,15 +28,13 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
         contentView!.addSubview(display)
         self.display = display
         
-        
+        let location = Bar.Location()
+        contentView!.addSubview(location)
+        self.location = location
         
         let branch = Bar.Branch()
         contentView!.addSubview(branch)
         self.branch = branch
-        
-        let location = Bar.Location()
-        contentView!.addSubview(location)
-        self.location = location
         
         let list = List()
         contentView!.addSubview(list)

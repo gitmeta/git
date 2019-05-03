@@ -6,6 +6,7 @@ class Bar: NSView {
             super.init()
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+            label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
         
         required init?(coder: NSCoder) { return nil }
@@ -17,6 +18,7 @@ class Bar: NSView {
             super.init()
             background.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+            label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         }
         
         required init?(coder: NSCoder) { return nil }
@@ -50,6 +52,7 @@ class Bar: NSView {
         background.topAnchor.constraint(equalTo: topAnchor).isActive = true
         background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
+        label.widthAnchor.constraint(greaterThanOrEqualToConstant: 10).isActive = true
         label.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 12).isActive = true
         label.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -12).isActive = true
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
