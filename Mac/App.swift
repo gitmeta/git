@@ -75,7 +75,8 @@ import AppKit
         var stale = false
         _ = (try? URL(resolvingBookmarkData: Git.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
             &stale))?.startAccessingSecurityScopedResource()
-        App.window.bar.label.stringValue = Git.session.url.lastPathComponent
+        App.window.location.label.stringValue = Git.session.url.lastPathComponent
+        App.window.branch.label.stringValue = ""
         Git.open(Git.session.url, error: {
             App.window.alert.error($0.localizedDescription)
             App.repository = nil

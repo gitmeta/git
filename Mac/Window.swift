@@ -5,7 +5,8 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
     let alert = Alert()
     private(set) weak var list: List!
     private(set) weak var tools: Tools!
-    private(set) weak var bar: Bar!
+    private(set) weak var location: Bar!
+    private(set) weak var branch: Bar!
     private weak var display: Display!
     
     init() {
@@ -27,9 +28,15 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
         contentView!.addSubview(display)
         self.display = display
         
-        let bar = Bar()
-        contentView!.addSubview(bar)
-        self.bar = bar
+        
+        
+        let branch = Bar.Branch()
+        contentView!.addSubview(branch)
+        self.branch = branch
+        
+        let location = Bar.Location()
+        contentView!.addSubview(location)
+        self.location = location
         
         let list = List()
         contentView!.addSubview(list)
@@ -39,11 +46,14 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
         contentView!.addSubview(tools)
         self.tools = tools
         
-        bar.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 5).isActive = true
-        bar.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 72).isActive = true
-        bar.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -5).isActive = true
+        location.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 6).isActive = true
+        location.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 74).isActive = true
         
-        list.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: 2).isActive = true
+        branch.topAnchor.constraint(equalTo: location.topAnchor).isActive = true
+        branch.leftAnchor.constraint(equalTo: location.rightAnchor, constant: -16).isActive = true
+        branch.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -7).isActive = true
+        
+        list.topAnchor.constraint(equalTo: location.bottomAnchor, constant: 2).isActive = true
         list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true
