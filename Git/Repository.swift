@@ -1,16 +1,16 @@
 import Foundation
 
 public class Repository {
-    public var status: (([(URL, Status.Mode)]) -> Void)?
+    public var status: (([(URL, Status)]) -> Void)?
     public let url: URL
-    let statuser = Status()
-    let hasher = Hash()
+    let state = State()
+    let hash = Hash()
     let dispatch = Dispatch()
     private let press = Press()
     
     init(_ url: URL) {
         self.url = url
-        statuser.repository = self
+        state.repository = self
     }
     
     public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
@@ -41,7 +41,7 @@ public class Repository {
         }, error: error, success: done ?? { })
     }
     
-    public func refresh() { statuser.refresh() }
+    public func refresh() { state.refresh() }
     
     var HEAD: String {
         return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
@@ -69,7 +69,7 @@ public class Repository {
     func add(_ file: URL, index: Index) throws {
         guard file.path.contains(url.path) else { throw Failure.Add.outside }
         guard FileManager.default.fileExists(atPath: file.path) else { throw Failure.Add.not }
-        let hash = hasher.file(file)
+        let hash = self.hash.file(file)
         guard !index.entries.contains(where: { $0.url.path == file.path && $0.id == hash.1 }) else { throw Failure.Add.double }
         let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))

@@ -8,8 +8,8 @@ class TestRepository: XCTestCase {
     
     func testRefresh() {
         let repository = Repository(URL(fileURLWithPath: ""))
-        repository.statuser.last = Date()
+        repository.state.last = Date()
         repository.refresh()
-        XCTAssertEqual(Date.distantPast, repository.statuser.last)
+        XCTAssertEqual(Date.distantPast, repository.state.last)
     }
 }

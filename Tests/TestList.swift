@@ -18,7 +18,7 @@ class TestList: XCTestCase {
     func testEmpty() {
         let expect = expectation(description: "")
         Git.create(url) {
-            XCTAssertTrue($0.statuser.list.isEmpty)
+            XCTAssertTrue($0.state.list.isEmpty)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -29,7 +29,7 @@ class TestList: XCTestCase {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
         Git.create(url) {
-            let status = $0.statuser.list
+            let status = $0.state.list
             XCTAssertEqual(1, status.count)
             XCTAssertEqual(file, status[0].0)
             expect.fulfill()
@@ -44,7 +44,7 @@ class TestList: XCTestCase {
         try! Data().write(to: file1)
         try! Data().write(to: file2)
         Git.create(url) {
-            let status = $0.statuser.list
+            let status = $0.state.list
             XCTAssertEqual(2, status.count)
             XCTAssertEqual(file1, status[0].0)
             XCTAssertEqual(file2, status[1].0)
@@ -58,7 +58,7 @@ class TestList: XCTestCase {
         let directory = url.appendingPathComponent("folder")
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         Git.create(url) {
-            XCTAssertTrue($0.statuser.list.isEmpty)
+            XCTAssertTrue($0.state.list.isEmpty)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -71,7 +71,7 @@ class TestList: XCTestCase {
         let file = directory.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
         Git.create(url) {
-            let status = $0.statuser.list
+            let status = $0.state.list
             XCTAssertEqual(1, status.count)
             XCTAssertEqual(file, status[0].0)
             expect.fulfill()
@@ -87,7 +87,7 @@ class TestList: XCTestCase {
         let file = sub.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
         Git.create(url) {
-            let status = $0.statuser.list
+            let status = $0.state.list
             XCTAssertEqual(1, status.count)
             XCTAssertEqual(file, status[0].0)
             expect.fulfill()
@@ -104,7 +104,7 @@ class TestList: XCTestCase {
         try! Data().write(to: file1)
         try! Data().write(to: file2)
         Git.create(url) {
-            let status = $0.statuser.list
+            let status = $0.state.list
             XCTAssertEqual(2, status.count)
             XCTAssertEqual(file1, status[0].0)
             XCTAssertEqual(file2, status[1].0)
@@ -132,7 +132,7 @@ class TestList: XCTestCase {
         try! Data().write(to: file7)
         try! Data().write(to: file8)
         Git.create(url) {
-            let status = $0.statuser.list
+            let status = $0.state.list
             XCTAssertEqual(file1, status[0].0)
             XCTAssertEqual(file2, status[1].0)
             XCTAssertEqual(file3, status[2].0)
@@ -174,7 +174,7 @@ class TestList: XCTestCase {
         try! Data().write(to: file8)
         try! Data().write(to: file9)
         Git.create(url) {
-            let status = $0.statuser.list
+            let status = $0.state.list
             XCTAssertEqual(file1, status[0].0)
             XCTAssertEqual(file2, status[1].0)
             XCTAssertEqual(file3, status[2].0)

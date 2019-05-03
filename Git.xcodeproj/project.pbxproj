@@ -62,6 +62,8 @@
 		2051FABC225C78EA00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
 		2055EFDC2276C9C000658C04 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2055EFDB2276C9C000658C04 /* Window.swift */; };
 		205CF271227ABE49002BDAE0 /* TestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205CF270227ABE49002BDAE0 /* TestRepository.swift */; };
+		205FF459227C22B80085E4F4 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205FF458227C22B80085E4F4 /* Stage.swift */; };
+		205FF45A227C22B80085E4F4 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205FF458227C22B80085E4F4 /* Stage.swift */; };
 		20671BE9226C70A700A74B7E /* TestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BE8226C70A700A74B7E /* TestList.swift */; };
 		20671BEB226C79E900A74B7E /* Ignore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BEA226C79E900A74B7E /* Ignore.swift */; };
 		20671BEC226C79E900A74B7E /* Ignore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BEA226C79E900A74B7E /* Ignore.swift */; };
@@ -172,6 +174,7 @@
 		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2055EFDB2276C9C000658C04 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		205CF270227ABE49002BDAE0 /* TestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepository.swift; sourceTree = "<group>"; };
+		205FF458227C22B80085E4F4 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		20671BE8226C70A700A74B7E /* TestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestList.swift; sourceTree = "<group>"; };
 		20671BEA226C79E900A74B7E /* Ignore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ignore.swift; sourceTree = "<group>"; };
 		20671BED226C7A0000A74B7E /* TestIgnore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestIgnore.swift; sourceTree = "<group>"; };
@@ -269,6 +272,7 @@
 				2048A0D6225C744400290E54 /* Parse.swift */,
 				2048A0D1225C744400290E54 /* Press.swift */,
 				2048A0D2225C744400290E54 /* Repository.swift */,
+				205FF458227C22B80085E4F4 /* Stage.swift */,
 				2048A0D0225C744400290E54 /* Serial.swift */,
 				20EB2503227711E20043EBD2 /* Session.swift */,
 				2048A0D4225C744400290E54 /* Status.swift */,
@@ -615,6 +619,7 @@
 				2048A0EC225C744400290E54 /* Parse.swift in Sources */,
 				2048A0E2225C744400290E54 /* Press.swift in Sources */,
 				206F2E642275E7E50058DA7E /* Pack.swift in Sources */,
+				205FF459227C22B80085E4F4 /* Stage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,6 +643,7 @@
 				2048A0ED225C744400290E54 /* Parse.swift in Sources */,
 				2048A0E3225C744400290E54 /* Press.swift in Sources */,
 				206F2E652275E7E50058DA7E /* Pack.swift in Sources */,
+				205FF45A227C22B80085E4F4 /* Stage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

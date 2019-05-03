@@ -1,13 +1,13 @@
 import Foundation
 
-public class Status {
-    public enum Mode {
-        case untracked
-        case added
-        case modified
-        case deleted
-    }
+public enum Status {
+    case untracked
+    case added
+    case modified
+    case deleted
+}
 
+class State {
     weak var repository: Repository!
     var last = Date.distantPast
     let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
@@ -33,15 +33,15 @@ public class Status {
         return modified([repository.url])
     }
     
-    var list: [(URL, Status.Mode)] {
+    var list: [(URL, Status)] {
         last = Date()
         let contents = self.contents
         let index = Index(repository.url)
         let pack = Pack.load(repository.url)
         var tree = repository.tree?.list(repository.url) ?? []
-        return contents.reduce(into: [(URL, Status.Mode)]()) { result, url in
+        return contents.reduce(into: [(URL, Status)]()) { result, url in
             if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
-                let hash = repository.hasher.file(url).1
+                let hash = repository.hash.file(url).1
                 if entries.contains(where: { $0.id == hash }) {
                     if !tree.contains(where: { $0.id == hash }) {
                         if !pack.contains(where: { packed in packed.entries.contains(where: { $0.0 == hash } ) }) {
