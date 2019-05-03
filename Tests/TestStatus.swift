@@ -58,7 +58,7 @@ class TestStatus: XCTestCase {
         try! Data("hello world 2".utf8).write(to: file2)
         let index = Index(url) ?? Index()
         Git.create(url) {
-            try? $0.add(file1, index: index)
+            try? $0.stage.add(file1, index: index)
             index.save(self.url)
             let status = $0.state.list
             XCTAssertEqual(2, status.count)
@@ -75,7 +75,7 @@ class TestStatus: XCTestCase {
         try! Data("hello world".utf8).write(to: file)
         let index = Index(url) ?? Index()
         Git.create(url) {
-            try? $0.add(file, index: index)
+            try? $0.stage.add(file, index: index)
             index.save(self.url)
             let status = $0.state.list
             XCTAssertEqual(1, status.count)

@@ -11,30 +11,59 @@ class TestSession: XCTestCase {
         UserDefaults.standard.removeObject(forKey: "session")
     }
     
-    func testFirstTime() {
-        XCTAssertEqual("", Session.load().name)
-    }
-    
-    func testLoadAfterSave() {
-        var session = Session()
-        session.email = "hello@world.com"
-        Session.update(session)
-        XCTAssertEqual("hello@world.com", Session.load().email)
-    }
-    
     func testLoadFromGit() {
         let expect = expectation(description: "")
         XCTAssertTrue(Git.session.email.isEmpty)
         XCTAssertTrue(Git.session.name.isEmpty)
-        var session = Session()
+        let data = "hasher\n".data(using: .utf8)!
+        let url = URL(fileURLWithPath: "hello/world")
+        let session = Session()
         session.name = "lorem ipsum"
         session.email = "lorem@world.com"
-        Session.update(session)
-        Git.loadSession {
+        session.bookmark = data
+        session.url = url
+        session.save()
+        Git.session.load {
             XCTAssertEqual("lorem ipsum", Git.session.name)
             XCTAssertEqual("lorem@world.com", Git.session.email)
+            XCTAssertEqual(data, Git.session.bookmark)
+            XCTAssertEqual(url.path, Git.session.url.path)
             XCTAssertEqual(Thread.main, Thread.current)
             expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testUpdateName() {
+        let expect = expectation(description: "")
+        XCTAssertTrue(Git.session.email.isEmpty)
+        XCTAssertTrue(Git.session.name.isEmpty)
+        Git.session.update("pablo", email: "mousaka@mail.com") {
+            Git.session.name = ""
+            Git.session.email = ""
+            Git.session.load {
+                XCTAssertEqual("pablo", Git.session.name)
+                XCTAssertEqual("mousaka@mail.com", Git.session.email)
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testUpdateUrl() {
+        let expect = expectation(description: "")
+        XCTAssertTrue(Git.session.email.isEmpty)
+        XCTAssertTrue(Git.session.name.isEmpty)
+        let data = "hasher\n".data(using: .utf8)!
+        let url = URL(fileURLWithPath: "hello/world")
+        Git.session.update(url, bookmark: data) {
+            Git.session.url = URL(fileURLWithPath: "")
+            Git.session.bookmark = Data()
+            Git.session.load {
+                XCTAssertEqual(data, Git.session.bookmark)
+                XCTAssertEqual(url.path, Git.session.url.path)
+                expect.fulfill()
+            }
         }
         waitForExpectations(timeout: 1)
     }

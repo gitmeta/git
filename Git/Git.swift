@@ -1,8 +1,10 @@
 import Foundation
 
 public class Git {
-    public static var session = Session()
-    private static let dispatch = Dispatch()
+    public internal(set) static var session = Session()
+    static let dispatch = Dispatch()
+    static let hash = Hash()
+    static let press = Press()
     
     public class func repository(_ url: URL, result: @escaping((Bool) -> Void)) {
         dispatch.background({ repository(url) }, success: result)
@@ -33,46 +35,6 @@ public class Git {
         dispatch.background({
             try FileManager.default.removeItem(at: repository.url.appendingPathComponent(".git"))
         }, error: error, success: done ?? { })
-    }
-    
-    public class func loadSession(_ result: @escaping(() -> Void)) {
-        dispatch.background({ session = Session.load() }, success: result)
-    }
-    
-    public class func update(_ name: String, email: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
-        dispatch.background({
-            guard !name.isEmpty else { throw Failure.User.name }
-            
-            try name.forEach {
-                switch $0 {
-                case "<", ">", "\n", "\t": throw Failure.User.name
-                default: break
-                }
-            }
-            
-            try email.forEach {
-                switch $0 {
-                case " ", "*", "\\", "/", "$", "%", ";", ",", "!", "?", "~", "<", ">", "\n", "\t": throw Failure.User.email
-                default: break
-                }
-            }
-            
-            let at = email.components(separatedBy: "@")
-            let dot = at.last!.components(separatedBy: ".")
-            guard at.count == 2, dot.count > 1, !dot.first!.isEmpty, !dot.last!.isEmpty else { throw Failure.User.email }
-            
-            session.name = name
-            session.email = email
-            Session.update(session)
-        }, error: error, success: done ?? { })
-    }
-    
-    public class func update(_ url: URL, bookmark: Data, done: (() -> Void)? = nil) {
-        dispatch.background({
-            session.url = url
-            session.bookmark = bookmark
-            Session.update(session)
-        }, success: done ?? { })
     }
     
     private class func repository(_ url: URL) -> Bool {

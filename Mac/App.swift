@@ -42,7 +42,7 @@ import AppKit
         App.menu = menu
         mainMenu = menu
         
-        Git.loadSession { self.open() }
+        Git.session.load { self.open() }
     }
     
     @objc func create() {
@@ -57,7 +57,7 @@ import AppKit
         panel.canChooseDirectories = true
         panel.begin {
             if $0 == .OK {
-                Git.update(panel.url!, bookmark: (try! panel.url!.bookmarkData(options: .withSecurityScope))) {
+                Git.session.update(panel.url!, bookmark: (try! panel.url!.bookmarkData(options: .withSecurityScope))) {
                     self.open()
                 }
             }

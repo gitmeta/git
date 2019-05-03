@@ -1,18 +1,58 @@
 import Foundation
 
-public struct Session: Codable {
-    static func update(_ session: Session) {
-        UserDefaults.standard.set(try! JSONEncoder().encode(session), forKey: "session")
-    }
-    
-    static func load() -> Session {
-        return {
-            $0 == nil ? Session() : try! JSONDecoder().decode(Session.self, from: $0!)
-        } (UserDefaults.standard.data(forKey: "session"))
-    }
-    
+public class Session: Codable {
     public internal(set) var url = URL(fileURLWithPath: "")
     public internal(set) var bookmark = Data()
     public internal(set) var name = ""
     public internal(set) var email = ""
+    
+    public func load(_ result: (() -> Void)?) {
+        Git.dispatch.background({ [weak self] in
+            guard let data = UserDefaults.standard.data(forKey: "session"),
+                let decoded = try? JSONDecoder().decode(Session.self, from: data)
+            else { return }
+            self?.name = decoded.name
+            self?.email = decoded.email
+            self?.url = decoded.url
+            self?.bookmark = decoded.bookmark
+        }, success: result ?? { })
+    }
+    
+    public func update(_ name: String, email: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+        Git.dispatch.background({ [weak self] in
+            guard !name.isEmpty else { throw Failure.User.name }
+            
+            try name.forEach {
+                switch $0 {
+                case "<", ">", "\n", "\t": throw Failure.User.name
+                default: break
+                }
+            }
+            
+            try email.forEach {
+                switch $0 {
+                case " ", "*", "\\", "/", "$", "%", ";", ",", "!", "?", "~", "<", ">", "\n", "\t": throw Failure.User.email
+                default: break
+                }
+            }
+            
+            let at = email.components(separatedBy: "@")
+            let dot = at.last!.components(separatedBy: ".")
+            guard at.count == 2, dot.count > 1, !dot.first!.isEmpty, !dot.last!.isEmpty else { throw Failure.User.email }
+            
+            self?.name = name
+            self?.email = email
+            self?.save()
+        }, error: error, success: done ?? { })
+    }
+    
+    public func update(_ url: URL, bookmark: Data, done: (() -> Void)? = nil) {
+        Git.dispatch.background({ [weak self] in
+            self?.url = url
+            self?.bookmark = bookmark
+            self?.save()
+        }, success: done ?? { })
+    }
+    
+    func save() { UserDefaults.standard.set(try! JSONEncoder().encode(self), forKey: "session") }
 }

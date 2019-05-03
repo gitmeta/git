@@ -144,7 +144,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
     
     @objc private func confirm() {
         App.window.makeFirstResponder(nil)
-        Git.update(name.stringValue, email: email.stringValue, error: {
+        Git.session.update(name.stringValue, email: email.stringValue, error: {
             App.window.alert.error($0.localizedDescription)
         }) { [weak self] in
             self?.close()

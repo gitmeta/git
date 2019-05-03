@@ -44,7 +44,7 @@ class TestUser: XCTestCase {
     
     private func update(_ user: String, email: String) {
         let expect = expectation(description: "")
-        Git.update(user, email: email, error: { _ in
+        Git.session.update(user, email: email, error: { _ in
             expect.fulfill()
         }) { XCTFail() }
         waitForExpectations(timeout: 1)
