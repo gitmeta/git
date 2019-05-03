@@ -1,28 +1,16 @@
 import Foundation
 
 public class Repository {
-    public var status: (([(URL, Status)]) -> Void)?
+    public var status: (([(URL, Status.Mode)]) -> Void)?
     public let url: URL
-    var updated = Date.distantPast
-    let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
-    private let hasher = Hash()
+    let statuser = Status()
+    let hasher = Hash()
+    let dispatch = Dispatch()
     private let press = Press()
-    private let dispatch = Dispatch()
     
     init(_ url: URL) {
         self.url = url
-        timer.resume()
-        timer.schedule(deadline: .distantFuture)
-        timer.setEventHandler { [weak self] in
-            self?.dispatch.background({ [weak self] in
-                return self?.needsStatus == true ? self?.statusList : nil
-            }) { [weak self] in
-                if let changes = $0 {
-                    self?.status?(changes)
-                }
-                self?.timer.schedule(deadline: .now() + 1)
-            }
-        }
+        statuser.repository = self
     }
     
     public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
@@ -53,10 +41,7 @@ public class Repository {
         }, error: error, success: done ?? { })
     }
     
-    public func refresh() {
-        updated = Date.distantPast
-        timer.schedule(deadline: .now() + 1)
-    }
+    public func refresh() { statuser.refresh() }
     
     var HEAD: String {
         return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
@@ -81,37 +66,6 @@ public class Repository {
         return try? Tree(head.tree, url: url)
     }
     
-    var needsStatus: Bool {
-        if let modified = (try? FileManager.default.attributesOfItem(atPath: url.path))?[.modificationDate] as? Date,
-            modified > updated { return true }
-        return modified([url])
-    }
-    
-    var statusList: [(URL, Status)] {
-        updated = Date()
-        let contents = self.contents
-        let index = Index(url)
-        let pack = Pack.load(url)
-        var tree = self.tree?.list(url) ?? []
-        return contents.reduce(into: [(URL, Status)]()) { result, url in
-            if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
-                let hash = hasher.file(url).1
-                if entries.contains(where: { $0.id == hash }) {
-                    if !tree.contains(where: { $0.id == hash }) {
-                        if !pack.contains(where: { packed in packed.entries.contains(where: { $0.0 == hash } ) }) {
-                            result.append((url, .added))
-                        }
-                    }
-                } else {
-                    result.append((url, .modified))
-                }
-                tree.removeAll { $0.url == url }
-            } else {
-                result.append((url, .untracked))
-            }
-        } + tree.map({ ($0.url, .deleted) })
-    }
-    
     func add(_ file: URL, index: Index) throws {
         guard file.path.contains(url.path) else { throw Failure.Add.outside }
         guard FileManager.default.fileExists(atPath: file.path) else { throw Failure.Add.not }
@@ -125,32 +79,5 @@ public class Repository {
             try compressed.write(to: location, options: .atomic)
         }
         index.entry(hash.1, url: file)
-    }
-    
-    private var contents: [URL] {
-        let ignore = Ignore(url)
-        return FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil)?
-            .map({ ($0 as! URL).resolvingSymlinksInPath() })
-            .filter({ !ignore.url($0) })
-            .sorted(by: { $0.path.compare($1.path, options: .caseInsensitive) != .orderedDescending }) ?? []
-    }
-    
-    private func modified(_ urls: [URL]) -> Bool {
-        var urls = urls
-        guard
-            !urls.isEmpty,
-            let contents = try? FileManager.default.contentsOfDirectory(at: urls.first!, includingPropertiesForKeys:
-                [.contentModificationDateKey])
-        else { return false }
-        for item in contents {
-            if item.hasDirectoryPath {
-                if let modified = try? item.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate,
-                    modified > updated {
-                    return true
-                }
-            }
-            urls.append(item)
-        }
-        return modified(Array(urls.dropFirst()))
     }
 }

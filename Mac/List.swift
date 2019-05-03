@@ -22,7 +22,7 @@ class List: NSScrollView {
     
     required init?(coder: NSCoder) { return nil }
     
-    func update(_ items: [(URL, Status)]) {
+    func update(_ items: [(URL, Status.Mode)]) {
         var before = documentView!.subviews as! [Item]
         var last: Item?
         items.forEach { item in

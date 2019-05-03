@@ -19,7 +19,7 @@ class TestContents: XCTestCase {
         let expect = expectation(description: "")
         Git.create(url) {
             self.repository = $0
-            XCTAssertTrue(self.repository.needsStatus)
+            XCTAssertTrue(self.repository.statuser.needs)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -28,8 +28,8 @@ class TestContents: XCTestCase {
     func testAfterStatus() {
         let expect = expectation(description: "")
         Git.create(url) {
-            _ = $0.statusList
-            XCTAssertFalse($0.needsStatus)
+            _ = $0.statuser.list
+            XCTAssertFalse($0.statuser.needs)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -38,9 +38,9 @@ class TestContents: XCTestCase {
     func testAfterEdition() {
         let expect = expectation(description: "")
         Git.create(url) {
-            _ = $0.statusList
+            _ = $0.statuser.list
             try! "hello\n".write(to: self.url.appendingPathComponent("file.txt"), atomically: true, encoding: .utf8)
-            XCTAssertTrue($0.needsStatus)
+            XCTAssertTrue($0.statuser.needs)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -51,11 +51,11 @@ class TestContents: XCTestCase {
         let file = url.appendingPathComponent("file.txt")
         try! "hello\n".write(to: file, atomically: true, encoding: .utf8)
         Git.create(url) {
-            _ = $0.statusList
+            _ = $0.statuser.list
             try! "world\n".write(to: file, atomically: true, encoding: .utf8)
-            _ = $0.statusList
+            _ = $0.statuser.list
             try! "lorem ipsum\n".write(to: file, atomically: true, encoding: .utf8)
-            XCTAssertTrue($0.needsStatus)
+            XCTAssertTrue($0.statuser.needs)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -68,11 +68,11 @@ class TestContents: XCTestCase {
         let file = dir.appendingPathComponent("file.txt")
         try! "hello\n".write(to: file, atomically: true, encoding: .utf8)
         Git.create(url) {
-            _ = $0.statusList
+            _ = $0.statuser.list
             try! "world\n".write(to: file, atomically: true, encoding: .utf8)
-            _ = $0.statusList
+            _ = $0.statuser.list
             try! "lorem ipsum\n".write(to: file, atomically: true, encoding: .utf8)
-            XCTAssertTrue($0.needsStatus)
+            XCTAssertTrue($0.statuser.needs)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -85,11 +85,11 @@ class TestContents: XCTestCase {
         let file = dir.appendingPathComponent("file.txt")
         try! "hello\n".write(to: file, atomically: true, encoding: .utf8)
         Git.create(url) {
-            _ = $0.statusList
+            _ = $0.statuser.list
             try! "world\n".write(to: file, atomically: true, encoding: .utf8)
-            _ = $0.statusList
+            _ = $0.statuser.list
             try! "lorem ipsum\n".write(to: file, atomically: true, encoding: .utf8)
-            XCTAssertTrue($0.needsStatus)
+            XCTAssertTrue($0.statuser.needs)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)

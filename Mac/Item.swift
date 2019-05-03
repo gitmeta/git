@@ -81,7 +81,7 @@ class Item: NSView {
     
     required init?(coder: NSCoder) { return nil }
     
-    func status(_  current: Status) {
+    func status(_  current: Status.Mode) {
         switch current {
         case .deleted:
             badge.layer!.backgroundColor = NSColor.deleted.cgColor
