@@ -2,12 +2,14 @@ import AppKit
 
 class Menu: NSMenu {
     private weak var refresh: NSMenuItem!
+    private weak var log: NSMenuItem!
     private weak var commit: NSMenuItem!
     
     var project: Bool {
         get { return false }
         set {
             commit.isEnabled = newValue
+            log.isEnabled = newValue
             refresh.isEnabled = newValue
         }
     }
@@ -55,7 +57,14 @@ class Menu: NSMenu {
                     $0.isEnabled = false
                     refresh = $0
                     return $0
-                    } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(Window.refresh), keyEquivalent: "r")))
+                } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(Window.refresh), keyEquivalent: "r")))
+                $0.addItem({
+                    $0.keyEquivalentModifierMask = [.command]
+                    $0.target = App.window.tools
+                    $0.isEnabled = false
+                    log = $0
+                    return $0
+                } (NSMenuItem(title: .local("Menu.log"), action: #selector(Tools.log), keyEquivalent: "y")))
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command]
                     $0.target = App.window.tools

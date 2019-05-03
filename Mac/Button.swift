@@ -67,8 +67,8 @@ class Button: NSView {
         var on: NSImage?
         private weak var image: NSImageView!
         
-        init() {
-            super.init(nil, action: nil)
+        override init(_ target: AnyObject?, action: Selector?) {
+            super.init(target, action: action)
             let image = NSImageView()
             image.translatesAutoresizingMaskIntoConstraints = false
             image.imageScaling = .scaleNone
@@ -82,7 +82,10 @@ class Button: NSView {
         }
         
         required init?(coder: NSCoder) { return nil }
-        override func mouseDown(with: NSEvent) { checked.toggle() }
+        override func mouseDown(with: NSEvent) {
+            checked.toggle()
+            super.mouseDown(with: with)
+        }
     }
     
     weak var target: AnyObject?

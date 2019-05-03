@@ -51,7 +51,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
         branch.leftAnchor.constraint(equalTo: location.rightAnchor, constant: -16).isActive = true
         branch.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -7).isActive = true
         
-        list.topAnchor.constraint(equalTo: location.bottomAnchor, constant: 2).isActive = true
+        list.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 50).isActive = true
         list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true

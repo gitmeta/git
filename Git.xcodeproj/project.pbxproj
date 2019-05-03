@@ -64,6 +64,7 @@
 		205CF271227ABE49002BDAE0 /* TestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205CF270227ABE49002BDAE0 /* TestRepository.swift */; };
 		205FF459227C22B80085E4F4 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205FF458227C22B80085E4F4 /* Stage.swift */; };
 		205FF45A227C22B80085E4F4 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205FF458227C22B80085E4F4 /* Stage.swift */; };
+		205FF45C227C3C1D0085E4F4 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205FF45B227C3C1D0085E4F4 /* Log.swift */; };
 		20671BE9226C70A700A74B7E /* TestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BE8226C70A700A74B7E /* TestList.swift */; };
 		20671BEB226C79E900A74B7E /* Ignore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BEA226C79E900A74B7E /* Ignore.swift */; };
 		20671BEC226C79E900A74B7E /* Ignore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20671BEA226C79E900A74B7E /* Ignore.swift */; };
@@ -175,6 +176,7 @@
 		2055EFDB2276C9C000658C04 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		205CF270227ABE49002BDAE0 /* TestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepository.swift; sourceTree = "<group>"; };
 		205FF458227C22B80085E4F4 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
+		205FF45B227C3C1D0085E4F4 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		20671BE8226C70A700A74B7E /* TestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestList.swift; sourceTree = "<group>"; };
 		20671BEA226C79E900A74B7E /* Ignore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ignore.swift; sourceTree = "<group>"; };
 		20671BED226C7A0000A74B7E /* TestIgnore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestIgnore.swift; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 				20CB671C22607F940064C31C /* Label.swift */,
 				20948B7F22719E0B00B1987D /* Layout.swift */,
 				20CB6721226086030064C31C /* List.swift */,
+				205FF45B227C3C1D0085E4F4 /* Log.swift */,
 				20948B7722718AEE00B1987D /* Menu.swift */,
 				20EB250122770C790043EBD2 /* Onboard.swift */,
 				20948B73227189B700B1987D /* Sheet.swift */,
@@ -683,6 +686,7 @@
 				20ACA8AC227AE3770053960E /* Commit.swift in Sources */,
 				20948B8022719E0B00B1987D /* Layout.swift in Sources */,
 				20948B74227189B700B1987D /* Sheet.swift in Sources */,
+				205FF45C227C3C1D0085E4F4 /* Log.swift in Sources */,
 				20EB250222770C790043EBD2 /* Onboard.swift in Sources */,
 				2055EFDC2276C9C000658C04 /* Window.swift in Sources */,
 				2048A136225C749200290E54 /* App.swift in Sources */,

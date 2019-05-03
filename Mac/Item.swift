@@ -37,17 +37,17 @@ class Item: NSView {
         let badge = NSView()
         badge.translatesAutoresizingMaskIntoConstraints = false
         badge.wantsLayer = true
-        badge.layer!.cornerRadius = 14
+        badge.layer!.cornerRadius = 5
         addSubview(badge)
         self.badge = badge
         
         let hashtag = Label()
         hashtag.textColor = .black
-        hashtag.font = .light(12)
+        hashtag.font = .systemFont(ofSize: 12, weight: .light)
         addSubview(hashtag)
         self.hashtag = hashtag
         
-        let stage = Button.Check()
+        let stage = Button.Check(self, action: #selector(change))
         stage.off = NSImage(named: "checkOff")
         stage.on = NSImage(named: "checkOn")
         stage.checked = true
@@ -62,26 +62,25 @@ class Item: NSView {
         path.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
         
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        label.leftAnchor.constraint(equalTo: path.rightAnchor, constant:
-            path.stringValue.isEmpty ? -5 : 5).isActive = true
+        label.leftAnchor.constraint(equalTo: path.rightAnchor, constant: path.stringValue.isEmpty ? -5 : 5).isActive = true
         label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -20).isActive = true
         label.widthAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
         
         badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         badge.rightAnchor.constraint(equalTo: stage.leftAnchor, constant: -4).isActive = true
-        badge.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        badge.heightAnchor.constraint(equalToConstant: 24).isActive = true
         badge.leftAnchor.constraint(equalTo: hashtag.leftAnchor, constant: -9).isActive = true
         
         hashtag.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -1).isActive = true
         hashtag.rightAnchor.constraint(equalTo: badge.rightAnchor, constant: -9).isActive = true
         
-        stage.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
+        stage.rightAnchor.constraint(equalTo: rightAnchor, constant: -4).isActive = true
         stage.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
     
-    func status(_  current: Status) {
+    func status(_ current: Status) {
         switch current {
         case .deleted:
             badge.layer!.backgroundColor = NSColor.deleted.cgColor
@@ -116,5 +115,10 @@ class Item: NSView {
         next?.previous = self
         previous?.next = self
         self.previous = previous
+    }
+    
+    @objc private func change() {
+        badge.alphaValue = stage.checked ? 1 : 0.5
+        layer!.backgroundColor = stage.checked ? NSColor.clear.cgColor : NSColor(white: 0, alpha: 0.3).cgColor
     }
 }

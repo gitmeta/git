@@ -4,7 +4,7 @@ class Bar: NSView {
     class Location: Bar {
         override init() {
             super.init()
-            label.font = .light(14)
+            label.font = .systemFont(ofSize: 15, weight: .regular)
             label.textColor = NSColor(white: 1, alpha: 0.6)
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
@@ -18,7 +18,7 @@ class Bar: NSView {
     class Branch: Bar {
         override init() {
             super.init()
-            label.font = .bold(14)
+            label.font = .systemFont(ofSize: 15, weight: .bold)
             label.textColor = NSColor(white: 1, alpha: 0.7)
             background.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -37,7 +37,7 @@ class Bar: NSView {
         super.init(frame: .zero)
         wantsLayer = true
         translatesAutoresizingMaskIntoConstraints = false
-        layer!.cornerRadius = 6
+        layer!.cornerRadius = 4
         
         let background = NSView()
         background.translatesAutoresizingMaskIntoConstraints = false

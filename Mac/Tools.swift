@@ -17,35 +17,23 @@ class Tools: NSView {
         commit.height.constant = 65
         addSubview(commit)
         
+        let log = Button.Image(self, action: #selector(self.log))
+        log.off = NSImage(named: "logOff")
+        log.on = NSImage(named: "logOn")
+        log.width.constant = 50
+        log.height.constant = 50
+        addSubview(log)
+        
         heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         commit.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         commit.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        log.rightAnchor.constraint(equalTo: commit.leftAnchor, constant: -10).isActive = true
+        log.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
-    
     @objc func commit() { Commit() }
-    
-    /*
-    @objc func commit() {
-        guard !App.session.email.isEmpty, !App.session.name.isEmpty
-        else {
-            Credentials()
-            return
-        }
-        let message = text.string
-        do {
-            let user = try User(App.session.name, email: App.session.email)
-            App.repository?.commit(
-                (App.window.list.documentView!.subviews as! [Item]).filter({ $0.stage.checked }).map { $0.url },
-                user: user, message: message, error: { App.window.alert.error($0.localizedDescription) }) { [weak self] in
-                    App.window.refresh()
-                    self?.text.string = ""
-                    App.window.alert.commit(message)
-            }
-        } catch {
-            App.window.alert.error(error.localizedDescription)
-        }
-    }*/
+    @objc func log() { Log() }
 }
