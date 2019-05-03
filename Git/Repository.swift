@@ -18,6 +18,10 @@ public class Repository {
     
     public func refresh() { state.refresh() }
     
+    public var branch: String {
+        return HEAD.replacingOccurrences(of: "refs/heads/", with: "")
+    }
+    
     var HEAD: String {
         return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
             UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")

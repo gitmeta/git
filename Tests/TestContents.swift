@@ -19,7 +19,7 @@ class TestContents: XCTestCase {
         let expect = expectation(description: "")
         Git.create(url) {
             self.repository = $0
-            XCTAssertTrue(self.repository.state.needs)
+            XCTAssertTrue($0.state.needs)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)

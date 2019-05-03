@@ -8,7 +8,7 @@ public enum Status {
 }
 
 class State {
-    weak var repository: Repository!
+    weak var repository: Repository?
     var last = Date.distantPast
     let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
@@ -20,7 +20,7 @@ class State {
                 return self?.needs == true ? self?.list : nil
             }) { [weak self] in
                 if let changes = $0 {
-                    self?.repository.status?(changes)
+                    self?.repository?.status?(changes)
                 }
                 self?.timer.schedule(deadline: .now() + 1)
             }
@@ -28,17 +28,19 @@ class State {
     }
     
     var needs: Bool {
-        if let modified = (try? FileManager.default.attributesOfItem(atPath:
-            repository.url.path))?[.modificationDate] as? Date, modified > last { return true }
-        return modified([repository.url])
+        guard let url = repository?.url else { return false }
+        if let modified = (try? FileManager.default.attributesOfItem(atPath: url.path))?[.modificationDate] as? Date,
+            modified > last { return true }
+        return modified([url])
     }
     
     var list: [(URL, Status)] {
+        guard let url = repository?.url else { return [] }
         last = Date()
         let contents = self.contents
-        let index = Index(repository.url)
-        let pack = Pack.load(repository.url)
-        var tree = repository.tree?.list(repository.url) ?? []
+        let index = Index(url)
+        let pack = Pack.load(url)
+        var tree = repository?.tree?.list(url) ?? []
         return contents.reduce(into: [(URL, Status)]()) { result, url in
             if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
                 let hash = Git.hash.file(url).1
@@ -64,8 +66,9 @@ class State {
     }
     
     private var contents: [URL] {
-        let ignore = Ignore(repository.url)
-        return FileManager.default.enumerator(at: repository.url, includingPropertiesForKeys: nil)?
+        guard let url = repository?.url else { return [] }
+        let ignore = Ignore(url)
+        return FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil)?
             .map({ ($0 as! URL).resolvingSymlinksInPath() })
             .filter({ !ignore.url($0) })
             .sorted(by: { $0.path.compare($1.path, options: .caseInsensitive) != .orderedDescending }) ?? []

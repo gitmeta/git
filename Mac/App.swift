@@ -6,6 +6,7 @@ import AppKit
     private(set) static var window: Window!
     private(set) static var repository: Repository? {
         didSet {
+            window.branch.label.stringValue = App.repository?.branch ?? ""
             if repository == nil {
                 menu.project = false
                 window.notRepository()

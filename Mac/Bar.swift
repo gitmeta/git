@@ -4,6 +4,8 @@ class Bar: NSView {
     class Location: Bar {
         override init() {
             super.init()
+            label.font = .light(14)
+            label.textColor = NSColor(white: 1, alpha: 0.6)
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
             label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -16,6 +18,8 @@ class Bar: NSView {
     class Branch: Bar {
         override init() {
             super.init()
+            label.font = .bold(14)
+            label.textColor = NSColor(white: 1, alpha: 0.7)
             background.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             label.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -44,8 +48,6 @@ class Bar: NSView {
         
         let label = Label()
         label.lineBreakMode = .byTruncatingMiddle
-        label.font = .light(14)
-        label.textColor = NSColor(white: 1, alpha: 0.6)
         addSubview(label)
         self.label = label
         
