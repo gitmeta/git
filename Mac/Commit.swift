@@ -34,7 +34,7 @@ class Commit: Sheet {
         
         let title = Label(.local("Commit.title"))
         title.textColor = .halo
-        title.font = .systemFont(ofSize: 22, weight: .medium)
+        title.font = .systemFont(ofSize: 20, weight: .medium)
         addSubview(title)
         
         let text = Text()

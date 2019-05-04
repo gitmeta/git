@@ -110,7 +110,7 @@ class Button: NSView {
     
     override func mouseDragged(with: NSEvent) {
         drag += abs(with.deltaX) + abs(with.deltaY)
-        if drag > 10 {
+        if drag > 20 {
             selected = false
         }
     }
