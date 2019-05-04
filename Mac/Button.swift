@@ -5,6 +5,11 @@ class Button: NSView {
         var off: NSImage? { didSet { image.image = off } }
         var on: NSImage?
         private weak var image: NSImageView!
+        override var selected: Bool {
+            didSet {
+                image.image = selected ? on : off
+            }
+        }
         
         override init(_ target: AnyObject?, action: Selector?) {
             super.init(target, action: action)
@@ -21,17 +26,15 @@ class Button: NSView {
         }
         
         required init?(coder: NSCoder) { return nil }
-        
-        override func mouseDragged(with: NSEvent) { image.image = off }
-        override func mouseUp(with: NSEvent) { image.image = off }
-        override func mouseDown(with: NSEvent) {
-            super.mouseDown(with: with)
-            image.image = on
-        }
     }
     
     class Text: Button {
         private(set) weak var label: Label!
+        override var selected: Bool {
+            didSet {
+                alphaValue = selected ? 0.5 : 1
+            }
+        }
         
         override init(_ target: AnyObject?, action: Selector?) {
             super.init(target, action: action)
@@ -46,13 +49,6 @@ class Button: NSView {
         }
         
         required init?(coder: NSCoder) { return nil }
-        
-        override func mouseDragged(with: NSEvent) { alphaValue = 1 }
-        override func mouseUp(with: NSEvent) { alphaValue = 1 }
-        override func mouseDown(with: NSEvent) {
-            super.mouseDown(with: with)
-            alphaValue = 0.5
-        }
     }
     
     class Check: Button {
@@ -82,9 +78,10 @@ class Button: NSView {
         }
         
         required init?(coder: NSCoder) { return nil }
-        override func mouseDown(with: NSEvent) {
+        
+        override func click() {
             checked.toggle()
-            super.mouseDown(with: with)
+            super.click()
         }
     }
     
@@ -92,6 +89,8 @@ class Button: NSView {
     var action: Selector?
     private(set) weak var width: NSLayoutConstraint!
     private(set) weak var height: NSLayoutConstraint!
+    fileprivate var selected = false
+    private var drag = CGFloat(0)
     
     init(_ target: AnyObject?, action: Selector?) {
         super.init(frame: .zero)
@@ -107,5 +106,23 @@ class Button: NSView {
     
     required init?(coder: NSCoder) { return nil }
     override func resetCursorRects() { addCursorRect(bounds, cursor: .pointingHand) }
-    override func mouseDown(with: NSEvent) { _ = target?.perform(action) }
+    override func mouseDown(with: NSEvent) { selected = true }
+    
+    override func mouseDragged(with: NSEvent) {
+        drag += abs(with.deltaX) + abs(with.deltaY)
+        if drag > 10 {
+            selected = false
+        }
+    }
+    
+    override func mouseUp(with: NSEvent) {
+        if selected {
+            click()
+        }
+        selected = false
+    }
+    
+    fileprivate func click() {
+        _ = target?.perform(action)
+    }
 }

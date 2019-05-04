@@ -2,7 +2,7 @@ import Git
 import AppKit
 
 class Display: NSView {
-    private weak var createButton: Button!
+    private weak var create: Button!
     private weak var message: Label!
     private weak var image: NSImageView!
     
@@ -24,14 +24,14 @@ class Display: NSView {
         addSubview(message)
         self.message = message
         
-        let createButton = Button.Image(NSApp, action: #selector(App.create))
-        createButton.off = NSImage(named: "createOff")
-        createButton.on = NSImage(named: "createOn")
-        createButton.width.constant = 60
-        createButton.height.constant = 60
-        createButton.isHidden = true
-        addSubview(createButton)
-        self.createButton = createButton
+        let create = Button.Image(NSApp, action: #selector(App.create))
+        create.off = NSImage(named: "createOff")
+        create.on = NSImage(named: "createOn")
+        create.width.constant = 90
+        create.height.constant = 90
+        create.isHidden = true
+        addSubview(create)
+        self.create = create
         
         image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -42,8 +42,8 @@ class Display: NSView {
         message.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 10).isActive = true
         message.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
-        createButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        createButton.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
+        create.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        create.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -52,27 +52,27 @@ class Display: NSView {
         alphaValue = 1
         image.image = NSImage(named: "logo")
         message.stringValue = ""
-        createButton.isHidden = true
+        create.isHidden = true
     }
     
     func repository() {
         alphaValue = 0
         image.image = nil
         message.stringValue = ""
-        createButton.isHidden = true
+        create.isHidden = true
     }
     
     func notRepository() {
         alphaValue = 1
         image.image = NSImage(named: "error")
         message.stringValue = .local("Display.notRepository")
-        createButton.isHidden = false
+        create.isHidden = false
     }
     
     func upToDate() {
         alphaValue = 1
         image.image = NSImage(named: "updated")
         message.stringValue = .local("Display.upToDate")
-        createButton.isHidden = true
+        create.isHidden = true
     }
 }

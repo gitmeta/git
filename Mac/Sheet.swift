@@ -2,7 +2,7 @@ import AppKit
 
 class Sheet: NSView {
     var ready: (() -> Void)?
-    private static weak var presented: Sheet?
+    private(set) static weak var presented: Sheet?
     override var acceptsFirstResponder: Bool { return true }
     
     init() {
@@ -11,6 +11,7 @@ class Sheet: NSView {
         wantsLayer = true
         if Sheet.presented == nil {
             Sheet.presented = self
+            App.menu.validate()
             translatesAutoresizingMaskIntoConstraints = false
             alphaValue = 0
             NSApp.mainWindow!.contentView!.addSubview(self)
@@ -41,6 +42,8 @@ class Sheet: NSView {
     }
     
     required init?(coder: NSCoder) { return nil }
+    deinit { App.menu.validate() }
+    
     override func mouseDown(with: NSEvent) { }
     override func mouseDragged(with: NSEvent) { }
     override func mouseUp(with: NSEvent) { }

@@ -1,18 +1,12 @@
 import AppKit
 
 class Menu: NSMenu {
+    private weak var preferences: NSMenuItem!
+    private weak var directory: NSMenuItem!
     private weak var refresh: NSMenuItem!
     private weak var log: NSMenuItem!
     private weak var commit: NSMenuItem!
-    
-    var project: Bool {
-        get { return false }
-        set {
-            commit.isEnabled = newValue
-            log.isEnabled = newValue
-            refresh.isEnabled = newValue
-        }
-    }
+    private weak var help: NSMenuItem!
     
     init() {
         super.init(title: "")
@@ -24,6 +18,7 @@ class Menu: NSMenu {
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
                     $0.target = NSApp
+                    preferences = $0
                     return $0
                 } (NSMenuItem(title: .local("Menu.preferences"), action: #selector(App.preferences), keyEquivalent: ",")))
                 $0.addItem(NSMenuItem.separator())
@@ -48,6 +43,7 @@ class Menu: NSMenu {
                 $0.addItem({
                     $0.target = NSApp
                     $0.keyEquivalentModifierMask = [.command]
+                    directory = $0
                     return $0
                 } (NSMenuItem(title: .local("Menu.directory"), action: #selector(App.panel), keyEquivalent: "o")))
                 $0.addItem(NSMenuItem.separator())
@@ -94,7 +90,10 @@ class Menu: NSMenu {
         
         addItem({
             $0.submenu = {
-                $0.addItem(withTitle: .local("Menu.showHelp"), action: #selector(App.showHelp(_:)), keyEquivalent: "/")
+                $0.addItem({
+                    help = $0
+                    return $0
+                } (NSMenuItem(title: .local("Menu.showHelp"), action: #selector(App.showHelp(_:)), keyEquivalent: "/")))
                 $0.autoenablesItems = false
                 return $0
             } (NSMenu(title: .local("Menu.help")))
@@ -103,4 +102,22 @@ class Menu: NSMenu {
     }
     
     required init(coder: NSCoder) { fatalError() }
+    
+    func validate() {
+        if Sheet.presented == nil {
+            preferences.isEnabled = true
+            directory.isEnabled = true
+            help.isEnabled = true
+            refresh.isEnabled = App.repository != nil
+            log.isEnabled = App.repository != nil
+            commit.isEnabled = App.repository != nil
+        } else {
+            preferences.isEnabled = false
+            directory.isEnabled = false
+            refresh.isEnabled = false
+            log.isEnabled = false
+            commit.isEnabled = false
+            help.isEnabled = false
+        }
+    }
 }

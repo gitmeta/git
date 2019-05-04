@@ -16,13 +16,12 @@ class Item: NSView {
         self.url = url
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        wantsLayer = true
         
         let path = Label(String(url.deletingLastPathComponent().path.dropFirst(Git.session.url.path.count + 1)))
         path.lineBreakMode = .byTruncatingMiddle
         path.maximumNumberOfLines = 1
         path.textColor = NSColor.halo.withAlphaComponent(0.7)
-        path.font = .light(16)
+        path.font = .light(14)
         path.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         addSubview(path)
         self.path = path
@@ -30,14 +29,14 @@ class Item: NSView {
         let label = Label(url.lastPathComponent)
         label.maximumNumberOfLines = 1
         label.textColor = .halo
-        label.font = .bold(16)
+        label.font = .bold(14)
         addSubview(label)
         self.label = label
         
         let badge = NSView()
         badge.translatesAutoresizingMaskIntoConstraints = false
         badge.wantsLayer = true
-        badge.layer!.cornerRadius = 5
+        badge.layer!.cornerRadius = 4
         addSubview(badge)
         self.badge = badge
         
@@ -51,12 +50,12 @@ class Item: NSView {
         stage.off = NSImage(named: "checkOff")
         stage.on = NSImage(named: "checkOn")
         stage.checked = true
-        stage.height.constant = 40
-        stage.width.constant = 40
+        stage.height.constant = 32
+        stage.width.constant = 32
         addSubview(stage)
         self.stage = stage
         
-        heightAnchor.constraint(equalToConstant: 40).isActive = true
+        heightAnchor.constraint(equalToConstant: 32).isActive = true
         
         path.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         path.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
@@ -117,8 +116,5 @@ class Item: NSView {
         self.previous = previous
     }
     
-    @objc private func change() {
-        badge.alphaValue = stage.checked ? 1 : 0.5
-        layer!.backgroundColor = stage.checked ? NSColor.clear.cgColor : NSColor(white: 0, alpha: 0.3).cgColor
-    }
+    @objc private func change() { alphaValue = stage.checked ? 1 : 0.4 }
 }

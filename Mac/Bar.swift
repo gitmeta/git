@@ -4,8 +4,8 @@ class Bar: NSView {
     class Location: Bar {
         override init() {
             super.init()
-            label.font = .systemFont(ofSize: 15, weight: .regular)
-            label.textColor = NSColor(white: 1, alpha: 0.6)
+            label.font = .systemFont(ofSize: 14, weight: .regular)
+            label.textColor = NSColor(white: 1, alpha: 0.7)
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
             label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -18,8 +18,8 @@ class Bar: NSView {
     class Branch: Bar {
         override init() {
             super.init()
-            label.font = .systemFont(ofSize: 15, weight: .bold)
-            label.textColor = NSColor(white: 1, alpha: 0.7)
+            label.font = .systemFont(ofSize: 14, weight: .bold)
+            label.textColor = NSColor(white: 1, alpha: 0.8)
             background.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             label.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -71,7 +71,7 @@ class Bar: NSView {
     }
 
     override func mouseDown(with: NSEvent) {
-        background.layer!.backgroundColor = NSColor(white: 1, alpha: 0.1).cgColor
+        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.7).cgColor
     }
 
     override func mouseUp(with: NSEvent) {

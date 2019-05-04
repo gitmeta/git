@@ -7,12 +7,11 @@ import AppKit
     private(set) static var repository: Repository? {
         didSet {
             window.branch.label.stringValue = App.repository?.branch ?? ""
+            menu.validate()
             if repository == nil {
-                menu.project = false
                 window.notRepository()
                 window.list.update([])
             } else {
-                menu.project = true
                 window.refresh()
                 repository!.status = {
                     if $0.isEmpty {

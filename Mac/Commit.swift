@@ -8,7 +8,7 @@ class Commit: Sheet {
         super.init()
         let blur = NSVisualEffectView(frame: .zero)
         blur.translatesAutoresizingMaskIntoConstraints = false
-        blur.material = .dark
+        blur.material = .ultraDark
         blur.blendingMode = .withinWindow
         addSubview(blur)
         
