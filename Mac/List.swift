@@ -45,5 +45,3 @@ class List: NSScrollView {
         before.forEach({ $0.removeFromSuperview() })
     }
 }
-
-private class Flipped: NSView { override var isFlipped: Bool { return true } }

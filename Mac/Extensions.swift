@@ -13,3 +13,5 @@ extension NSColor {
     static let modified = #colorLiteral(red: 0.802871919, green: 0.7154764525, blue: 1, alpha: 1)
     static let deleted = #colorLiteral(red: 1, green: 0.4639141682, blue: 0.834259463, alpha: 1)
 }
+
+class Flipped: NSView { override var isFlipped: Bool { return true } }

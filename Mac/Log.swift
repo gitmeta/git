@@ -2,8 +2,6 @@ import Git
 import AppKit
 
 class Log: Sheet {
-    private weak var text: NSTextView!
-    
     @discardableResult override init() {
         super.init()
         let blur = NSVisualEffectView(frame: .zero)
@@ -37,6 +35,12 @@ class Log: Sheet {
         scroll.verticalScroller!.controlSize = .mini
         scroll.horizontalScrollElasticity = .none
         scroll.verticalScrollElasticity = .allowed
+        scroll.documentView = Flipped()
+        scroll.documentView!.translatesAutoresizingMaskIntoConstraints = false
+        scroll.documentView!.topAnchor.constraint(equalTo: scroll.topAnchor).isActive = true
+        scroll.documentView!.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
+        scroll.documentView!.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
+        scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: scroll.bottomAnchor).isActive = true
         addSubview(scroll)
         
         blur.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -60,8 +64,10 @@ class Log: Sheet {
         scroll.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
         
-        ready = { [weak self] in
-            App.window.makeFirstResponder(self?.text)
+        App.repository?.log {
+            $0.forEach {
+                print($0)
+            }
         }
     }
     

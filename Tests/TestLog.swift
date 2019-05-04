@@ -25,16 +25,19 @@ class TestLog: XCTestCase {
         Git.create(url) {
             self.repository = $0
             self.repository.commit([self.file], message: "Lorem ipsum") {
-                self.repository.log {
-                    XCTAssertEqual(1, $0.count)
-                    XCTAssertEqual("hello", $0.first?.author.name)
-                    XCTAssertEqual("hello", $0.first?.committer.name)
-                    XCTAssertEqual("my@email.com", $0.first?.author.email)
-                    XCTAssertEqual("my@email.com", $0.first?.committer.email)
-                    XCTAssertEqual("Lorem ipsum\n", $0.first?.message)
-                    XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", $0.first?.tree)
-                    XCTAssertNil($0.first?.parent)
-                    expect.fulfill()
+                DispatchQueue.global(qos: .background).async {
+                    self.repository.log {
+                        XCTAssertEqual(1, $0.count)
+                        XCTAssertEqual("hello", $0.first?.author.name)
+                        XCTAssertEqual("hello", $0.first?.committer.name)
+                        XCTAssertEqual("my@email.com", $0.first?.author.email)
+                        XCTAssertEqual("my@email.com", $0.first?.committer.email)
+                        XCTAssertEqual("Lorem ipsum\n", $0.first?.message)
+                        XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", $0.first?.tree)
+                        XCTAssertNil($0.first?.parent)
+                        XCTAssertEqual(Thread.main, Thread.current)
+                        expect.fulfill()
+                    }
                 }
             }
         }
