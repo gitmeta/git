@@ -4,7 +4,7 @@ class Text: NSTextView {
     private weak var height: NSLayoutConstraint!
     
     init() {
-        let storage = Storage()
+        let storage = NSTextStorage()
         super.init(frame: .zero, textContainer: {
             storage.addLayoutManager($1)
             $1.addTextContainer($0)
@@ -16,7 +16,7 @@ class Text: NSTextView {
         drawsBackground = false
         isRichText = false
         insertionPointColor = .halo
-        font = .light(18)
+        font = .light(20)
         textContainerInset = NSSize(width: 20, height: 20)
         height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
         height.isActive = true
@@ -31,7 +31,7 @@ class Text: NSTextView {
     
     override func drawInsertionPoint(in rect: NSRect, color: NSColor, turnedOn: Bool) {
         var rect = rect
-        rect.size.width += 2
+        rect.size.width += 5
         super.drawInsertionPoint(in: rect, color: color, turnedOn: turnedOn)
     }
     

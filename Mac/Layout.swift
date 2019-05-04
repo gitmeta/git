@@ -1,7 +1,7 @@
 import AppKit
 
 class Layout: NSLayoutManager, NSLayoutManagerDelegate {
-    let padding = CGFloat(4)
+    let padding = CGFloat(6)
     
     override init() {
         super.init()

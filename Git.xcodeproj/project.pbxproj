@@ -84,7 +84,6 @@
 		20948B7C2271986100B1987D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B792271985B00B1987D /* User.swift */; };
 		20948B7E2271987E00B1987D /* TestUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7D2271987E00B1987D /* TestUser.swift */; };
 		20948B8022719E0B00B1987D /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7F22719E0B00B1987D /* Layout.swift */; };
-		20948B8222719E1A00B1987D /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B8122719E1A00B1987D /* Storage.swift */; };
 		20948B8422719E8900B1987D /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B8322719E8900B1987D /* Text.swift */; };
 		20A37BED2272E1E100850D12 /* TestStaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BEC2272E1E100850D12 /* TestStaging.swift */; };
 		20ACA8AC227AE3770053960E /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ACA8AB227AE3770053960E /* Commit.swift */; };
@@ -192,7 +191,6 @@
 		20948B792271985B00B1987D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		20948B7D2271987E00B1987D /* TestUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUser.swift; sourceTree = "<group>"; };
 		20948B7F22719E0B00B1987D /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
-		20948B8122719E1A00B1987D /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		20948B8322719E8900B1987D /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		20A37BEC2272E1E100850D12 /* TestStaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStaging.swift; sourceTree = "<group>"; };
 		20ACA8AB227AE3770053960E /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
@@ -368,7 +366,6 @@
 				20948B7722718AEE00B1987D /* Menu.swift */,
 				20EB250122770C790043EBD2 /* Onboard.swift */,
 				20948B73227189B700B1987D /* Sheet.swift */,
-				20948B8122719E1A00B1987D /* Storage.swift */,
 				20948B8322719E8900B1987D /* Text.swift */,
 				201A413022636E72001C852A /* Tools.swift */,
 				2055EFDB2276C9C000658C04 /* Window.swift */,
@@ -696,7 +693,6 @@
 				20948B8422719E8900B1987D /* Text.swift in Sources */,
 				20CB671D22607F940064C31C /* Label.swift in Sources */,
 				20CCE7402261D4840014CAC9 /* Alert.swift in Sources */,
-				20948B8222719E1A00B1987D /* Storage.swift in Sources */,
 				2048A137225C749200290E54 /* Button.swift in Sources */,
 				201A413122636E72001C852A /* Tools.swift in Sources */,
 			);
