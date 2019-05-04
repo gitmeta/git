@@ -19,6 +19,12 @@ class Commit: Sheet {
         save.height.constant = 65
         addSubview(save)
         
+        let icon = NSImageView()
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.image = NSImage(named: "node")
+        icon.imageScaling = .scaleNone
+        addSubview(icon)
+        
         let cancel = Button.Image(self, action: #selector(close))
         cancel.off = NSImage(named: "cancelOff")
         cancel.on = NSImage(named: "cancelOn")
@@ -28,7 +34,7 @@ class Commit: Sheet {
         
         let title = Label(.local("Commit.title"))
         title.textColor = .halo
-        title.font = .systemFont(ofSize: 22, weight: .bold)
+        title.font = .systemFont(ofSize: 22, weight: .medium)
         addSubview(title)
         
         let text = Text()
@@ -55,10 +61,15 @@ class Commit: Sheet {
         save.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         save.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
         
-        title.bottomAnchor.constraint(equalTo: scroll.topAnchor, constant: -5).isActive = true
-        title.leftAnchor.constraint(equalTo: leftAnchor, constant: 23).isActive = true
+        icon.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
+        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        icon.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
-        scroll.topAnchor.constraint(equalTo: save.bottomAnchor).isActive = true
+        title.centerYAnchor.constraint(equalTo: icon.centerYAnchor).isActive = true
+        title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 5).isActive = true
+        
+        scroll.topAnchor.constraint(equalTo: icon.bottomAnchor, constant: 5).isActive = true
         scroll.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
         scroll.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
