@@ -16,6 +16,18 @@ public class Repository {
         stage.commit(files, message: message, error: error, done: done)
     }
     
+    public func log(_ result: @escaping(([Commit]) -> Void)) {
+        Git.dispatch.background({ [weak self] in
+            var result = [Commit]()
+            var commit = self?.head
+            while commit != nil {
+                result.append(commit!)
+                commit = commit!.parent != nil ? self?.commit(commit!.parent!) : nil
+            }
+            return result
+        }, success: result)
+    }
+    
     public func refresh() { state.refresh() }
     
     public var branch: String {
@@ -33,15 +45,18 @@ public class Repository {
     }
     
     var head: Commit? {
-        guard
-            let id = self.headId,
-            let raw = try? Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))
-        else { return nil }
-        return try? Commit(Git.press.decompress(raw))
+        guard let id = self.headId else { return nil }
+        return commit(id)
     }
     
     var tree: Tree? {
         guard let head = self.head else { return nil }
         return try? Tree(head.tree, url: url)
+    }
+    
+    private func commit(_ id: String) -> Commit? {
+        guard let raw = try? Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))
+        else { return nil }
+        return try? Commit(Git.press.decompress(raw))
     }
 }
