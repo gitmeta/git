@@ -19,15 +19,18 @@ class List: NSScrollView {
             
             let label = Label()
             label.attributedStringValue = {
-                $0.append(NSAttributedString(string:
-                    "\(url.deletingLastPathComponent().path.dropFirst(Hub.session.url.path.count + 1)) ", attributes:
-                    [.font: NSFont.light(14), .foregroundColor: NSColor.halo.withAlphaComponent(0.7)]))
+                let path = url.deletingLastPathComponent().path.dropFirst(Hub.session.url.path.count + 1)
+                if !path.isEmpty {
+                    $0.append(NSAttributedString(string:
+                        "\(path) ", attributes:
+                        [.font: NSFont.light(14), .foregroundColor: NSColor.halo.withAlphaComponent(0.7)]))
+                }
                 $0.append(NSAttributedString(string: url.lastPathComponent, attributes:
                     [.font: NSFont.bold(14), .foregroundColor: NSColor.halo]))
                 return $0
             } (NSMutableAttributedString())
-            label.lineBreakMode = .byTruncatingMiddle
             label.maximumNumberOfLines = 1
+            label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             addSubview(label)
             self.label = label
             

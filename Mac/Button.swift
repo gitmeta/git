@@ -123,6 +123,6 @@ class Button: NSView {
     }
     
     fileprivate func click() {
-        _ = target?.perform(action)
+        _ = target?.perform(action, with: self)
     }
 }

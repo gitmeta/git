@@ -77,8 +77,8 @@ class Log: Sheet {
         let cancel = Button.Image(self, action: #selector(close))
         cancel.off = NSImage(named: "cancelOff")
         cancel.on = NSImage(named: "cancelOn")
-        cancel.width.constant = 65
-        cancel.height.constant = 65
+        cancel.width.constant = 50
+        cancel.height.constant = 50
         addSubview(cancel)
         
         let icon = NSImageView()
@@ -121,15 +121,15 @@ class Log: Sheet {
         cancel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         cancel.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
         
-        icon.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
-        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        icon.centerYAnchor.constraint(equalTo: topAnchor, constant: 35).isActive = true
+        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 80).isActive = true
         icon.widthAnchor.constraint(equalToConstant: 35).isActive = true
         icon.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
         title.centerYAnchor.constraint(equalTo: icon.centerYAnchor).isActive = true
-        title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 5).isActive = true
+        title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 10).isActive = true
         
-        border.topAnchor.constraint(lessThanOrEqualTo: icon.bottomAnchor, constant: 10).isActive = true
+        border.topAnchor.constraint(equalTo: topAnchor, constant: 70).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
@@ -140,7 +140,7 @@ class Log: Sheet {
         scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
         
         App.repository?.log { items in
-            var top = scroll.topAnchor
+            var top = scroll.documentView!.topAnchor
             items.enumerated().forEach {
                 let item = Item(items.count - $0.0, commit: $0.1)
                 scroll.documentView!.addSubview(item)
