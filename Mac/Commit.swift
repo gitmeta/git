@@ -86,7 +86,7 @@ class Commit: Sheet {
 
     @objc private func save() {
         App.repository?.commit(
-            (App.window.list.documentView!.subviews as! [Item]).filter({ $0.stage.checked }).map { $0.url },
+            (App.window.list.documentView!.subviews as! [List.Item]).filter({ $0.stage.checked }).map { $0.url },
             message: text.string, error: {
                 App.window.alert.error($0.localizedDescription)
         }) { [weak self] in

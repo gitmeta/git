@@ -104,7 +104,6 @@
 		20CB67202260857E0064C31C /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20CB671E2260857E0064C31C /* Shared.xcassets */; };
 		20CB6722226086030064C31C /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6721226086030064C31C /* List.swift */; };
 		20CCE7402261D4840014CAC9 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CCE73F2261D4840014CAC9 /* Alert.swift */; };
-		20CCE7422261FF020014CAC9 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CCE7412261FF020014CAC9 /* Item.swift */; };
 		20E76BE6225E264300E023D8 /* compressed0 in Resources */ = {isa = PBXBuildFile; fileRef = 20E76BE5225E264300E023D8 /* compressed0 */; };
 		20EB250222770C790043EBD2 /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB250122770C790043EBD2 /* Onboard.swift */; };
 		20EB2504227711E20043EBD2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2503227711E20043EBD2 /* Session.swift */; };
@@ -210,7 +209,6 @@
 		20CB671E2260857E0064C31C /* Shared.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Shared.xcassets; sourceTree = "<group>"; };
 		20CB6721226086030064C31C /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20CCE73F2261D4840014CAC9 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		20CCE7412261FF020014CAC9 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		20CCE743226214270014CAC9 /* Git.sketch */ = {isa = PBXFileReference; lastKnownFileType = file; path = Git.sketch; sourceTree = "<group>"; };
 		20E76BE5225E264300E023D8 /* compressed0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = compressed0; sourceTree = "<group>"; };
 		20EB250122770C790043EBD2 /* Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
@@ -361,7 +359,6 @@
 				20948B7522718A2100B1987D /* Credentials.swift */,
 				20B7D68022645EF800A1A802 /* Display.swift */,
 				2048A12E225C749200290E54 /* Extensions.swift */,
-				20CCE7412261FF020014CAC9 /* Item.swift */,
 				20CB671C22607F940064C31C /* Label.swift */,
 				20948B7F22719E0B00B1987D /* Layout.swift */,
 				20CB6721226086030064C31C /* List.swift */,
@@ -682,7 +679,6 @@
 				20948B7622718A2100B1987D /* Credentials.swift in Sources */,
 				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
 				20948B7822718AEE00B1987D /* Menu.swift in Sources */,
-				20CCE7422261FF020014CAC9 /* Item.swift in Sources */,
 				20CB6718226066470064C31C /* Bar.swift in Sources */,
 				20ACA8AC227AE3770053960E /* Commit.swift in Sources */,
 				20948B8022719E0B00B1987D /* Layout.swift in Sources */,
