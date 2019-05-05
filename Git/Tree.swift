@@ -32,10 +32,9 @@ class Tree {
     
     private(set) var items = [Item]()
     private(set) var children = [Sub: Tree]()
-    private let hasher = Hash()
     
     convenience init(_ id: String, url: URL, trail: URL? = nil) throws {
-        try self.init(Press().decompress(try Data(contentsOf:
+        try self.init(Hub.press.decompress(try Data(contentsOf:
             url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))), url: trail ?? url)
     }
     
@@ -67,7 +66,7 @@ class Tree {
                 if update.contains(where: { $0.path == content.path }) {
                     let item = Blob()
                     item.url = content
-                    item.id = hasher.file(content).1
+                    item.id = Hub.hash.file(content).1
                     items.append(item)
                 } else if let entry = entries.first(where: { $0.url.path == content.path }) {
                     let item = Blob()
@@ -88,7 +87,7 @@ class Tree {
         let hash = self.hash
         let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try! Press().compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
+        try! Hub.press.compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
                                             options: .atomic)
         return hash.1
     }
@@ -101,6 +100,6 @@ class Tree {
             serial.nulled($0.url.lastPathComponent)
             serial.hex($0.id)
         }
-        return hasher.tree(serial.data)
+        return Hub.hash.tree(serial.data)
     }
 }

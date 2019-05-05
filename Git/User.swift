@@ -1,10 +1,10 @@
 import Foundation
 
 public struct User {
-    public var name = ""
-    public var email = ""
+    public internal(set) var name = ""
+    public internal(set) var email = ""
+    public internal(set) var date = Date()
     var timezone = ""
-    var date = Date()
     
     init() { }
     

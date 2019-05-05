@@ -2,7 +2,6 @@ import Foundation
 
 class Serial {
     private(set) var data = Data()
-    private let hasher = Hash()
     private static let map = [
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, // 01234567
         0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 89:;<=>?
@@ -29,5 +28,5 @@ class Serial {
     func nulled(_ string: String) { self.string(string + "\u{0000}") }
     func string(_ string: String) { data.append(Data(string.utf8)) }
     func number<T: BinaryInteger>(_ number: T) { withUnsafeBytes(of: number) { data.append(contentsOf: $0.reversed()) } }
-    func hash() { data.append(contentsOf: hasher.digest(data)) }
+    func hash() { data.append(contentsOf: Hub.hash.digest(data)) }
 }

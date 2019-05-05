@@ -5,18 +5,61 @@ class Log: Sheet {
     class Item: NSView {
         private weak var label: Label!
         
-        fileprivate init(_ commit: Git.Commit) {
+        fileprivate init(_ index: Int, commit: Git.Commit) {
             super.init(frame: .zero)
-            
             translatesAutoresizingMaskIntoConstraints = false
             
-            let label = Label()
+            let circle = NSView()
+            circle.translatesAutoresizingMaskIntoConstraints = false
+            circle.wantsLayer = true
+            circle.layer!.backgroundColor = NSColor.halo.cgColor
+            circle.layer!.cornerRadius = 22
+            addSubview(circle)
+            
+            let number = Label(String(index))
+            number.alignment = .center
+            number.font = .systemFont(ofSize: 12, weight: .medium)
+            number.textColor = .black
+            addSubview(number)
+            
+            let author = Label(commit.author.name)
+            author.textColor = .white
+            author.font = .systemFont(ofSize: 16, weight: .medium)
+            addSubview(author)
+            
+            let date = Label({
+                $0.timeStyle = .short
+                $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .medium : .none
+                return $0.string(from: $1)
+            } (DateFormatter(), commit.author.date))
+            date.textColor = NSColor(white: 1, alpha: 0.7)
+            date.font = .systemFont(ofSize: 14, weight: .light)
+            addSubview(date)
+            
+            let label = Label(commit.message)
+            label.textColor = NSColor(white: 1, alpha: 0.8)
+            label.font = .systemFont(ofSize: 16, weight: .light)
+            label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             addSubview(label)
             self.label = label
             
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-            label.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+            circle.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+            circle.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
+            circle.widthAnchor.constraint(equalToConstant: 44).isActive = true
+            circle.heightAnchor.constraint(equalToConstant: 44).isActive = true
+            
+            number.centerXAnchor.constraint(equalTo: circle.centerXAnchor).isActive = true
+            number.centerYAnchor.constraint(equalTo: circle.centerYAnchor).isActive = true
+            
+            author.bottomAnchor.constraint(equalTo: date.topAnchor).isActive = true
+            author.leftAnchor.constraint(equalTo: date.leftAnchor).isActive = true
+            
+            date.bottomAnchor.constraint(equalTo: circle.bottomAnchor).isActive = true
+            date.leftAnchor.constraint(equalTo: circle.rightAnchor, constant: 7).isActive = true
+            
+            label.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 20).isActive = true
+            label.leftAnchor.constraint(equalTo: circle.leftAnchor).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -14).isActive = true
             label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
         }
         
@@ -49,6 +92,12 @@ class Log: Sheet {
         title.font = .systemFont(ofSize: 20, weight: .medium)
         addSubview(title)
         
+        let border = NSView()
+        border.translatesAutoresizingMaskIntoConstraints = false
+        border.wantsLayer = true
+        border.layer!.backgroundColor = NSColor.black.cgColor
+        addSubview(border)
+        
         let scroll = NSScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         scroll.drawsBackground = false
@@ -80,16 +129,28 @@ class Log: Sheet {
         title.centerYAnchor.constraint(equalTo: icon.centerYAnchor).isActive = true
         title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 5).isActive = true
         
-        scroll.topAnchor.constraint(equalTo: icon.bottomAnchor, constant: 5).isActive = true
+        border.topAnchor.constraint(lessThanOrEqualTo: icon.bottomAnchor, constant: 10).isActive = true
+        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        border.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
+        border.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
+        
+        scroll.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         scroll.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
         scroll.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
         
-        App.repository?.log { [weak self] in
-            var top = self?.topAnchor
-            $0.forEach {
-                let item = Item($0)
+        App.repository?.log { items in
+            var top = scroll.topAnchor
+            items.enumerated().forEach {
+                let item = Item(items.count - $0.0, commit: $0.1)
+                scroll.documentView!.addSubview(item)
+                
+                item.topAnchor.constraint(equalTo: top, constant: 20).isActive = true
+                item.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
+                item.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
+                top = item.bottomAnchor
             }
+            scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: top, constant: 20).isActive = true
         }
     }
     

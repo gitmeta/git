@@ -1,10 +1,10 @@
 import Foundation
 
 public class Commit {
-    var author = User()
+    public internal(set) var author = User()
+    public internal(set) var message = ""
     var committer = User()
     var tree = ""
-    var message = ""
     var parent: String?
     
     init(_ data: Data) throws {
@@ -42,10 +42,10 @@ public class Commit {
     }
     
     @discardableResult func save(_ url: URL) -> String {
-        let hash = Hash().commit(serial)
+        let hash = Hub.hash.commit(serial)
         let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try! Press().compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
+        try! Hub.press.compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
                                             options: .atomic)
         let head = String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as: UTF8.self).dropFirst(5)
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/" + head).deletingLastPathComponent(),

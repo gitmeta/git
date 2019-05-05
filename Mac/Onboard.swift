@@ -26,7 +26,7 @@ class Onboard: Sheet {
         let label = Label()
         label.alignment = .center
         label.textColor = .white
-        label.font = .systemFont(ofSize: 18, weight: .ultraLight)
+        label.font = .systemFont(ofSize: 18, weight: .light)
         addSubview(label)
         self.label = label
         
