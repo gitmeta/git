@@ -24,14 +24,14 @@ class Onboard: Sheet {
         
         let label = Label()
         label.alignment = .center
-        label.textColor = NSColor(white: 1, alpha: 0.8)
-        label.font = .systemFont(ofSize: 16, weight: .light)
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 18, weight: .light)
         addSubview(label)
         self.label = label
         
         var rightImage: NSLayoutXAxisAnchor!
         var rightButton: NSLayoutXAxisAnchor!
-        (0 ..< 3).forEach {
+        (0 ..< 4).forEach {
             let image = NSImageView()
             image.translatesAutoresizingMaskIntoConstraints = false
             image.image = NSImage(named: "onboard\($0)")
@@ -59,7 +59,7 @@ class Onboard: Sheet {
                 centerX = image.centerXAnchor.constraint(equalTo: centerXAnchor)
                 centerX.isActive = true
                 
-                button.rightAnchor.constraint(equalTo: centerXAnchor, constant: -30).isActive = true
+                button.rightAnchor.constraint(equalTo: centerXAnchor, constant: -50).isActive = true
             } else {
                 image.leftAnchor.constraint(equalTo: rightImage).isActive = true
                 button.leftAnchor.constraint(equalTo: rightButton, constant: 20).isActive = true
@@ -69,7 +69,7 @@ class Onboard: Sheet {
             rightButton = button.rightAnchor
         }
         
-        label.topAnchor.constraint(equalTo: centerYAnchor, constant: 10).isActive = true
+        label.topAnchor.constraint(equalTo: centerYAnchor, constant: 25).isActive = true
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.widthAnchor.constraint(equalToConstant: 300).isActive = true
         
