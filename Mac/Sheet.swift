@@ -14,7 +14,7 @@ class Sheet: NSView {
             App.menu.validate()
             translatesAutoresizingMaskIntoConstraints = false
             alphaValue = 0
-            NSApp.mainWindow!.contentView!.addSubview(self)
+            App.window.contentView!.addSubview(self)
             
             let terminate = NSButton()
             terminate.title = String()
@@ -24,11 +24,11 @@ class Sheet: NSView {
             terminate.keyEquivalent = "\u{1b}"
             addSubview(terminate)
             
-            topAnchor.constraint(equalTo: NSApp.mainWindow!.contentView!.topAnchor).isActive = true
-            bottomAnchor.constraint(equalTo: NSApp.mainWindow!.contentView!.bottomAnchor).isActive = true
-            leftAnchor .constraint(equalTo: NSApp.mainWindow!.contentView!.leftAnchor).isActive = true
-            rightAnchor.constraint(equalTo: NSApp.mainWindow!.contentView!.rightAnchor).isActive = true
-            NSApp.mainWindow!.contentView!.layoutSubtreeIfNeeded()
+            topAnchor.constraint(equalTo: App.window.contentView!.topAnchor).isActive = true
+            bottomAnchor.constraint(equalTo: App.window.contentView!.bottomAnchor).isActive = true
+            leftAnchor .constraint(equalTo: App.window.contentView!.leftAnchor).isActive = true
+            rightAnchor.constraint(equalTo: App.window.contentView!.rightAnchor).isActive = true
+            App.window.contentView!.layoutSubtreeIfNeeded()
             
             NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.5
