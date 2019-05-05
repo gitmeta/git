@@ -6,7 +6,7 @@ class TestAdd: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/objects"),
                                                  withIntermediateDirectories: true)

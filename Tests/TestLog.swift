@@ -7,9 +7,9 @@ class TestLog: XCTestCase {
     private var repository: Repository!
     
     override func setUp() {
-        Git.session = Session()
-        Git.session.name = "hello"
-        Git.session.email = "my@email.com"
+        Hub.session = Session()
+        Hub.session.name = "hello"
+        Hub.session.email = "my@email.com"
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         file = url.appendingPathComponent("myfile.txt")
@@ -22,7 +22,7 @@ class TestLog: XCTestCase {
     
     func testOneCommit() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             self.repository = $0
             self.repository.commit([self.file], message: "Lorem ipsum") {
                 DispatchQueue.global(qos: .background).async {
@@ -46,7 +46,7 @@ class TestLog: XCTestCase {
     
     func testTwoCommits() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             self.repository = $0
             self.repository.commit([self.file], message: "Lorem ipsum") {
                 try! Data("lorem ipsum\n".utf8).write(to: self.file)

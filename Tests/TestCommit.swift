@@ -6,7 +6,7 @@ class TestCommit: XCTestCase {
     private var file: URL!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         file = url.appendingPathComponent("myfile.txt")
@@ -49,7 +49,7 @@ Add project files.
         commit.message = "Add project files."
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
-        Git.create(url) { _ in
+        Hub.create(url) { _ in
             XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", commit.save(self.url))
             let object = try? Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/51/92391e9f907eeb47aa38d1c6a3a4ea78e33564"))
@@ -73,7 +73,7 @@ Add project files.
         commit.message = "Add project files."
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
-        Git.create(url) { _ in
+        Hub.create(url) { _ in
             try! "ref: refs/heads/feature/test".write(to: self.url.appendingPathComponent(".git/HEAD"),
                                                       atomically: true, encoding: .utf8)
             XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", commit.save(self.url))
@@ -100,7 +100,7 @@ Add project files.
         commit.message = "Add project files."
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
-        Git.create(url) { _ in
+        Hub.create(url) { _ in
             _ = commit.save(self.url)
             let loaded = try! Commit(Press().decompress(try! Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/51/92391e9f907eeb47aa38d1c6a3a4ea78e33564"))))
@@ -125,7 +125,7 @@ Add project files.
         let commit = Commit()
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.message = "Add project files.\n\n\n\n\n\ntest\ntest\ntest\n\n\ntest"
-        Git.create(url) { _ in
+        Hub.create(url) { _ in
             let id = commit.save(self.url)
             let loaded = try! Commit(Press().decompress(try! Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
@@ -140,7 +140,7 @@ Add project files.
         let commit = Commit()
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.author.name = "asdasdas asd sa das das dsa dsa das das das as dsa da"
-        Git.create(url) { _ in
+        Hub.create(url) { _ in
             let id = commit.save(self.url)
             let loaded = try! Commit(Press().decompress(try! Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
@@ -153,8 +153,8 @@ Add project files.
     func testEmptyList() {
         let expect = expectation(description: "")
         let repository = Repository(url)
-        Git.session.name = "asd"
-        Git.session.email = "my@email.com"
+        Hub.session.name = "asd"
+        Hub.session.email = "my@email.com"
         DispatchQueue.global(qos: .background).async {
             repository.commit([], message: "hello world", error: { _ in
                 XCTAssertEqual(Thread.main, Thread.current)
@@ -167,8 +167,8 @@ Add project files.
     func testEmptyMessage() {
         let expect = expectation(description: "")
         let repository = Repository(url)
-        Git.session.name = "asd"
-        Git.session.email = "my@email.com"
+        Hub.session.name = "asd"
+        Hub.session.email = "my@email.com"
         repository.commit([file], message: "", error: { _ in
             expect.fulfill()
         })
@@ -187,10 +187,10 @@ Add project files.
     func testFirstCommit() {
         let expect = expectation(description: "")
         let date = Date(timeIntervalSinceNow: -1)
-        Git.create(url) { repository in
+        Hub.create(url) { repository in
             DispatchQueue.global(qos: .background).async {
-                Git.session.name = "hello"
-                Git.session.email = "world"
+                Hub.session.name = "hello"
+                Hub.session.email = "world"
                 repository.commit([self.file], message: "hello world") {
                     XCTAssertEqual(Thread.main, Thread.current)
                     XCTAssertNotNil(repository.head)
@@ -212,10 +212,10 @@ Add project files.
     func testAllowSecondCommitEmpty() {
         let expect = expectation(description: "")
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([self.file], message: "hello world") {
                 repository.commit([self.file], message: "second commit") {
                     expect.fulfill()
@@ -228,10 +228,10 @@ Add project files.
     func testSecondCommitUpdate() {
         let expect = expectation(description: "")
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([self.file], message: "hello world") {
                 try! Data("lorem ipsum\n".utf8).write(to: self.file)
                 repository.commit([self.file], message: "second commit") {
@@ -246,8 +246,8 @@ Add project files.
     func testInvalidFile() {
         let expect = expectation(description: "")
         let repository = Repository(url)
-        Git.session.name = "asd"
-        Git.session.email = "my@email.com"
+        Hub.session.name = "asd"
+        Hub.session.email = "my@email.com"
         repository.commit([URL(fileURLWithPath: "/")], message: "A failed commmit", error: { _ in
             expect.fulfill()
         })
@@ -257,10 +257,10 @@ Add project files.
     func testSecondCommit() {
         let expect = expectation(description: "")
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([self.file], message: "hello world") {
                 let headId = repository.headId!
                 try! Data("modified\n".utf8).write(to: self.file)
@@ -279,9 +279,9 @@ Add project files.
         try! FileManager.default.createDirectory(at: abc, withIntermediateDirectories: true)
         let another = abc.appendingPathComponent("another.txt")
         try! Data("lorem ipsum\n".utf8).write(to: another)
-        Git.create(url) { repository in
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+        Hub.create(url) { repository in
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([self.file, another], message: "hello world") {
                 XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
                     ".git/objects/01/a59b011a48660bb3828ec72b2b08990b8cf56b").path))
@@ -310,10 +310,10 @@ not.js
         let ignored = url.appendingPathComponent("not.js")
         try! Data().write(to: ignored)
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([ignored], message: "hello world", error: { _ in
                 expect.fulfill()
             })
@@ -327,9 +327,9 @@ not.js
         try! FileManager.default.createDirectory(at: abc, withIntermediateDirectories: true)
         let another = abc.appendingPathComponent("another.txt")
         try! Data("lorem ipsum\n".utf8).write(to: another)
-        Git.create(url) { repository in
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+        Hub.create(url) { repository in
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([self.file], message: "hello world") {
                 XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(
                     ".git/objects/84/b5f2f96994db6b67f8a0ee508b1ebb8b633c15").path))

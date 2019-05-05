@@ -2,6 +2,27 @@ import Git
 import AppKit
 
 class Log: Sheet {
+    class Item: NSView {
+        private weak var label: Label!
+        
+        fileprivate init(_ commit: Git.Commit) {
+            super.init(frame: .zero)
+            
+            translatesAutoresizingMaskIntoConstraints = false
+            
+            let label = Label()
+            addSubview(label)
+            self.label = label
+            
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+            label.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        }
+        
+        required init?(coder: NSCoder) { return nil }
+    }
+    
     @discardableResult override init() {
         super.init()
         let blur = NSVisualEffectView(frame: .zero)
@@ -64,9 +85,10 @@ class Log: Sheet {
         scroll.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
         
-        App.repository?.log {
+        App.repository?.log { [weak self] in
+            var top = self?.topAnchor
             $0.forEach {
-                print($0)
+                let item = Item($0)
             }
         }
     }

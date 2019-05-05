@@ -16,7 +16,7 @@ class State {
         timer.resume()
         timer.schedule(deadline: .distantFuture)
         timer.setEventHandler {
-            Git.dispatch.background({ [weak self] in
+            Hub.dispatch.background({ [weak self] in
                 return self?.needs == true ? self?.list : nil
             }) { [weak self] in
                 if let changes = $0 {
@@ -43,7 +43,7 @@ class State {
         var tree = repository?.tree?.list(url) ?? []
         return contents.reduce(into: [(URL, Status)]()) { result, url in
             if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
-                let hash = Git.hash.file(url).1
+                let hash = Hub.hash.file(url).1
                 if entries.contains(where: { $0.id == hash }) {
                     if !tree.contains(where: { $0.id == hash }) {
                         if !pack.contains(where: { packed in packed.entries.contains(where: { $0.0 == hash } ) }) {

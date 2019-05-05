@@ -3,7 +3,7 @@ import XCTest
 
 class TestUser: XCTestCase {
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
     }
     
     func testNonEmpty() {
@@ -44,7 +44,7 @@ class TestUser: XCTestCase {
     
     private func update(_ user: String, email: String) {
         let expect = expectation(description: "")
-        Git.session.update(user, email: email, error: { _ in
+        Hub.session.update(user, email: email, error: { _ in
             expect.fulfill()
         }) { XCTFail() }
         waitForExpectations(timeout: 1)

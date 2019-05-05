@@ -17,7 +17,7 @@ public class Repository {
     }
     
     public func log(_ result: @escaping(([Commit]) -> Void)) {
-        Git.dispatch.background({ [weak self] in
+        Hub.dispatch.background({ [weak self] in
             var result = [Commit]()
             var commit = self?.head
             while commit != nil {
@@ -57,6 +57,6 @@ public class Repository {
     private func commit(_ id: String) -> Commit? {
         guard let raw = try? Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))
         else { return nil }
-        return try? Commit(Git.press.decompress(raw))
+        return try? Commit(Hub.press.decompress(raw))
     }
 }

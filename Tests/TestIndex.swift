@@ -6,7 +6,7 @@ class TestIndex: XCTestCase {
     private var ignore: Ignore!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git"), withIntermediateDirectories: true)
         ignore = Ignore(url)

@@ -7,7 +7,7 @@ public class Session: Codable {
     public internal(set) var email = ""
     
     public func load(_ result: (() -> Void)?) {
-        Git.dispatch.background({ [weak self] in
+        Hub.dispatch.background({ [weak self] in
             guard let data = UserDefaults.standard.data(forKey: "session"),
                 let decoded = try? JSONDecoder().decode(Session.self, from: data)
             else { return }
@@ -19,7 +19,7 @@ public class Session: Codable {
     }
     
     public func update(_ name: String, email: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
-        Git.dispatch.background({ [weak self] in
+        Hub.dispatch.background({ [weak self] in
             guard !name.isEmpty else { throw Failure.User.name }
             
             try name.forEach {
@@ -47,7 +47,7 @@ public class Session: Codable {
     }
     
     public func update(_ url: URL, bookmark: Data, done: (() -> Void)? = nil) {
-        Git.dispatch.background({ [weak self] in
+        Hub.dispatch.background({ [weak self] in
             self?.url = url
             self?.bookmark = bookmark
             self?.save()

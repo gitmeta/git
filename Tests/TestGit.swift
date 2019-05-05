@@ -5,7 +5,7 @@ class TestGit: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -17,7 +17,7 @@ class TestGit: XCTestCase {
     func testRepositoryFails() {
         let expect = expectation(description: "")
         DispatchQueue.global(qos: .background).async {
-            Git.repository(self.url) {
+            Hub.repository(self.url) {
                 XCTAssertEqual(Thread.main, Thread.current)
                 XCTAssertFalse($0)
                 expect.fulfill()
@@ -28,9 +28,9 @@ class TestGit: XCTestCase {
     
     func testRepository() {
         let expect = expectation(description: "")
-        Git.create(url) { _ in
+        Hub.create(url) { _ in
             DispatchQueue.global(qos: .background).async {
-                Git.repository(self.url) {
+                Hub.repository(self.url) {
                     XCTAssertEqual(Thread.main, Thread.current)
                     XCTAssertTrue($0)
                     expect.fulfill()
@@ -49,7 +49,7 @@ class TestGit: XCTestCase {
         XCTAssertFalse(FileManager.default.fileExists(atPath: root.path))
         
         DispatchQueue.global(qos: .background).async {
-            Git.create(self.url) { _ in
+            Hub.create(self.url) { _ in
                 XCTAssertEqual(Thread.main, Thread.current)
                 
                 var directory: ObjCBool = false
@@ -75,9 +75,9 @@ class TestGit: XCTestCase {
     
     func testDelete() {
         let expect = expectation(description: "")
-        Git.create(url) { repository in
+        Hub.create(url) { repository in
             DispatchQueue.global(qos: .background).async {
-                Git.delete(repository) {
+                Hub.delete(repository) {
                     XCTAssertEqual(Thread.main, Thread.current)
                     XCTAssertFalse(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git").path))
                     expect.fulfill()
@@ -89,9 +89,9 @@ class TestGit: XCTestCase {
     
     func testCreateFailsIfAlreadyExists() {
         let expect = expectation(description: "")
-        Git.create(url) { _ in
+        Hub.create(url) { _ in
             DispatchQueue.global(qos: .background).async {
-                Git.create(self.url, error: {
+                Hub.create(self.url, error: {
                     XCTAssertEqual(Thread.main, Thread.current)
                     XCTAssertNotNil($0 as? Failure)
                     expect.fulfill()
@@ -104,7 +104,7 @@ class TestGit: XCTestCase {
     func testOpenFails() {
         let expect = expectation(description: "")
         DispatchQueue.global(qos: .background).async {
-            Git.open(self.url, error: { _ in
+            Hub.open(self.url, error: { _ in
                 XCTAssertEqual(Thread.main, Thread.current)
                 expect.fulfill()
             }) { _ in }
@@ -114,9 +114,9 @@ class TestGit: XCTestCase {
     
     func testOpen() {
         let expect = expectation(description: "")
-        Git.create(url) { _ in
+        Hub.create(url) { _ in
             DispatchQueue.global(qos: .background).async {
-                Git.open(self.url) { _ in
+                Hub.open(self.url) { _ in
                     XCTAssertEqual(Thread.main, Thread.current)
                     expect.fulfill()
                 }

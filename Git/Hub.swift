@@ -1,6 +1,6 @@
 import Foundation
 
-public class Git {
+public class Hub {
     public internal(set) static var session = Session()
     static let dispatch = Dispatch()
     static let hash = Hash()

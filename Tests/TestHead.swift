@@ -5,7 +5,7 @@ class TestHead: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -16,7 +16,7 @@ class TestHead: XCTestCase {
     
     func testHEAD() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             XCTAssertEqual("refs/heads/master", $0.HEAD)
             expect.fulfill()
         }
@@ -25,7 +25,7 @@ class TestHead: XCTestCase {
     
     func testHeadNone() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             XCTAssertNil($0.head)
             expect.fulfill()
         }
@@ -34,7 +34,7 @@ class TestHead: XCTestCase {
     
     func testTreeNone() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             XCTAssertNil($0.tree)
             expect.fulfill()
         }
@@ -46,9 +46,9 @@ class TestHead: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        Git.create(url) { repo in
-            Git.session.name = "ab"
-            Git.session.email = "cd"
+        Hub.create(url) { repo in
+            Hub.session.name = "ab"
+            Hub.session.email = "cd"
             repo.commit([file], message: "hello world") {
                 XCTAssertEqual("ab", repo.head?.author.name)
                 XCTAssertEqual("ab", repo.head?.committer.name)
@@ -69,10 +69,10 @@ class TestHead: XCTestCase {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "ab"
-            Git.session.email = "cd"
+            Hub.session.name = "ab"
+            Hub.session.email = "cd"
             repository.commit([file], message: "hello world") {
                 let tree = repository.tree
                 XCTAssertEqual(1, tree?.items.count)

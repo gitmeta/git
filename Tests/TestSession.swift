@@ -3,7 +3,7 @@ import XCTest
 
 class TestSession: XCTestCase {
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         UserDefaults.standard.removeObject(forKey: "session")
     }
     
@@ -13,8 +13,8 @@ class TestSession: XCTestCase {
     
     func testLoadFromGit() {
         let expect = expectation(description: "")
-        XCTAssertTrue(Git.session.email.isEmpty)
-        XCTAssertTrue(Git.session.name.isEmpty)
+        XCTAssertTrue(Hub.session.email.isEmpty)
+        XCTAssertTrue(Hub.session.name.isEmpty)
         let data = "hasher\n".data(using: .utf8)!
         let url = URL(fileURLWithPath: "hello/world")
         let session = Session()
@@ -23,11 +23,11 @@ class TestSession: XCTestCase {
         session.bookmark = data
         session.url = url
         session.save()
-        Git.session.load {
-            XCTAssertEqual("lorem ipsum", Git.session.name)
-            XCTAssertEqual("lorem@world.com", Git.session.email)
-            XCTAssertEqual(data, Git.session.bookmark)
-            XCTAssertEqual(url.path, Git.session.url.path)
+        Hub.session.load {
+            XCTAssertEqual("lorem ipsum", Hub.session.name)
+            XCTAssertEqual("lorem@world.com", Hub.session.email)
+            XCTAssertEqual(data, Hub.session.bookmark)
+            XCTAssertEqual(url.path, Hub.session.url.path)
             XCTAssertEqual(Thread.main, Thread.current)
             expect.fulfill()
         }
@@ -36,14 +36,14 @@ class TestSession: XCTestCase {
     
     func testUpdateName() {
         let expect = expectation(description: "")
-        XCTAssertTrue(Git.session.email.isEmpty)
-        XCTAssertTrue(Git.session.name.isEmpty)
-        Git.session.update("pablo", email: "mousaka@mail.com") {
-            Git.session.name = ""
-            Git.session.email = ""
-            Git.session.load {
-                XCTAssertEqual("pablo", Git.session.name)
-                XCTAssertEqual("mousaka@mail.com", Git.session.email)
+        XCTAssertTrue(Hub.session.email.isEmpty)
+        XCTAssertTrue(Hub.session.name.isEmpty)
+        Hub.session.update("pablo", email: "mousaka@mail.com") {
+            Hub.session.name = ""
+            Hub.session.email = ""
+            Hub.session.load {
+                XCTAssertEqual("pablo", Hub.session.name)
+                XCTAssertEqual("mousaka@mail.com", Hub.session.email)
                 expect.fulfill()
             }
         }
@@ -52,16 +52,16 @@ class TestSession: XCTestCase {
     
     func testUpdateUrl() {
         let expect = expectation(description: "")
-        XCTAssertTrue(Git.session.email.isEmpty)
-        XCTAssertTrue(Git.session.name.isEmpty)
+        XCTAssertTrue(Hub.session.email.isEmpty)
+        XCTAssertTrue(Hub.session.name.isEmpty)
         let data = "hasher\n".data(using: .utf8)!
         let url = URL(fileURLWithPath: "hello/world")
-        Git.session.update(url, bookmark: data) {
-            Git.session.url = URL(fileURLWithPath: "")
-            Git.session.bookmark = Data()
-            Git.session.load {
-                XCTAssertEqual(data, Git.session.bookmark)
-                XCTAssertEqual(url.path, Git.session.url.path)
+        Hub.session.update(url, bookmark: data) {
+            Hub.session.url = URL(fileURLWithPath: "")
+            Hub.session.bookmark = Data()
+            Hub.session.load {
+                XCTAssertEqual(data, Hub.session.bookmark)
+                XCTAssertEqual(url.path, Hub.session.url.path)
                 expect.fulfill()
             }
         }

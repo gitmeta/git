@@ -26,8 +26,8 @@
 		2048A0E7225C744400290E54 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D3225C744400290E54 /* Tree.swift */; };
 		2048A0E8225C744400290E54 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D4225C744400290E54 /* Status.swift */; };
 		2048A0E9225C744400290E54 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D4225C744400290E54 /* Status.swift */; };
-		2048A0EA225C744400290E54 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D5225C744400290E54 /* Git.swift */; };
-		2048A0EB225C744400290E54 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D5225C744400290E54 /* Git.swift */; };
+		2048A0EA225C744400290E54 /* Hub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D5225C744400290E54 /* Hub.swift */; };
+		2048A0EB225C744400290E54 /* Hub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D5225C744400290E54 /* Hub.swift */; };
 		2048A0EC225C744400290E54 /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D6225C744400290E54 /* Parse.swift */; };
 		2048A0ED225C744400290E54 /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A0D6225C744400290E54 /* Parse.swift */; };
 		2048A100225C745100290E54 /* commit1 in Resources */ = {isa = PBXBuildFile; fileRef = 2048A0EF225C745100290E54 /* commit1 */; };
@@ -134,7 +134,7 @@
 		2048A0D2225C744400290E54 /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		2048A0D3225C744400290E54 /* Tree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tree.swift; sourceTree = "<group>"; };
 		2048A0D4225C744400290E54 /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
-		2048A0D5225C744400290E54 /* Git.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Git.swift; sourceTree = "<group>"; };
+		2048A0D5225C744400290E54 /* Hub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hub.swift; sourceTree = "<group>"; };
 		2048A0D6225C744400290E54 /* Parse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parse.swift; sourceTree = "<group>"; };
 		2048A0D8225C744400290E54 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2048A0EF225C745100290E54 /* commit1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = commit1; sourceTree = "<group>"; };
@@ -264,8 +264,8 @@
 				2048A0CF225C744400290E54 /* Commit.swift */,
 				2073D8762267283E00631BCB /* Dispatch.swift */,
 				2048A0CC225C744400290E54 /* Failure.swift */,
-				2048A0D5225C744400290E54 /* Git.swift */,
 				2048A0CD225C744400290E54 /* Hash.swift */,
+				2048A0D5225C744400290E54 /* Hub.swift */,
 				20671BEA226C79E900A74B7E /* Ignore.swift */,
 				2048A0CE225C744400290E54 /* Index.swift */,
 				206F2E632275E7E50058DA7E /* Pack.swift */,
@@ -607,7 +607,7 @@
 				2048A0DE225C744400290E54 /* Commit.swift in Sources */,
 				2048A0D7225C744400290E54 /* Failure.swift in Sources */,
 				2048A0E0225C744400290E54 /* Serial.swift in Sources */,
-				2048A0EA225C744400290E54 /* Git.swift in Sources */,
+				2048A0EA225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DA225C744400290E54 /* Hash.swift in Sources */,
 				20948B7B2271986000B1987D /* User.swift in Sources */,
 				2048A0E8225C744400290E54 /* Status.swift in Sources */,
@@ -631,7 +631,7 @@
 				2048A0DF225C744400290E54 /* Commit.swift in Sources */,
 				2048A0D9225C744400290E54 /* Failure.swift in Sources */,
 				2048A0E1225C744400290E54 /* Serial.swift in Sources */,
-				2048A0EB225C744400290E54 /* Git.swift in Sources */,
+				2048A0EB225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DB225C744400290E54 /* Hash.swift in Sources */,
 				20948B7C2271986100B1987D /* User.swift in Sources */,
 				2048A0E9225C744400290E54 /* Status.swift in Sources */,

@@ -6,7 +6,7 @@ class TestList: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -17,7 +17,7 @@ class TestList: XCTestCase {
     
     func testEmpty() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             XCTAssertTrue($0.state.list.isEmpty)
             expect.fulfill()
         }
@@ -28,7 +28,7 @@ class TestList: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
-        Git.create(url) {
+        Hub.create(url) {
             let status = $0.state.list
             XCTAssertEqual(1, status.count)
             XCTAssertEqual(file, status[0].0)
@@ -43,7 +43,7 @@ class TestList: XCTestCase {
         let file2 = url.appendingPathComponent("myfile2.txt")
         try! Data().write(to: file1)
         try! Data().write(to: file2)
-        Git.create(url) {
+        Hub.create(url) {
             let status = $0.state.list
             XCTAssertEqual(2, status.count)
             XCTAssertEqual(file1, status[0].0)
@@ -57,7 +57,7 @@ class TestList: XCTestCase {
         let expect = expectation(description: "")
         let directory = url.appendingPathComponent("folder")
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        Git.create(url) {
+        Hub.create(url) {
             XCTAssertTrue($0.state.list.isEmpty)
             expect.fulfill()
         }
@@ -70,7 +70,7 @@ class TestList: XCTestCase {
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let file = directory.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
-        Git.create(url) {
+        Hub.create(url) {
             let status = $0.state.list
             XCTAssertEqual(1, status.count)
             XCTAssertEqual(file, status[0].0)
@@ -86,7 +86,7 @@ class TestList: XCTestCase {
         try! FileManager.default.createDirectory(at: sub, withIntermediateDirectories: true)
         let file = sub.appendingPathComponent("myfile.txt")
         try! Data().write(to: file)
-        Git.create(url) {
+        Hub.create(url) {
             let status = $0.state.list
             XCTAssertEqual(1, status.count)
             XCTAssertEqual(file, status[0].0)
@@ -103,7 +103,7 @@ class TestList: XCTestCase {
         let file2 = url.appendingPathComponent("myfile2.txt")
         try! Data().write(to: file1)
         try! Data().write(to: file2)
-        Git.create(url) {
+        Hub.create(url) {
             let status = $0.state.list
             XCTAssertEqual(2, status.count)
             XCTAssertEqual(file1, status[0].0)
@@ -131,7 +131,7 @@ class TestList: XCTestCase {
         try! Data().write(to: file6)
         try! Data().write(to: file7)
         try! Data().write(to: file8)
-        Git.create(url) {
+        Hub.create(url) {
             let status = $0.state.list
             XCTAssertEqual(file1, status[0].0)
             XCTAssertEqual(file2, status[1].0)
@@ -173,7 +173,7 @@ class TestList: XCTestCase {
         try! Data().write(to: file7)
         try! Data().write(to: file8)
         try! Data().write(to: file9)
-        Git.create(url) {
+        Hub.create(url) {
             let status = $0.state.list
             XCTAssertEqual(file1, status[0].0)
             XCTAssertEqual(file2, status[1].0)

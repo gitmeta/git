@@ -5,7 +5,7 @@ class TestStaging: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -19,10 +19,10 @@ class TestStaging: XCTestCase {
         let file = url.appendingPathComponent("a")
         try! Data("hello world\n".utf8).write(to: file)
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([file], message: "hello") {
                 XCTAssertEqual(96, try! Data(contentsOf: self.url.appendingPathComponent(".git/index")).count)
                 expect.fulfill()
@@ -36,10 +36,10 @@ class TestStaging: XCTestCase {
         let file = url.appendingPathComponent("ab")
         try! Data("hello world\n".utf8).write(to: file)
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([file], message: "hello") {
                 XCTAssertEqual(104, try! Data(contentsOf: self.url.appendingPathComponent(".git/index")).count)
                 expect.fulfill()
@@ -53,10 +53,10 @@ class TestStaging: XCTestCase {
         let file = url.appendingPathComponent("abc")
         try! Data("hello world\n".utf8).write(to: file)
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([file], message: "hello") {
                 XCTAssertEqual(104, try! Data(contentsOf: self.url.appendingPathComponent(".git/index")).count)
                 expect.fulfill()
@@ -70,10 +70,10 @@ class TestStaging: XCTestCase {
         let file = url.appendingPathComponent("abcdefghij")
         try! Data("hello world\n".utf8).write(to: file)
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([file], message: "hello") {
                 XCTAssertEqual(112, try! Data(contentsOf: self.url.appendingPathComponent(".git/index")).count)
                 expect.fulfill()
@@ -94,10 +94,10 @@ class TestStaging: XCTestCase {
         try! Data("hello world\n".utf8).write(to: file1)
         try! Data("lorem ipsum\n".utf8).write(to: file2)
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([file1, file2], message: "hello") {
                 let index = Index(self.url)
                 XCTAssertEqual(2, index?.entries.count)
@@ -120,10 +120,10 @@ class TestStaging: XCTestCase {
         try! Data("hello world\n".utf8).write(to: file1)
         try! Data("lorem ipsum\n".utf8).write(to: file2)
         var repository: Repository!
-        Git.create(url) {
+        Hub.create(url) {
             repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             repository.commit([file1, file2], message: "hello") {
                 try! Data("hello world updated\n".utf8).write(to: file1)
                 repository.commit([file1], message: "hello") {

@@ -9,7 +9,6 @@ class List: NSScrollView {
         private weak var next: Item?
         private weak var badge: NSView!
         private weak var label: Label!
-        private weak var path: Label!
         private weak var hashtag: Label!
         private weak var top: NSLayoutConstraint? { didSet { oldValue?.isActive = false; top?.isActive = true } }
         
@@ -21,7 +20,7 @@ class List: NSScrollView {
             let label = Label()
             label.attributedStringValue = {
                 $0.append(NSAttributedString(string:
-                    "\(url.deletingLastPathComponent().path.dropFirst(Git.session.url.path.count + 1)) ", attributes:
+                    "\(url.deletingLastPathComponent().path.dropFirst(Hub.session.url.path.count + 1)) ", attributes:
                     [.font: NSFont.light(14), .foregroundColor: NSColor.halo.withAlphaComponent(0.7)]))
                 $0.append(NSAttributedString(string: url.lastPathComponent, attributes:
                     [.font: NSFont.bold(14), .foregroundColor: NSColor.halo]))

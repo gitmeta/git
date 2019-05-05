@@ -42,11 +42,11 @@ import AppKit
         App.menu = menu
         mainMenu = menu
         
-        Git.session.load { self.open() }
+        Hub.session.load { self.open() }
     }
     
     @objc func create() {
-        Git.create(Git.session.url, error: {
+        Hub.create(Hub.session.url, error: {
             App.window.alert.error($0.localizedDescription)
         }) { App.repository = $0 }
     }
@@ -57,7 +57,7 @@ import AppKit
         panel.canChooseDirectories = true
         panel.begin {
             if $0 == .OK {
-                Git.session.update(panel.url!, bookmark: (try! panel.url!.bookmarkData(options: .withSecurityScope))) {
+                Hub.session.update(panel.url!, bookmark: (try! panel.url!.bookmarkData(options: .withSecurityScope))) {
                     self.open()
                 }
             }
@@ -67,17 +67,17 @@ import AppKit
     @objc func preferences() { Credentials() }
     
     private func open() {
-        guard !Git.session.bookmark.isEmpty
+        guard !Hub.session.bookmark.isEmpty
         else {
             App.window.showHelp(nil)
             return
         }
         var stale = false
-        _ = (try? URL(resolvingBookmarkData: Git.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
+        _ = (try? URL(resolvingBookmarkData: Hub.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
             &stale))?.startAccessingSecurityScopedResource()
-        App.window.location.label.stringValue = Git.session.url.lastPathComponent
+        App.window.location.label.stringValue = Hub.session.url.lastPathComponent
         App.window.branch.label.stringValue = ""
-        Git.open(Git.session.url, error: {
+        Hub.open(Hub.session.url, error: {
             App.window.alert.error($0.localizedDescription)
             App.repository = nil
         }) { App.repository = $0 }

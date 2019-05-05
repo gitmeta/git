@@ -6,7 +6,7 @@ class TestContents: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -17,7 +17,7 @@ class TestContents: XCTestCase {
     
     func testInitial() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             self.repository = $0
             XCTAssertTrue($0.state.needs)
             expect.fulfill()
@@ -27,7 +27,7 @@ class TestContents: XCTestCase {
     
     func testAfterStatus() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             _ = $0.state.list
             XCTAssertFalse($0.state.needs)
             expect.fulfill()
@@ -37,7 +37,7 @@ class TestContents: XCTestCase {
     
     func testAfterEdition() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             _ = $0.state.list
             try! "hello\n".write(to: self.url.appendingPathComponent("file.txt"), atomically: true, encoding: .utf8)
             XCTAssertTrue($0.state.needs)
@@ -50,7 +50,7 @@ class TestContents: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("file.txt")
         try! "hello\n".write(to: file, atomically: true, encoding: .utf8)
-        Git.create(url) {
+        Hub.create(url) {
             _ = $0.state.list
             try! "world\n".write(to: file, atomically: true, encoding: .utf8)
             _ = $0.state.list
@@ -67,7 +67,7 @@ class TestContents: XCTestCase {
         try! FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         let file = dir.appendingPathComponent("file.txt")
         try! "hello\n".write(to: file, atomically: true, encoding: .utf8)
-        Git.create(url) {
+        Hub.create(url) {
             _ = $0.state.list
             try! "world\n".write(to: file, atomically: true, encoding: .utf8)
             _ = $0.state.list
@@ -84,7 +84,7 @@ class TestContents: XCTestCase {
         try! FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         let file = dir.appendingPathComponent("file.txt")
         try! "hello\n".write(to: file, atomically: true, encoding: .utf8)
-        Git.create(url) {
+        Hub.create(url) {
             _ = $0.state.list
             try! "world\n".write(to: file, atomically: true, encoding: .utf8)
             _ = $0.state.list

@@ -6,7 +6,7 @@ class TestStatus: XCTestCase {
     private var url: URL!
     
     override func setUp() {
-        Git.session = Session()
+        Hub.session = Session()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -17,7 +17,7 @@ class TestStatus: XCTestCase {
     
     func testNoChanges() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             self.repository = $0
             self.repository.status = {
                 XCTAssertTrue($0.isEmpty)
@@ -31,7 +31,7 @@ class TestStatus: XCTestCase {
     
     func testEmpty() {
         let expect = expectation(description: "")
-        Git.create(url) {
+        Hub.create(url) {
             XCTAssertTrue($0.state.list.isEmpty)
             expect.fulfill()
         }
@@ -41,7 +41,7 @@ class TestStatus: XCTestCase {
     func testUntracked() {
         let expect = expectation(description: "")
         try! Data("hello world".utf8).write(to: url.appendingPathComponent("myfile.txt"))
-        Git.create(url) {
+        Hub.create(url) {
             let status = $0.state.list
             XCTAssertEqual(1, status.count)
             XCTAssertEqual(.untracked, status.first?.1)
@@ -57,7 +57,7 @@ class TestStatus: XCTestCase {
         try! Data("hello world".utf8).write(to: file1)
         try! Data("hello world 2".utf8).write(to: file2)
         let index = Index(url) ?? Index()
-        Git.create(url) {
+        Hub.create(url) {
             try? $0.stage.add(file1, index: index)
             index.save(self.url)
             let status = $0.state.list
@@ -74,7 +74,7 @@ class TestStatus: XCTestCase {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
         let index = Index(url) ?? Index()
-        Git.create(url) {
+        Hub.create(url) {
             try? $0.stage.add(file, index: index)
             index.save(self.url)
             let status = $0.state.list
@@ -89,10 +89,10 @@ class TestStatus: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        Git.create(url) {
+        Hub.create(url) {
             self.repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             self.repository.commit([file], message: "First commit") {
                 try! Data("modified".utf8).write(to: file)
                 let status = self.repository.state.list
@@ -108,10 +108,10 @@ class TestStatus: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        Git.create(url) {
+        Hub.create(url) {
             self.repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             self.repository.commit([file], message: "First commit") {
                 let status = self.repository.state.list
                 XCTAssertTrue(status.isEmpty)
@@ -125,10 +125,10 @@ class TestStatus: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        Git.create(url) {
+        Hub.create(url) {
             self.repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             self.repository.commit([file], message: "First commit") {
                 try! FileManager.default.removeItem(at: file)
                 let status = self.repository.state.list
@@ -149,10 +149,10 @@ class TestStatus: XCTestCase {
         let outside = url.appendingPathComponent("outside.txt")
         try! Data("hello world\n".utf8).write(to: file)
         try! Data("lorem ipsum\n".utf8).write(to: outside)
-        Git.create(url) {
+        Hub.create(url) {
             self.repository = $0
-            Git.session.name = "asd"
-            Git.session.email = "my@email.com"
+            Hub.session.name = "asd"
+            Hub.session.email = "my@email.com"
             self.repository.commit([outside, file], message: "First commit") {
                 XCTAssertTrue(self.repository.state.list.isEmpty)
                 expect.fulfill()
