@@ -23,7 +23,7 @@ class Display: NSView {
         message.alignment = .center
         addSubview(message)
         self.message = message
-        
+
         let create = Button.Image(NSApp, action: #selector(App.create))
         create.off = NSImage(named: "createOff")
         create.on = NSImage(named: "createOn")
