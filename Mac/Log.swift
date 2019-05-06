@@ -2,10 +2,10 @@ import Git
 import AppKit
 
 class Log: Sheet {
-    class Item: NSView {
+    private class Item: NSView {
         private weak var label: Label!
         
-        fileprivate init(_ index: Int, commit: Git.Commit) {
+        init(_ index: Int, commit: Git.Commit) {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
             

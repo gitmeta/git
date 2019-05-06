@@ -2,7 +2,87 @@ import Git
 import AppKit
 
 class Commit: Sheet {
-    private weak var text: NSTextView!
+    private class Layout: NSLayoutManager, NSLayoutManagerDelegate {
+        let padding = CGFloat(6)
+        
+        override init() {
+            super.init()
+            delegate = self
+        }
+        
+        required init?(coder: NSCoder) { return nil }
+        
+        func layoutManager(_: NSLayoutManager, shouldSetLineFragmentRect: UnsafeMutablePointer<NSRect>,
+                           lineFragmentUsedRect: UnsafeMutablePointer<NSRect>, baselineOffset: UnsafeMutablePointer<CGFloat>,
+                           in: NSTextContainer, forGlyphRange: NSRange) -> Bool {
+            baselineOffset.pointee = baselineOffset.pointee + padding
+            shouldSetLineFragmentRect.pointee.size.height += padding + padding
+            lineFragmentUsedRect.pointee.size.height += padding + padding
+            return true
+        }
+        
+        override func setExtraLineFragmentRect(_ rect: NSRect, usedRect: NSRect, textContainer: NSTextContainer) {
+            var rect = rect
+            var used = usedRect
+            rect.size.height += padding + padding
+            used.size.height += padding + padding
+            super.setExtraLineFragmentRect(rect, usedRect: used, textContainer: textContainer)
+        }
+    }
+    
+    private class Text: NSTextView {
+        private weak var height: NSLayoutConstraint!
+        
+        init() {
+            let storage = NSTextStorage()
+            super.init(frame: .zero, textContainer: {
+                storage.addLayoutManager($1)
+                $1.addTextContainer($0)
+                $0.lineBreakMode = .byCharWrapping
+                return $0
+            } (NSTextContainer(), Layout()) )
+            translatesAutoresizingMaskIntoConstraints = false
+            allowsUndo = true
+            drawsBackground = false
+            isRichText = false
+            insertionPointColor = .halo
+            font = .light(20)
+            textContainerInset = NSSize(width: 20, height: 20)
+            height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
+            height.isActive = true
+        }
+        
+        required init?(coder: NSCoder) { return nil }
+        
+        override func resize(withOldSuperviewSize: NSSize) {
+            super.resize(withOldSuperviewSize: withOldSuperviewSize)
+            adjust()
+        }
+        
+        override func drawInsertionPoint(in rect: NSRect, color: NSColor, turnedOn: Bool) {
+            var rect = rect
+            rect.size.width += 5
+            super.drawInsertionPoint(in: rect, color: color, turnedOn: turnedOn)
+        }
+        
+        override func didChangeText() {
+            super.didChangeText()
+            adjust()
+        }
+        
+        override func viewDidEndLiveResize() {
+            super.viewDidEndLiveResize()
+            DispatchQueue.main.async { [weak self] in self?.adjust() }
+        }
+        
+        private func adjust() {
+            textContainer!.size.width = superview!.superview!.frame.width - (textContainerInset.width * 2)
+            layoutManager!.ensureLayout(for: textContainer!)
+            height.constant = layoutManager!.usedRect(for: textContainer!).size.height + (textContainerInset.height * 2)
+        }
+    }
+
+    private weak var text: Text!
     
     @discardableResult override init() {
         super.init()
