@@ -122,7 +122,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
             context.allowsImplicitAnimation = true
             contentView!.layoutSubtreeIfNeeded()
             list.alphaValue = 0
-            display.logo()
+            display.loading()
         }) { [weak self] in
             self?.tools.isHidden = true
         }

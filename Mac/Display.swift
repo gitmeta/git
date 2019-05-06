@@ -5,10 +5,16 @@ class Display: NSView {
     private weak var create: Button!
     private weak var message: Label!
     private weak var image: NSImageView!
+    private weak var spinner: Spinner!
     
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        
+        let spinner = Spinner()
+        spinner.isHidden = true
+        addSubview(spinner)
+        self.spinner = spinner
         
         let image = NSImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -33,6 +39,9 @@ class Display: NSView {
         addSubview(create)
         self.create = create
         
+        spinner.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
         image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         image.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -48,9 +57,10 @@ class Display: NSView {
     
     required init?(coder: NSCoder) { return nil }
     
-    func logo() {
+    func loading() {
         alphaValue = 1
-        image.image = NSImage(named: "logo")
+        image.image = nil
+        spinner.isHidden = false
         message.stringValue = ""
         create.isHidden = true
     }
@@ -58,6 +68,7 @@ class Display: NSView {
     func repository() {
         alphaValue = 0
         image.image = nil
+        spinner.isHidden = true
         message.stringValue = ""
         create.isHidden = true
     }
@@ -65,6 +76,7 @@ class Display: NSView {
     func notRepository() {
         alphaValue = 1
         image.image = NSImage(named: "error")
+        spinner.isHidden = true
         message.stringValue = .local("Display.notRepository")
         create.isHidden = false
     }
@@ -72,6 +84,7 @@ class Display: NSView {
     func upToDate() {
         alphaValue = 1
         image.image = NSImage(named: "updated")
+        spinner.isHidden = true
         message.stringValue = .local("Display.upToDate")
         create.isHidden = true
     }

@@ -93,6 +93,7 @@
 		20B8327F22703C9200773058 /* tree4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B8327E22703C9200773058 /* tree4 */; };
 		20B83281227043D000773058 /* index4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B83280227043CF00773058 /* index4 */; };
 		20B8328322709EA700773058 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20B8328222709EA700773058 /* Mac.xcassets */; };
+		20BB9F8022800BC7002DDF7B /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F7F22800BC7002DDF7B /* Spinner.swift */; };
 		20CA59C4226F2EA90040992D /* tree3 in Resources */ = {isa = PBXBuildFile; fileRef = 20CA59C3226F2EA90040992D /* tree3 */; };
 		20CB6718226066470064C31C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6717226066470064C31C /* Bar.swift */; };
 		20CB671A226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
@@ -198,6 +199,7 @@
 		20B8327E22703C9200773058 /* tree4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree4; sourceTree = "<group>"; };
 		20B83280227043CF00773058 /* index4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index4; sourceTree = "<group>"; };
 		20B8328222709EA700773058 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
+		20BB9F7F22800BC7002DDF7B /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		20CA59C3226F2EA90040992D /* tree3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree3; sourceTree = "<group>"; };
 		20CB6717226066470064C31C /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		20CB6719226071CA0064C31C /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				20948B7722718AEE00B1987D /* Menu.swift */,
 				20EB250122770C790043EBD2 /* Onboard.swift */,
 				20948B73227189B700B1987D /* Sheet.swift */,
+				20BB9F7F22800BC7002DDF7B /* Spinner.swift */,
 				201A413022636E72001C852A /* Tools.swift */,
 				2055EFDB2276C9C000658C04 /* Window.swift */,
 				20B8328222709EA700773058 /* Mac.xcassets */,
@@ -671,6 +674,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20948B7622718A2100B1987D /* Credentials.swift in Sources */,
+				20BB9F8022800BC7002DDF7B /* Spinner.swift in Sources */,
 				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
 				20948B7822718AEE00B1987D /* Menu.swift in Sources */,
 				20CB6718226066470064C31C /* Bar.swift in Sources */,
