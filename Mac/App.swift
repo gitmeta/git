@@ -1,5 +1,6 @@
 import Git
 import AppKit
+import StoreKit
 
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate {
     private(set) static var menu: Menu!
@@ -42,7 +43,10 @@ import AppKit
         App.menu = menu
         mainMenu = menu
         
-        Hub.session.load { self.open() }
+        Hub.session.load {
+            self.open()
+            self.rate()
+        }
     }
     
     @objc func create() {
@@ -81,5 +85,20 @@ import AppKit
             App.window.alert.error($0.localizedDescription)
             App.repository = nil
         }) { App.repository = $0 }
+    }
+    
+    private func rate() {
+        if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {
+            if Date() >= expected {
+                var components = DateComponents()
+                components.month = 4
+                UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+                if #available(OSX 10.14, *) { SKStoreReviewController.requestReview() }
+            }
+        } else {
+            var components = DateComponents()
+            components.day = 3
+            UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+        }
     }
 }
