@@ -94,6 +94,7 @@
 		20B83281227043D000773058 /* index4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B83280227043CF00773058 /* index4 */; };
 		20B8328322709EA700773058 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20B8328222709EA700773058 /* Mac.xcassets */; };
 		20BB9F8022800BC7002DDF7B /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F7F22800BC7002DDF7B /* Spinner.swift */; };
+		20BB9F8222802152002DDF7B /* iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20BB9F8122802152002DDF7B /* iOS.xcassets */; };
 		20CA59C4226F2EA90040992D /* tree3 in Resources */ = {isa = PBXBuildFile; fileRef = 20CA59C3226F2EA90040992D /* tree3 */; };
 		20CB6718226066470064C31C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6717226066470064C31C /* Bar.swift */; };
 		20CB671A226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
@@ -170,7 +171,7 @@
 		2051FAB6225C78CF00BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB8225C78D000BC00BC /* Git.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Git.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2051FAB9225C78D000BC00BC /* GitiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2051FAB9225C78D000BC00BC /* Git.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Git.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2055EFDB2276C9C000658C04 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		205CF270227ABE49002BDAE0 /* TestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepository.swift; sourceTree = "<group>"; };
 		205FF458227C22B80085E4F4 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
@@ -200,6 +201,7 @@
 		20B83280227043CF00773058 /* index4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index4; sourceTree = "<group>"; };
 		20B8328222709EA700773058 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		20BB9F7F22800BC7002DDF7B /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
+		20BB9F8122802152002DDF7B /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
 		20CA59C3226F2EA90040992D /* tree3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree3; sourceTree = "<group>"; };
 		20CB6717226066470064C31C /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		20CB6719226071CA0064C31C /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				2048A125225C748900290E54 /* iOS.plist */,
 				2048A124225C748900290E54 /* iOS.storyboard */,
 				2048A126225C748900290E54 /* App.swift */,
+				20BB9F8122802152002DDF7B /* iOS.xcassets */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -386,7 +389,7 @@
 				2051FAB6225C78CF00BC00BC /* libGit.a */,
 				2051FAB7225C78D000BC00BC /* libGit.a */,
 				2051FAB8225C78D000BC00BC /* Git.app */,
-				2051FAB9225C78D000BC00BC /* GitiOS.app */,
+				2051FAB9225C78D000BC00BC /* Git.app */,
 				2048A13A225C74A300290E54 /* README.md */,
 				20CCE743226214270014CAC9 /* Git.sketch */,
 				2048A0D8225C744400290E54 /* Tests.xctest */,
@@ -494,7 +497,7 @@
 			);
 			name = iOSApp;
 			productName = iOSApp;
-			productReference = 2051FAB9225C78D000BC00BC /* GitiOS.app */;
+			productReference = 2051FAB9225C78D000BC00BC /* Git.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -586,6 +589,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2048A127225C748900290E54 /* iOS.storyboard in Resources */,
+				20BB9F8222802152002DDF7B /* iOS.xcassets in Resources */,
 				20CB67202260857E0064C31C /* Shared.xcassets in Resources */,
 				2048A119225C746200290E54 /* SFMono-Light.otf in Resources */,
 				2048A117225C746200290E54 /* Localizable.strings in Resources */,
@@ -1241,6 +1245,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1296,7 +1301,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = git.ios;
-				PRODUCT_NAME = GitiOS;
+				PRODUCT_MODULE_NAME = GitiOS;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1307,6 +1312,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1356,7 +1362,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = git.ios;
-				PRODUCT_NAME = GitiOS;
+				PRODUCT_MODULE_NAME = GitiOS;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				TARGETED_DEVICE_FAMILY = "1,2";
