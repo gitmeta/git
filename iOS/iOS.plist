@@ -24,6 +24,15 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SFMono-Light.otf</string>
+		<string>SFMono-Bold.otf</string>
+	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>iOS</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -34,10 +43,6 @@
 	<true/>
 	<key>UIStatusBarHidden~ipad</key>
 	<true/>
-    <key>UIFileSharingEnabled</key>
-    <true/>
-    <key>LSSupportsOpeningDocumentsInPlace</key>
-    <true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
