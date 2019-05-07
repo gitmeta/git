@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "20F6E0CE225C733600418216"
-               BuildableName = "GitiOS.app"
+               BuildableName = "Git.app"
                BlueprintName = "iOSApp"
                ReferencedContainer = "container:Git.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "20F6E0CE225C733600418216"
-            BuildableName = "GitiOS.app"
+            BuildableName = "Git.app"
             BlueprintName = "iOSApp"
             ReferencedContainer = "container:Git.xcodeproj">
          </BuildableReference>
@@ -56,7 +56,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "20F6E0CE225C733600418216"
-            BuildableName = "GitiOS.app"
+            BuildableName = "Git.app"
             BlueprintName = "iOSApp"
             ReferencedContainer = "container:Git.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "20F6E0CE225C733600418216"
-            BuildableName = "GitiOS.app"
+            BuildableName = "Git.app"
             BlueprintName = "iOSApp"
             ReferencedContainer = "container:Git.xcodeproj">
          </BuildableReference>
