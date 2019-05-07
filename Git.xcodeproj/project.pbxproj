@@ -108,6 +108,8 @@
 		20CB67202260857E0064C31C /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20CB671E2260857E0064C31C /* Shared.xcassets */; };
 		20CB6722226086030064C31C /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6721226086030064C31C /* List.swift */; };
 		20CCE7402261D4840014CAC9 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CCE73F2261D4840014CAC9 /* Alert.swift */; };
+		20E0989C228175BC0061123C /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E0989B228175BC0061123C /* View.swift */; };
+		20E0989E22817B410061123C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E0989D22817B410061123C /* Bar.swift */; };
 		20E76BE6225E264300E023D8 /* compressed0 in Resources */ = {isa = PBXBuildFile; fileRef = 20E76BE5225E264300E023D8 /* compressed0 */; };
 		20EB250222770C790043EBD2 /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB250122770C790043EBD2 /* Onboard.swift */; };
 		20EB2504227711E20043EBD2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2503227711E20043EBD2 /* Session.swift */; };
@@ -218,6 +220,8 @@
 		20CB6721226086030064C31C /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20CCE73F2261D4840014CAC9 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		20CCE743226214270014CAC9 /* Git.sketch */ = {isa = PBXFileReference; lastKnownFileType = file; path = Git.sketch; sourceTree = "<group>"; };
+		20E0989B228175BC0061123C /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		20E0989D22817B410061123C /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		20E76BE5225E264300E023D8 /* compressed0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = compressed0; sourceTree = "<group>"; };
 		20EB250122770C790043EBD2 /* Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
 		20EB2503227711E20043EBD2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -350,10 +354,12 @@
 				2048A125225C748900290E54 /* iOS.plist */,
 				2048A124225C748900290E54 /* iOS.storyboard */,
 				2048A126225C748900290E54 /* App.swift */,
+				20E0989D22817B410061123C /* Bar.swift */,
 				20BB9F8322802A61002DDF7B /* Display.swift */,
 				20BB9F8722802DBD002DDF7B /* Extensions.swift */,
 				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
+				20E0989B228175BC0061123C /* View.swift */,
 				20BB9F8122802152002DDF7B /* iOS.xcassets */,
 			);
 			path = iOS;
@@ -715,10 +721,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */,
+				20E0989E22817B410061123C /* Bar.swift in Sources */,
 				20CB671B226071CA0064C31C /* Shared.swift in Sources */,
 				20BB9F8422802A61002DDF7B /* Display.swift in Sources */,
 				20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */,
 				2048A129225C748900290E54 /* App.swift in Sources */,
+				20E0989C228175BC0061123C /* View.swift in Sources */,
 				20BB9F8622802D8A002DDF7B /* Sheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
