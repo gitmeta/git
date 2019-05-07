@@ -5,15 +5,14 @@ class Bar: UIControl {
         override init() {
             super.init()
             label.text = .local("Bar.location")
-            label.font = .systemFont(ofSize: 14, weight: .regular)
-            label.textColor = UIColor(white: 1, alpha: 0.7)
+            label.font = .systemFont(ofSize: 14, weight: .bold)
+            label.textColor = .white
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
             label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
         
         required init?(coder: NSCoder) { return nil }
-//        override func click() { (NSApp as! App).panel() }
     }
     
     class Branch: Bar {
@@ -40,7 +39,9 @@ class Bar: UIControl {
         
         let background = UIView()
         background.translatesAutoresizingMaskIntoConstraints = false
-        background.backgroundColor = UIColor.halo.withAlphaComponent(0.4)
+        background.backgroundColor = .halo
+        background.alpha = 0.4
+        background.isUserInteractionEnabled = false
         addSubview(background)
         self.background = background
         
@@ -53,30 +54,15 @@ class Bar: UIControl {
         background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
         label.widthAnchor.constraint(greaterThanOrEqualToConstant: 10).isActive = true
-        label.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 12).isActive = true
-        label.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -12).isActive = true
+        label.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 16).isActive = true
+        label.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -16).isActive = true
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        heightAnchor.constraint(equalToConstant: 32).isActive = true
+        heightAnchor.constraint(equalToConstant: 36).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
-    /*
-    private func click() { }
-    
-    override func mouseDragged(with: NSEvent) {
-        drag += abs(with.deltaX) + abs(with.deltaY)
-    }
-    
-    override func mouseDown(with: NSEvent) {
-        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.7).cgColor
-    }
-    
-    override func mouseUp(with: NSEvent) {
-        if drag < 2 && with.clickCount < 2 {
-            click()
-        }
-        drag = 0
-        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.4).cgColor
-    }*/
+    override var isHighlighted: Bool { didSet { hover() } }
+    override var isSelected: Bool { didSet { hover() } }
+    private func hover() { background.alpha = isHighlighted || isSelected ? 0.7 : 0.4 }
 }
