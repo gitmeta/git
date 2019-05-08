@@ -17,9 +17,13 @@ class Create: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         view.backgroundColor = .shade
         
+        let background = UIView()
+        background.translatesAutoresizingMaskIntoConstraints = false
+        background.backgroundColor = .black
+        view.addSubview(background)
+        
         let name = UITextField()
         name.translatesAutoresizingMaskIntoConstraints = false
-        name.backgroundColor = .black
         name.tintColor = .halo
         name.textColor = .halo
         name.delegate = self
@@ -58,8 +62,12 @@ class Create: UIViewController, UITextFieldDelegate {
         cancel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cancel)
         
-        name.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        name.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        background.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        background.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        background.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        background.bottomAnchor.constraint(equalTo: name.bottomAnchor).isActive = true
+
+        name.heightAnchor.constraint(equalToConstant: 60).isActive = true
         name.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         name.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
@@ -72,6 +80,12 @@ class Create: UIViewController, UITextFieldDelegate {
         cancel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -100).isActive = true
         cancel.widthAnchor.constraint(equalToConstant: 270).isActive = true
         cancel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        if #available(iOS 11.0, *) {
+            name.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        } else {
+            name.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
