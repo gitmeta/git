@@ -3,7 +3,7 @@ import AppKit
 
 class Commit: Sheet {
     private class Layout: NSLayoutManager, NSLayoutManagerDelegate {
-        let padding = CGFloat(6)
+        private let padding = CGFloat(6)
         
         override init() {
             super.init()
@@ -47,6 +47,7 @@ class Commit: Sheet {
             isRichText = false
             insertionPointColor = .halo
             font = .light(20)
+            textColor = .white
             textContainerInset = NSSize(width: 20, height: 20)
             height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
             height.isActive = true

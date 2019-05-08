@@ -1,80 +1,66 @@
 import Git
 import UIKit
+import StoreKit
 
-@UIApplicationMain class App: UIWindow, UIApplicationDelegate, UIDocumentBrowserViewControllerDelegate {
-    static private(set) weak var shared: App!
+@UIApplicationMain class App: UIWindow, UIApplicationDelegate {
+    private(set) static weak var shared: App!
+    static let view = View()
     private weak var branch: Bar!
+    
+    private(set) static var repository: Repository? {
+        didSet {
+            view.branch.label.text = repository?.branch ?? ""
+            if repository == nil {
+                view.notRepository()
+                view.list.update([])
+            } else {
+                view.refresh()
+                repository!.status = {
+                    if $0.isEmpty {
+                        view.upToDate()
+                    } else {
+                        view.repository()
+                    }
+                    view.list.update($0)
+                }
+            }
+        }
+    }
     
     func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         App.shared = self
+        rootViewController = App.view
         makeKeyAndVisible()
-        rootViewController = UIViewController()
-        
-        let display = Display()
-        rootViewController!.view.addSubview(display)
-        
-        let location = Bar.Location()
-        location.addTarget(self, action: #selector(browser), for: .touchUpInside)
-        rootViewController!.view.addSubview(location)
-        
-        let branch = Bar.Branch()
-        rootViewController!.view.addSubview(branch)
-        self.branch = branch
-        
-        display.topAnchor.constraint(equalTo: rootViewController!.view.topAnchor).isActive = true
-        display.bottomAnchor.constraint(equalTo: rootViewController!.view.bottomAnchor).isActive = true
-        display.leftAnchor.constraint(equalTo: rootViewController!.view.leftAnchor).isActive = true
-        display.rightAnchor.constraint(equalTo: rootViewController!.view.rightAnchor).isActive = true
-        
-        location.leftAnchor.constraint(equalTo: rootViewController!.view.leftAnchor, constant: 10).isActive = true
-        
-        branch.topAnchor.constraint(equalTo: location.topAnchor).isActive = true
-        branch.leftAnchor.constraint(equalTo: location.rightAnchor, constant: -16).isActive = true
-        branch.rightAnchor.constraint(equalTo: rootViewController!.view.rightAnchor, constant: -10).isActive = true
-        
-        if #available(iOS 11.0, *) {
-            location.topAnchor.constraint(equalTo: rootViewController!.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        } else {
-            location.topAnchor.constraint(equalTo: rootViewController!.view.topAnchor, constant: 10).isActive = true
-        }
-        
-        Hub.session.load {
-            if Hub.session.bookmark.isEmpty {
-                //                Onboard()
-            } else {
-                
-            }
-        }
         return true
     }
     
-    @available(iOS 11.0, *) func documentBrowser(_: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler:
-        @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
-        rootViewController!.presentedViewController!.present(Create { [weak self] url in
-            self?.rootViewController!.presentedViewController?.dismiss(animated: true) {
-                didRequestDocumentCreationWithHandler(url, url == nil ? .none : .move)
+    func load() {
+        Hub.session.load {
+            Hub.session.update(
+            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data()) {
+                if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {
+                    if Date() >= expected {
+                        var components = DateComponents()
+                        components.month = 4
+                        UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+                        if #available(iOS 10.3, *) { SKStoreReviewController.requestReview() }
+                    }
+                } else {
+                    var components = DateComponents()
+                    components.day = 3
+                    UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+                    Onboard()
+                }
+                Hub.open(Hub.session.url, error: { _ in
+                    App.repository = nil
+                }) { App.repository = $0 }
             }
-        }, animated: true)
-    }
-    
-    @available(iOS 11.0, *) func documentBrowser(_: UIDocumentBrowserViewController, didPickDocumentsAt: [URL]) {
-        let share = UIActivityViewController(activityItems: didPickDocumentsAt, applicationActivities: nil)
-        share.popoverPresentationController?.sourceView = rootViewController!.presentedViewController!.view
-        share.popoverPresentationController?.sourceRect = .zero
-        share.popoverPresentationController?.permittedArrowDirections = .any
-        rootViewController!.presentedViewController!.present(share, animated: true)
-    }
-    
-    @objc private func browser() {
-        if #available(iOS 11.0, *) {
-            let browse = UIDocumentBrowserViewController()
-            browse.browserUserInterfaceStyle = .dark
-            browse.delegate = self
-            browse.additionalLeadingNavigationBarButtonItems = [.init(barButtonSystemItem: .stop, target: self,
-                                                                                action: #selector(dismiss))]
-            rootViewController!.present(browse, animated: true)
         }
     }
     
-    @objc private func dismiss() { rootViewController!.dismiss(animated: true) }
+    @objc func create() {
+        Hub.create(Hub.session.url, error: {
+            App.view.alert.error($0.localizedDescription)
+        }) { App.repository = $0 }
+    }
 }

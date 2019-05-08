@@ -6,7 +6,7 @@ class Bar: UIControl {
             super.init()
             label.text = .local("Bar.location")
             label.font = .systemFont(ofSize: 14, weight: .bold)
-            label.textColor = .white
+            label.textColor = .black
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
             label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -18,6 +18,7 @@ class Bar: UIControl {
     class Branch: Bar {
         override init() {
             super.init()
+            isUserInteractionEnabled = false
             label.font = .systemFont(ofSize: 14, weight: .bold)
             label.textColor = UIColor(white: 1, alpha: 0.8)
             background.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
@@ -56,7 +57,8 @@ class Bar: UIControl {
         label.widthAnchor.constraint(greaterThanOrEqualToConstant: 10).isActive = true
         label.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 16).isActive = true
         label.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -16).isActive = true
-        label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: background.topAnchor).isActive = true
+        label.bottomAnchor.constraint(equalTo: background.bottomAnchor).isActive = true
         
         heightAnchor.constraint(equalToConstant: 36).isActive = true
     }

@@ -1,4 +1,3 @@
-import Git
 import AppKit
 
 class Display: NSView {

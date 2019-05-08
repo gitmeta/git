@@ -7,7 +7,7 @@ import StoreKit
     private(set) static var window: Window!
     private(set) static var repository: Repository? {
         didSet {
-            window.branch.label.stringValue = App.repository?.branch ?? ""
+            window.branch.label.stringValue = repository?.branch ?? ""
             menu.validate()
             if repository == nil {
                 window.notRepository()

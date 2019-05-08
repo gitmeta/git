@@ -99,11 +99,15 @@ class Create: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func create() {
+        App.shared.endEditing(true)
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name.text!.isEmpty ?
             .local("Create.untitled") : name.text!)
         FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
         result(url)
     }
     
-    @objc private func cancel() { result(nil) }
+    @objc private func cancel() {
+        App.shared.endEditing(true)
+        result(nil)
+    }
 }

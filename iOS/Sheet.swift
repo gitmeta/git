@@ -9,12 +9,12 @@ class Sheet: UIView {
         super.init(frame: .zero)
         alpha = 0
         translatesAutoresizingMaskIntoConstraints = false
-        App.shared.rootViewController!.view.addSubview(self)
+        App.view.view.addSubview(self)
         
-        topAnchor.constraint(equalTo: App.shared.rootViewController!.view.topAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: App.shared.rootViewController!.view.bottomAnchor).isActive = true
-        leftAnchor.constraint(equalTo: App.shared.rootViewController!.view.leftAnchor).isActive = true
-        rightAnchor.constraint(equalTo: App.shared.rootViewController!.view.rightAnchor).isActive = true
+        topAnchor.constraint(equalTo: App.view.view.topAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: App.view.view.bottomAnchor).isActive = true
+        leftAnchor.constraint(equalTo: App.view.view.leftAnchor).isActive = true
+        rightAnchor.constraint(equalTo: App.view.view.rightAnchor).isActive = true
         
         UIView.animate(withDuration: 0.4, animations: { [weak self] in
             self?.alpha = 1
