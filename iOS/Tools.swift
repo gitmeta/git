@@ -1,3 +1,4 @@
+import Git
 import UIKit
 
 class Tools: UIView {
@@ -35,6 +36,13 @@ class Tools: UIView {
     }
     
     required init?(coder: NSCoder) { return nil }
-    @objc func commit() { Commit() }
-    @objc func log() { /*Log()*/ }
+    @objc private func log() { /*Log()*/ }
+    @objc private func preferences() { Credentials() }
+    @objc func commit() {
+        if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
+            preferences()
+        } else {
+            Commit()
+        }
+    }
 }

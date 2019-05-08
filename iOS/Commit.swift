@@ -45,6 +45,7 @@ class Commit: Sheet {
             textColor = .white
             tintColor = .halo
             font = .light(20)
+            keyboardType = .alphabet
             keyboardAppearance = .dark
             autocorrectionType = .no
             spellCheckingType = .no

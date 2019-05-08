@@ -1,3 +1,4 @@
+import Git
 import AppKit
 
 class Tools: NSView {
@@ -34,6 +35,12 @@ class Tools: NSView {
     }
     
     required init?(coder: NSCoder) { return nil }
-    @objc func commit() { Commit() }
     @objc func log() { Log() }
+    @objc func commit() {
+        if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
+            (NSApp as! App).preferences()
+        } else {
+            Commit()
+        }
+    }
 }

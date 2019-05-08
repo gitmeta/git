@@ -132,6 +132,8 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
         }
     }
     
+    @objc func credentials() { Credentials() }
+    
     @objc private func browser() {
         if #available(iOS 11.0, *) {
             let browse = UIDocumentBrowserViewController()
