@@ -101,15 +101,23 @@ class List: NSScrollView {
         }
         
         fileprivate func connect(_ previous: Item?) {
-            top = topAnchor.constraint(equalTo: previous?.bottomAnchor ?? superview!.topAnchor)
-            previous?.next?.top = previous?.next?.topAnchor.constraint(equalTo: bottomAnchor)
-            next = previous?.next
-            next?.previous = self
-            previous?.next = self
+            if let previous = previous {
+                top = topAnchor.constraint(equalTo: previous.bottomAnchor)
+                previous.next?.top = previous.next?.topAnchor.constraint(equalTo: bottomAnchor)
+                next = previous.next
+                next?.previous = self
+                previous.next = self
+            } else {
+                top = topAnchor.constraint(equalTo: superview!.topAnchor, constant: 20)
+                next = nil
+            }
             self.previous = previous
         }
         
-        @objc private func change() { alphaValue = stage.checked ? 1 : 0.4 }
+        @objc private func change() {
+            label.alphaValue = stage.checked ? 1 : 0.3
+            badge.alphaValue = stage.checked ? 1 : 0.1
+        }
     }
     
     private weak var bottom: NSLayoutConstraint? { didSet { oldValue?.isActive = false; bottom?.isActive = true } }

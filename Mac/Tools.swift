@@ -8,7 +8,6 @@ class Tools: NSView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        isHidden = true
         layer!.backgroundColor = NSColor.black.cgColor
         
         let commit = Button.Image(self, action: #selector(self.commit))
