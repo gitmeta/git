@@ -68,7 +68,7 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
             }
         }
         
-//        App.shared.load()
+        App.shared.load()
     }
     
     @available(iOS 10.0, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:

@@ -46,6 +46,7 @@ class Commit: Sheet {
             drawsBackground = false
             isRichText = false
             insertionPointColor = .halo
+            isContinuousSpellCheckingEnabled = true
             font = .light(20)
             textColor = .white
             textContainerInset = NSSize(width: 20, height: 20)

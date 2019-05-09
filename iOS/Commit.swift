@@ -47,9 +47,9 @@ class Commit: Sheet {
             font = .light(20)
             keyboardType = .alphabet
             keyboardAppearance = .dark
-            autocorrectionType = .no
-            spellCheckingType = .no
-            autocapitalizationType = .none
+            autocorrectionType = .yes
+            spellCheckingType = .yes
+            autocapitalizationType = .sentences
             contentInset = .zero
             textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
             indicatorStyle = .white
@@ -118,7 +118,7 @@ class Commit: Sheet {
         save.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         
         icon.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
-        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         icon.widthAnchor.constraint(equalToConstant: 35).isActive = true
         icon.heightAnchor.constraint(equalToConstant: 35).isActive = true
         

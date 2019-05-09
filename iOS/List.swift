@@ -59,7 +59,7 @@ class List: UIScrollView {
             heightAnchor.constraint(equalToConstant: 48).isActive = true
             
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
             label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -20).isActive = true
             label.widthAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
             
