@@ -22,6 +22,13 @@ class Tools: UIView {
         log.setImage(#imageLiteral(resourceName: "logOn.pdf"), for: .highlighted)
         addSubview(log)
         
+        let credentials = UIButton()
+        credentials.translatesAutoresizingMaskIntoConstraints = false
+        credentials.addTarget(App.view, action: #selector(View.credentials), for: .touchUpInside)
+        credentials.setImage(#imageLiteral(resourceName: "credentialsOff.pdf"), for: .normal)
+        credentials.setImage(#imageLiteral(resourceName: "credentialsOn.pdf"), for: .highlighted)
+        addSubview(credentials)
+        
         heightAnchor.constraint(equalToConstant: 80).isActive = true
 
         commit.widthAnchor.constraint(equalToConstant: 65).isActive = true
@@ -33,6 +40,11 @@ class Tools: UIView {
         log.heightAnchor.constraint(equalToConstant: 50).isActive = true
         log.rightAnchor.constraint(equalTo: commit.leftAnchor, constant: -10).isActive = true
         log.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        credentials.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        credentials.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        credentials.rightAnchor.constraint(equalTo: log.leftAnchor, constant: -10).isActive = true
+        credentials.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

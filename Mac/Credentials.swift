@@ -147,6 +147,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         Hub.session.update(name.stringValue, email: email.stringValue, error: {
             App.window.alert.error($0.localizedDescription)
         }) { [weak self] in
+            App.window.alert.update(.local("Credentials.success"))
             self?.close()
         }
     }

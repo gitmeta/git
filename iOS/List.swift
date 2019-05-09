@@ -23,10 +23,10 @@ class List: UIScrollView {
                 if !path.isEmpty {
                     $0.append(NSAttributedString(string:
                         "\(path) ", attributes:
-                        [.font: UIFont.light(16), .foregroundColor: UIColor.halo.withAlphaComponent(0.8)]))
+                        [.font: UIFont.light(14), .foregroundColor: UIColor.halo.withAlphaComponent(0.8)]))
                 }
                 $0.append(NSAttributedString(string: url.lastPathComponent, attributes:
-                    [.font: UIFont.bold(16), .foregroundColor: UIColor.halo]))
+                    [.font: UIFont.bold(14), .foregroundColor: UIColor.halo]))
                 return $0
             } (NSMutableAttributedString())
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -56,7 +56,7 @@ class List: UIScrollView {
             addSubview(stage)
             self.stage = stage
             
-            heightAnchor.constraint(equalToConstant: 54).isActive = true
+            heightAnchor.constraint(equalToConstant: 48).isActive = true
             
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
@@ -98,8 +98,10 @@ class List: UIScrollView {
         
         @objc private func change() {
             stage.isSelected.toggle()
-            label.alpha = stage.isSelected ? 1 : 0.2
-            badge.alpha = stage.isSelected ? 1 : 0.1
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                self?.label.alpha = self?.stage.isSelected == true ? 1 : 0.2
+                self?.badge.alpha = self?.stage.isSelected == true ? 1 : 0
+            }
         }
     }
     
@@ -123,7 +125,7 @@ class List: UIScrollView {
             addSubview(new)
             
             if last == nil {
-                new.topAnchor.constraint(equalTo: topAnchor).isActive = true
+                new.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
             } else {
                 new.topAnchor.constraint(equalTo: last!.bottomAnchor).isActive = true
                 

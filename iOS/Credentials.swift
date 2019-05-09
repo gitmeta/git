@@ -101,7 +101,7 @@ class Credentials: Sheet, UITextFieldDelegate {
         
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
-        name.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 10).isActive = true
+        name.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 20).isActive = true
         name.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 40).isActive = true
         name.widthAnchor.constraint(equalToConstant: 230).isActive = true
         name.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -117,7 +117,7 @@ class Credentials: Sheet, UITextFieldDelegate {
         emailTitle.rightAnchor.constraint(equalTo: emailBackground.leftAnchor, constant: -10).isActive = true
         emailTitle.centerYAnchor.constraint(equalTo: emailBackground.centerYAnchor).isActive = true
         
-        email.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 10).isActive = true
+        email.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 20).isActive = true
         email.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 14).isActive = true
         email.widthAnchor.constraint(equalToConstant: 230).isActive = true
         email.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -164,6 +164,7 @@ class Credentials: Sheet, UITextFieldDelegate {
         Hub.session.update(name.text!, email: email.text!, error: {
             App.view.alert.error($0.localizedDescription)
         }) { [weak self] in
+            App.view.alert.update(.local("Credentials.success"))
             self?.close()
         }
     }

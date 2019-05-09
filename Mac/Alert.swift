@@ -8,6 +8,7 @@ class Alert {
     
     func error(_ message: String) { show(.local("Alert.error"), message: message) }
     func commit(_ message: String) { show(.local("Alert.commit"), message: message) }
+    func update(_ message: String) { show(.local("Alert.update"), message: message) }
     
     private func show(_ title: String, message: String) {
         if #available(OSX 10.14, *) {

@@ -61,20 +61,22 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
         
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
+            UNUserNotificationCenter.current().getNotificationSettings {
+                if $0.authorizationStatus != .authorized {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
+                }
+            }
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if App.repository == nil {
-            App.shared.load()
-        }
+        
+//        App.shared.load()
     }
     
     @available(iOS 10.0, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
         UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         withCompletionHandler([.alert])
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 10) {
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [willPresent.request.identifier])
+        }
     }
     
     @available(iOS 11.0, *) func documentBrowser(_: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler:

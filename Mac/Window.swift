@@ -78,6 +78,9 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
     @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
         UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         withCompletionHandler([.alert])
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 10) {
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [willPresent.request.identifier])
+        }
     }
     
     func repository() {

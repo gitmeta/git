@@ -115,8 +115,12 @@ class List: NSScrollView {
         }
         
         @objc private func change() {
-            label.alphaValue = stage.checked ? 1 : 0.3
-            badge.alphaValue = stage.checked ? 1 : 0.1
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = 0.3
+                context.allowsImplicitAnimation = true
+                label.alphaValue = stage.checked ? 1 : 0.3
+                badge.alphaValue = stage.checked ? 1 : 0
+            }) { }
         }
     }
     
