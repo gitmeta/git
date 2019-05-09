@@ -38,7 +38,8 @@ public class Session: Codable {
             
             let at = email.components(separatedBy: "@")
             let dot = at.last!.components(separatedBy: ".")
-            guard at.count == 2, dot.count > 1, !dot.first!.isEmpty, !dot.last!.isEmpty else { throw Failure.User.email }
+            guard at.count == 2, !at.first!.isEmpty, dot.count > 1, !dot.first!.isEmpty, !dot.last!.isEmpty
+            else { throw Failure.User.email }
             
             self?.name = name
             self?.email = email

@@ -4,8 +4,8 @@ class Bar: NSView {
     class Location: Bar {
         override init() {
             super.init()
-            label.font = .systemFont(ofSize: 14, weight: .regular)
-            label.textColor = NSColor(white: 1, alpha: 0.7)
+            label.font = .systemFont(ofSize: 14, weight: .bold)
+            label.textColor = .black
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
             label.setContentHuggingPriority(.defaultHigh, for: .horizontal)

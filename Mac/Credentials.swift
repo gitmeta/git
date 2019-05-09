@@ -16,12 +16,12 @@ class Credentials: Sheet, NSTextFieldDelegate {
         addSubview(image)
         
         let nameTitle = Label(.local("Credentials.name"))
-        nameTitle.font = .systemFont(ofSize: 18, weight: .bold)
+        nameTitle.font = .systemFont(ofSize: 16, weight: .bold)
         nameTitle.textColor = .halo
         addSubview(nameTitle)
         
         let emailTitle = Label(.local("Credentials.email"))
-        emailTitle.font = .systemFont(ofSize: 18, weight: .bold)
+        emailTitle.font = .systemFont(ofSize: 16, weight: .bold)
         emailTitle.textColor = .halo
         addSubview(emailTitle)
         
@@ -35,7 +35,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         let name = NSTextField()
         name.translatesAutoresizingMaskIntoConstraints = false
         name.isBezeled = false
-        name.font = .light(18)
+        name.font = .light(16)
         name.focusRingType = .none
         name.drawsBackground = false
         name.textColor = .white
@@ -57,7 +57,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         let email = NSTextField()
         email.translatesAutoresizingMaskIntoConstraints = false
         email.isBezeled = false
-        email.font = .light(18)
+        email.font = .light(16)
         email.focusRingType = .none
         email.drawsBackground = false
         email.textColor = .white
@@ -91,12 +91,12 @@ class Credentials: Sheet, NSTextFieldDelegate {
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         image.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -80).isActive = true
         
-        name.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 50).isActive = true
-        name.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 40).isActive = true
+        name.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 20).isActive = true
+        name.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 60).isActive = true
         name.widthAnchor.constraint(equalToConstant: 280).isActive = true
-        name.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        name.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        nameBackground.topAnchor.constraint(equalTo: name.topAnchor, constant: -10).isActive = true
+        nameBackground.topAnchor.constraint(equalTo: name.topAnchor, constant: -6).isActive = true
         nameBackground.bottomAnchor.constraint(equalTo: name.bottomAnchor).isActive = true
         nameBackground.leftAnchor.constraint(equalTo: name.leftAnchor, constant: -8).isActive = true
         nameBackground.rightAnchor.constraint(equalTo: name.rightAnchor, constant: 8).isActive = true
@@ -107,18 +107,18 @@ class Credentials: Sheet, NSTextFieldDelegate {
         emailTitle.rightAnchor.constraint(equalTo: emailBackground.leftAnchor, constant: -10).isActive = true
         emailTitle.centerYAnchor.constraint(equalTo: emailBackground.centerYAnchor).isActive = true
         
-        email.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 50).isActive = true
+        email.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 20).isActive = true
         email.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 14).isActive = true
         email.widthAnchor.constraint(equalToConstant: 280).isActive = true
-        email.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        email.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        emailBackground.topAnchor.constraint(equalTo: email.topAnchor, constant: -10).isActive = true
+        emailBackground.topAnchor.constraint(equalTo: email.topAnchor, constant: -6).isActive = true
         emailBackground.bottomAnchor.constraint(equalTo: email.bottomAnchor).isActive = true
         emailBackground.leftAnchor.constraint(equalTo: email.leftAnchor, constant: -8).isActive = true
         emailBackground.rightAnchor.constraint(equalTo: email.rightAnchor, constant: 8).isActive = true
         
         confirm.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        confirm.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 40).isActive = true
+        confirm.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 60).isActive = true
         
         cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 10).isActive = true

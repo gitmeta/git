@@ -26,6 +26,7 @@ class TestUser: XCTestCase {
     func testAt() {
         update("test", email: "testmail.com")
         update("test", email: "test@@mail.com")
+        update("test", email: "@mail.com")
     }
     
     func testDot() {
