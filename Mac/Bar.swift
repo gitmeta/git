@@ -6,6 +6,7 @@ class Bar: NSView {
             super.init()
             label.font = .systemFont(ofSize: 14, weight: .bold)
             label.textColor = .black
+            label.stringValue = .local("Bar.location")
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
             label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
