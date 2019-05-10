@@ -124,7 +124,7 @@ class Log: Sheet {
         title.centerYAnchor.constraint(equalTo: icon.centerYAnchor).isActive = true
         title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 10).isActive = true
         
-        border.topAnchor.constraint(equalTo: topAnchor, constant: 70).isActive = true
+        border.topAnchor.constraint(equalTo: cancel.bottomAnchor, constant: 10).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true

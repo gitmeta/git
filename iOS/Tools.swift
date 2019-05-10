@@ -41,17 +41,17 @@ class Tools: UIView {
         commit.widthAnchor.constraint(equalToConstant: 65).isActive = true
         commit.heightAnchor.constraint(equalToConstant: 65).isActive = true
         commit.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        commit.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        commit.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10).isActive = true
 
         log.widthAnchor.constraint(equalToConstant: 50).isActive = true
         log.heightAnchor.constraint(equalToConstant: 50).isActive = true
         log.rightAnchor.constraint(equalTo: commit.leftAnchor, constant: -20).isActive = true
-        log.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        log.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10).isActive = true
         
         credentials.widthAnchor.constraint(equalToConstant: 50).isActive = true
         credentials.heightAnchor.constraint(equalToConstant: 50).isActive = true
         credentials.rightAnchor.constraint(equalTo: log.leftAnchor, constant: -20).isActive = true
-        credentials.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        credentials.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

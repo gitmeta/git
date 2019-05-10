@@ -92,7 +92,7 @@ class Onboard: Sheet {
         buttons.enumerated().forEach {
             $0.1.alphaValue = $0.0 == index ? 1 : 0.3
         }
-        label.stringValue = .local("Onboard.\(index)")
+        label.stringValue = .local("Onboard.mac\(index)")
         centerX.constant = CGFloat(-300 * index)
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 1

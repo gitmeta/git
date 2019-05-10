@@ -98,7 +98,7 @@ class Onboard: Sheet {
         buttons.enumerated().forEach {
             $0.1.alpha = $0.0 == index ? 1 : 0.3
         }
-        label.text = .local("Onboard.\(index)")
+        label.text = .local("Onboard.iOS\(index)")
         centerX.constant = CGFloat(-300 * index)
         UIView.animate(withDuration: 0.5) { [weak self] in
             self?.images.enumerated().forEach {
