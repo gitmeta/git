@@ -7,8 +7,6 @@ class Credentials: Sheet, UITextFieldDelegate {
     
     @discardableResult override init() {
         super.init()
-        backgroundColor = .black
-        
         let image = UIImageView(image: #imageLiteral(resourceName: "users.pdf"))
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .center

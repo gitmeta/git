@@ -69,8 +69,6 @@ class Commit: Sheet {
     
     @discardableResult override init() {
         super.init()
-        backgroundColor = .black
-        
         let save = UIButton()
         save.translatesAutoresizingMaskIntoConstraints = false
         save.addTarget(self, action: #selector(self.save), for: .touchUpInside)
