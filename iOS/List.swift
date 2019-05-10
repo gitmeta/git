@@ -147,6 +147,6 @@ class List: UIScrollView {
             new.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
             last = new
         }
-        bottom = bottomAnchor.constraint(greaterThanOrEqualTo: last?.bottomAnchor ?? topAnchor, constant: 20)
+        bottom = bottomAnchor.constraint(greaterThanOrEqualTo: last?.bottomAnchor ?? topAnchor, constant: 30)
     }
 }

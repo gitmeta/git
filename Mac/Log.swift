@@ -68,12 +68,6 @@ class Log: Sheet {
     
     @discardableResult override init() {
         super.init()
-        let blur = NSVisualEffectView(frame: .zero)
-        blur.translatesAutoresizingMaskIntoConstraints = false
-        blur.material = .ultraDark
-        blur.blendingMode = .withinWindow
-        addSubview(blur)
-        
         let cancel = Button.Image(self, action: #selector(close))
         cancel.off = NSImage(named: "cancelOff")
         cancel.on = NSImage(named: "cancelOn")
@@ -112,11 +106,6 @@ class Log: Sheet {
         scroll.documentView!.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
         scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: scroll.bottomAnchor).isActive = true
         addSubview(scroll)
-        
-        blur.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        blur.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        blur.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        blur.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
         cancel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         cancel.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true

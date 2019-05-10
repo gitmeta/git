@@ -7,8 +7,6 @@ class Credentials: Sheet, NSTextFieldDelegate {
     
     @discardableResult override init() {
         super.init()
-        layer!.backgroundColor = NSColor.black.cgColor
-        
         let image = NSImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.image = NSImage(named: "users")

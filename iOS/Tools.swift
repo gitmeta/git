@@ -36,7 +36,7 @@ class Tools: UIView {
         credentials.imageView!.contentMode = .center
         addSubview(credentials)
         
-        heightAnchor.constraint(equalToConstant: 80).isActive = true
+        heightAnchor.constraint(equalToConstant: 100).isActive = true
 
         commit.widthAnchor.constraint(equalToConstant: 65).isActive = true
         commit.heightAnchor.constraint(equalToConstant: 65).isActive = true

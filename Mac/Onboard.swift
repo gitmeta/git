@@ -9,8 +9,6 @@ class Onboard: Sheet {
     
     @discardableResult override init() {
         super.init()
-        layer!.backgroundColor = NSColor.black.cgColor
-        
         let done = Button.Text(self, action: #selector(close))
         done.wantsLayer = true
         done.layer!.backgroundColor = NSColor.halo.cgColor
@@ -40,12 +38,10 @@ class Onboard: Sheet {
             addSubview(image)
             images.append(image)
             
-            let button = Button(self, action: #selector(show(_:)))
-            button.wantsLayer = true
-            button.layer!.backgroundColor = NSColor.halo.cgColor
-            button.layer!.cornerRadius = 10
-            button.width.constant = 20
-            button.height.constant = 20
+            let button = Button.Image(self, action: #selector(show(_:)))
+            button.off = NSImage(named: "dot")
+            button.width.constant = 50
+            button.height.constant = 50
             addSubview(button)
             buttons.append(button)
             
@@ -61,8 +57,8 @@ class Onboard: Sheet {
                 
                 button.rightAnchor.constraint(equalTo: centerXAnchor, constant: -50).isActive = true
             } else {
-                image.leftAnchor.constraint(equalTo: rightImage).isActive = true
-                button.leftAnchor.constraint(equalTo: rightButton, constant: 20).isActive = true
+                image.leftAnchor.constraint(equalTo: rightImage, constant: 100).isActive = true
+                button.leftAnchor.constraint(equalTo: rightButton).isActive = true
             }
             
             rightImage = image.rightAnchor
@@ -97,7 +93,7 @@ class Onboard: Sheet {
             $0.1.alphaValue = $0.0 == index ? 1 : 0.3
         }
         label.stringValue = .local("Onboard.\(index)")
-        centerX.constant = CGFloat(-200 * index)
+        centerX.constant = CGFloat(-300 * index)
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 1
             context.allowsImplicitAnimation = true

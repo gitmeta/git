@@ -25,6 +25,7 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
         self.branch = branch
         
         let help = UIButton()
+        help.addTarget(self, action: #selector(self.help), for: .touchUpInside)
         help.translatesAutoresizingMaskIntoConstraints = false
         help.setImage(#imageLiteral(resourceName: "helpOff.pdf"), for: .normal)
         help.setImage(#imageLiteral(resourceName: "helpOn.pdf"), for: .highlighted)
@@ -147,6 +148,8 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
     }
     
     @objc func credentials() { Credentials() }
+    @objc private func back() { App.view.dismiss(animated: true) }
+    @objc private func help() { Onboard() }
     
     @objc private func browser() {
         if #available(iOS 11.0, *) {
@@ -158,6 +161,4 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
             App.view.present(browse, animated: true)
         }
     }
-    
-    @objc private func back() { App.view.dismiss(animated: true) }
 }

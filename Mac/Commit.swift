@@ -88,12 +88,6 @@ class Commit: Sheet {
     
     @discardableResult override init() {
         super.init()
-        let blur = NSVisualEffectView(frame: .zero)
-        blur.translatesAutoresizingMaskIntoConstraints = false
-        blur.material = .ultraDark
-        blur.blendingMode = .withinWindow
-        addSubview(blur)
-        
         let save = Button.Image(self, action: #selector(self.save))
         save.off = NSImage(named: "commitOff")
         save.on = NSImage(named: "commitOn")
@@ -137,11 +131,6 @@ class Commit: Sheet {
         scroll.horizontalScrollElasticity = .none
         scroll.verticalScrollElasticity = .allowed
         addSubview(scroll)
-        
-        blur.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        blur.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        blur.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        blur.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
         cancel.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
         cancel.rightAnchor.constraint(equalTo: save.leftAnchor).isActive = true

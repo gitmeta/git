@@ -151,7 +151,7 @@ class Log: Sheet {
                 item.widthAnchor.constraint(equalTo: scroll.widthAnchor).isActive = true
                 top = item.bottomAnchor
             }
-            scroll.bottomAnchor.constraint(greaterThanOrEqualTo: top, constant: 20).isActive = true
+            scroll.bottomAnchor.constraint(greaterThanOrEqualTo: top, constant: 30).isActive = true
         }
     }
     
