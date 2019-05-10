@@ -46,8 +46,7 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
         list.topAnchor.constraint(equalTo: location.bottomAnchor, constant: 2).isActive = true
         list.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        list.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -2).isActive = true
+        list.bottomAnchor.constraint(greaterThanOrEqualTo: tools.topAnchor, constant: -2).isActive = true
         
         tools.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tools.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true

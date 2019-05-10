@@ -47,7 +47,7 @@ class Log: Sheet {
             label.translatesAutoresizingMaskIntoConstraints = false
             label.text = commit.message
             label.textColor = UIColor(white: 1, alpha: 0.8)
-            label.font = .systemFont(ofSize: 15, weight: .light)
+            label.font = .systemFont(ofSize: 16, weight: .light)
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             label.numberOfLines = 0
             addSubview(label)

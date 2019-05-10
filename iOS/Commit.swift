@@ -158,6 +158,7 @@ class Commit: Sheet {
     deinit { NotificationCenter.default.removeObserver(self) }
     
     @objc private func save() {
+        text.resignFirstResponder()
         App.repository?.commit(
             App.view.list.subviews.compactMap({ $0 as? List.Item }).filter({ $0.stage.isSelected }).map { $0.url },
             message: text.text, error: {
