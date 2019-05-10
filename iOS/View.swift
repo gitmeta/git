@@ -24,6 +24,14 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
         view.addSubview(branch)
         self.branch = branch
         
+        let help = UIButton()
+        help.translatesAutoresizingMaskIntoConstraints = false
+        help.setImage(#imageLiteral(resourceName: "helpOff.pdf"), for: .normal)
+        help.setImage(#imageLiteral(resourceName: "helpOn.pdf"), for: .highlighted)
+        help.imageView!.clipsToBounds = true
+        help.imageView!.contentMode = .center
+        view.addSubview(help)
+        
         let list = List()
         view.addSubview(list)
         self.list = list
@@ -41,7 +49,12 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
         
         branch.topAnchor.constraint(equalTo: location.topAnchor).isActive = true
         branch.leftAnchor.constraint(equalTo: location.rightAnchor, constant: -16).isActive = true
-        branch.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        branch.rightAnchor.constraint(equalTo: help.leftAnchor).isActive = true
+        
+        help.topAnchor.constraint(equalTo: location.topAnchor).isActive = true
+        help.bottomAnchor.constraint(equalTo: location.bottomAnchor).isActive = true
+        help.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        help.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         list.topAnchor.constraint(equalTo: location.bottomAnchor, constant: 2).isActive = true
         list.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true

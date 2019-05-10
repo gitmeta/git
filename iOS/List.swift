@@ -53,6 +53,8 @@ class List: UIScrollView {
             stage.setImage(#imageLiteral(resourceName: "checkOff.pdf"), for: .normal)
             stage.setImage(#imageLiteral(resourceName: "checkOn.pdf"), for: .selected)
             stage.isSelected = true
+            stage.imageView!.clipsToBounds = true
+            stage.imageView!.contentMode = .center
             addSubview(stage)
             self.stage = stage
             

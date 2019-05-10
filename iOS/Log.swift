@@ -83,6 +83,8 @@ class Log: Sheet {
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
         cancel.setImage(#imageLiteral(resourceName: "cancelOff.pdf"), for: .normal)
         cancel.setImage(#imageLiteral(resourceName: "cancelOn.pdf"), for: .highlighted)
+        cancel.imageView!.clipsToBounds = true
+        cancel.imageView!.contentMode = .center
         addSubview(cancel)
         
         let icon = UIImageView(image: #imageLiteral(resourceName: "history.pdf"))

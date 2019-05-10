@@ -37,6 +37,8 @@ class Display: UIView {
         create.setImage(#imageLiteral(resourceName: "createOff.pdf"), for: .normal)
         create.setImage(#imageLiteral(resourceName: "createOn.pdf"), for: .highlighted)
         create.isHidden = true
+        create.imageView!.clipsToBounds = true
+        create.imageView!.contentMode = .center
         addSubview(create)
         self.create = create
         

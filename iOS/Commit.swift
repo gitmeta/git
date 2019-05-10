@@ -74,6 +74,8 @@ class Commit: Sheet {
         save.addTarget(self, action: #selector(self.save), for: .touchUpInside)
         save.setImage(#imageLiteral(resourceName: "commitOff.pdf"), for: .normal)
         save.setImage(#imageLiteral(resourceName: "commitOn.pdf"), for: .highlighted)
+        save.imageView!.clipsToBounds = true
+        save.imageView!.contentMode = .center
         addSubview(save)
         
         let icon = UIImageView(image: #imageLiteral(resourceName: "node.pdf"))
@@ -87,6 +89,8 @@ class Commit: Sheet {
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
         cancel.setImage(#imageLiteral(resourceName: "cancelOff.pdf"), for: .normal)
         cancel.setImage(#imageLiteral(resourceName: "cancelOn.pdf"), for: .highlighted)
+        cancel.imageView!.clipsToBounds = true
+        cancel.imageView!.contentMode = .center
         addSubview(cancel)
         
         let title = UILabel()

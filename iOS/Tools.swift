@@ -14,6 +14,8 @@ class Tools: UIView {
         commit.addTarget(self, action: #selector(self.commit), for: .touchUpInside)
         commit.setImage(#imageLiteral(resourceName: "addOff.pdf"), for: .normal)
         commit.setImage(#imageLiteral(resourceName: "addOn.pdf"), for: .highlighted)
+        commit.imageView!.clipsToBounds = true
+        commit.imageView!.contentMode = .center
         addSubview(commit)
 
         let log = UIButton()
@@ -21,6 +23,8 @@ class Tools: UIView {
         log.addTarget(self, action: #selector(self.log), for: .touchUpInside)
         log.setImage(#imageLiteral(resourceName: "logOff.pdf"), for: .normal)
         log.setImage(#imageLiteral(resourceName: "logOn.pdf"), for: .highlighted)
+        log.imageView!.clipsToBounds = true
+        log.imageView!.contentMode = .center
         addSubview(log)
         
         let credentials = UIButton()
@@ -28,6 +32,8 @@ class Tools: UIView {
         credentials.addTarget(App.view, action: #selector(View.credentials), for: .touchUpInside)
         credentials.setImage(#imageLiteral(resourceName: "credentialsOff.pdf"), for: .normal)
         credentials.setImage(#imageLiteral(resourceName: "credentialsOn.pdf"), for: .highlighted)
+        credentials.imageView!.clipsToBounds = true
+        credentials.imageView!.contentMode = .center
         addSubview(credentials)
         
         heightAnchor.constraint(equalToConstant: 80).isActive = true
