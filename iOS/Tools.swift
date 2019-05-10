@@ -18,6 +18,7 @@ class Tools: UIView {
 
         let log = UIButton()
         log.translatesAutoresizingMaskIntoConstraints = false
+        log.addTarget(self, action: #selector(self.log), for: .touchUpInside)
         log.setImage(#imageLiteral(resourceName: "logOff.pdf"), for: .normal)
         log.setImage(#imageLiteral(resourceName: "logOn.pdf"), for: .highlighted)
         addSubview(log)
@@ -38,17 +39,17 @@ class Tools: UIView {
 
         log.widthAnchor.constraint(equalToConstant: 50).isActive = true
         log.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        log.rightAnchor.constraint(equalTo: commit.leftAnchor, constant: -10).isActive = true
+        log.rightAnchor.constraint(equalTo: commit.leftAnchor, constant: -20).isActive = true
         log.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         credentials.widthAnchor.constraint(equalToConstant: 50).isActive = true
         credentials.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        credentials.rightAnchor.constraint(equalTo: log.leftAnchor, constant: -10).isActive = true
+        credentials.rightAnchor.constraint(equalTo: log.leftAnchor, constant: -20).isActive = true
         credentials.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
-    @objc private func log() { /*Log()*/ }
+    @objc private func log() { Log() }
     @objc private func preferences() { Credentials() }
     @objc func commit() {
         if Hub.session.name.isEmpty || Hub.session.email.isEmpty {

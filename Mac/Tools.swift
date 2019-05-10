@@ -36,10 +36,10 @@ class Tools: NSView {
         commit.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         commit.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        log.rightAnchor.constraint(equalTo: commit.leftAnchor, constant: -10).isActive = true
+        log.rightAnchor.constraint(equalTo: commit.leftAnchor, constant: -20).isActive = true
         log.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        credentials.rightAnchor.constraint(equalTo: log.leftAnchor, constant: -10).isActive = true
+        credentials.rightAnchor.constraint(equalTo: log.leftAnchor, constant: -20).isActive = true
         credentials.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     

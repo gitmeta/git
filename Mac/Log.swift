@@ -23,21 +23,21 @@ class Log: Sheet {
             addSubview(number)
             
             let author = Label(commit.author.name)
-            author.textColor = .white
+            author.textColor = NSColor(white: 1, alpha: 0.4)
             author.font = .systemFont(ofSize: 16, weight: .medium)
             addSubview(author)
             
             let date = Label({
                 $0.timeStyle = .short
-                $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .medium : .none
+                $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .long : .none
                 return $0.string(from: $1)
             } (DateFormatter(), commit.author.date))
-            date.textColor = NSColor(white: 1, alpha: 0.7)
-            date.font = .systemFont(ofSize: 14, weight: .light)
+            date.textColor = NSColor(white: 1, alpha: 0.4)
+            date.font = .systemFont(ofSize: 12, weight: .light)
             addSubview(date)
             
             let label = Label(commit.message)
-            label.textColor = NSColor(white: 1, alpha: 0.8)
+            label.textColor = NSColor(white: 1, alpha: 0.7)
             label.font = .systemFont(ofSize: 16, weight: .light)
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             addSubview(label)
@@ -57,9 +57,9 @@ class Log: Sheet {
             date.bottomAnchor.constraint(equalTo: circle.bottomAnchor).isActive = true
             date.leftAnchor.constraint(equalTo: circle.rightAnchor, constant: 7).isActive = true
             
-            label.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 20).isActive = true
-            label.leftAnchor.constraint(equalTo: circle.leftAnchor).isActive = true
-            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -14).isActive = true
+            label.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 30).isActive = true
+            label.leftAnchor.constraint(equalTo: circle.leftAnchor, constant: 6).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -20).isActive = true
             label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
         }
         
@@ -145,7 +145,7 @@ class Log: Sheet {
                 let item = Item(items.count - $0.0, commit: $0.1)
                 scroll.documentView!.addSubview(item)
                 
-                item.topAnchor.constraint(equalTo: top, constant: 20).isActive = true
+                item.topAnchor.constraint(equalTo: top, constant: 30).isActive = true
                 item.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
                 item.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
                 top = item.bottomAnchor
