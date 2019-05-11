@@ -66,5 +66,5 @@ class Bar: UIControl {
     required init?(coder: NSCoder) { return nil }
     override var isHighlighted: Bool { didSet { hover() } }
     override var isSelected: Bool { didSet { hover() } }
-    private func hover() { background.alpha = isHighlighted || isSelected ? 0.7 : 0.4 }
+    private func hover() { background.alpha = isHighlighted || isSelected ? 1 : 0.4 }
 }
