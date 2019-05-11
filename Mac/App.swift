@@ -13,6 +13,7 @@ import StoreKit
                 window.notRepository()
                 window.list.update([])
             } else {
+//                repository!.rest.request()
                 repository!.rest.post()
                 window.refresh()
                 repository!.status = {
