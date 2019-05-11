@@ -75,6 +75,8 @@
 		206F2E622275DE840058DA7E /* pack-0.pack in Resources */ = {isa = PBXBuildFile; fileRef = 206F2E602275DE840058DA7E /* pack-0.pack */; };
 		206F2E642275E7E50058DA7E /* Pack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206F2E632275E7E50058DA7E /* Pack.swift */; };
 		206F2E652275E7E50058DA7E /* Pack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206F2E632275E7E50058DA7E /* Pack.swift */; };
+		20710E082286CA6A00104F72 /* Rest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20710E072286CA6A00104F72 /* Rest.swift */; };
+		20710E092286CA6A00104F72 /* Rest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20710E072286CA6A00104F72 /* Rest.swift */; };
 		2073D8772267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
 		2073D8782267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
 		2075D1A0227DD2EC0004D098 /* TestLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2075D19F227DD2EC0004D098 /* TestLog.swift */; };
@@ -198,6 +200,7 @@
 		206F2E5F2275DE840058DA7E /* pack-0.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-0.idx"; sourceTree = "<group>"; };
 		206F2E602275DE840058DA7E /* pack-0.pack */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-0.pack"; sourceTree = "<group>"; };
 		206F2E632275E7E50058DA7E /* Pack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pack.swift; sourceTree = "<group>"; };
+		20710E072286CA6A00104F72 /* Rest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rest.swift; sourceTree = "<group>"; };
 		2073D8762267283E00631BCB /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		2075D19F227DD2EC0004D098 /* TestLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLog.swift; sourceTree = "<group>"; };
 		20948B73227189B700B1987D /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
@@ -300,6 +303,7 @@
 				2048A0D6225C744400290E54 /* Parse.swift */,
 				2048A0D1225C744400290E54 /* Press.swift */,
 				2048A0D2225C744400290E54 /* Repository.swift */,
+				20710E072286CA6A00104F72 /* Rest.swift */,
 				2048A0D0225C744400290E54 /* Serial.swift */,
 				20EB2503227711E20043EBD2 /* Session.swift */,
 				205FF458227C22B80085E4F4 /* Stage.swift */,
@@ -562,6 +566,11 @@
 					};
 					20F6E0BA225C732200418216 = {
 						CreatedOnToolsVersion = 10.2;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					20F6E0CE225C733600418216 = {
 						CreatedOnToolsVersion = 10.2;
@@ -649,6 +658,7 @@
 				2048A0E4225C744400290E54 /* Repository.swift in Sources */,
 				2048A0DE225C744400290E54 /* Commit.swift in Sources */,
 				2048A0D7225C744400290E54 /* Failure.swift in Sources */,
+				20710E082286CA6A00104F72 /* Rest.swift in Sources */,
 				2048A0E0225C744400290E54 /* Serial.swift in Sources */,
 				2048A0EA225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DA225C744400290E54 /* Hash.swift in Sources */,
@@ -673,6 +683,7 @@
 				2048A0E5225C744400290E54 /* Repository.swift in Sources */,
 				2048A0DF225C744400290E54 /* Commit.swift in Sources */,
 				2048A0D9225C744400290E54 /* Failure.swift in Sources */,
+				20710E092286CA6A00104F72 /* Rest.swift in Sources */,
 				2048A0E1225C744400290E54 /* Serial.swift in Sources */,
 				2048A0EB225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DB225C744400290E54 /* Hash.swift in Sources */,

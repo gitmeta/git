@@ -3,6 +3,7 @@ import Foundation
 public class Repository {
     public var status: (([(URL, Status)]) -> Void)?
     public let url: URL
+    public let rest = Rest()
     let state = State()
     let stage = Stage()
     
