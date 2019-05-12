@@ -41,8 +41,10 @@ public class Hub {
     public class func clone(_ remote: String, local: URL,
                             error: ((Error) -> Void)? = nil, result: ((Repository) -> Void)? = nil) {
         dispatch.background({
-            try rest.adv(remote, error: error ?? { _ in }) { _ in
-                
+            try rest.adv(remote, error: error ?? { _ in }) { adv in
+                dispatch.background({
+                    try rest.pack(remote, want: adv.refs.first!, error: error ?? { _ in }, result: { })
+                }, error: error ?? { _ in })
             }
         }, error: error ?? { _ in })
     }

@@ -25,9 +25,11 @@ class TestClone: XCTestCase {
     }
     
     func testFailOnDownload() {
+        var adv = Fetch.Adv()
+        adv.refs.append("")
         let expect = expectation(description: "")
         rest._error = Failure.Request.invalid
-        rest._adv = Fetch.Adv()
+        rest._adv = adv
         Hub.clone("", local: URL(fileURLWithPath: ""), error: { _ in expect.fulfill() })
         waitForExpectations(timeout: 1)
     }

@@ -12,4 +12,11 @@ class MockRest: Rest {
             error(_error)
         }
     }
+    
+    override func pack(_ remote: String, want: String, error: @escaping ((Error) -> Void),
+                       result: @escaping (() -> Void)) throws {
+        if let _error = self._error {
+            error(_error)
+        }
+    }
 }

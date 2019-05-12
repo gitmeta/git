@@ -13,7 +13,7 @@ class Dispatch {
                        error: @escaping((Error) -> Void)) {
         queue.async {
             do {
-                let result = try send()
+                try send()
             } catch let exception {
                 DispatchQueue.main.async {
                     error(exception)
