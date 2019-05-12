@@ -15,18 +15,14 @@ class TestPack: XCTestCase {
     }
     
     func testIndexNotFound() {
-        try! (try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-0", withExtension: "pack")!)).write(
-            to: url.appendingPathComponent(".git/objects/pack/pack-hello.pack"))
         XCTAssertThrowsError(try Pack.Index(url, id: "hello"))
     }
     
     func testPackNotFound() {
-        try! (try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-0", withExtension: "idx")!)).write(
-            to: url.appendingPathComponent(".git/objects/pack/pack-hello.idx"))
-        XCTAssertThrowsError(try Pack.Index(url, id: "hello"))
+        XCTAssertThrowsError(try Pack(url, id: "hello"))
     }
     
-    func testLoad() {
+    func testLoadIndex() {
         copy("0")
         let pack = try! Pack.Index(url, id: "0")
         XCTAssertEqual(17, pack.entries.count)
@@ -38,9 +34,14 @@ class TestPack: XCTestCase {
         XCTAssertEqual(895, pack.entries.last?.2)
     }
     
-    func testLoadAll() {
+    func testLoadAllIndex() {
         copy("0")
         XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", Pack.load(url).first?.entries.first?.0)
+    }
+    
+    func testLoadPack() {
+        copy("0")
+        let pack = try! Pack(url, id: "0")
     }
     
     private func copy(_ id: String) {

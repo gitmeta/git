@@ -79,6 +79,15 @@ class Parse {
         return false
     }
     
+    func bits() throws -> [Bool] {
+        var result = [Bool]()
+        let byte = try self.byte()
+        (0 ..< 4).forEach {
+            result.insert(byte >> $0 & 0x01 == 1, at: 0)
+        }
+        return result
+    }
+    
     private func clean() {
         while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") { discard(1) }
     }

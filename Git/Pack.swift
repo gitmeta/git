@@ -7,9 +7,7 @@ class Pack {
         
         init(_ url: URL, id: String) throws {
             guard let parse = Parse(url.appendingPathComponent(".git/objects/pack/pack-\(id).idx"))
-                else { throw Failure.Pack.indexNotFound }
-            guard FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack").path)
-                else { throw Failure.Pack.packNotFound }
+            else { throw Failure.Pack.indexNotFound }
             guard
                 try parse.byte() == 255,
                 try parse.byte() == 116,
@@ -41,5 +39,15 @@ class Pack {
                 }
         }
         return result
+    }
+    
+    init(_ url: URL, id: String) throws {
+        guard let parse = Parse(url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
+        else { throw Failure.Pack.packNotFound }
+        guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
+        parse.discard(4)
+        (0 ..< (try parse.number())).forEach { _ in
+//            parse.byte()
+        }
     }
 }
