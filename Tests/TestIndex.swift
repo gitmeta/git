@@ -6,8 +6,6 @@ class TestIndex: XCTestCase {
     private var ignore: Ignore!
     
     override func setUp() {
-        Hub.session = Session()
-        Hub.rest = MockRest()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git"), withIntermediateDirectories: true)
         ignore = Ignore(url)

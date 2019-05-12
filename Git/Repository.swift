@@ -13,7 +13,7 @@ public class Repository {
     }
     
     public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
-        stage.commit(files, message: message, error: error, done: done)
+        stage.commit(files, message: message, error: error ?? { _ in }, done: done ?? { })
     }
     
     public func log(_ result: @escaping(([Commit]) -> Void)) {

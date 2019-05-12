@@ -3,10 +3,12 @@ import XCTest
 
 class TestClone: XCTestCase {
     private var url: URL!
+    private var rest: MockRest!
     
     override func setUp() {
+        rest = MockRest()
         Hub.session = Session()
-        Hub.rest = MockRest()
+        Hub.rest = rest
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -17,7 +19,16 @@ class TestClone: XCTestCase {
     
     func testFail() {
         let expect = expectation(description: "")
-        
+        rest._error = Failure.Request.invalid
+        Hub.clone("", local: URL(fileURLWithPath: ""), error: { _ in expect.fulfill() })
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testFailOnDownload() {
+        let expect = expectation(description: "")
+        rest._error = Failure.Request.invalid
+        rest._adv = Fetch.Adv()
+        Hub.clone("", local: URL(fileURLWithPath: ""), error: { _ in expect.fulfill() })
         waitForExpectations(timeout: 1)
     }
 }

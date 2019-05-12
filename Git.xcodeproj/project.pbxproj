@@ -92,6 +92,7 @@
 		20AFB33B2265B77000A3ECC0 /* TestHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33A2265B77000A3ECC0 /* TestHead.swift */; };
 		20AFB33D2265BA7800A3ECC0 /* TestCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */; };
 		20AFB33F2265DA5200A3ECC0 /* TestTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33E2265DA5200A3ECC0 /* TestTree.swift */; };
+		20B3E200228831C3009D132C /* TestRest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B3E1FF228831C3009D132C /* TestRest.swift */; };
 		20B7D68122645EF800A1A802 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B7D68022645EF800A1A802 /* Display.swift */; };
 		20B8327F22703C9200773058 /* tree4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B8327E22703C9200773058 /* tree4 */; };
 		20B83281227043D000773058 /* index4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B83280227043CF00773058 /* index4 */; };
@@ -221,6 +222,7 @@
 		20AFB33A2265B77000A3ECC0 /* TestHead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHead.swift; sourceTree = "<group>"; };
 		20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCommit.swift; sourceTree = "<group>"; };
 		20AFB33E2265DA5200A3ECC0 /* TestTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTree.swift; sourceTree = "<group>"; };
+		20B3E1FF228831C3009D132C /* TestRest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRest.swift; sourceTree = "<group>"; };
 		20B7D68022645EF800A1A802 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		20B8327E22703C9200773058 /* tree4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree4; sourceTree = "<group>"; };
 		20B83280227043CF00773058 /* index4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index4; sourceTree = "<group>"; };
@@ -363,6 +365,7 @@
 				206F2E5D2275DDFD0058DA7E /* TestPack.swift */,
 				2048A0F6225C745100290E54 /* TestPress.swift */,
 				205CF270227ABE49002BDAE0 /* TestRepository.swift */,
+				20B3E1FF228831C3009D132C /* TestRest.swift */,
 				20EB2506227713010043EBD2 /* TestSession.swift */,
 				20A37BEC2272E1E100850D12 /* TestStaging.swift */,
 				2048A0FD225C745100290E54 /* TestStatus.swift */,
@@ -731,6 +734,7 @@
 				206F2E5E2275DDFD0058DA7E /* TestPack.swift in Sources */,
 				2075D1A0227DD2EC0004D098 /* TestLog.swift in Sources */,
 				20C21CD5228818730038466A /* MockRest.swift in Sources */,
+				20B3E200228831C3009D132C /* TestRest.swift in Sources */,
 				2048A105225C745100290E54 /* TestHub.swift in Sources */,
 				2048A101225C745100290E54 /* TestIndex.swift in Sources */,
 				20AFB33D2265BA7800A3ECC0 /* TestCommit.swift in Sources */,

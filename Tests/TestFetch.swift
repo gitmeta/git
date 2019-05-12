@@ -2,11 +2,6 @@ import XCTest
 @testable import Git
 
 class TestFetch: XCTestCase {
-    override func setUp() {
-        Hub.session = Session()
-        Hub.rest = MockRest()
-    }
-    
     func testAdv0() {
         let fetch = try? Fetch.Adv(try! Data(contentsOf:
             Bundle(for: TestFetch.self).url(forResource: "fetchAdv0", withExtension: nil)!))

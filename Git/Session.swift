@@ -6,7 +6,7 @@ public class Session: Codable {
     public internal(set) var name = ""
     public internal(set) var email = ""
     
-    public func load(_ result: (() -> Void)?) {
+    public func load(_ result: (() -> Void)? = nil) {
         Hub.dispatch.background({ [weak self] in
             guard let data = UserDefaults.standard.data(forKey: "session"),
                 let decoded = try? JSONDecoder().decode(Session.self, from: data)
@@ -44,7 +44,7 @@ public class Session: Codable {
             self?.name = name
             self?.email = email
             self?.save()
-        }, error: error, success: done ?? { })
+        }, error: error ?? { _ in }, success: done ?? { })
     }
     
     public func update(_ url: URL, bookmark: Data, done: (() -> Void)? = nil) {

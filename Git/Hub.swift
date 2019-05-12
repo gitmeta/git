@@ -23,28 +23,28 @@ public class Hub {
             try FileManager.default.createDirectory(at: objects, withIntermediateDirectories: false)
             try Data("ref: refs/heads/master".utf8).write(to: head, options: .atomic)
             return try open(url)
-        }, error: error, success: result ?? { _ in })
+        }, error: error ?? { _ in }, success: result ?? { _ in })
     }
     
     public class func open(_ url: URL, error: ((Error) -> Void)? = nil, result: @escaping((Repository) -> Void)) {
         dispatch.background({
             return try open(url)
-        }, error: error, success: result)
+        }, error: error ?? { _ in }, success: result)
     }
     
     public class func delete(_ repository: Repository, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
         dispatch.background({
             try FileManager.default.removeItem(at: repository.url.appendingPathComponent(".git"))
-        }, error: error, success: done ?? { })
+        }, error: error ?? { _ in }, success: done ?? { })
     }
     
     public class func clone(_ remote: String, local: URL,
                             error: ((Error) -> Void)? = nil, result: ((Repository) -> Void)? = nil) {
         dispatch.background({
-            rest.fetchAdv(remote, error: error ?? { _ in }) { _ in
+            try rest.adv(remote, error: error ?? { _ in }) { _ in
                 
             }
-        }) { }
+        }, error: error ?? { _ in })
     }
     
     private class func repository(_ url: URL) -> Bool {

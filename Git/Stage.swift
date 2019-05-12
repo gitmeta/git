@@ -3,7 +3,7 @@ import Foundation
 class Stage {
     weak var repository: Repository?
     
-    func commit(_ files: [URL], message: String, error: ((Error) -> Void)?, done: (() -> Void)?) {
+    func commit(_ files: [URL], message: String, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) {
         Hub.dispatch.background({ [weak self] in
             guard let url = self?.repository?.url else { return }
             guard !files.isEmpty else { throw Failure.Commit.empty }
@@ -28,7 +28,7 @@ class Stage {
             commit.parent = self?.repository?.headId
             commit.save(url)
             index.save(url)
-        }, error: error, success: done ?? { })
+        }, error: error, success: done)
     }
     
     func add(_ file: URL, index: Index) throws {
