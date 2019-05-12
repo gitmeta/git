@@ -2,6 +2,7 @@ import Foundation
 
 public class Hub {
     public internal(set) static var session = Session()
+    static var rest = Rest()
     static let dispatch = Dispatch()
     static let hash = Hash()
     static let press = Press()
@@ -35,6 +36,15 @@ public class Hub {
         dispatch.background({
             try FileManager.default.removeItem(at: repository.url.appendingPathComponent(".git"))
         }, error: error, success: done ?? { })
+    }
+    
+    public class func clone(_ remote: String, local: URL,
+                            error: ((Error) -> Void)? = nil, result: ((Repository) -> Void)? = nil) {
+        dispatch.background({
+            rest.fetchAdv(remote, error: error ?? { _ in }) { _ in
+                
+            }
+        }) { }
     }
     
     private class func repository(_ url: URL) -> Bool {

@@ -6,6 +6,7 @@ class TestHead: XCTestCase {
     
     override func setUp() {
         Hub.session = Session()
+        Hub.rest = MockRest()
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }

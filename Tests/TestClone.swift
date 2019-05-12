@@ -1,7 +1,7 @@
 import XCTest
 @testable import Git
 
-class TestRepository: XCTestCase {
+class TestClone: XCTestCase {
     private var url: URL!
     
     override func setUp() {
@@ -15,19 +15,9 @@ class TestRepository: XCTestCase {
         try! FileManager.default.removeItem(at: url)
     }
     
-    func testRefresh() {
-        let repository = Repository(URL(fileURLWithPath: ""))
-        repository.state.last = Date()
-        repository.refresh()
-        XCTAssertEqual(Date.distantPast, repository.state.last)
-    }
-    
-    func testBranch() {
+    func testFail() {
         let expect = expectation(description: "")
-        Hub.create(url) {
-            XCTAssertEqual("master", $0.branch)
-            expect.fulfill()
-        }
+        
         waitForExpectations(timeout: 1)
     }
 }

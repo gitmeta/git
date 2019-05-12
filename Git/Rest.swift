@@ -1,18 +1,30 @@
 import Foundation
 
-public class Rest {
-    private var session = URLSession(configuration: .ephemeral)
+class Rest {
+    private let session = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: OperationQueue())
     
-    public func request() {
-        session.dataTask(with: URLRequest(url: URL(string:
-            "https://github.com/vauxhall/test.git/info/refs?service=git-upload-pack")!, cachePolicy:
-            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 15)) { data, response, fail in
-                print(data)
-                debugPrint(String(decoding: data ?? Data(), as: UTF8.self))
-                print((response as? HTTPURLResponse)?.statusCode)
-//                print(response)
-//                print(fail)
+    func fetchAdv(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch.Adv) -> Void)) {
+        guard
+            let remote = remote.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
+            let url = URL(string: remote + "/info/refs?service=git-upload-pack")
+        else { return error(Failure.Request.invalid) }
+        session.dataTask(with: URLRequest(url: url, cachePolicy:
+            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 15)) {
+                if let fail = $2 {
+                    error(fail)
+                } else if ($1 as? HTTPURLResponse)?.statusCode == 200, let data = $0, !data.isEmpty {
+                    do {
+                        result(try Fetch.Adv(data))
+                    } catch let exception {
+                        error(exception)
+                    }
+                }
+                error(Failure.Request.empty)
         }.resume()
+    }
+    
+    func request() {
+        
     }
     
     public func post() {
@@ -37,7 +49,7 @@ public class Rest {
 //        serial2.string("\n")
 //        serial2.string("0000")
         
-        serial2.string("0054want d0713672c2bb4ada8a3da6a633a17086262b78ba multi_ack side-band-64k ofs-delta\n")
+        serial2.string("0054want 54cac1e1086e2709a52d7d1727526b14efec3a77 multi_ack side-band-64k ofs-delta\n")
 //        serial2.string("0032want d0713672c2bb4ada8a3da6a633a17086262b78ba\n")
         serial2.string("0000")
         serial2.string("0009done\n")

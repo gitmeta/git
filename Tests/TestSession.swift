@@ -4,6 +4,7 @@ import XCTest
 class TestSession: XCTestCase {
     override func setUp() {
         Hub.session = Session()
+        Hub.rest = MockRest()
         UserDefaults.standard.removeObject(forKey: "session")
     }
     

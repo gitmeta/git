@@ -47,6 +47,11 @@ public struct Failure: LocalizedError {
         public static let advertisement = Failure("Invalid advertisement.")
     }
     
+    public struct Request {
+        public static let invalid = Failure("Invalid URL.")
+        public static let empty = Failure("Empty response from server.")
+    }
+    
     public var errorDescription: String? { return string }
     private let string: String
     private init(_ string: String) { self.string = string }
