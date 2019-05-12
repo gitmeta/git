@@ -36,6 +36,16 @@ class Parse {
         return result
     }
     
+    func nulled() throws -> Data {
+        var result = Data()
+        var byte = Data()
+        repeat {
+            result += byte
+            byte = try advance(1)
+        } while(String(decoding: byte, as: UTF8.self) != "\u{0000}")
+        return result
+    }
+    
     func name() throws -> String {
         return try {
             discard($0 ? 4 : 2)

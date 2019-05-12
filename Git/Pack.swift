@@ -6,7 +6,7 @@ class Pack {
         case tree = "010"
         case blob = "011"
         case tag = "100"
-        case reserverd = "101"
+        case reserved = "101"
         case deltaOfs = "110"
         case deltaRef = "111"
     }
@@ -60,11 +60,7 @@ class Pack {
             var byte = try parse.bits()
             var more = byte.first == "1"
             byte.removeFirst()
-//            guard let category = Category(rawValue: byte.prefix(3)) else { throw Failure.Pack.object }
-            let category = Category(rawValue: byte.prefix(3))
-            if category == nil {
-                print("auch")
-            }
+            guard let category = Category(rawValue: byte.prefix(3)) else { throw Failure.Pack.object }
             byte.removeFirst(3)
             var size = byte
             while more {
@@ -73,11 +69,26 @@ class Pack {
                 size += byte.suffix(7)
             }
             let count = Int(size, radix: 2)!
+            print("\n\n\n")
             print(category)
-            print(count)
-            print(parse.data.count)
-            parse.variable()
-            parse.discard(count)
+            if category == .deltaOfs {
+                
+                var byte = ""
+                var size = ""
+                repeat {
+                    byte = try parse.bits()
+                    size += byte.suffix(7)
+                } while(byte.first == "1")
+                let count2 = Int(size, radix: 2)!
+                print("inversed \(count2)")
+                print("data size: \(parse.data.count) index: \(parse.index)")
+                print("file \(count) nulled count: \(try parse.nulled())")
+                
+            } else {
+                print("data size: \(parse.data.count) index: \(parse.index)")
+                print("file \(count) nulled count: \(try parse.nulled())")
+            }
+//            parse.discard(count)
         }
     }
 }
