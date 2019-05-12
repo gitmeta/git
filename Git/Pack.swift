@@ -1,6 +1,16 @@
 import Foundation
 
 class Pack {
+    enum Category: Substring {
+        case commit = "001"
+        case tree = "010"
+        case blob = "011"
+        case tag = "100"
+        case reserverd = "101"
+        case deltaOfs = "110"
+        case deltaRef = "111"
+    }
+    
     class Index {
         private(set) var version = 2
         private(set) var entries = [(String, String, Int)]()
@@ -46,8 +56,28 @@ class Pack {
         else { throw Failure.Pack.packNotFound }
         guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
         parse.discard(4)
-        (0 ..< (try parse.number())).forEach { _ in
-//            parse.byte()
+        try (0 ..< (try parse.number())).forEach { _ in
+            var byte = try parse.bits()
+            var more = byte.first == "1"
+            byte.removeFirst()
+//            guard let category = Category(rawValue: byte.prefix(3)) else { throw Failure.Pack.object }
+            let category = Category(rawValue: byte.prefix(3))
+            if category == nil {
+                print("auch")
+            }
+            byte.removeFirst(3)
+            var size = byte
+            while more {
+                byte = try parse.bits()
+                more = byte.first == "1"
+                size += byte.suffix(7)
+            }
+            let count = Int(size, radix: 2)!
+            print(category)
+            print(count)
+            print(parse.data.count)
+            parse.variable()
+            parse.discard(count)
         }
     }
 }
