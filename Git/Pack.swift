@@ -73,20 +73,23 @@ class Pack {
             print(category)
             if category == .deltaOfs {
                 
-                var byte = ""
-                var size = ""
-                repeat {
-                    byte = try parse.bits()
-                    size += byte.suffix(7)
-                } while(byte.first == "1")
-                let count2 = Int(size, radix: 2)!
-                print("inversed \(count2)")
-                print("data size: \(parse.data.count) index: \(parse.index)")
-                print("file \(count) nulled count: \(try parse.nulled())")
+//                var byte = ""
+//                var size = ""
+//                repeat {
+//                    byte = try parse.bits()
+//                    size += byte.suffix(7)
+//                } while(byte.first == "1")
+//                let count2 = Int(size, radix: 2)!
+//                print("inversed \(count2)")
+//                print("data size: \(parse.data.count) index: \(parse.index)")
+//                print("file \(count) nulled count: \(try parse.nulled())")
                 
             } else {
                 print("data size: \(parse.data.count) index: \(parse.index)")
-                print("file \(count) nulled count: \(try parse.nulled())")
+                print("file \(count) ")
+                print(String(decoding: try parse.decompress(count), as: UTF8.self))
+//                print(commit)
+                
             }
 //            parse.discard(count)
         }

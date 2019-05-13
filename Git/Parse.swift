@@ -36,14 +36,8 @@ class Parse {
         return result
     }
     
-    func nulled() throws -> Data {
-        var result = Data()
-        var byte = Data()
-        repeat {
-            result += byte
-            byte = try advance(1)
-        } while(String(decoding: byte, as: UTF8.self) != "\u{0000}")
-        return result
+    func decompress(_ max: Int) throws -> Data {
+        return Hub.press.decompress(try advance(index + max >= data.count ? data.count - index : max))
     }
     
     func name() throws -> String {
