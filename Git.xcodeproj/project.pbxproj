@@ -58,6 +58,7 @@
 		2048A136225C749200290E54 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A130225C749200290E54 /* App.swift */; };
 		2048A137225C749200290E54 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048A131225C749200290E54 /* Button.swift */; };
 		204C754922894801007327D5 /* commit2 in Resources */ = {isa = PBXBuildFile; fileRef = 204C754822894801007327D5 /* commit2 */; };
+		204C754B22899784007327D5 /* fetch0 in Resources */ = {isa = PBXBuildFile; fileRef = 204C754A22899784007327D5 /* fetch0 */; };
 		2051FABA225C78DD00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
 		2051FABB225C78E300BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB7225C78D000BC00BC /* libGit.a */; };
 		2051FABC225C78EA00BC00BC /* libGit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2051FAB6225C78CF00BC00BC /* libGit.a */; };
@@ -194,6 +195,7 @@
 		2048A139225C74A300290E54 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		2048A13A225C74A300290E54 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		204C754822894801007327D5 /* commit2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = commit2; sourceTree = "<group>"; };
+		204C754A22899784007327D5 /* fetch0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch0; sourceTree = "<group>"; };
 		2051FAB6225C78CF00BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB7225C78D000BC00BC /* libGit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2051FAB8225C78D000BC00BC /* Git.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Git.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -340,6 +342,7 @@
 				2048A0EF225C745100290E54 /* commit1 */,
 				204C754822894801007327D5 /* commit2 */,
 				20E76BE5225E264300E023D8 /* compressed0 */,
+				204C754A22899784007327D5 /* fetch0 */,
 				20C21CCE228811780038466A /* fetchAdv0 */,
 				2048A0F7225C745100290E54 /* index0 */,
 				2048A0F5225C745100290E54 /* index1 */,
@@ -641,6 +644,7 @@
 				20C21CCF228811780038466A /* fetchAdv0 in Resources */,
 				20E76BE6225E264300E023D8 /* compressed0 in Resources */,
 				2048A103225C745100290E54 /* tree1 in Resources */,
+				204C754B22899784007327D5 /* fetch0 in Resources */,
 				2048A10C225C745100290E54 /* blob0 in Resources */,
 				2048A104225C745100290E54 /* tree0 in Resources */,
 				2048A10D225C745100290E54 /* tree2 in Resources */,

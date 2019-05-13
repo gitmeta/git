@@ -58,40 +58,108 @@ class Pack {
         parse.discard(4)
         try (0 ..< (try parse.number())).forEach { _ in
             var byte = try parse.bits()
-            var more = byte.first == "1"
+            print("\n\n\n")
+            print("original \(byte)")
             byte.removeFirst()
             guard let category = Category(rawValue: byte.prefix(3)) else { throw Failure.Pack.object }
             byte.removeFirst(3)
+            var more = byte.last == "1"
+            byte.removeLast()
             var size = byte
             while more {
                 byte = try parse.bits()
-                more = byte.first == "1"
-                size += byte.suffix(7)
+                print("more: \(byte)")
+                more = byte.last == "1"
+                byte.removeLast()
+//                while byte.first == "0" {
+//                    byte.removeFirst()
+//                }
+                size = byte + size
+                more = false
             }
-            let count = Int(size, radix: 2)!
-            print("\n\n\n")
+            let count = Int(String(size.reversed()), radix: 2)!
+            
             print(category)
             if category == .deltaOfs {
                 
-//                var byte = ""
-//                var size = ""
-//                repeat {
-//                    byte = try parse.bits()
-//                    size += byte.suffix(7)
-//                } while(byte.first == "1")
-//                let count2 = Int(size, radix: 2)!
-//                print("inversed \(count2)")
-//                print("data size: \(parse.data.count) index: \(parse.index)")
+                var byte = ""
+                var size = ""
+                repeat {
+                    byte = try parse.bits()
+                    size += byte.suffix(7)
+                } while(byte.first == "1")
+                let count2 = Int(size, radix: 2)!
+                print("inversed \(count2)")
 //                print("file \(count) nulled count: \(try parse.nulled())")
                 
             } else {
-                print("data size: \(parse.data.count) index: \(parse.index)")
-                print("file \(count) ")
-                print(String(decoding: try parse.decompress(count), as: UTF8.self))
+//                let commit = try Commit(try parse.decompress(count))
 //                print(commit)
                 
             }
 //            parse.discard(count)
+            
+            print("data size: \(parse.data.count) index: \(parse.index)")
+            print("file \(count) ")
+            if category == .deltaRef { print(try parse.hash()) }
+            let decompressed = try parse.decompress(count)
+            debugPrint(String(decoding: decompressed, as: UTF8.self))
+        }
+    }
+    
+    init(_ data: Data) throws {
+        let parse = Parse(data)
+        try parse.discard(8)
+        guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
+        parse.discard(4)
+        try (0 ..< (try parse.number())).forEach { _ in
+            var byte = try parse.bits()
+            print("\n\n\n")
+            print("original \(byte)")
+            byte.removeFirst()
+            guard let category = Category(rawValue: byte.prefix(3)) else { throw Failure.Pack.object }
+            byte.removeFirst(3)
+            var more = byte.last == "1"
+            byte.removeLast()
+            var size = byte
+            while more {
+                byte = try parse.bits()
+                print("more: \(byte)")
+                more = byte.last == "1"
+                byte.removeLast()
+                //                while byte.first == "0" {
+                //                    byte.removeFirst()
+                //                }
+                size = byte + size
+                more = false
+            }
+            let count = Int(String(size.reversed()), radix: 2)!
+            
+            print(category)
+            if category == .deltaOfs {
+                
+                var byte = ""
+                var size = ""
+                repeat {
+                    byte = try parse.bits()
+                    size += byte.suffix(7)
+                } while(byte.first == "1")
+                let count2 = Int(size, radix: 2)!
+                print("inversed \(count2)")
+                //                print("file \(count) nulled count: \(try parse.nulled())")
+                
+            } else {
+                //                let commit = try Commit(try parse.decompress(count))
+                //                print(commit)
+                
+            }
+            //            parse.discard(count)
+            
+            print("data size: \(parse.data.count) index: \(parse.index)")
+            print("file \(count) ")
+            if category == .deltaRef { print(try parse.hash()) }
+            let decompressed = try parse.decompress(count)
+            debugPrint(String(decoding: decompressed, as: UTF8.self))
         }
     }
 }

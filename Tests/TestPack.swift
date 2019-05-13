@@ -41,12 +41,21 @@ class TestPack: XCTestCase {
     
     func testLoadPack() {
         copy("0")
-//        let pack = try! Pack(url, id: "0")
+        let pack = try! Pack(url, id: "0")
+    }
+    
+    func testLoadFetch() {
+        let pack = try! Pack(Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "fetch0", withExtension: nil)!))
     }
     
     private func copy(_ id: String) {
         try! (try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-\(id)",
             withExtension: "idx")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-\(id).idx"))
+        try! (try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-\(id)",
+            withExtension: "pack")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
+    }
+    
+    private func fetch(_ id: String) {
         try! (try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-\(id)",
             withExtension: "pack")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
     }

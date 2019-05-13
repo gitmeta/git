@@ -36,10 +36,6 @@ class Parse {
         return result
     }
     
-    func decompress(_ max: Int) throws -> Data {
-        return Hub.press.decompress(try advance(index + max >= data.count ? data.count - index : max))
-    }
-    
     func name() throws -> String {
         return try {
             discard($0 ? 4 : 2)
@@ -55,6 +51,7 @@ class Parse {
     func hash() throws -> String { return (try advance(20)).map { String(format: "%02hhx", $0) }.joined() }
     func crc() throws -> String { return (try advance(4)).map { String(format: "%02hhx", $0) }.joined() }
     func skipExtensions() { discard((data.count - 20) - index) }
+    func decompress(_ amount: Int) throws -> Data { return Hub.press.decompress(try advance(amount)) }
     func discard(_ bytes: Int) { index += bytes }
     
     func number() throws -> Int {
