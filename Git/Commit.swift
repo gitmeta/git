@@ -4,25 +4,25 @@ public class Commit {
     public internal(set) var author = User()
     public internal(set) var message = ""
     var committer = User()
+    var parent = [String]()
     var tree = ""
-    var parent: String?
     
     init(_ data: Data) throws {
         let string = String(decoding: data, as: UTF8.self)
         let split = string.components(separatedBy: "\n\n")
-        let lines = split.first!.components(separatedBy: "\n")
+        var lines = split.first!.components(separatedBy: "\n")
         guard
             split.count > 1,
-            lines.count == 3 || lines.count == 4,
-            let tree = lines[0].components(separatedBy: "tree ").last,
+            lines.count >= 3,
+            let tree = lines.removeFirst().components(separatedBy: "tree ").last,
             tree.count == 40,
-            let author = try? User(lines[lines.count - 2]),
-            let committer = try? User(lines[lines.count - 1])
+            let committer = try? User(lines.removeLast()),
+            let author = try? User(lines.removeLast())
         else { throw Failure.Commit.unreadable }
-        if lines.count == 4 {
-            guard let parent = lines[1].components(separatedBy: "parent ").last, parent.count == 40
+        while !lines.isEmpty {
+            guard let parent = lines.removeFirst().components(separatedBy: "parent ").last, parent.count == 40
                 else { throw Failure.Commit.unreadable }
-            self.parent = parent
+            self.parent.append(parent)
         }
         self.tree = tree
         self.author = author
@@ -34,8 +34,8 @@ public class Commit {
     
     var serial: String {
         var result = "tree \(tree)\n"
-        if let parent = self.parent {
-            result += "parent \(parent)\n"
+        parent.forEach {
+            result += "parent \($0)\n"
         }
         result += "author \(author.serial)\ncommitter \(committer.serial)\n\n\(message)\n"
         return result

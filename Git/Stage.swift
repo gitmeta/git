@@ -25,7 +25,9 @@ class Stage {
             commit.committer.email = Hub.session.email
             commit.tree = treeId
             commit.message = message
-            commit.parent = self?.repository?.headId
+            if let parent = self?.repository?.headId {
+                commit.parent.append(parent)
+            }
             commit.save(url)
             index.save(url)
         }, error: error, success: done)

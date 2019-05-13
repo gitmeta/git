@@ -18,13 +18,11 @@ public class Repository {
     
     public func log(_ result: @escaping(([Commit]) -> Void)) {
         Hub.dispatch.background({ [weak self] in
-            var result = [Commit]()
-            var commit = self?.head
-            while commit != nil {
-                result.append(commit!)
-                commit = commit!.parent != nil ? self?.commit(commit!.parent!) : nil
+            var result = [String: Commit]()
+            if let id = self?.headId {
+                self?.commits(id, map: &result)
             }
-            return result
+            return result.values.sorted(by: { $0.author.date > $1.author.date })
         }, success: result)
     }
     
@@ -52,6 +50,14 @@ public class Repository {
     var tree: Tree? {
         guard let head = self.head else { return nil }
         return try? Tree(head.tree, url: url)
+    }
+    
+    private func commits(_ id: String, map: inout[String: Commit]) {
+        guard map[id] == nil, let item = commit(id) else { return }
+        map[id] = item
+        item.parent.forEach {
+            commits($0, map: &map)
+        }
     }
     
     private func commit(_ id: String) -> Commit? {

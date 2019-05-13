@@ -35,7 +35,7 @@ class TestLog: XCTestCase {
                         XCTAssertEqual("my@email.com", $0.first?.committer.email)
                         XCTAssertEqual("Lorem ipsum\n", $0.first?.message)
                         XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", $0.first?.tree)
-                        XCTAssertNil($0.first?.parent)
+                        XCTAssertNil($0.first?.parent.first)
                         XCTAssertEqual(Thread.main, Thread.current)
                         expect.fulfill()
                     }
@@ -59,7 +59,7 @@ class TestLog: XCTestCase {
                         XCTAssertNotNil($0.first?.parent)
                         XCTAssertEqual("Lorem ipsum\n", $0.last?.message)
                         XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", $0.last?.tree)
-                        XCTAssertNil($0.last?.parent)
+                        XCTAssertNil($0.last?.parent.first)
                         expect.fulfill()
                     }
                 }

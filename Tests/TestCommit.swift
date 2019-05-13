@@ -27,7 +27,7 @@ class TestCommit: XCTestCase {
         commit.committer = commit.author
         commit.message = "Add project files."
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
-        commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
+        commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         XCTAssertEqual("""
 tree 0d21e2f7f760f77ead2cb85cc128efb13f56401d
 parent dc0d3343fa24e912f08bc18aaa6f664a4a020079
@@ -49,7 +49,7 @@ Add project files.
         commit.committer = commit.author
         commit.message = "Add project files."
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
-        commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
+        commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         Hub.create(url) { _ in
             XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", commit.save(self.url))
             let object = try? Data(contentsOf: self.url.appendingPathComponent(
@@ -73,7 +73,7 @@ Add project files.
         commit.committer = commit.author
         commit.message = "Add project files."
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
-        commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
+        commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         Hub.create(url) { _ in
             try! "ref: refs/heads/feature/test".write(to: self.url.appendingPathComponent(".git/HEAD"),
                                                       atomically: true, encoding: .utf8)
@@ -100,7 +100,7 @@ Add project files.
         commit.committer = commit.author
         commit.message = "Add project files."
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
-        commit.parent = "dc0d3343fa24e912f08bc18aaa6f664a4a020079"
+        commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         Hub.create(url) { _ in
             _ = commit.save(self.url)
             let loaded = try! Commit(Press().decompress(try! Data(contentsOf: self.url.appendingPathComponent(
@@ -202,7 +202,7 @@ Add project files.
                     XCTAssertLessThan(date, repository.head!.committer.date)
                     XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", repository.head?.tree)
                     XCTAssertEqual("hello world\n", repository.head?.message)
-                    XCTAssertNil(repository.head?.parent)
+                    XCTAssertNil(repository.head?.parent.first)
                     expect.fulfill()
                 }
             }
@@ -266,7 +266,7 @@ Add project files.
                 let headId = repository.headId!
                 try! Data("modified\n".utf8).write(to: self.file)
                 repository.commit([self.file], message: "second commit") {
-                    XCTAssertEqual(headId, repository.head!.parent!)
+                    XCTAssertEqual(headId, repository.head!.parent.first!)
                     expect.fulfill()
                 }
             }

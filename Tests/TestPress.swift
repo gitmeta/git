@@ -103,7 +103,7 @@ My second commit.
     func testParseCommit0() {
         let commit = try? Commit(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(
             forResource: "commit0", withExtension: nil)!)))
-        XCTAssertNil(commit?.parent)
+        XCTAssertNil(commit?.parent.first)
         XCTAssertEqual("99ff9f93b7f0f7d300dc3c42d16cdfcdf5c2a82f", commit?.tree)
         XCTAssertEqual("vauxhall", commit?.author.name)
         XCTAssertEqual("zero.griffin@gmail.com", commit?.author.email)
@@ -117,6 +117,21 @@ My second commit.
     func testParseCommit1() {
         let commit = try? Commit(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(
             forResource: "commit1", withExtension: nil)!)))
-        XCTAssertEqual("0cbd117f7fe2ec884168863af047e8c89e71aaf1", commit?.parent)
+        XCTAssertEqual("0cbd117f7fe2ec884168863af047e8c89e71aaf1", commit?.parent.first)
+    }
+    
+    func testParseCommit2() {
+        let commit = try? Commit(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(
+            forResource: "commit2", withExtension: nil)!)))
+        XCTAssertEqual("890be9af6d5a18a1eb999f0ad44c15a83f227af4", commit?.parent.first)
+        XCTAssertEqual("d27de8c22fb0cfdc7d12f8eaf30bcc5343e7f70a", commit?.parent.last)
+        XCTAssertEqual("a50257e1731e34b6be3db840155ff86c3b5a26e2", commit?.tree)
+        XCTAssertEqual("vauxhall", commit?.author.name)
+        XCTAssertEqual("zero.griffin@gmail.com", commit?.author.email)
+        XCTAssertEqual("vauxhall", commit?.committer.name)
+        XCTAssertEqual("zero.griffin@gmail.com", commit?.committer.email)
+        XCTAssertEqual(Date(timeIntervalSince1970: 1557728927), commit?.author.date)
+        XCTAssertEqual(Date(timeIntervalSince1970: 1557728927), commit?.committer.date)
+        XCTAssertEqual("Merge branch \'master\' of https://github.com/vauxhall/merge\n", commit?.message)
     }
 }
