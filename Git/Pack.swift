@@ -102,14 +102,18 @@ class Pack {
             print("data size: \(parse.data.count) index: \(parse.index)")
             print("file \(count) ")
             if category == .deltaRef { print(try parse.hash()) }
-            let decompressed = try parse.decompress(count)
+            let decompressed = try parse.decompress(count - 4)
             debugPrint(String(decoding: decompressed, as: UTF8.self))
+            debugPrint(try parse.byte())
+            debugPrint(try parse.byte())
+            debugPrint(try parse.byte())
+            debugPrint(try parse.byte())
         }
     }
     
     init(_ data: Data) throws {
         let parse = Parse(data)
-        try parse.discard(8)
+        parse.discard(8)
         guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
         parse.discard(4)
         try (0 ..< (try parse.number())).forEach { _ in
@@ -158,8 +162,12 @@ class Pack {
             print("data size: \(parse.data.count) index: \(parse.index)")
             print("file \(count) ")
             if category == .deltaRef { print(try parse.hash()) }
-            let decompressed = try parse.decompress(count)
+            let decompressed = try parse.decompress(category == .commit ? 500 : 45)
             debugPrint(String(decoding: decompressed, as: UTF8.self))
+//            debugPrint(try parse.character())
+//            debugPrint(try parse.character())
+//            debugPrint(try parse.character())
+            debugPrint(try parse.crc())
         }
     }
 }
