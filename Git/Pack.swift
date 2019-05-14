@@ -57,6 +57,11 @@ class Pack {
         guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
         parse.discard(4)
         try (0 ..< (try parse.number())).forEach { _ in
+            
+            
+            
+            
+            
             var byte = try parse.bits()
             print("\n\n\n")
             print("original \(byte)")
@@ -117,6 +122,38 @@ class Pack {
         guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
         parse.discard(4)
         try (0 ..< (try parse.number())).forEach { _ in
+            
+            
+            var x = UInt(try parse.byte())
+            print((x >> 4) & 7)
+            var s = x & 15
+            var shift = 4
+            while x & UInt(0x80) == 128 {
+                x = UInt(try parse.byte())
+//                x = x << 1
+                s += (x & 0x7f) << shift
+//                s = (s << shift) | (x & 0x7f)
+                shift += 7
+            }
+            
+            print(s)
+            return;
+            //
+            //            type = (c >> 4) & 7;
+            //            size = (c & 15);
+            //            shift = 4;
+            //            while (c & 0x80) {
+            //                pack = fill(1);
+            //                c = *pack;
+            //                use(1);
+            //                size += (c & 0x7f) << shift;
+            //                shift += 7;
+            //            }
+            
+            
+            
+            
+            
             var byte = try parse.bits()
             print("\n\n\n")
             print("original \(byte)")
