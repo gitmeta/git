@@ -76,12 +76,14 @@ class Pack {
             }
             var index = parse.index + 1
             var content = Data()
+            print(category)
             while content.count < expected {
                 index += 1
                 content = Hub.press.decompress(parse.data.subdata(in: parse.index ..< index))
             }
             items.append((category, content))
-            parse.discard((index - parse.index) + (category == .tree ? 5 : 4))
+            print(String(decoding: content, as: UTF8.self))
+            parse.discard((index - parse.index) + (index % 2 == 0 ? 4 : 5))
         }
     }
 }
