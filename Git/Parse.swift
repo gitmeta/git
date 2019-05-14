@@ -87,7 +87,7 @@ class Parse {
         }
     }
     
-    private func clean() {
+    func clean() {
         while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") { discard(1) }
     }
     

@@ -83,6 +83,7 @@
 		2073D8772267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
 		2073D8782267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
 		2075D1A0227DD2EC0004D098 /* TestLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2075D19F227DD2EC0004D098 /* TestLog.swift */; };
+		208D223E228AD12F009AFF08 /* fetch1 in Resources */ = {isa = PBXBuildFile; fileRef = 208D223D228AD12F009AFF08 /* fetch1 */; };
 		20948B74227189B700B1987D /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B73227189B700B1987D /* Sheet.swift */; };
 		20948B7822718AEE00B1987D /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7722718AEE00B1987D /* Menu.swift */; };
 		20948B7B2271986000B1987D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B792271985B00B1987D /* User.swift */; };
@@ -216,6 +217,7 @@
 		20710E072286CA6A00104F72 /* Rest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rest.swift; sourceTree = "<group>"; };
 		2073D8762267283E00631BCB /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		2075D19F227DD2EC0004D098 /* TestLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLog.swift; sourceTree = "<group>"; };
+		208D223D228AD12F009AFF08 /* fetch1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch1; sourceTree = "<group>"; };
 		20948B73227189B700B1987D /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		20948B7522718A2100B1987D /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		20948B7722718AEE00B1987D /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				204C754822894801007327D5 /* commit2 */,
 				20E76BE5225E264300E023D8 /* compressed0 */,
 				204C754A22899784007327D5 /* fetch0 */,
+				208D223D228AD12F009AFF08 /* fetch1 */,
 				20C21CCE228811780038466A /* fetchAdv0 */,
 				2048A0F7225C745100290E54 /* index0 */,
 				2048A0F5225C745100290E54 /* index1 */,
@@ -637,6 +640,7 @@
 				206F2E612275DE840058DA7E /* pack-0.idx in Resources */,
 				2048A10F225C745100290E54 /* index2 in Resources */,
 				20B83281227043D000773058 /* index4 in Resources */,
+				208D223E228AD12F009AFF08 /* fetch1 in Resources */,
 				206F2E622275DE840058DA7E /* pack-0.pack in Resources */,
 				2048A110225C745100290E54 /* index3 in Resources */,
 				2048A108225C745100290E54 /* index0 in Resources */,

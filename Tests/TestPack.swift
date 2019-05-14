@@ -44,7 +44,7 @@ class TestPack: XCTestCase {
         let pack = try! Pack(url, id: "0")
     }
     
-    func testLoadFetch() {
+    func testLoadFetch0() {
         let pack = try! Pack(Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "fetch0", withExtension: nil)!))
         XCTAssertEqual(.commit, pack.items[0].0)
         XCTAssertEqual(647, pack.items[0].1.count)
@@ -52,6 +52,21 @@ class TestPack: XCTestCase {
         XCTAssertEqual(37, pack.items[1].1.count)
         XCTAssertEqual(.blob, pack.items[2].0)
         XCTAssertEqual(12, pack.items[2].1.count)
+    }
+    
+    func testLoadFetch1() {
+        let pack = try! Pack(Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "fetch1", withExtension: nil)!))
+        XCTAssertEqual(.commit, pack.items.first?.0)
+        XCTAssertEqual(691, pack.items.first?.1.count)
+        XCTAssertEqual(.tree, pack.items.last?.0)
+        XCTAssertEqual(72, pack.items.last?.1.count)
+        XCTAssertEqual(22, pack.items.filter({ $0.0 == .commit }).count)
+        XCTAssertEqual(18, pack.items.filter({ $0.0 == .tree }).count)
+        XCTAssertEqual(22, pack.items.filter({ $0.0 == .blob }).count)
+        XCTAssertEqual(0, pack.items.filter({ $0.0 == .tag }).count)
+        XCTAssertEqual(0, pack.items.filter({ $0.0 == .reserved }).count)
+        XCTAssertEqual(0, pack.items.filter({ $0.0 == .deltaOfs }).count)
+        XCTAssertEqual(27, pack.items.filter({ $0.0 == .deltaRef }).count)
     }
     
     private func copy(_ id: String) {
