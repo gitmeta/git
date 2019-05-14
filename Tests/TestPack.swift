@@ -46,6 +46,12 @@ class TestPack: XCTestCase {
     
     func testLoadFetch() {
         let pack = try! Pack(Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "fetch0", withExtension: nil)!))
+        XCTAssertEqual(.commit, pack.items[0].0)
+        XCTAssertEqual(647, pack.items[0].1.count)
+        XCTAssertEqual(.tree, pack.items[1].0)
+        XCTAssertEqual(37, pack.items[1].1.count)
+        XCTAssertEqual(.blob, pack.items[2].0)
+        XCTAssertEqual(12, pack.items[2].1.count)
     }
     
     private func copy(_ id: String) {

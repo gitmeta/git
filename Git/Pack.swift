@@ -1,14 +1,14 @@
 import Foundation
 
 class Pack {
-    enum Category: Substring {
-        case commit = "001"
-        case tree = "010"
-        case blob = "011"
-        case tag = "100"
-        case reserved = "101"
-        case deltaOfs = "110"
-        case deltaRef = "111"
+    enum Category: Int {
+        case commit = 1
+        case tree = 2
+        case blob = 3
+        case tag = 4
+        case reserved = 5
+        case deltaOfs = 6
+        case deltaRef = 7
     }
     
     class Index {
@@ -51,69 +51,12 @@ class Pack {
         return result
     }
     
-    init(_ url: URL, id: String) throws {
-        guard let parse = Parse(url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
+    private(set) var items = [(Category, Data)]()
+    
+    convenience init(_ url: URL, id: String) throws {
+        guard let data = try? Data(contentsOf: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
         else { throw Failure.Pack.packNotFound }
-        guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
-        parse.discard(4)
-        try (0 ..< (try parse.number())).forEach { _ in
-            
-            
-            
-            
-            
-            var byte = try parse.bits()
-            print("\n\n\n")
-            print("original \(byte)")
-            byte.removeFirst()
-            guard let category = Category(rawValue: byte.prefix(3)) else { throw Failure.Pack.object }
-            byte.removeFirst(3)
-            var more = byte.last == "1"
-            byte.removeLast()
-            var size = byte
-            while more {
-                byte = try parse.bits()
-                print("more: \(byte)")
-                more = byte.last == "1"
-                byte.removeLast()
-//                while byte.first == "0" {
-//                    byte.removeFirst()
-//                }
-                size = byte + size
-                more = false
-            }
-            let count = Int(String(size.reversed()), radix: 2)!
-            
-            print(category)
-            if category == .deltaOfs {
-                
-                var byte = ""
-                var size = ""
-                repeat {
-                    byte = try parse.bits()
-                    size += byte.suffix(7)
-                } while(byte.first == "1")
-                let count2 = Int(size, radix: 2)!
-                print("inversed \(count2)")
-//                print("file \(count) nulled count: \(try parse.nulled())")
-                
-            } else {
-//                let commit = try Commit(try parse.decompress(count))
-//                print(commit)
-                
-            }
-//            parse.discard(count)
-            
-            print("data size: \(parse.data.count) index: \(parse.index)")
-            print("file \(count) ")
-            if category == .deltaRef { print(try parse.hash()) }
-            let decompressed = try parse.decompress(count - 4)
-            debugPrint(String(decoding: decompressed, as: UTF8.self))
-            debugPrint(try parse.byte())
-            debugPrint(try parse.byte())
-            debugPrint(try parse.byte())
-            debugPrint(try parse.byte())
-        }
+        try self.init([0,0,0,0,0,0,0,0] + data)
     }
     
     init(_ data: Data) throws {
@@ -122,89 +65,23 @@ class Pack {
         guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
         parse.discard(4)
         try (0 ..< (try parse.number())).forEach { _ in
-            
-            
-            var x = UInt(try parse.byte())
-            print((x >> 4) & 7)
-            var s = x & 15
+            var byte = Int(try parse.byte())
+            guard let category = Category(rawValue: (byte >> 4) & 7) else { throw Failure.Pack.object }
+            var expected = byte & 15
             var shift = 4
-            while x & UInt(0x80) == 128 {
-                x = UInt(try parse.byte())
-//                x = x << 1
-                s += (x & 0x7f) << shift
-//                s = (s << shift) | (x & 0x7f)
+            while byte & Int(0x80) == 128 {
+                byte = Int(try parse.byte())
+                expected += (byte & 0x7f) << shift
                 shift += 7
             }
-            
-            print(s)
-            return;
-            //
-            //            type = (c >> 4) & 7;
-            //            size = (c & 15);
-            //            shift = 4;
-            //            while (c & 0x80) {
-            //                pack = fill(1);
-            //                c = *pack;
-            //                use(1);
-            //                size += (c & 0x7f) << shift;
-            //                shift += 7;
-            //            }
-            
-            
-            
-            
-            
-            var byte = try parse.bits()
-            print("\n\n\n")
-            print("original \(byte)")
-            byte.removeFirst()
-            guard let category = Category(rawValue: byte.prefix(3)) else { throw Failure.Pack.object }
-            byte.removeFirst(3)
-            var more = byte.last == "1"
-            byte.removeLast()
-            var size = byte
-            while more {
-                byte = try parse.bits()
-                print("more: \(byte)")
-                more = byte.last == "1"
-                byte.removeLast()
-                //                while byte.first == "0" {
-                //                    byte.removeFirst()
-                //                }
-                size = byte + size
-                more = false
+            var index = parse.index + 1
+            var content = Data()
+            while content.count < expected {
+                index += 1
+                content = Hub.press.decompress(parse.data.subdata(in: parse.index ..< index))
             }
-            let count = Int(String(size.reversed()), radix: 2)!
-            
-            print(category)
-            if category == .deltaOfs {
-                
-                var byte = ""
-                var size = ""
-                repeat {
-                    byte = try parse.bits()
-                    size += byte.suffix(7)
-                } while(byte.first == "1")
-                let count2 = Int(size, radix: 2)!
-                print("inversed \(count2)")
-                //                print("file \(count) nulled count: \(try parse.nulled())")
-                
-            } else {
-                //                let commit = try Commit(try parse.decompress(count))
-                //                print(commit)
-                
-            }
-            //            parse.discard(count)
-            
-            print("data size: \(parse.data.count) index: \(parse.index)")
-            print("file \(count) ")
-            if category == .deltaRef { print(try parse.hash()) }
-            let decompressed = try parse.decompress(category == .commit ? 500 : 45)
-            debugPrint(String(decoding: decompressed, as: UTF8.self))
-//            debugPrint(try parse.character())
-//            debugPrint(try parse.character())
-//            debugPrint(try parse.character())
-            debugPrint(try parse.crc())
+            items.append((category, content))
+            parse.discard((index - parse.index) + (category == .tree ? 5 : 4))
         }
     }
 }
