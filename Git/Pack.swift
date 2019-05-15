@@ -84,14 +84,18 @@ class Pack {
             default: break
             }
             
-            var index = parse.index + 1
+            let content = Hub.press.unpack(expected, data: parse.data.subdata(in: parse.index ..< parse.data.count))
+            parse.discard(content.0)
+            /*var index = parse.index + 1
             var content = Data()
 //            print(category)
-            while content.count <= expected {
+            while content.count < expected {
                 index += 1
                 content = Hub.press.decompress(parse.data.subdata(in: parse.index ..< index))
-            }
-            items.append((category, content))
+            }*/
+            print(category)
+            items.append((category, content.1))
+            /*
 //            print(String(decoding: content, as: UTF8.self))
             parse.discard(index - parse.index)
             
@@ -105,11 +109,15 @@ class Pack {
             
             if parse.index == 4396 {
                 parse.discard(-1)
+                let adler = Hub.press.adler32(content)
+                
                 debugPrint("\(try parse.byte()) \(try parse.byte()) \(try parse.byte()) \(try parse.byte())")
+                
+                debugPrint("\(adler[0]) \(adler[1]) \(adler[2]) \(adler[3])")
                 fatalError()
             }
 //            parse.discard(4)
-            debugPrint("\(try parse.byte()) \(try parse.byte()) \(try parse.byte()) \(try parse.byte())")
+            debugPrint("\(try parse.byte()) \(try parse.byte()) \(try parse.byte()) \(try parse.byte())")*/
         }
         guard parse.data.count - parse.index == 20 else { throw Failure.Pack.invalidPack }
     }
