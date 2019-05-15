@@ -9,8 +9,7 @@ class Dispatch {
         }
     }
     
-    func background(_ send: @escaping(() throws -> Void),
-                       error: @escaping((Error) -> Void)) {
+    func background(_ send: @escaping(() throws -> Void), error: @escaping((Error) -> Void)) {
         queue.async {
             do {
                 try send()
@@ -22,8 +21,7 @@ class Dispatch {
         }
     }
     
-    func background<R>(_ send: @escaping(() -> R),
-                       success: @escaping((R) -> Void)) {
+    func background<R>(_ send: @escaping(() -> R), success: @escaping((R) -> Void)) {
         queue.async {
             let result = send()
             DispatchQueue.main.async {
@@ -32,8 +30,7 @@ class Dispatch {
         }
     }
     
-    func background<R>(_ send: @escaping(() throws -> R),
-                       error: @escaping((Error) -> Void),
+    func background<R>(_ send: @escaping(() throws -> R), error: @escaping((Error) -> Void),
                        success: @escaping((R) -> Void)) {
         queue.async {
             do {
