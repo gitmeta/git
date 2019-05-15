@@ -52,17 +52,20 @@ class Pack {
     }
     
     private(set) var items = [(Category, Data)]()
+    private(set) var commits = [String: Commit]()
+    private(set) var trees = [String: Tree]()
+    private(set) var blobs = [String: Data]()
+    private(set) var tags = [String]()
     
     convenience init(_ url: URL, id: String) throws {
         guard let data = try? Data(contentsOf: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
         else { throw Failure.Pack.packNotFound }
-        try self.init([0,0,0,0,0,0,0,0] + data)
+        try self.init(data)
     }
     
     init(_ data: Data) throws {
         let parse = Parse(data)
-        parse.discard(8)
-        guard try parse.string() == "PACK" else { throw Failure.Pack.invalidPack }
+        try parse.discard("PACK")
         parse.discard(4)
         try (0 ..< (try parse.number())).forEach { _ in
             var byte = Int(try parse.byte())
@@ -75,50 +78,47 @@ class Pack {
                 shift += 7
             }
             
-            switch category {
-            case .deltaRef:
-                debugPrint(try parse.hash())
-            case .deltaOfs:
-                parse.discard(2)
-                print("expected \(expected)")
-            default: break
-            }
-            
+            var ref = ""
+            if category == .deltaRef { ref = try parse.hash() }
             let content = Hub.press.unpack(expected, data: parse.data.subdata(in: parse.index ..< parse.data.count))
             parse.discard(content.0)
-            /*var index = parse.index + 1
-            var content = Data()
-//            print(category)
-            while content.count < expected {
-                index += 1
-                content = Hub.press.decompress(parse.data.subdata(in: parse.index ..< index))
-            }*/
-            print(category)
-            items.append((category, content.1))
-            /*
-//            print(String(decoding: content, as: UTF8.self))
-            parse.discard(index - parse.index)
             
-            if String(decoding: parse.data.subdata(in: parse.index ..< parse.index + 1), as: UTF8.self) == "\u{0000}" {
-                
-                print(":::::::::::::::::::::::::: clean \(parse.index) : \(content.count) : \(expected)")
-                parse.discard(1)
-            } else {
-                print(":::::::::::::::::::::::::: no clean :::: \(parse.index) : \(content.count) : \(expected)")
+            switch category {
+            case .commit: try commit(content.1)
+            case .tree: try tree(content.1)
+            case .blob: blob(content.1)
+            case .tag: tag(content.1)
+            case .deltaRef: delta(content.1, ref: ref)
+            case .deltaOfs: delta(content.1, ofs: 0)
+            case .reserved: throw Failure.Pack.invalidPack
             }
-            
-            if parse.index == 4396 {
-                parse.discard(-1)
-                let adler = Hub.press.adler32(content)
-                
-                debugPrint("\(try parse.byte()) \(try parse.byte()) \(try parse.byte()) \(try parse.byte())")
-                
-                debugPrint("\(adler[0]) \(adler[1]) \(adler[2]) \(adler[3])")
-                fatalError()
-            }
-//            parse.discard(4)
-            debugPrint("\(try parse.byte()) \(try parse.byte()) \(try parse.byte()) \(try parse.byte())")*/
         }
         guard parse.data.count - parse.index == 20 else { throw Failure.Pack.invalidPack }
+    }
+    
+    private func commit(_ data: Data) throws {
+        let commit = try Commit(data)
+        commits[Hub.hash.commit(commit.serial).1] = commit
+    }
+    
+    private func tree(_ data: Data) throws {
+        trees[Hub.hash.tree(data).1] = try Tree(data)
+    }
+    
+    private func blob(_ data: Data) {
+        blobs[Hub.hash.blob(data).1] = data
+    }
+    
+    private func tag(_ data: Data) {
+        tags.append(String(decoding: data, as: UTF8.self))
+    }
+    
+    private func delta(_ data: Data, ref: String) {
+        print("ref: \(ref)")
+        print("data: \(data.count)")
+    }
+    
+    private func delta(_ data: Data, ofs: Int) {
+        
     }
 }

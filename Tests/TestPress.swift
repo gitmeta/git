@@ -112,12 +112,14 @@ My second commit.
         XCTAssertEqual(Date(timeIntervalSince1970: 1554638195), commit?.author.date)
         XCTAssertEqual(Date(timeIntervalSince1970: 1554638195), commit?.committer.date)
         XCTAssertEqual("This is my first commit.\n", commit?.message)
+        XCTAssertEqual("", commit?.gpg)
     }
     
     func testParseCommit1() {
         let commit = try? Commit(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(
             forResource: "commit1", withExtension: nil)!)))
         XCTAssertEqual("0cbd117f7fe2ec884168863af047e8c89e71aaf1", commit?.parent.first)
+        XCTAssertEqual("", commit?.gpg)
     }
     
     func testParseCommit2() {
@@ -133,5 +135,24 @@ My second commit.
         XCTAssertEqual(Date(timeIntervalSince1970: 1557728927), commit?.author.date)
         XCTAssertEqual(Date(timeIntervalSince1970: 1557728927), commit?.committer.date)
         XCTAssertEqual("Merge branch \'master\' of https://github.com/vauxhall/merge\n", commit?.message)
+        XCTAssertEqual("", commit?.gpg)
+    }
+    
+    func testParseCommit3() {
+        let commit = try? Commit(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(
+            forResource: "commit3", withExtension: nil)!)))
+        XCTAssertEqual("8dc0abf0a0b0d70a0a8680daa69a7df74acfce95", commit?.parent.first)
+        XCTAssertEqual("9177be007bb25b1f12ecc3fd14eb191cd07d69f4", commit?.tree)
+        XCTAssertEqual("vauxhall", commit?.author.name)
+        XCTAssertEqual("zero.griffin@gmail.com", commit?.author.email)
+        XCTAssertEqual("GitHub", commit?.committer.name)
+        XCTAssertEqual("noreply@github.com", commit?.committer.email)
+        XCTAssertEqual(Date(timeIntervalSince1970: 1557728914), commit?.author.date)
+        XCTAssertEqual(Date(timeIntervalSince1970: 1557728914), commit?.committer.date)
+        XCTAssertEqual("Create another.txt", commit?.message)
+        XCTAssertEqual("""
+\ngpgsig -----BEGIN PGP SIGNATURE-----\n \n wsBcBAABCAAQBQJc2Q6SCRBK7hj4Ov3rIwAAdHIIAG87iBwa22KVe14mZRay8eNm\n zIBtaLODH51ETcpmjFouPM59Zp1jrVtyuqa3RCj2Ijsrj0VVNfIET9XTd/LfHnvM\n oel2lT69YtWUvu6Dnm7NhyaMvgqhfTytF4W3uXd5FB1aTwyv2cUNq5y+fNzqjYlY\n kxDiyVX2Efg54yyDsO1GbWR20ij3m9lR7GrysX2oS135WatX62w0zmQHoslrbjPT\n zAJaherlmbXG07A6yoRajdp/o+Tujf/irjMVWBwuYy3WI96U+Mj5CuFHgQvVq3om\n sb+wQXR0sq9g1x5v/rC780IsuNzj8hl3eVj6PQMzlTdqUBYwJxCzMMQXPeYQ5z8=\n =GDUq\n -----END PGP SIGNATURE-----\n \
+
+""", commit?.gpg)
     }
 }

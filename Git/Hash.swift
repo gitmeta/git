@@ -5,10 +5,12 @@ class Hash {
     private var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
     
     func file(_ url: URL) -> (Data, String) {
-        return {
-            let packed = Data(("blob \($0.count)\u{0000}").utf8) + $0
-            return (packed, hash(packed))
-        } (try! Data(contentsOf: url))
+        return blob(try! Data(contentsOf: url))
+    }
+    
+    func blob(_ data: Data) -> (Data, String) {
+        let packed = Data(("blob \(data.count)\u{0000}").utf8) + data
+        return (packed, hash(packed))
     }
     
     func tree(_ data: Data) -> (Data, String) {

@@ -6,11 +6,13 @@ public class Commit {
     var committer = User()
     var parent = [String]()
     var tree = ""
+    var gpg = ""
     
     init(_ data: Data) throws {
         let string = String(decoding: data, as: UTF8.self)
         let split = string.components(separatedBy: "\n\n")
-        var lines = split.first!.components(separatedBy: "\n")
+        let signed = split.first!.components(separatedBy: "\ngpgsig")
+        var lines = signed.first!.components(separatedBy: "\n")
         guard
             split.count > 1,
             lines.count >= 3,
@@ -23,6 +25,9 @@ public class Commit {
             guard let parent = lines.removeFirst().components(separatedBy: "parent ").last, parent.count == 40
                 else { throw Failure.Commit.unreadable }
             self.parent.append(parent)
+        }
+        if signed.count == 2 {
+            gpg = "\ngpgsig" + signed[1]
         }
         self.tree = tree
         self.author = author

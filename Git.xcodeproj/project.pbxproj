@@ -89,6 +89,7 @@
 		20948B7B2271986000B1987D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B792271985B00B1987D /* User.swift */; };
 		20948B7C2271986100B1987D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B792271985B00B1987D /* User.swift */; };
 		20948B7E2271987E00B1987D /* TestUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7D2271987E00B1987D /* TestUser.swift */; };
+		2094C10D228C03010078FC6C /* commit3 in Resources */ = {isa = PBXBuildFile; fileRef = 2094C10C228C03010078FC6C /* commit3 */; };
 		209ACF2D2282ABE4001F3523 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209ACF2C2282ABE4001F3523 /* Alert.swift */; };
 		209ACF2F2282ACB9001F3523 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209ACF2E2282ACB9001F3523 /* View.swift */; };
 		20A37BED2272E1E100850D12 /* TestStaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BEC2272E1E100850D12 /* TestStaging.swift */; };
@@ -223,6 +224,7 @@
 		20948B7722718AEE00B1987D /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		20948B792271985B00B1987D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		20948B7D2271987E00B1987D /* TestUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUser.swift; sourceTree = "<group>"; };
+		2094C10C228C03010078FC6C /* commit3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = commit3; sourceTree = "<group>"; };
 		209ACF2C2282ABE4001F3523 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		209ACF2E2282ACB9001F3523 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		20A37BEC2272E1E100850D12 /* TestStaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStaging.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				2048A0F1225C745100290E54 /* commit0 */,
 				2048A0EF225C745100290E54 /* commit1 */,
 				204C754822894801007327D5 /* commit2 */,
+				2094C10C228C03010078FC6C /* commit3 */,
 				20E76BE5225E264300E023D8 /* compressed0 */,
 				204C754A22899784007327D5 /* fetch0 */,
 				208D223D228AD12F009AFF08 /* fetch1 */,
@@ -644,6 +647,7 @@
 				206F2E622275DE840058DA7E /* pack-0.pack in Resources */,
 				2048A110225C745100290E54 /* index3 in Resources */,
 				2048A108225C745100290E54 /* index0 in Resources */,
+				2094C10D228C03010078FC6C /* commit3 in Resources */,
 				2048A106225C745100290E54 /* index1 in Resources */,
 				20C21CCF228811780038466A /* fetchAdv0 in Resources */,
 				20E76BE6225E264300E023D8 /* compressed0 in Resources */,

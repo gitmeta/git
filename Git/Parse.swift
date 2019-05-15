@@ -45,6 +45,12 @@ class Parse {
         } (try not2(), try length())
     }
     
+    func discard(_ until: String) throws {
+        while String(decoding: try advance(until.count), as: UTF8.self) != until {
+            index -= until.count - 1
+        }
+    }
+    
     func byte() throws -> UInt8 { return try advance(1).first! }
     func string() throws -> String { return String(decoding: try advance(4), as: UTF8.self) }
     func character() throws -> String { return String(decoding: try advance(1), as: UTF8.self) }
@@ -87,7 +93,7 @@ class Parse {
         }
     }
     
-    func clean() {
+    private func clean() {
         while (String(decoding: data.subdata(in: index ..< index + 1), as: UTF8.self) == "\u{0000}") { discard(1) }
     }
     

@@ -38,16 +38,15 @@ class Tree {
             url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))), url: trail ?? url)
     }
     
-    init(_ data: Data, url: URL) throws {
+    convenience init(_ data: Data, url: URL) throws {
         let parse = Parse(data)
         guard "tree" == (try? parse.ascii(" ")) else { throw Failure.Tree.unreadable }
         _ = try parse.variable()
-        while parse.index < data.count {
-            let item = (Category(rawValue: try parse.ascii(" ")) ?? .blob).make()
-            item.url = url.appendingPathComponent(try parse.variable())
-            item.id = try parse.hash()
-            items.append(item)
-        }
+        try self.init(parse, url: url)
+    }
+    
+    convenience init(_ data: Data) throws {
+        try self.init(Parse(data), url: URL(fileURLWithPath: ""))
     }
     
     init(_ url: URL, ignore: Ignore, update: [URL], entries: [Index.Entry]) {
@@ -75,6 +74,15 @@ class Tree {
                     items.append(item)
                 }
             }
+        }
+    }
+    
+    private init(_ parse: Parse, url: URL) throws {
+        while parse.index < parse.data.count {
+            let item = (Category(rawValue: try parse.ascii(" ")) ?? .blob).make()
+            item.url = url.appendingPathComponent(try parse.variable())
+            item.id = try parse.hash()
+            items.append(item)
         }
     }
     
