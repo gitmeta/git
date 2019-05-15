@@ -25,7 +25,7 @@ class TestCommit: XCTestCase {
         commit.author.date = Date(timeIntervalSince1970: 1494296655)
         commit.author.timezone = "-0500"
         commit.committer = commit.author
-        commit.message = "Add project files."
+        commit.message = "Add project files.\n"
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         XCTAssertEqual("""

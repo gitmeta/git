@@ -42,7 +42,7 @@ public class Commit {
         parent.forEach {
             result += "parent \($0)\n"
         }
-        result += "author \(author.serial)\ncommitter \(committer.serial)\n\n\(message)\n"
+        result += "author \(author.serial)\ncommitter \(committer.serial)\(gpg)\n\n\(message)"
         return result
     }
     

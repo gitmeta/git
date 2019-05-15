@@ -130,12 +130,20 @@ My second commit.
         XCTAssertEqual("a50257e1731e34b6be3db840155ff86c3b5a26e2", commit?.tree)
         XCTAssertEqual("vauxhall", commit?.author.name)
         XCTAssertEqual("zero.griffin@gmail.com", commit?.author.email)
+        XCTAssertEqual("+0200", commit?.author.timezone)
         XCTAssertEqual("vauxhall", commit?.committer.name)
         XCTAssertEqual("zero.griffin@gmail.com", commit?.committer.email)
+        XCTAssertEqual("+0200", commit?.committer.timezone)
         XCTAssertEqual(Date(timeIntervalSince1970: 1557728927), commit?.author.date)
         XCTAssertEqual(Date(timeIntervalSince1970: 1557728927), commit?.committer.date)
         XCTAssertEqual("Merge branch \'master\' of https://github.com/vauxhall/merge\n", commit?.message)
         XCTAssertEqual("", commit?.gpg)
+    }
+    
+    func testParseCommit2BackAndForth() {
+        let commit = try? Commit(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(
+            forResource: "commit2", withExtension: nil)!)))
+        XCTAssertEqual("79be52211d61ef2e59134ae6e8aaa0fe121de71f", Hash().commit(commit!.serial).1)
     }
     
     func testParseCommit3() {
@@ -154,5 +162,11 @@ My second commit.
 \ngpgsig -----BEGIN PGP SIGNATURE-----\n \n wsBcBAABCAAQBQJc2Q6SCRBK7hj4Ov3rIwAAdHIIAG87iBwa22KVe14mZRay8eNm\n zIBtaLODH51ETcpmjFouPM59Zp1jrVtyuqa3RCj2Ijsrj0VVNfIET9XTd/LfHnvM\n oel2lT69YtWUvu6Dnm7NhyaMvgqhfTytF4W3uXd5FB1aTwyv2cUNq5y+fNzqjYlY\n kxDiyVX2Efg54yyDsO1GbWR20ij3m9lR7GrysX2oS135WatX62w0zmQHoslrbjPT\n zAJaherlmbXG07A6yoRajdp/o+Tujf/irjMVWBwuYy3WI96U+Mj5CuFHgQvVq3om\n sb+wQXR0sq9g1x5v/rC780IsuNzj8hl3eVj6PQMzlTdqUBYwJxCzMMQXPeYQ5z8=\n =GDUq\n -----END PGP SIGNATURE-----\n \
 
 """, commit?.gpg)
+    }
+    
+    func testParseCommit3BackAndForth() {
+        let commit = try? Commit(press.decompress(try! Data(contentsOf: Bundle(for: TestPress.self).url(
+            forResource: "commit3", withExtension: nil)!)))
+        XCTAssertEqual("d27de8c22fb0cfdc7d12f8eaf30bcc5343e7f70a", Hash().commit(commit!.serial).1)
     }
 }

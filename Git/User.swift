@@ -27,7 +27,7 @@ public struct User {
     }
     
     var serial: String { return "\(name) <\(email)> \(Int(date.timeIntervalSince1970)) " + (timezone.isEmpty ? {
-            $0.dateFormat = "xx"
-            return $0.string(from: date)
-        } (DateFormatter()) : timezone) }
+        $0.dateFormat = "xx"
+        return $0.string(from: date)
+    } (DateFormatter()) : timezone) }
 }
