@@ -79,15 +79,8 @@ class Pack {
             var ofs = 0
 
             switch category {
-            case .deltaRef:
-                ref = try parse.hash()
-            case .deltaOfs:
-//                let byte = Int(try parse.byte())
-//                ofs = byte & 15
-//                if byte & 0x80 == 128 {
-//                    ofs = try parse.size(ofs, shift: 4)
-//                }
-                break
+            case .deltaRef: ref = try parse.hash()
+            case .deltaOfs: ofs = try parse.size()
             default: break
             }
  
@@ -99,8 +92,7 @@ class Pack {
             case .tree: try tree(content.1)
             case .blob: blob(content.1)
             case .tag: tag(content.1)
-            case .deltaRef:
-                deltas.append((ref, content.1))
+            case .deltaRef: deltas.append((ref, content.1))
             case .deltaOfs: delta(content.1, ofs: ofs)
             case .reserved: throw Failure.Pack.invalidPack
             }
@@ -179,8 +171,5 @@ class Pack {
         }
     }
     
-    private func delta(_ data: Data, ofs: Int) {
-//        print(ofs)
-      fatalError()
-    }
+    private func delta(_ data: Data, ofs: Int) { }
 }

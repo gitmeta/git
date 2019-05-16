@@ -25,7 +25,7 @@ class TestLog: XCTestCase {
         let expect = expectation(description: "")
         Hub.create(url) {
             self.repository = $0
-            self.repository.commit([self.file], message: "Lorem ipsum") {
+            self.repository.commit([self.file], message: "Lorem ipsum\n") {
                 DispatchQueue.global(qos: .background).async {
                     self.repository.log {
                         XCTAssertEqual(1, $0.count)
@@ -49,9 +49,9 @@ class TestLog: XCTestCase {
         let expect = expectation(description: "")
         Hub.create(url) {
             self.repository = $0
-            self.repository.commit([self.file], message: "Lorem ipsum") {
+            self.repository.commit([self.file], message: "Lorem ipsum\n") {
                 try! Data("lorem ipsum\n".utf8).write(to: self.file)
-                self.repository.commit([self.file], message: "The rebels, the misfits") {
+                self.repository.commit([self.file], message: "The rebels, the misfits\n") {
                     self.repository.log {
                         XCTAssertEqual(2, $0.count)
                         XCTAssertEqual("The rebels, the misfits\n", $0.first?.message)

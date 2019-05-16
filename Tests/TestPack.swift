@@ -42,6 +42,9 @@ class TestPack: XCTestCase {
     func testLoadPack() {
         copy("0")
         let pack = try! Pack(url, id: "0")
+        XCTAssertEqual(3, pack.commits.count)
+        XCTAssertEqual(8, pack.trees.count)
+        XCTAssertEqual(4, pack.blobs.count)
     }
     
     func testLoadFetch0() {

@@ -47,7 +47,7 @@ Add project files.
         commit.author.date = Date(timeIntervalSince1970: 1494296655)
         commit.author.timezone = "-0500"
         commit.committer = commit.author
-        commit.message = "Add project files."
+        commit.message = "Add project files.\n"
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         Hub.create(url) { _ in
@@ -71,7 +71,7 @@ Add project files.
         commit.author.date = Date(timeIntervalSince1970: 1494296655)
         commit.author.timezone = "-0500"
         commit.committer = commit.author
-        commit.message = "Add project files."
+        commit.message = "Add project files.\n"
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         Hub.create(url) { _ in
@@ -98,7 +98,7 @@ Add project files.
         commit.author.date = Date(timeIntervalSince1970: 1494296655)
         commit.author.timezone = "-0500"
         commit.committer = commit.author
-        commit.message = "Add project files."
+        commit.message = "Add project files.\n"
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         Hub.create(url) { _ in
@@ -113,7 +113,7 @@ Add project files.
             XCTAssertEqual(commit.committer.email, loaded.committer.email)
             XCTAssertEqual(commit.committer.date, loaded.committer.date)
             XCTAssertEqual(commit.committer.timezone, loaded.committer.timezone)
-            XCTAssertEqual(commit.message, String(loaded.message.dropLast()))
+            XCTAssertEqual(commit.message, loaded.message)
             XCTAssertEqual(commit.tree, loaded.tree)
             XCTAssertEqual(commit.parent, loaded.parent)
             expect.fulfill()
@@ -130,7 +130,7 @@ Add project files.
             let id = commit.save(self.url)
             let loaded = try! Commit(Press().decompress(try! Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
-            XCTAssertEqual(commit.message, String(loaded.message.dropLast()))
+            XCTAssertEqual(commit.message, loaded.message)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -192,7 +192,7 @@ Add project files.
             DispatchQueue.global(qos: .background).async {
                 Hub.session.name = "hello"
                 Hub.session.email = "world"
-                repository.commit([self.file], message: "hello world") {
+                repository.commit([self.file], message: "hello world\n") {
                     XCTAssertEqual(Thread.main, Thread.current)
                     XCTAssertNotNil(repository.head)
                     XCTAssertNotNil(repository.headId)

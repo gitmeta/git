@@ -50,7 +50,7 @@ class TestHead: XCTestCase {
         Hub.create(url) { repo in
             Hub.session.name = "ab"
             Hub.session.email = "cd"
-            repo.commit([file], message: "hello world") {
+            repo.commit([file], message: "hello world\n") {
                 XCTAssertEqual("ab", repo.head?.author.name)
                 XCTAssertEqual("ab", repo.head?.committer.name)
                 XCTAssertEqual("cd", repo.head?.author.email)
