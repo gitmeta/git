@@ -76,11 +76,11 @@ class Parse {
     func conflict() throws -> Bool {
         var byte = data.subdata(in: index ..< index + 1).first!
         byte >>= 2
-        if byte & 0x01 == 1 {
+        if (byte & 0x01) == 1 {
             return true
         }
         byte >>= 1
-        if byte & 0x01 == 1 {
+        if (byte & 0x01) == 1 {
             return true
         }
         return false
@@ -114,7 +114,7 @@ class Parse {
         var byte = data.subdata(in:
             index ..< index + 1).withUnsafeBytes { $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1).pointee }
         byte >>= 1
-        return byte & 0x01 == 1
+        return (byte & 0x01) == 1
     }
     
     private func length() throws -> Int {

@@ -45,14 +45,21 @@ class TestPack: XCTestCase {
     }
     
     func testLoadFetch0() {
-        /*
         let pack = try! Pack(Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "fetch0", withExtension: nil)!))
-        XCTAssertEqual(.commit, pack.items[0].0)
-        XCTAssertEqual(647, pack.items[0].1.count)
-        XCTAssertEqual(.tree, pack.items[1].0)
-        XCTAssertEqual(37, pack.items[1].1.count)
-        XCTAssertEqual(.blob, pack.items[2].0)
-        XCTAssertEqual(12, pack.items[2].1.count)*/
+        XCTAssertEqual(1, pack.commits.count)
+        XCTAssertEqual(1, pack.trees.count)
+        XCTAssertEqual(1, pack.blobs.count)
+        XCTAssertEqual("""
+tree 9b8166fc80d0f0fe9192d4bf1dbaa87f194e012f\nauthor vauxhall <zero.griffin@gmail.com> 1557649511 +0200\ncommitter GitHub <noreply@github.com> 1557649511 +0200\ngpgsig -----BEGIN PGP SIGNATURE-----\n \n wsBcBAABCAAQBQJc19hnCRBK7hj4Ov3rIwAAdHIIAAPh6Gw1sQOwGSQsX94V8slE\n /5LdUSOjyqb6kkSKFYNJO7HKiBhS5DnLCtytbbbhMCI+VkvD91fwwu75cTzidl/7\n ky4aH+l4O7/rYol3sMXlslrz3uxbMNano8oCXPCmkRd6SDITNPtcLVn1m/1msgo6\n w9/3GrILm7jJBoqsq1Yw9HgPqbk7rEvUmexf7Fn9lb/YYhuisp86XCtDGfqMMRow\n GeXUxGUGlAluDFDDwneTb0PPowHhQioTKOqooaM9ocEDENtzv4EZY4o4lccTegHm\n a69zNgV4ALzMxVpwN03216fS9kw7gRriy9hNGMJIGnVGKIgQD/4B9hZ8Xv9bM84=\n =HKXb\n -----END PGP SIGNATURE-----\n \n\nInitial commit
+""", pack.commits.first?.value.0.serial)
+        XCTAssertEqual("""
+/Users/vaux/Library/Developer/Xcode/DerivedData/Git-awoihalzruiqfzedtwsjcjiszgba/Build/Products/Debug/README.md
+""", pack.trees.first?.value.0.items.first?.url.path)
+        XCTAssertEqual("""
+# test
+Test
+
+""", String(decoding: pack.blobs.first!.value, as: UTF8.self))
     }
     
     func testLoadFetch1() {
