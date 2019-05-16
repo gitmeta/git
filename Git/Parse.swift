@@ -32,7 +32,7 @@ class Parse {
         repeat {
             result += byte
             byte = try character()
-        } while(byte != "\u{0000}")
+        } while byte != "\u{0000}"
         return result
     }
     
@@ -86,11 +86,24 @@ class Parse {
         return false
     }
     
-    func bits() throws -> String {
-        let byte = try self.byte()
-        return (0 ..< 8).reduce(into: "") {
-            $0 = (byte >> $1 & 0x01 == 1 ? "1" : "0") + $0
-        }
+    func size(_ carry: Int = 0, shift: Int = 0) throws -> Int {
+        var byte = 0
+        var result = carry
+        var shift = shift
+        repeat {
+            byte = Int(try self.byte())
+            result += (byte & 0x7f) << shift
+            shift += 7
+        } while byte & 0x80 == 128
+        return result
+    }
+    
+    func advance(_ bytes: Int) throws -> Data {
+        let index = self.index + bytes
+        guard data.count >= index else { throw Failure.Parsing.malformed }
+        let result = data.subdata(in: self.index ..< index)
+        self.index = index
+        return result
     }
     
     private func clean() {
@@ -107,14 +120,6 @@ class Parse {
     private func length() throws -> Int {
         guard let result = Int(data.subdata(in: index + 1 ..< index + 2).map { String(format: "%02hhx", $0) }.joined(),
                                radix: 16) else { throw Failure.Parsing.malformed }
-        return result
-    }
-    
-    private func advance(_ bytes: Int) throws -> Data {
-        let index = self.index + bytes
-        guard data.count >= index else { throw Failure.Parsing.malformed }
-        let result = data.subdata(in: self.index ..< index)
-        self.index = index
         return result
     }
 }
