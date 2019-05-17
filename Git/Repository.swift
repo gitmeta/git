@@ -5,11 +5,13 @@ public class Repository {
     public let url: URL
     let state = State()
     let stage = Stage()
+    let extract = Extract()
     
     init(_ url: URL) {
         self.url = url
         state.repository = self
         stage.repository = self
+        extract.repository = self
     }
     
     public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
@@ -22,8 +24,19 @@ public class Repository {
             if let id = self?.headId {
                 self?.commits(id, map: &result)
             }
-            return result.values.sorted(by: { $0.author.date > $1.author.date })
+            return result.values.sorted(by: {
+                if $0.author.date > $1.author.date {
+                    return true
+                } else if $0.author.date == $1.author.date {
+                    return $0.parent.count > $1.parent.count
+                }
+                return false
+            })
         }, success: result)
+    }
+    
+    public func reset(_ error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+        extract.reset(error ?? { _ in }, done: done ?? { })
     }
     
     public func refresh() { state.refresh() }
