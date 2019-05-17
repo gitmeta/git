@@ -45,6 +45,12 @@ public class Repository {
         return HEAD.replacingOccurrences(of: "refs/heads/", with: "")
     }
     
+    func item(_ id: String) -> Data? {
+        guard let result = try? Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))
+        else { return nil }
+        return Hub.press.decompress(result)
+    }
+    
     var HEAD: String {
         return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
             UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")
@@ -74,8 +80,7 @@ public class Repository {
     }
     
     private func commit(_ id: String) -> Commit? {
-        guard let raw = try? Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))
-        else { return nil }
-        return try? Commit(Hub.press.decompress(raw))
+        guard let result = item(id) else { return nil }
+        return try? Commit(result)
     }
 }
