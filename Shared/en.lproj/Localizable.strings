@@ -1,5 +1,3 @@
-App.directory="Directory";
-App.initial="Select your initial working directory.";
 Alert.error="Error";
 Alert.commit="Commit";
 Alert.update="Updated";

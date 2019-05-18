@@ -119,5 +119,8 @@ class Menu: NSMenu {
             commit.isEnabled = false
             help.isEnabled = false
         }
+        if #available(OSX 10.12.2, *) {
+            App.window.touchBar = nil
+        }
     }
 }

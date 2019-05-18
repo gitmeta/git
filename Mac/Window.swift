@@ -1,7 +1,7 @@
 import AppKit
 import UserNotifications
 
-class Window: NSWindow, UNUserNotificationCenterDelegate {
+class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
     let alert = Alert()
     private(set) weak var list: List!
     private(set) weak var tools: Tools!
@@ -81,6 +81,39 @@ class Window: NSWindow, UNUserNotificationCenterDelegate {
         DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 10) {
             UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [willPresent.request.identifier])
         }
+    }
+    
+    @available(OSX 10.12.2, *) override func makeTouchBar() -> NSTouchBar? {
+        let bar = NSTouchBar()
+        bar.delegate = self
+        if Sheet.presented == nil {
+            bar.defaultItemIdentifiers.append(.init("directory"))
+            if App.repository != nil {
+                bar.defaultItemIdentifiers.append(.init("refresh"))
+            }
+        }
+        return bar
+    }
+    
+    @available(OSX 10.12.2, *) func touchBar(_: NSTouchBar, makeItemForIdentifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
+        let item = NSCustomTouchBarItem(identifier: makeItemForIdentifier)
+        let button = NSButton(title: "", target: nil, action: nil)
+        item.view = button
+        switch makeItemForIdentifier.rawValue {
+        case "directory":
+            button.title = .local("Menu.directory")
+            button.image = NSImage(named: "logo")
+            button.imagePosition = .imageLeft
+            button.bezelColor = .black
+            button.target = NSApp
+            button.action = #selector(App.panel)
+        case "refresh":
+            button.title = .local("Menu.refresh")
+            button.target = self
+            button.action = #selector(refresh)
+        default: break
+        }
+        return item
     }
     
     func repository() {
