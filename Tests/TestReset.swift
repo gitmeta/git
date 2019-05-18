@@ -8,6 +8,8 @@ class TestReset: XCTestCase {
     override func setUp() {
         Hub.session = Session()
         Hub.rest = MockRest()
+        Hub.session.name = "hello"
+        Hub.session.email = "world"
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -20,8 +22,6 @@ class TestReset: XCTestCase {
         let expect = expectation(description: "")
         Hub.create(url) {
             self.repository = $0
-            Hub.session.name = "hello"
-            Hub.session.email = "world"
             let file = self.url.appendingPathComponent("myfile.txt")
             try! Data("hello world\n".utf8).write(to: file)
             XCTAssertTrue(FileManager.default.fileExists(atPath: file.path))
@@ -46,8 +46,6 @@ class TestReset: XCTestCase {
         let expect = expectation(description: "")
         Hub.create(url) {
             self.repository = $0
-            Hub.session.name = "hello"
-            Hub.session.email = "world"
             let dir = self.url.appendingPathComponent("dir1")
             try! FileManager.default.createDirectory(at: dir, withIntermediateDirectories: false)
             let file1 = self.url.appendingPathComponent("myfile1.txt")
@@ -81,8 +79,6 @@ class TestReset: XCTestCase {
         let expect = expectation(description: "")
         Hub.create(url) {
             self.repository = $0
-            Hub.session.name = "hello"
-            Hub.session.email = "world"
             let file1 = self.url.appendingPathComponent("myfile1.txt")
             let file2 = self.url.appendingPathComponent("myfile2.txt")
             try! Data("hello world\n".utf8).write(to: file1)
@@ -90,6 +86,29 @@ class TestReset: XCTestCase {
                 try! Data("lorem ipsum\n".utf8).write(to: file2)
                 XCTAssertTrue(FileManager.default.fileExists(atPath: file2.path))
                 self.repository.reset {
+                    XCTAssertFalse(FileManager.default.fileExists(atPath: file2.path))
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRemoveDirectories() {
+        let expect = expectation(description: "")
+        Hub.create(url) {
+            self.repository = $0
+            let file1 = self.url.appendingPathComponent("myfile1.txt")
+            try! Data("hello world\n".utf8).write(to: file1)
+            self.repository.commit([file1], message: "My first commit\n") {
+                let dir = self.url.appendingPathComponent("dir1")
+                try! FileManager.default.createDirectory(at: dir, withIntermediateDirectories: false)
+                let file2 = dir.appendingPathComponent("myfile2.txt")
+                try! Data("lorem ipsum\n".utf8).write(to: file2)
+                XCTAssertTrue(FileManager.default.fileExists(atPath: dir.path))
+                XCTAssertTrue(FileManager.default.fileExists(atPath: file2.path))
+                self.repository.reset {
+                    XCTAssertFalse(FileManager.default.fileExists(atPath: dir.path))
                     XCTAssertFalse(FileManager.default.fileExists(atPath: file2.path))
                     expect.fulfill()
                 }

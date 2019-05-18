@@ -12,8 +12,19 @@ class Extract {
     }
     
     private func remove(_ list: [(URL, Status)]) throws {
+        guard let url = repository?.url else { return }
         try list.filter({ $0.1 != .deleted }).forEach {
-            try FileManager.default.removeItem(at: $0.0)
+            let path = $0.0.deletingLastPathComponent().path.dropFirst(url.path.count)
+            if !path.isEmpty {
+                let dir = url.appendingPathComponent(String(path))
+                if FileManager.default.fileExists(atPath: dir.path) {
+                    try FileManager.default.removeItem(at: dir)
+                }
+            } else {
+                if FileManager.default.fileExists(atPath: $0.0.path) {
+                    try FileManager.default.removeItem(at: $0.0)
+                }
+            }
         }
     }
     
