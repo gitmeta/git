@@ -135,6 +135,7 @@
 		20FFDF832282EF0500226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Credentials.swift */; };
 		20FFDF852282EF3C00226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7522718A2100B1987D /* Credentials.swift */; };
 		CE89826022904EB300E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE89825F22904EB300E9F41F /* Reset.swift */; };
+		CE8982622290560000E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8982612290560000E9F41F /* Reset.swift */; };
 		CED676C6228E820E009D6ADC /* TestReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C5228E820E009D6ADC /* TestReset.swift */; };
 		CED676C8228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
 		CED676C9228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
@@ -267,6 +268,7 @@
 		20FFDF802282E05D00226033 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
 		20FFDF822282EF0500226033 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		CE89825F22904EB300E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
+		CE8982612290560000E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
 		CED676C5228E820E009D6ADC /* TestReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReset.swift; sourceTree = "<group>"; };
 		CED676C7228E840C009D6ADC /* Extract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extract.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -420,6 +422,7 @@
 				20FFDF7C2282CD7C00226033 /* List.swift */,
 				20FFDF7E2282E04600226033 /* Log.swift */,
 				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
+				CE8982612290560000E9F41F /* Reset.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
 				20FFDF782282C27900226033 /* Tools.swift */,
 				209ACF2E2282ACB9001F3523 /* View.swift */,
@@ -813,6 +816,7 @@
 				20CB671B226071CA0064C31C /* Shared.swift in Sources */,
 				20E098A022819D060061123C /* Create.swift in Sources */,
 				20BB9F8422802A61002DDF7B /* Display.swift in Sources */,
+				CE8982622290560000E9F41F /* Reset.swift in Sources */,
 				20FFDF7F2282E04600226033 /* Log.swift in Sources */,
 				20FFDF832282EF0500226033 /* Credentials.swift in Sources */,
 				20FFDF792282C27900226033 /* Tools.swift in Sources */,
