@@ -16,7 +16,7 @@ class TestReset: XCTestCase {
         try! FileManager.default.removeItem(at: url)
     }
     
-    func testResetOneFile() {
+    func testOneFile() {
         let expect = expectation(description: "")
         Hub.create(url) {
             self.repository = $0
@@ -42,7 +42,7 @@ class TestReset: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testResetSubdirectories() {
+    func testSubdirectories() {
         let expect = expectation(description: "")
         Hub.create(url) {
             self.repository = $0
@@ -70,6 +70,27 @@ class TestReset: XCTestCase {
                     XCTAssertTrue(FileManager.default.fileExists(atPath: file2.path))
                     XCTAssertEqual("lorem ipsum\n",
                                    String(decoding: (try? Data(contentsOf: file2)) ?? Data(), as: UTF8.self))
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRemoveOneFile() {
+        let expect = expectation(description: "")
+        Hub.create(url) {
+            self.repository = $0
+            Hub.session.name = "hello"
+            Hub.session.email = "world"
+            let file1 = self.url.appendingPathComponent("myfile1.txt")
+            let file2 = self.url.appendingPathComponent("myfile2.txt")
+            try! Data("hello world\n".utf8).write(to: file1)
+            self.repository.commit([file1], message: "My first commit\n") {
+                try! Data("lorem ipsum\n".utf8).write(to: file2)
+                XCTAssertTrue(FileManager.default.fileExists(atPath: file2.path))
+                self.repository.reset {
+                    XCTAssertFalse(FileManager.default.fileExists(atPath: file2.path))
                     expect.fulfill()
                 }
             }
