@@ -16,21 +16,21 @@ class Credentials: Sheet, UITextFieldDelegate {
         let nameTitle = UILabel()
         nameTitle.translatesAutoresizingMaskIntoConstraints = false
         nameTitle.text = .local("Credentials.name")
-        nameTitle.font = .systemFont(ofSize: 16, weight: .bold)
+        nameTitle.font = .systemFont(ofSize: 14, weight: .bold)
         nameTitle.textColor = .halo
         addSubview(nameTitle)
         
         let emailTitle = UILabel()
         emailTitle.translatesAutoresizingMaskIntoConstraints = false
         emailTitle.text = .local("Credentials.email")
-        emailTitle.font = .systemFont(ofSize: 16, weight: .bold)
+        emailTitle.font = .systemFont(ofSize: 14, weight: .bold)
         emailTitle.textColor = .halo
         addSubview(emailTitle)
         
         let nameBackground = UIView()
         nameBackground.isUserInteractionEnabled = false
         nameBackground.translatesAutoresizingMaskIntoConstraints = false
-        nameBackground.backgroundColor = .shade
+        nameBackground.backgroundColor = .black
         nameBackground.layer.cornerRadius = 4
         addSubview(nameBackground)
         
@@ -38,7 +38,7 @@ class Credentials: Sheet, UITextFieldDelegate {
         name.translatesAutoresizingMaskIntoConstraints = false
         name.borderStyle = .none
         name.clearButtonMode = .never
-        name.font = .light(16)
+        name.font = .systemFont(ofSize: 14, weight: .regular)
         name.backgroundColor = .clear
         name.textColor = .white
         name.text = Hub.session.name
@@ -55,7 +55,7 @@ class Credentials: Sheet, UITextFieldDelegate {
         let emailBackground = UIView()
         emailBackground.translatesAutoresizingMaskIntoConstraints = false
         emailBackground.isUserInteractionEnabled = false
-        emailBackground.backgroundColor = .shade
+        emailBackground.backgroundColor = .black
         emailBackground.layer.cornerRadius = 4
         addSubview(emailBackground)
         
@@ -63,7 +63,7 @@ class Credentials: Sheet, UITextFieldDelegate {
         email.translatesAutoresizingMaskIntoConstraints = false
         email.borderStyle = .none
         email.clearButtonMode = .never
-        email.font = .light(16)
+        email.font = .systemFont(ofSize: 14, weight: .regular)
         email.backgroundColor = .clear
         email.textColor = .white
         email.text = Hub.session.email
@@ -83,7 +83,7 @@ class Credentials: Sheet, UITextFieldDelegate {
         confirm.setTitle(.local("Credentials.confirm"), for: [])
         confirm.setTitleColor(.black, for: .normal)
         confirm.setTitleColor(UIColor(white: 0, alpha: 0.2), for: .highlighted)
-        confirm.titleLabel!.font = .systemFont(ofSize: 16, weight: .medium)
+        confirm.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
         confirm.backgroundColor = .halo
         confirm.layer.cornerRadius = 6
         addSubview(confirm)
@@ -92,16 +92,18 @@ class Credentials: Sheet, UITextFieldDelegate {
         cancel.translatesAutoresizingMaskIntoConstraints = false
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
         cancel.setTitle(.local("Credentials.cancel"), for: [])
-        cancel.setTitleColor(UIColor(white: 1, alpha: 0.5), for: .normal)
+        cancel.setTitleColor(UIColor(white: 1, alpha: 0.7), for: .normal)
         cancel.setTitleColor(UIColor(white: 1, alpha: 0.2), for: .highlighted)
-        cancel.titleLabel!.font = .systemFont(ofSize: 16, weight: .medium)
+        cancel.titleLabel!.font = .systemFont(ofSize: 12, weight: .regular)
         addSubview(cancel)
         
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 68).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 42).isActive = true
         
         name.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 20).isActive = true
         name.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 40).isActive = true
-        name.widthAnchor.constraint(equalToConstant: 230).isActive = true
+        name.widthAnchor.constraint(equalToConstant: 200).isActive = true
         name.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         nameBackground.topAnchor.constraint(equalTo: name.topAnchor).isActive = true
@@ -117,7 +119,7 @@ class Credentials: Sheet, UITextFieldDelegate {
         
         email.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 20).isActive = true
         email.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 14).isActive = true
-        email.widthAnchor.constraint(equalToConstant: 230).isActive = true
+        email.widthAnchor.constraint(equalToConstant: 200).isActive = true
         email.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         emailBackground.topAnchor.constraint(equalTo: email.topAnchor).isActive = true
@@ -128,17 +130,17 @@ class Credentials: Sheet, UITextFieldDelegate {
         confirm.widthAnchor.constraint(equalToConstant: 100).isActive = true
         confirm.heightAnchor.constraint(equalToConstant: 36).isActive = true
         confirm.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        confirm.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 40).isActive = true
+        confirm.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 50).isActive = true
         
-        cancel.widthAnchor.constraint(equalToConstant: 140).isActive = true
+        cancel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         cancel.heightAnchor.constraint(equalToConstant: 36).isActive = true
         cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 10).isActive = true
+        cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 20).isActive = true
         
         if #available(iOS 11.0, *) {
-            image.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+            image.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
         } else {
-            image.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
+            image.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
         }
         
         ready = { [weak self] in

@@ -51,7 +51,7 @@ class Commit: Sheet {
             spellCheckingType = .yes
             autocapitalizationType = .sentences
             contentInset = .zero
-            textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            textContainerInset = UIEdgeInsets(top: 20, left: 15, bottom: 20, right: 15)
             indicatorStyle = .white
         }
         
@@ -97,37 +97,37 @@ class Commit: Sheet {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = .local("Commit.title")
         title.textColor = .halo
-        title.font = .systemFont(ofSize: 20, weight: .medium)
+        title.font = .systemFont(ofSize: 16, weight: .bold)
         addSubview(title)
         
         let border = UIView()
         border.translatesAutoresizingMaskIntoConstraints = false
         border.isUserInteractionEnabled = false
-        border.backgroundColor = UIColor(white: 1, alpha: 0.2)
+        border.backgroundColor = UIColor(white: 1, alpha: 0.1)
         addSubview(border)
         
         let text = Text()
         addSubview(text)
         self.text = text
         
-        cancel.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        cancel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        cancel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        cancel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cancel.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
-        cancel.rightAnchor.constraint(equalTo: save.leftAnchor, constant: -10).isActive = true
+        cancel.rightAnchor.constraint(equalTo: save.leftAnchor, constant: -20).isActive = true
         
-        save.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        save.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        save.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        save.heightAnchor.constraint(equalToConstant: 40).isActive = true
         save.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         
-        icon.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
-        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        icon.centerYAnchor.constraint(equalTo: save.centerYAnchor, constant: -2).isActive = true
+        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
         icon.widthAnchor.constraint(equalToConstant: 35).isActive = true
         icon.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
-        title.centerYAnchor.constraint(equalTo: icon.centerYAnchor).isActive = true
+        title.centerYAnchor.constraint(equalTo: icon.centerYAnchor, constant: 2).isActive = true
         title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 10).isActive = true
         
-        border.topAnchor.constraint(equalTo: save.bottomAnchor, constant: 10).isActive = true
+        border.topAnchor.constraint(equalTo: save.bottomAnchor, constant: 5).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
@@ -139,9 +139,9 @@ class Commit: Sheet {
         bottom.isActive = true
         
         if #available(iOS 11.0, *) {
-            save.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+            save.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
         } else {
-            save.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+            save.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
         }
         
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: .main) { [weak self] in

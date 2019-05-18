@@ -101,7 +101,6 @@
 		20B8327F22703C9200773058 /* tree4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B8327E22703C9200773058 /* tree4 */; };
 		20B83281227043D000773058 /* index4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B83280227043CF00773058 /* index4 */; };
 		20B8328322709EA700773058 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20B8328222709EA700773058 /* Mac.xcassets */; };
-		20BB9F8022800BC7002DDF7B /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F7F22800BC7002DDF7B /* Spinner.swift */; };
 		20BB9F8222802152002DDF7B /* iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20BB9F8122802152002DDF7B /* iOS.xcassets */; };
 		20BB9F8422802A61002DDF7B /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8322802A61002DDF7B /* Display.swift */; };
 		20BB9F8622802D8A002DDF7B /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8522802D8A002DDF7B /* Sheet.swift */; };
@@ -130,7 +129,6 @@
 		20EB2505227711E20043EBD2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2503227711E20043EBD2 /* Session.swift */; };
 		20EB2507227713010043EBD2 /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2506227713010043EBD2 /* TestSession.swift */; };
 		20FFDF792282C27900226033 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF782282C27900226033 /* Tools.swift */; };
-		20FFDF7B2282C60F00226033 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7A2282C60F00226033 /* Spinner.swift */; };
 		20FFDF7D2282CD7C00226033 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7C2282CD7C00226033 /* List.swift */; };
 		20FFDF7F2282E04600226033 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7E2282E04600226033 /* Log.swift */; };
 		20FFDF812282E05D00226033 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF802282E05D00226033 /* Commit.swift */; };
@@ -238,7 +236,6 @@
 		20B8327E22703C9200773058 /* tree4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree4; sourceTree = "<group>"; };
 		20B83280227043CF00773058 /* index4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index4; sourceTree = "<group>"; };
 		20B8328222709EA700773058 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
-		20BB9F7F22800BC7002DDF7B /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		20BB9F8122802152002DDF7B /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
 		20BB9F8322802A61002DDF7B /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		20BB9F8522802D8A002DDF7B /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
@@ -264,7 +261,6 @@
 		20EB2503227711E20043EBD2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		20EB2506227713010043EBD2 /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
 		20FFDF782282C27900226033 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
-		20FFDF7A2282C60F00226033 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		20FFDF7C2282CD7C00226033 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20FFDF7E2282E04600226033 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		20FFDF802282E05D00226033 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
@@ -423,7 +419,6 @@
 				20FFDF7E2282E04600226033 /* Log.swift */,
 				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
-				20FFDF7A2282C60F00226033 /* Spinner.swift */,
 				20FFDF782282C27900226033 /* Tools.swift */,
 				209ACF2E2282ACB9001F3523 /* View.swift */,
 				20BB9F8122802152002DDF7B /* iOS.xcassets */,
@@ -450,7 +445,6 @@
 				20948B7722718AEE00B1987D /* Menu.swift */,
 				20EB250122770C790043EBD2 /* Onboard.swift */,
 				20948B73227189B700B1987D /* Sheet.swift */,
-				20BB9F7F22800BC7002DDF7B /* Spinner.swift */,
 				201A413022636E72001C852A /* Tools.swift */,
 				2055EFDB2276C9C000658C04 /* Window.swift */,
 				20B8328222709EA700773058 /* Mac.xcassets */,
@@ -782,7 +776,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20BB9F8022800BC7002DDF7B /* Spinner.swift in Sources */,
 				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
 				20948B7822718AEE00B1987D /* Menu.swift in Sources */,
 				20CB6718226066470064C31C /* Bar.swift in Sources */,
@@ -818,7 +811,6 @@
 				20BB9F8422802A61002DDF7B /* Display.swift in Sources */,
 				20FFDF7F2282E04600226033 /* Log.swift in Sources */,
 				20FFDF832282EF0500226033 /* Credentials.swift in Sources */,
-				20FFDF7B2282C60F00226033 /* Spinner.swift in Sources */,
 				20FFDF792282C27900226033 /* Tools.swift in Sources */,
 				20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */,
 				2048A129225C748900290E54 /* App.swift in Sources */,

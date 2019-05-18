@@ -67,9 +67,9 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
         tools.top = tools.topAnchor.constraint(equalTo: view.bottomAnchor)
         
         if #available(iOS 11.0, *) {
-            location.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+            location.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 18).isActive = true
         } else {
-            location.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+            location.topAnchor.constraint(equalTo: view.topAnchor, constant: 18).isActive = true
         }
         
         if #available(iOS 10.0, *) {

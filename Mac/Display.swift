@@ -4,14 +4,17 @@ class Display: NSView {
     private weak var create: Button!
     private weak var message: Label!
     private weak var image: NSImageView!
-    private weak var spinner: Spinner!
+    private weak var spinner: NSImageView!
     
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         
-        let spinner = Spinner()
+        let spinner = NSImageView()
         spinner.isHidden = true
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.imageScaling = .scaleNone
+        spinner.image = NSImage(named: "loading")
         addSubview(spinner)
         self.spinner = spinner
         
@@ -29,11 +32,15 @@ class Display: NSView {
         addSubview(message)
         self.message = message
 
-        let create = Button.Image(NSApp, action: #selector(App.create))
-        create.off = NSImage(named: "createOff")
-        create.on = NSImage(named: "createOn")
-        create.width.constant = 90
-        create.height.constant = 90
+        let create = Button.Text(NSApp, action: #selector(App.create))
+        create.wantsLayer = true
+        create.layer!.backgroundColor = NSColor.halo.cgColor
+        create.layer!.cornerRadius = 6
+        create.label.stringValue = .local("Display.create")
+        create.label.textColor = .black
+        create.label.font = .systemFont(ofSize: 14, weight: .medium)
+        create.width.constant = 70
+        create.height.constant = 28
         create.isHidden = true
         addSubview(create)
         self.create = create
@@ -51,7 +58,7 @@ class Display: NSView {
         message.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
         create.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        create.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
+        create.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 30).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

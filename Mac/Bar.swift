@@ -4,8 +4,6 @@ class Bar: NSView {
     class Location: Bar {
         override init() {
             super.init()
-            label.font = .systemFont(ofSize: 14, weight: .bold)
-            label.textColor = .black
             label.stringValue = .local("Bar.location")
             background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
@@ -19,8 +17,6 @@ class Bar: NSView {
     class Branch: Bar {
         override init() {
             super.init()
-            label.font = .systemFont(ofSize: 14, weight: .bold)
-            label.textColor = NSColor(white: 1, alpha: 0.8)
             background.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
             background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             label.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -42,12 +38,14 @@ class Bar: NSView {
         let background = NSView()
         background.translatesAutoresizingMaskIntoConstraints = false
         background.wantsLayer = true
-        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.5).cgColor
+        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.6).cgColor
         addSubview(background)
         self.background = background
         
         let label = Label()
         label.lineBreakMode = .byTruncatingMiddle
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 13, weight: .bold)
         addSubview(label)
         self.label = label
         
@@ -79,6 +77,6 @@ class Bar: NSView {
             click()
         }
         drag = 0
-        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.5).cgColor
+        background.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.6).cgColor
     }
 }
