@@ -31,6 +31,13 @@ class Tools: NSView {
         credentials.height.constant = 50
         addSubview(credentials)
         
+        let reset = Button.Image(NSApp, action: #selector(App.preferences))
+        reset.off = NSImage(named: "resetOff")
+        reset.on = NSImage(named: "resetOn")
+        reset.width.constant = 50
+        reset.height.constant = 50
+        addSubview(reset)
+        
         heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         commit.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -41,6 +48,9 @@ class Tools: NSView {
         
         credentials.rightAnchor.constraint(equalTo: log.leftAnchor, constant: -20).isActive = true
         credentials.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        reset.leftAnchor.constraint(equalTo: commit.rightAnchor, constant: 20).isActive = true
+        reset.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

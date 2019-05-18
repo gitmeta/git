@@ -23,7 +23,7 @@ class Display: NSView {
         self.image = image
         
         let message = Label()
-        message.font = .systemFont(ofSize: 14, weight: .medium)
+        message.font = .systemFont(ofSize: 12, weight: .regular)
         message.textColor = NSColor(white: 1, alpha: 0.6)
         message.alignment = .center
         addSubview(message)
