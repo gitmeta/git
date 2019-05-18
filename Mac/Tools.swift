@@ -31,7 +31,7 @@ class Tools: NSView {
         credentials.height.constant = 50
         addSubview(credentials)
         
-        let reset = Button.Image(NSApp, action: #selector(App.preferences))
+        let reset = Button.Image(self, action: #selector(self.reset))
         reset.off = NSImage(named: "resetOff")
         reset.on = NSImage(named: "resetOn")
         reset.width.constant = 50
@@ -55,6 +55,7 @@ class Tools: NSView {
     
     required init?(coder: NSCoder) { return nil }
     @objc func log() { Log() }
+    @objc func reset() { Reset() }
     @objc func commit() {
         if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
             (NSApp as! App).preferences()

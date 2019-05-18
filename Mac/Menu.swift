@@ -6,6 +6,7 @@ class Menu: NSMenu {
     private weak var refresh: NSMenuItem!
     private weak var log: NSMenuItem!
     private weak var commit: NSMenuItem!
+    private weak var reset: NSMenuItem!
     private weak var help: NSMenuItem!
     
     init() {
@@ -68,6 +69,14 @@ class Menu: NSMenu {
                     commit = $0
                     return $0
                 } (NSMenuItem(title: .local("Menu.commit"), action: #selector(Tools.commit), keyEquivalent: "\r")))
+                $0.addItem(NSMenuItem.separator())
+                $0.addItem({
+                    $0.keyEquivalentModifierMask = [.command, .control, .shift]
+                    $0.target = App.window.tools
+                    $0.isEnabled = false
+                    reset = $0
+                    return $0
+                    } (NSMenuItem(title: .local("Menu.reset"), action: #selector(Tools.reset), keyEquivalent: "r")))
                 $0.autoenablesItems = false
                 return $0
             } (NSMenu(title: .local("Menu.project")))
@@ -111,12 +120,14 @@ class Menu: NSMenu {
             refresh.isEnabled = App.repository != nil
             log.isEnabled = App.repository != nil
             commit.isEnabled = App.repository != nil
+            reset.isEnabled = App.repository != nil
         } else {
             preferences.isEnabled = false
             directory.isEnabled = false
             refresh.isEnabled = false
             log.isEnabled = false
             commit.isEnabled = false
+            reset.isEnabled = false
             help.isEnabled = false
         }
         if #available(OSX 10.12.2, *) {

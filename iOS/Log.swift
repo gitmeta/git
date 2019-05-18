@@ -14,7 +14,7 @@ class Log: Sheet {
             circle.isUserInteractionEnabled = false
             circle.translatesAutoresizingMaskIntoConstraints = false
             circle.backgroundColor = .halo
-            circle.layer.cornerRadius = 22
+            circle.layer.cornerRadius = 17
             addSubview(circle)
             
             let number = UILabel()
@@ -28,7 +28,7 @@ class Log: Sheet {
             let author = UILabel()
             author.translatesAutoresizingMaskIntoConstraints = false
             author.text = commit.author.name
-            author.textColor = UIColor(white: 1, alpha: 0.4)
+            author.textColor = UIColor(white: 1, alpha: 0.5)
             author.font = .systemFont(ofSize: 16, weight: .medium)
             addSubview(author)
             
@@ -39,14 +39,14 @@ class Log: Sheet {
                 $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .long : .none
                 return $0.string(from: $1)
             } (DateFormatter(), commit.author.date)
-            date.textColor = UIColor(white: 1, alpha: 0.4)
+            date.textColor = UIColor(white: 1, alpha: 0.5)
             date.font = .systemFont(ofSize: 12, weight: .light)
             addSubview(date)
             
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
             label.text = commit.message
-            label.textColor = UIColor(white: 1, alpha: 0.8)
+            label.textColor = .white
             label.font = .systemFont(ofSize: 16, weight: .light)
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             label.numberOfLines = 0
@@ -55,8 +55,8 @@ class Log: Sheet {
             
             circle.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
             circle.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-            circle.widthAnchor.constraint(equalToConstant: 44).isActive = true
-            circle.heightAnchor.constraint(equalToConstant: 44).isActive = true
+            circle.widthAnchor.constraint(equalToConstant: 34).isActive = true
+            circle.heightAnchor.constraint(equalToConstant: 34).isActive = true
             
             number.centerXAnchor.constraint(equalTo: circle.centerXAnchor).isActive = true
             number.centerYAnchor.constraint(equalTo: circle.centerYAnchor).isActive = true
