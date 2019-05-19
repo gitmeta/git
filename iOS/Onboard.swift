@@ -17,7 +17,7 @@ class Onboard: Sheet {
         done.setTitle(.local("Onboard.done"), for: [])
         done.setTitleColor(.black, for: .normal)
         done.setTitleColor(UIColor(white: 0, alpha: 0.2), for: .highlighted)
-        done.titleLabel!.font = .systemFont(ofSize: 14, weight: .bold)
+        done.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
         addSubview(done)
         
         let label = UILabel()
@@ -77,8 +77,8 @@ class Onboard: Sheet {
         label.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         done.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        done.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        done.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        done.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        done.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
         if #available(iOS 11.0, *) {
             done.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -40).isActive = true

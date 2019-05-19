@@ -127,13 +127,13 @@ class Credentials: Sheet, UITextFieldDelegate {
         emailBackground.leftAnchor.constraint(equalTo: email.leftAnchor, constant: -10).isActive = true
         emailBackground.rightAnchor.constraint(equalTo: email.rightAnchor, constant: 10).isActive = true
         
-        confirm.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        confirm.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        confirm.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        confirm.heightAnchor.constraint(equalToConstant: 32).isActive = true
         confirm.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         confirm.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 50).isActive = true
         
-        cancel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        cancel.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        cancel.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        cancel.heightAnchor.constraint(equalToConstant: 32).isActive = true
         cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 20).isActive = true
         

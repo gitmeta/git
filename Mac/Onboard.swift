@@ -15,15 +15,15 @@ class Onboard: Sheet {
         done.layer!.cornerRadius = 6
         done.label.stringValue = .local("Onboard.done")
         done.label.textColor = .black
-        done.label.font = .systemFont(ofSize: 16, weight: .medium)
-        done.width.constant = 80
-        done.height.constant = 34
+        done.label.font = .systemFont(ofSize: 14, weight: .medium)
+        done.width.constant = 70
+        done.height.constant = 28
         addSubview(done)
         
         let label = Label()
         label.alignment = .center
         label.textColor = .white
-        label.font = .systemFont(ofSize: 18, weight: .light)
+        label.font = .systemFont(ofSize: 16, weight: .light)
         addSubview(label)
         self.label = label
         
