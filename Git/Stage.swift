@@ -39,13 +39,7 @@ class Stage {
         guard FileManager.default.fileExists(atPath: file.path) else { throw Failure.Add.not }
         let hash = Hub.hash.file(file)
         guard !index.entries.contains(where: { $0.url.path == file.path && $0.id == hash.1 }) else { throw Failure.Add.double }
-        let folder = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
-        let location = folder.appendingPathComponent(String(hash.1.dropFirst(2)))
-        if !FileManager.default.fileExists(atPath: location.path) {
-            try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            let compressed = Hub.press.compress(hash.0)
-            try compressed.write(to: location, options: .atomic)
-        }
+        try Hub.add(url, id: hash.1, data: hash.0)
         index.entry(hash.1, url: file)
     }
 }

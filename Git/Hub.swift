@@ -49,6 +49,18 @@ public class Hub {
         }, error: error ?? { _ in })
     }
     
+    class func add(_ url: URL, id: String, data: Data) throws {
+        let folder = url.appendingPathComponent(".git/objects/\(id.prefix(2))")
+        let location = folder.appendingPathComponent(String(id.dropFirst(2)))
+        if !FileManager.default.fileExists(atPath: location.path) {
+            if !FileManager.default.fileExists(atPath: folder.path) {
+                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+            }
+            let compressed = press.compress(data)
+            try compressed.write(to: location, options: .atomic)
+        }
+    }
+    
     private class func repository(_ url: URL) -> Bool {
         var d: ObjCBool = false
         guard FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/refs").path, isDirectory: &d),

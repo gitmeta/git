@@ -53,7 +53,28 @@ class TestPack: XCTestCase {
     
     func testUnpackWithIndex() {
         copy("1")
-        let pack = try! Pack.Index(url, id: "1")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
+        let index = try! Pack.Index(url, id: "1")
+        try? index.unpack()
+        
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/33/5a33ae387dc24f057852fdb92e5abc71bf6b85").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/de/bc85c20f099d7d379d0bbcf3f49643057130ba").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/d4/ad833626ea79708a91e61c461b1c4ed8c5a9a7").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/d2/7de8c22fb0cfdc7d12f8eaf30bcc5343e7f70a").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/8d/c0abf0a0b0d70a0a8680daa69a7df74acfce95").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/7e/6a00e39a6bf673236a1a9dfe10fb84c8cde5e4").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/3e/df2d51b40d48afd71e415bb3df7429d0043909").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/fd/3a92df1d71c4cc25f1d0781977031d3908722d").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/53/93c4bf55b2adf4db6ff8c59b6172b015df2f75").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/50/d65cf62b3d1d7a06d4766693d293ada11f3e8a").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/ce/013625030ba8dba906f756967f9e9ca394464a").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/d3/42d27d93c4e0baac81f2d10f40c10b37ec553b").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/91/77be007bb25b1f12ecc3fd14eb191cd07d69f4").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/6e/d198640569dee5fc505808548729ef230d6a33").path))
+        
+        XCTAssertFalse(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
     }
     
     func testLoadPack() {

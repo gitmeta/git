@@ -49,6 +49,12 @@ class Pack {
                 entries[$0].offset = try parse.number()
             }
         }
+        
+        func unpack() throws {
+            entries.forEach {
+                
+            }
+        }
     }
     
     class func load(_ url: URL) -> [Index] {
