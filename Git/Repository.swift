@@ -39,8 +39,21 @@ public class Repository {
         extract.reset(error ?? { _ in }, done: done ?? { })
     }
     
+    public func unpack(_ error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+        Hub.dispatch.background({ [weak self] in
+            guard let url = self?.url else { return }
+            try Pack.pack(url).forEach {
+                try $0.1.unpack(url)
+                try $0.1.remove(url, id: $0.0)
+            }
+        }, error: error ?? { _ in }, success: done ?? { })
+    }
+    
     public func refresh() { state.refresh() }
     public var branch: String { return (try? Hub.head.reference(url).replacingOccurrences(of: "refs/heads/", with: "")) ?? "" }
+    public var packed: Bool { return (try? FileManager.default.contentsOfDirectory(at:
+            url.appendingPathComponent(".git/objects/pack/"), includingPropertiesForKeys: nil).first(
+                where: { $0.pathExtension == "pack" })) != nil }
     
     private func commits(_ id: String, map: inout[String: Commit]) throws {
         guard map[id] == nil else { return }

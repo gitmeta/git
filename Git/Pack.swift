@@ -41,13 +41,24 @@ class Pack {
         }
     }
     
-    class func load(_ url: URL) -> [Index] {
+    class func index(_ url: URL) throws -> [Index] {
         var result = [Index]()
-        try? FileManager.default.contentsOfDirectory(at:
+        try FileManager.default.contentsOfDirectory(at:
             url.appendingPathComponent(".git/objects/pack"), includingPropertiesForKeys: nil).forEach {
-                if $0.lastPathComponent.hasSuffix(".idx"),
-                    let pack = try? Index(url, id: String($0.lastPathComponent.dropFirst(5).dropLast(4))) {
-                    result.append(pack)
+                if $0.lastPathComponent.hasSuffix(".idx") {
+                    result.append(try Index(url, id: String($0.lastPathComponent.dropFirst(5).dropLast(4))))
+                }
+        }
+        return result
+    }
+    
+    class func pack(_ url: URL) throws -> [String: Pack] {
+        var result = [String: Pack]()
+        try FileManager.default.contentsOfDirectory(at:
+            url.appendingPathComponent(".git/objects/pack"), includingPropertiesForKeys: nil).forEach {
+                if $0.lastPathComponent.hasSuffix(".pack") {
+                    let id = String($0.lastPathComponent.dropFirst(5).dropLast(5))
+                    result[id] = try Pack(url, id: id)
                 }
         }
         return result
@@ -112,13 +123,13 @@ class Pack {
     
     func unpack(_ url: URL) throws {
         try commits.forEach {
-            try Hub.content.add($0.value.0, url: url)
+            try Hub.content.add($0.1.0, url: url)
         }
         try trees.forEach {
-            try Hub.content.add($0.value.0, url: url)
+            try Hub.content.add($0.1.0, url: url)
         }
         try blobs.forEach {
-            try Hub.content.add($0.0, data: $0.1.1, url: url)
+            try Hub.content.add($0.1.1, url: url)
         }
     }
     

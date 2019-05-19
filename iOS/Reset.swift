@@ -14,11 +14,12 @@ class Reset: Sheet {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.attributedText = {
-            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold)]))
-            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .light)]))
+            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold),
+                                                                                     .foregroundColor: UIColor.white]))
+            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .light),
+                                                                                        .foregroundColor: UIColor(white: 1, alpha: 0.6)]))
             return $0
         } (NSMutableAttributedString())
-        label.textColor = .white
         addSubview(label)
         
         let confirm = UIButton()

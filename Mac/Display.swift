@@ -1,7 +1,9 @@
+import Git
 import AppKit
 
 class Display: NSView {
     private weak var create: Button!
+    private weak var unpack: Button!
     private weak var message: Label!
     private weak var image: NSImageView!
     private weak var spinner: NSImageView!
@@ -32,7 +34,7 @@ class Display: NSView {
         addSubview(message)
         self.message = message
 
-        let create = Button.Text(NSApp, action: #selector(App.create))
+        let create = Button.Text(self, action: #selector(createRepository))
         create.wantsLayer = true
         create.layer!.backgroundColor = NSColor.halo.cgColor
         create.layer!.cornerRadius = 6
@@ -44,6 +46,19 @@ class Display: NSView {
         create.isHidden = true
         addSubview(create)
         self.create = create
+        
+        let unpack = Button.Text(self, action: #selector(unpackRepository))
+        unpack.wantsLayer = true
+        unpack.layer!.backgroundColor = NSColor.halo.cgColor
+        unpack.layer!.cornerRadius = 6
+        unpack.label.stringValue = .local("Display.unpack")
+        unpack.label.textColor = .black
+        unpack.label.font = .systemFont(ofSize: 14, weight: .medium)
+        unpack.width.constant = 70
+        unpack.height.constant = 28
+        unpack.isHidden = true
+        addSubview(unpack)
+        self.unpack = unpack
         
         spinner.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         spinner.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
@@ -59,6 +74,9 @@ class Display: NSView {
         
         create.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         create.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 30).isActive = true
+        
+        unpack.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        unpack.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 30).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -69,6 +87,7 @@ class Display: NSView {
         spinner.isHidden = false
         message.stringValue = ""
         create.isHidden = true
+        unpack.isHidden = true
     }
     
     func repository() {
@@ -77,6 +96,7 @@ class Display: NSView {
         spinner.isHidden = true
         message.stringValue = ""
         create.isHidden = true
+        unpack.isHidden = true
     }
     
     func notRepository() {
@@ -85,6 +105,7 @@ class Display: NSView {
         spinner.isHidden = true
         message.stringValue = .local("Display.notRepository")
         create.isHidden = false
+        unpack.isHidden = true
     }
     
     func upToDate() {
@@ -93,5 +114,32 @@ class Display: NSView {
         spinner.isHidden = true
         message.stringValue = .local("Display.upToDate")
         create.isHidden = true
+        unpack.isHidden = true
+    }
+    
+    func packed() {
+        alphaValue = 1
+        image.image = NSImage(named: "error")
+        spinner.isHidden = true
+        message.stringValue = .local("Display.packed")
+        create.isHidden = true
+        unpack.isHidden = false
+    }
+    
+    @objc private func createRepository() {
+        loading()
+        Hub.create(Hub.session.url, error: {
+            App.window.alert.error($0.localizedDescription)
+        }) { App.repository = $0 }
+    }
+    
+    @objc private func unpackRepository() {
+        loading()
+        App.repository?.unpack({
+            App.window.alert.error($0.localizedDescription)
+        }) {
+            App.window.alert.update(.local("Display.unpacked"))
+            App.window.refresh()
+        }
     }
 }

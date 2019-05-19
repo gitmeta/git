@@ -22,7 +22,14 @@ class Content {
         } (Hub.hash.file(file))
     }
     
-    func add(_ id: String, data: Data, url: URL) throws {
+    @discardableResult func add(_ blob: Data, url: URL) throws -> String {
+        return try {
+            try add($0.1, data: $0.0, url: url)
+            return $0.1
+        } (Hub.hash.blob(blob))
+    }
+    
+    private func add(_ id: String, data: Data, url: URL) throws {
         let folder = url.appendingPathComponent(".git/objects/\(id.prefix(2))")
         let location = folder.appendingPathComponent(String(id.dropFirst(2)))
         if !FileManager.default.fileExists(atPath: location.path) {

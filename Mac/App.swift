@@ -3,9 +3,7 @@ import AppKit
 import StoreKit
 
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate {
-    private(set) static var menu: Menu!
-    private(set) static var window: Window!
-    private(set) static var repository: Repository? {
+    static var repository: Repository? {
         didSet {
             window.branch.label.stringValue = repository?.branch ?? ""
             menu.validate()
@@ -13,18 +11,25 @@ import StoreKit
                 window.notRepository()
                 window.list.update([])
             } else {
-                window.refresh()
                 repository!.status = {
-                    if $0.isEmpty {
-                        window.upToDate()
+                    if repository!.packed {
+                        window.packed()
                     } else {
-                        window.repository()
+                        if $0.isEmpty {
+                            window.upToDate()
+                        } else {
+                            window.repository()
+                        }
+                        window.list.update($0)
                     }
-                    window.list.update($0)
                 }
+                window.refresh()
             }
         }
     }
+    
+    private(set) static var menu: Menu!
+    private(set) static var window: Window!
     
     override init() {
         super.init()
@@ -47,12 +52,6 @@ import StoreKit
             self.open()
             self.rate()
         }
-    }
-    
-    @objc func create() {
-        Hub.create(Hub.session.url, error: {
-            App.window.alert.error($0.localizedDescription)
-        }) { App.repository = $0 }
     }
     
     @objc func panel() {

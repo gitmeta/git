@@ -149,6 +149,17 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         }) { }
     }
     
+    func packed() {
+        tools.top.constant = 0
+        NSAnimationContext.runAnimationGroup({ context in
+            context.duration = 0.6
+            context.allowsImplicitAnimation = true
+            contentView!.layoutSubtreeIfNeeded()
+            list.alphaValue = 0
+            display.packed()
+        }) { }
+    }
+    
     @objc func refresh() {
         App.repository?.refresh()
         tools.top.constant = 0

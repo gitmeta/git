@@ -12,11 +12,12 @@ class Reset: Sheet {
         
         let label = Label()
         label.attributedStringValue = {
-            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: NSFont.systemFont(ofSize: 16, weight: .bold)]))
-            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .light)]))
+            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: NSFont.systemFont(ofSize: 16, weight: .bold),
+                                                                                     .foregroundColor: NSColor.white]))
+            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .light),
+                                                                                        .foregroundColor: NSColor(white: 1, alpha: 0.6)]))
             return $0
         } (NSMutableAttributedString())
-        label.textColor = .white
         addSubview(label)
         
         let confirm = Button.Text(self, action: #selector(self.confirm))
