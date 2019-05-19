@@ -72,7 +72,6 @@ class Pack {
         parse.discard(4)
         try (0 ..< (try parse.number())).forEach { _ in
             let index = parse.index
-            print("index \(index)")
             let byte = Int(try parse.byte())
             guard let category = Category(rawValue: (byte >> 4) & 7) else { throw Failure.Pack.object }
             var expected = byte & 15
@@ -85,9 +84,7 @@ class Pack {
 
             switch category {
             case .deltaRef: ref = try parse.hash()
-            case .deltaOfs:
-                ofs = index - (try parse.offset())
-                print("ofs \(ofs)")
+            case .deltaOfs: ofs = index - (try parse.offset())
             default: break
             }
  
@@ -113,7 +110,7 @@ class Pack {
         guard parse.data.count - parse.index == 20 else { throw Failure.Pack.invalidPack }
     }
     
-    func unpack(_ url: URL, id: String) throws {
+    func unpack(_ url: URL) throws {
         try commits.forEach {
             try Hub.content.add($0.value.0, url: url)
         }
@@ -125,6 +122,11 @@ class Pack {
         }
     }
     
+    func remove(_ url: URL, id: String) throws {
+        try FileManager.default.removeItem(at: url.appendingPathComponent(".git/objects/pack/pack-\(id).idx"))
+        try FileManager.default.removeItem(at: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
+    }
+    
     private func commit(_ data: Data, index: Int) throws {
         let commit = try Commit(data)
         commits[Hub.hash.commit(commit.serial).1] = (commit, index, data)
@@ -132,7 +134,6 @@ class Pack {
     
     private func tree(_ data: Data, index: Int) throws {
         trees[Hub.hash.tree(data).1] = (try Tree(data), index, data)
-        print("tree id \(Hub.hash.tree(data).1)")
     }
     
     private func blob(_ data: Data, index: Int) {

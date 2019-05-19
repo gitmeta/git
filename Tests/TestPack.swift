@@ -53,7 +53,7 @@ class TestPack: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
         let pack = try? Pack(url, id: "1")
-        try? pack?.unpack(url, id: "1")
+        try? pack?.unpack(url)
         
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/33/5a33ae387dc24f057852fdb92e5abc71bf6b85").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/de/bc85c20f099d7d379d0bbcf3f49643057130ba").path))
@@ -69,7 +69,14 @@ class TestPack: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/d3/42d27d93c4e0baac81f2d10f40c10b37ec553b").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/91/77be007bb25b1f12ecc3fd14eb191cd07d69f4").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/6e/d198640569dee5fc505808548729ef230d6a33").path))
-        
+    }
+    
+    func testRemove() {
+        copy("1")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
+        let pack = try? Pack(url, id: "1")
+        try? pack?.remove(url, id: "1")
         XCTAssertFalse(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
         XCTAssertFalse(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
     }
