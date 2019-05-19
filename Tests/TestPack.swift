@@ -52,8 +52,8 @@ class TestPack: XCTestCase {
         copy("1")
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
-        let pack = try! Pack(url, id: "1")
-        try? pack.unpack(url, id: "1")
+        let pack = try? Pack(url, id: "1")
+        try? pack?.unpack(url, id: "1")
         
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/33/5a33ae387dc24f057852fdb92e5abc71bf6b85").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/de/bc85c20f099d7d379d0bbcf3f49643057130ba").path))
@@ -76,10 +76,10 @@ class TestPack: XCTestCase {
     
     func testLoadPack0() {
         copy("0")
-        let pack = try! Pack(url, id: "0")
-        XCTAssertEqual(3, pack.commits.count)
-        XCTAssertEqual(8, pack.trees.count)
-        XCTAssertEqual(4, pack.blobs.count)
+        let pack = try? Pack(url, id: "0")
+        XCTAssertEqual(3, pack?.commits.count)
+        XCTAssertEqual(10, pack?.trees.count)
+        XCTAssertEqual(4, pack?.blobs.count)
     }
     
     func testLoadPack1() {
@@ -94,7 +94,6 @@ class TestPack: XCTestCase {
         copy("1")
         let pack = try! Pack(url, id: "1")
         let tree = pack.trees.first(where: { $0.key == "50d65cf62b3d1d7a06d4766693d293ada11f3e8a" })!.value.0
-        debugPrint(String(decoding: pack.trees.first(where: { $0.key == "50d65cf62b3d1d7a06d4766693d293ada11f3e8a" })!.value.1, as: UTF8.self))
         XCTAssertEqual("50d65cf62b3d1d7a06d4766693d293ada11f3e8a", Hub.hash.tree(tree.serial).1)
     }
     
@@ -113,7 +112,7 @@ tree 9b8166fc80d0f0fe9192d4bf1dbaa87f194e012f\nauthor vauxhall <zero.griffin@gma
 # test
 Test
 
-""", String(decoding: pack.blobs.first!.value, as: UTF8.self))
+""", String(decoding: pack.blobs.first!.value.1, as: UTF8.self))
     }
     
     func testLoadFetch1() {

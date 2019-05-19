@@ -53,11 +53,12 @@ class Pack {
         return result
     }
     
-    private(set) var commits = [String: (Commit, Data)]()
-    private(set) var trees = [String: (Tree, Data)]()
-    private(set) var blobs = [String: Data]()
+    private(set) var commits = [String: (Commit, Int, Data)]()
+    private(set) var trees = [String: (Tree, Int, Data)]()
+    private(set) var blobs = [String: (Int, Data)]()
     private(set) var tags = [String]()
-    private var deltas = [(String, Data)]()
+    private var deltas = [(String, Data, Int)]()
+    private var offsets = [(Int, Data, Int)]()
     
     convenience init(_ url: URL, id: String) throws {
         guard let data = try? Data(contentsOf: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
@@ -70,7 +71,8 @@ class Pack {
         try parse.discard("PACK")
         parse.discard(4)
         try (0 ..< (try parse.number())).forEach { _ in
-            print("index \(parse.index)")
+            let index = parse.index
+            print("index \(index)")
             let byte = Int(try parse.byte())
             guard let category = Category(rawValue: (byte >> 4) & 7) else { throw Failure.Pack.object }
             var expected = byte & 15
@@ -84,34 +86,29 @@ class Pack {
             switch category {
             case .deltaRef: ref = try parse.hash()
             case .deltaOfs:
-                var byte = 0
-                var result = parse.index
-                var shift = 0
-                repeat {
-                    byte = Int(try parse.byte())
-                    result -= (byte & 0x7f) << shift
-                    shift += 7
-                } while byte & 0x80 == 128
-                
-                print("offset: \(result)")
+                ofs = index - (try parse.offset())
+                print("ofs \(ofs)")
             default: break
             }
  
             let content = Hub.press.unpack(expected, data: parse.data.subdata(in: parse.index ..< parse.data.count))
             parse.discard(content.0)
-            
+
             switch category {
-            case .commit: try commit(content.1)
-            case .tree: try tree(content.1)
-            case .blob: blob(content.1)
+            case .commit: try commit(content.1, index: index)
+            case .tree: try tree(content.1, index: index)
+            case .blob: blob(content.1, index: index)
             case .tag: tag(content.1)
-            case .deltaRef: deltas.append((ref, content.1))
-            case .deltaOfs: delta(content.1, ofs: ofs)
+            case .deltaRef: deltas.append((ref, content.1, index))
+            case .deltaOfs: offsets.append((ofs, content.1, index))
             case .reserved: throw Failure.Pack.invalidPack
             }
         }
         try deltas.forEach {
-            try delta($0.1, ref: $0.0)
+            try delta($0.0, data: $0.1, index: $0.2)
+        }
+        try offsets.forEach {
+            try delta($0.0, data: $0.1, index: $0.2)
         }
         guard parse.data.count - parse.index == 20 else { throw Failure.Pack.invalidPack }
     }
@@ -121,51 +118,58 @@ class Pack {
             try Hub.content.add($0.value.0, url: url)
         }
         try trees.forEach {
-            print("adding \($0.value.0) \($0.key)")
             try Hub.content.add($0.value.0, url: url)
         }
         try blobs.forEach {
-            try Hub.content.add($0.0, data: $0.1, url: url)
+            try Hub.content.add($0.0, data: $0.1.1, url: url)
         }
     }
     
-    private func commit(_ data: Data) throws {
+    private func commit(_ data: Data, index: Int) throws {
         let commit = try Commit(data)
-        commits[Hub.hash.commit(commit.serial).1] = (commit, data)
+        commits[Hub.hash.commit(commit.serial).1] = (commit, index, data)
     }
     
-    private func tree(_ data: Data) throws {
-        trees[Hub.hash.tree(data).1] = (try Tree(data), data)
+    private func tree(_ data: Data, index: Int) throws {
+        trees[Hub.hash.tree(data).1] = (try Tree(data), index, data)
         print("tree id \(Hub.hash.tree(data).1)")
     }
     
-    private func blob(_ data: Data) {
-        blobs[Hub.hash.blob(data).1] = data
+    private func blob(_ data: Data, index: Int) {
+        blobs[Hub.hash.blob(data).1] = (index, data)
     }
     
     private func tag(_ data: Data) {
         tags.append(String(decoding: data, as: UTF8.self))
     }
     
-    private func delta(_ data: Data, ref: String) throws {
+    private func delta(_ ref: String, data: Data, index: Int) throws {
+        if let commit = commits.first(where: { $0.0 == ref })?.1.2 {
+            try delta(.commit, base: commit, data: data, index: index)
+        } else if let tree = trees.first(where: { $0.0 == ref })?.1.2 {
+            try delta(.tree, base: tree, data: data, index: index)
+        } else if let blob = blobs.first(where: { $0.0 == ref })?.1.1 {
+            try delta(.blob, base: blob, data: data, index: index)
+        } else {
+            throw Failure.Pack.invalidDelta
+        }
+    }
+    
+    private func delta(_ ofs: Int, data: Data, index: Int) throws {
+        if let commit = commits.first(where: { $0.1.1 == ofs })?.1.2 {
+            try delta(.commit, base: commit, data: data, index: index)
+        } else if let tree = trees.first(where: { $0.1.1 == ofs })?.1.2 {
+            try delta(.tree, base: tree, data: data, index: index)
+        } else if let blob = blobs.first(where: { $0.1.0 == ofs })?.1.1 {
+            try delta(.blob, base: blob, data: data, index: index)
+        } else {
+            throw Failure.Pack.invalidDelta
+        }
+    }
+    
+    private func delta(_ category: Category, base: Data, data: Data, index: Int) throws {
         let parse = Parse(data)
         var result = Data()
-        var category = Category.deltaRef
-        let base = try {
-            if let commit = commits.first(where: { $0.key == ref })?.1.1 {
-                category = .commit
-                return commit
-            }
-            if let tree = trees.first(where: { $0.key == ref })?.1.1 {
-                category = .tree
-                return tree
-            }
-            if let blob = blobs.first(where: { $0.key == ref })?.1 {
-                category = .blob
-                return blob
-            }
-            throw Failure.Pack.invalidDelta
-        } () as Data
         guard try parse.size() == base.count else { throw Failure.Pack.invalidDelta }
         let expected = try parse.size()
         while parse.index < data.count {
@@ -191,12 +195,10 @@ class Pack {
         
         guard result.count == expected else { throw Failure.Pack.invalidDelta }
         switch category {
-        case .commit: try commit(result)
-        case .tree: try tree(result)
-        case .blob: blob(result)
+        case .commit: try commit(result, index: index)
+        case .tree: try tree(result, index: index)
+        case .blob: blob(result, index: index)
         default: throw Failure.Pack.invalidDelta
         }
     }
-    
-    private func delta(_ data: Data, ofs: Int) { }
 }

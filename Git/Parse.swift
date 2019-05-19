@@ -97,6 +97,22 @@ class Parse {
         return result
     }
     
+    func offset() throws -> Int {
+        var byte = 0
+        var result = 0
+        var times = 0
+        repeat {
+            byte = Int(try self.byte())
+            result <<= times * 7
+            result += (byte & 0x7f)
+            if times >= 1 {
+                result += Int(pow(2, (7 * Double(times))))
+            }
+            times += 1
+        } while byte >= 128
+        return result
+    }
+    
     func advance(_ bytes: Int) throws -> Data {
         let index = self.index + bytes
         guard data.count >= index else { throw Failure.Parsing.malformed }
