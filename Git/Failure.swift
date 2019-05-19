@@ -27,7 +27,6 @@ public struct Failure: LocalizedError {
     }
     
     public struct Add {
-        public static let double = Failure("File has already been added.")
         public static let not = Failure("File does not exists.")
         public static let outside = Failure("File is not in project's directory.")
     }

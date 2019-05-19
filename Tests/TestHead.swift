@@ -17,8 +17,8 @@ class TestHead: XCTestCase {
     
     func testHEAD() {
         let expect = expectation(description: "")
-        Hub.create(url) {
-            XCTAssertEqual("refs/heads/master", $0.HEAD)
+        Hub.create(url) { _ in
+            XCTAssertEqual("refs/heads/master", try? Hub.head.reference(self.url))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -26,8 +26,8 @@ class TestHead: XCTestCase {
     
     func testHeadNone() {
         let expect = expectation(description: "")
-        Hub.create(url) {
-            XCTAssertNil($0.head)
+        Hub.create(url) { _ in
+            XCTAssertNil(try? Hub.head.commit(self.url))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -35,8 +35,8 @@ class TestHead: XCTestCase {
     
     func testTreeNone() {
         let expect = expectation(description: "")
-        Hub.create(url) {
-            XCTAssertNil($0.tree)
+        Hub.create(url) { _ in
+            XCTAssertNil(try? Hub.head.tree(self.url))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -47,18 +47,21 @@ class TestHead: XCTestCase {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world".utf8).write(to: file)
-        Hub.create(url) { repo in
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
             Hub.session.name = "ab"
             Hub.session.email = "cd"
-            repo.commit([file], message: "hello world\n") {
-                XCTAssertEqual("ab", repo.head?.author.name)
-                XCTAssertEqual("ab", repo.head?.committer.name)
-                XCTAssertEqual("cd", repo.head?.author.email)
-                XCTAssertEqual("cd", repo.head?.committer.email)
-                XCTAssertLessThan(date, repo.head!.author.date)
-                XCTAssertLessThan(date, repo.head!.committer.date)
-                XCTAssertEqual("hello world\n", repo.head?.message)
-                XCTAssertEqual("007a8ffce38213667b95957dc505ef30dac0248d", repo.head?.tree)
+            repository.commit([file], message: "hello world\n") {
+                let commit = try? Hub.head.commit(self.url)
+                XCTAssertEqual("ab", commit?.author.name)
+                XCTAssertEqual("ab", commit?.committer.name)
+                XCTAssertEqual("cd", commit?.author.email)
+                XCTAssertEqual("cd", commit?.committer.email)
+                XCTAssertLessThan(date, commit!.author.date)
+                XCTAssertLessThan(date, commit!.committer.date)
+                XCTAssertEqual("hello world\n", commit?.message)
+                XCTAssertEqual("007a8ffce38213667b95957dc505ef30dac0248d", commit?.tree)
                 expect.fulfill()
             }
         }
@@ -75,7 +78,7 @@ class TestHead: XCTestCase {
             Hub.session.name = "ab"
             Hub.session.email = "cd"
             repository.commit([file], message: "hello world") {
-                let tree = repository.tree
+                let tree = try? Hub.head.tree(self.url)
                 XCTAssertEqual(1, tree?.items.count)
                 XCTAssertNotNil(tree?.items.first as? Tree.Blob)
                 XCTAssertEqual(file, tree?.items.first?.url)

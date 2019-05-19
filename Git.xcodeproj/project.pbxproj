@@ -136,6 +136,10 @@
 		20FFDF852282EF3C00226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7522718A2100B1987D /* Credentials.swift */; };
 		CE7B8BF02291431700396AB1 /* pack-1.pack in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEE2291431700396AB1 /* pack-1.pack */; };
 		CE7B8BF12291431700396AB1 /* pack-1.idx in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEF2291431700396AB1 /* pack-1.idx */; };
+		CE7B8BF322917A1C00396AB1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF222917A1C00396AB1 /* Content.swift */; };
+		CE7B8BF422917A1C00396AB1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF222917A1C00396AB1 /* Content.swift */; };
+		CE7B8BF622917ACA00396AB1 /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF522917ACA00396AB1 /* Head.swift */; };
+		CE7B8BF722917ACA00396AB1 /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF522917ACA00396AB1 /* Head.swift */; };
 		CE89826022904EB300E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE89825F22904EB300E9F41F /* Reset.swift */; };
 		CE8982622290560000E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8982612290560000E9F41F /* Reset.swift */; };
 		CED676C6228E820E009D6ADC /* TestReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C5228E820E009D6ADC /* TestReset.swift */; };
@@ -271,6 +275,8 @@
 		20FFDF822282EF0500226033 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		CE7B8BEE2291431700396AB1 /* pack-1.pack */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.pack"; sourceTree = "<group>"; };
 		CE7B8BEF2291431700396AB1 /* pack-1.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.idx"; sourceTree = "<group>"; };
+		CE7B8BF222917A1C00396AB1 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
+		CE7B8BF522917ACA00396AB1 /* Head.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Head.swift; sourceTree = "<group>"; };
 		CE89825F22904EB300E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
 		CE8982612290560000E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
 		CED676C5228E820E009D6ADC /* TestReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReset.swift; sourceTree = "<group>"; };
@@ -323,11 +329,13 @@
 			isa = PBXGroup;
 			children = (
 				2048A0CF225C744400290E54 /* Commit.swift */,
+				CE7B8BF222917A1C00396AB1 /* Content.swift */,
 				2073D8762267283E00631BCB /* Dispatch.swift */,
 				CED676C7228E840C009D6ADC /* Extract.swift */,
 				2048A0CC225C744400290E54 /* Failure.swift */,
 				20C21CCB2288113C0038466A /* Fetch.swift */,
 				2048A0CD225C744400290E54 /* Hash.swift */,
+				CE7B8BF522917ACA00396AB1 /* Head.swift */,
 				2048A0D5225C744400290E54 /* Hub.swift */,
 				20671BEA226C79E900A74B7E /* Ignore.swift */,
 				2048A0CE225C744400290E54 /* Index.swift */,
@@ -708,12 +716,14 @@
 			files = (
 				2048A0E4225C744400290E54 /* Repository.swift in Sources */,
 				2048A0DE225C744400290E54 /* Commit.swift in Sources */,
+				CE7B8BF322917A1C00396AB1 /* Content.swift in Sources */,
 				2048A0D7225C744400290E54 /* Failure.swift in Sources */,
 				20710E082286CA6A00104F72 /* Rest.swift in Sources */,
 				2048A0E0225C744400290E54 /* Serial.swift in Sources */,
 				2048A0EA225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DA225C744400290E54 /* Hash.swift in Sources */,
 				CED676C8228E840C009D6ADC /* Extract.swift in Sources */,
+				CE7B8BF622917ACA00396AB1 /* Head.swift in Sources */,
 				20948B7B2271986000B1987D /* User.swift in Sources */,
 				2048A0E8225C744400290E54 /* Status.swift in Sources */,
 				2048A0E6225C744400290E54 /* Tree.swift in Sources */,
@@ -735,12 +745,14 @@
 			files = (
 				2048A0E5225C744400290E54 /* Repository.swift in Sources */,
 				2048A0DF225C744400290E54 /* Commit.swift in Sources */,
+				CE7B8BF422917A1C00396AB1 /* Content.swift in Sources */,
 				2048A0D9225C744400290E54 /* Failure.swift in Sources */,
 				20710E092286CA6A00104F72 /* Rest.swift in Sources */,
 				2048A0E1225C744400290E54 /* Serial.swift in Sources */,
 				2048A0EB225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DB225C744400290E54 /* Hash.swift in Sources */,
 				CED676C9228E840C009D6ADC /* Extract.swift in Sources */,
+				CE7B8BF722917ACA00396AB1 /* Head.swift in Sources */,
 				20948B7C2271986100B1987D /* User.swift in Sources */,
 				2048A0E9225C744400290E54 /* Status.swift in Sources */,
 				2048A0E7225C744400290E54 /* Tree.swift in Sources */,

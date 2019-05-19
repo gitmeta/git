@@ -27,10 +27,8 @@ class TestPack: XCTestCase {
         let pack = try! Pack.Index(url, id: "0")
         XCTAssertEqual(17, pack.entries.count)
         XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", pack.entries.first?.id)
-        XCTAssertEqual("2a9e0f4d", pack.entries.first?.crc)
         XCTAssertEqual(1185, pack.entries.first?.offset)
         XCTAssertEqual("fe3b1fe02314ddad0ff0b5c86c967c87139cbd8b", pack.entries.last?.id)
-        XCTAssertEqual("d1bc91b1", pack.entries.last?.crc)
         XCTAssertEqual(895, pack.entries.last?.offset)
     }
     
@@ -39,7 +37,6 @@ class TestPack: XCTestCase {
         let pack = try! Pack.Index(url, id: "1")
         XCTAssertEqual(14, pack.entries.count)
         XCTAssertEqual("335a33ae387dc24f057852fdb92e5abc71bf6b85", pack.entries.first?.id)
-        XCTAssertEqual("54524f1a", pack.entries.first?.crc)
         XCTAssertEqual(12, pack.entries.first?.offset)
     }
     
@@ -55,8 +52,8 @@ class TestPack: XCTestCase {
         copy("1")
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
-        let index = try! Pack.Index(url, id: "1")
-        try? index.unpack()
+        let pack = try! Pack(url, id: "1")
+        try? pack.unpack(url, id: "1")
         
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/33/5a33ae387dc24f057852fdb92e5abc71bf6b85").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/de/bc85c20f099d7d379d0bbcf3f49643057130ba").path))
@@ -77,11 +74,19 @@ class TestPack: XCTestCase {
         XCTAssertFalse(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
     }
     
-    func testLoadPack() {
+    func testLoadPack0() {
         copy("0")
         let pack = try! Pack(url, id: "0")
         XCTAssertEqual(3, pack.commits.count)
         XCTAssertEqual(8, pack.trees.count)
+        XCTAssertEqual(4, pack.blobs.count)
+    }
+    
+    func testLoadPack1() {
+        copy("1")
+        let pack = try! Pack(url, id: "1")
+        XCTAssertEqual(5, pack.commits.count)
+        XCTAssertEqual(3, pack.trees.count)
         XCTAssertEqual(4, pack.blobs.count)
     }
     

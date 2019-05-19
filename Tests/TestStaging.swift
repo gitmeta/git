@@ -128,7 +128,7 @@ class TestStaging: XCTestCase {
             repository.commit([file1, file2], message: "hello") {
                 try! Data("hello world updated\n".utf8).write(to: file1)
                 repository.commit([file1], message: "hello") {
-                    XCTAssertEqual(2, repository.tree?.items.count)
+                    XCTAssertEqual(2, (try? Hub.head.tree(self.url))?.items.count)
                     expect.fulfill()
                 }
             }

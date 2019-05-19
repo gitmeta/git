@@ -40,7 +40,7 @@ class State {
         let contents = self.contents
         let index = Index(url)
         let pack = Pack.load(url)
-        var tree = repository?.tree?.list(url) ?? []
+        var tree = (try? Hub.head.tree(url))?.list(url) ?? []
         return contents.reduce(into: [(URL, Status)]()) { result, url in
             if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
                 let hash = Hub.hash.file(url).1

@@ -21,8 +21,8 @@ public class Repository {
     public func log(_ result: @escaping(([Commit]) -> Void)) {
         Hub.dispatch.background({ [weak self] in
             var result = [String: Commit]()
-            if let id = self?.headId {
-                self?.commits(id, map: &result)
+            if let url = self?.url, let id = try? Hub.head.id(url) {
+                try? self?.commits(id, map: &result)
             }
             return result.values.sorted(by: {
                 if $0.author.date > $1.author.date {
@@ -40,47 +40,14 @@ public class Repository {
     }
     
     public func refresh() { state.refresh() }
+    public var branch: String { return (try? Hub.head.reference(url).replacingOccurrences(of: "refs/heads/", with: "")) ?? "" }
     
-    public var branch: String {
-        return HEAD.replacingOccurrences(of: "refs/heads/", with: "")
-    }
-    
-    func item(_ id: String) -> Data? {
-        guard let result = try? Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))
-        else { return nil }
-        return Hub.press.decompress(result)
-    }
-    
-    var HEAD: String {
-        return String(String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
-            UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")
-    }
-    
-    var headId: String? {
-        guard let data = try? Data(contentsOf: url.appendingPathComponent(".git/" + HEAD)) else { return nil }
-        return String(decoding: data, as: UTF8.self).replacingOccurrences(of: "\n", with: "")
-    }
-    
-    var head: Commit? {
-        guard let id = self.headId else { return nil }
-        return commit(id)
-    }
-    
-    var tree: Tree? {
-        guard let head = self.head else { return nil }
-        return try? Tree(head.tree, url: url)
-    }
-    
-    private func commits(_ id: String, map: inout[String: Commit]) {
-        guard map[id] == nil, let item = commit(id) else { return }
+    private func commits(_ id: String, map: inout[String: Commit]) throws {
+        guard map[id] == nil else { return }
+        let item = try Commit(try Hub.content.get(id, url: url))
         map[id] = item
-        item.parent.forEach {
-            commits($0, map: &map)
+        try item.parent.forEach {
+            try commits($0, map: &map)
         }
-    }
-    
-    private func commit(_ id: String) -> Commit? {
-        guard let result = item(id) else { return nil }
-        return try? Commit(result)
     }
 }

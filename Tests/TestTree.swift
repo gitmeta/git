@@ -47,8 +47,7 @@ class TestTree: XCTestCase {
     func testSave() {
         let file = url.appendingPathComponent("myfile.txt")
         try! Data("hello world\n".utf8).write(to: file)
-        XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15",
-                       Tree(url, ignore: ignore, update: [file], entries: []).save(url))
+        XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", try? Tree(url, ignore: ignore, update: [file], entries: []).save(url))
         let object = try? Data(contentsOf: url.appendingPathComponent(
             ".git/objects/84/b5f2f96994db6b67f8a0ee508b1ebb8b633c15"))
         XCTAssertNotNil(object)
@@ -77,8 +76,7 @@ class TestTree: XCTestCase {
         try! FileManager.default.createDirectory(at: sub, withIntermediateDirectories: true)
         let file = sub.appendingPathComponent("another.txt")
         try! Data("lorem ipsum".utf8).write(to: file)
-        XCTAssertEqual("869b9c7ef21df1511a4a1cded69b0b011fe0e8c3",
-                       Tree(url, ignore: ignore, update: [file], entries: []).save(url))
+        XCTAssertEqual("869b9c7ef21df1511a4a1cded69b0b011fe0e8c3", try? Tree(url, ignore: ignore, update: [file], entries: []).save(url))
         let object = try? Data(contentsOf: url.appendingPathComponent(
             ".git/objects/86/9b9c7ef21df1511a4a1cded69b0b011fe0e8c3"))
         XCTAssertNotNil(object)
@@ -107,7 +105,7 @@ class TestTree: XCTestCase {
         let file = sub.appendingPathComponent("another.txt")
         try! Data("lorem ipsum\n".utf8).write(to: file)
         var tree = Tree(url, ignore: ignore, update: [file], entries: [])
-        let id = tree.save(url)
+        let id = try! tree.save(url)
         tree = try! Tree(id, url: url)
         XCTAssertNotNil(tree.list(url).first(where: { $0.url == file }))
     }

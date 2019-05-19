@@ -13,7 +13,7 @@ class Stage {
             let index = Index(url) ?? Index()
             let ignore = Ignore(url)
             let tree = Tree(url, ignore: ignore, update: files, entries: index.entries)
-            let treeId = tree.save(url)
+            let treeId = try tree.save(url)
             try files.forEach {
                 guard !ignore.url($0) else { throw Failure.Commit.ignored }
                 try? self?.add($0, index: index)
@@ -25,10 +25,10 @@ class Stage {
             commit.committer.email = Hub.session.email
             commit.tree = treeId
             commit.message = message
-            if let parent = self?.repository?.headId {
+            if let parent = try? Hub.head.id(url) {
                 commit.parent.append(parent)
             }
-            commit.save(url)
+            try commit.save(url)
             index.save(url)
         }, error: error, success: done)
     }
@@ -37,9 +37,7 @@ class Stage {
         guard let url = repository?.url else { return }
         guard file.path.contains(url.path) else { throw Failure.Add.outside }
         guard FileManager.default.fileExists(atPath: file.path) else { throw Failure.Add.not }
-        let hash = Hub.hash.file(file)
-        guard !index.entries.contains(where: { $0.url.path == file.path && $0.id == hash.1 }) else { throw Failure.Add.double }
-        try Hub.add(url, id: hash.1, data: hash.0)
-        index.entry(hash.1, url: file)
+        let hash = try Hub.content.add(file, url: url)
+        index.entry(hash, url: file)
     }
 }

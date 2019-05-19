@@ -6,6 +6,8 @@ public class Hub {
     static let dispatch = Dispatch()
     static let hash = Hash()
     static let press = Press()
+    static let content = Content()
+    static let head = Head()
     
     public class func repository(_ url: URL, result: @escaping((Bool) -> Void)) {
         dispatch.background({ repository(url) }, success: result)
@@ -47,18 +49,6 @@ public class Hub {
                 }, error: error ?? { _ in })
             }
         }, error: error ?? { _ in })
-    }
-    
-    class func add(_ url: URL, id: String, data: Data) throws {
-        let folder = url.appendingPathComponent(".git/objects/\(id.prefix(2))")
-        let location = folder.appendingPathComponent(String(id.dropFirst(2)))
-        if !FileManager.default.fileExists(atPath: location.path) {
-            if !FileManager.default.fileExists(atPath: folder.path) {
-                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-            }
-            let compressed = press.compress(data)
-            try compressed.write(to: location, options: .atomic)
-        }
     }
     
     private class func repository(_ url: URL) -> Bool {

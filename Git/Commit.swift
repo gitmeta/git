@@ -46,16 +46,12 @@ public class Commit {
         return result
     }
     
-    @discardableResult func save(_ url: URL) -> String {
-        let hash = Hub.hash.commit(serial)
-        let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
-        try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try! Hub.press.compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
-                                            options: .atomic)
+    @discardableResult func save(_ url: URL) throws -> String {
+        let hash = try Hub.content.add(self, url: url)
         let head = String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as: UTF8.self).dropFirst(5)
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/" + head).deletingLastPathComponent(),
                                                  withIntermediateDirectories: true)
-        try! Data(hash.1.utf8).write(to: url.appendingPathComponent(".git/" + head), options: .atomic)
-        return hash.1
+        try! Data(hash.utf8).write(to: url.appendingPathComponent(".git/" + head), options: .atomic)
+        return hash
     }
 }

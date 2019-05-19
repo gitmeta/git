@@ -34,8 +34,7 @@ class Tree {
     private(set) var children = [Sub: Tree]()
     
     convenience init(_ id: String, url: URL, trail: URL? = nil) throws {
-        try self.init(Hub.press.decompress(try Data(contentsOf:
-            url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))), url: trail ?? url)
+        try self.init(Hub.content.get(id, url: url), url: trail ?? url)
     }
     
     convenience init(_ data: Data, url: URL) throws {
@@ -57,7 +56,7 @@ class Tree {
                 if !child.items.isEmpty {
                     let item = Sub()
                     item.url = content
-                    item.id = child.hash.1
+                    item.id = Hub.hash.tree(child.serial).1
                     items.append(item)
                     children[item] = child
                 }
@@ -90,24 +89,18 @@ class Tree {
         return items.flatMap { $0 is Blob ? [$0] : (try? Tree($0.id, url: url, trail: $0.url))?.list(url) ?? [] }
     }
     
-    @discardableResult func save(_ url: URL) -> String {
-        children.values.forEach({ $0.save(url) })
-        let hash = self.hash
-        let directory = url.appendingPathComponent(".git/objects/\(hash.1.prefix(2))")
-        try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try! Hub.press.compress(hash.0).write(to: directory.appendingPathComponent(String(hash.1.dropFirst(2))),
-                                            options: .atomic)
-        return hash.1
+    @discardableResult func save(_ url: URL) throws -> String {
+        try children.values.forEach({ try $0.save(url) })
+        return try Hub.content.add(self, url: url)
     }
     
-    private var hash: (Data, String) {
+    var serial: Data {
         let serial = Serial()
-        items.sorted(by:
-        { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending }).forEach {
+        items.sorted(by: { $0.url.path.compare($1.url.path, options: .caseInsensitive) != .orderedDescending }).forEach {
             serial.string($0.category.rawValue + " ")
             serial.nulled($0.url.lastPathComponent)
             serial.hex($0.id)
         }
-        return Hub.hash.tree(serial.data)
+        return serial.data
     }
 }

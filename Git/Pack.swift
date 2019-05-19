@@ -14,27 +14,19 @@ class Pack {
     class Index {
         struct Entry {
             fileprivate(set) var id = ""
-            fileprivate(set) var crc = ""
             fileprivate(set) var offset = 0
         }
         
         private(set) var entries = [Entry]()
-        private let url: URL
-        private let id: String
-        private let pack: Data
         
         init(_ url: URL, id: String) throws {
             guard let parse = Parse(url.appendingPathComponent(".git/objects/pack/pack-\(id).idx")) else { throw Failure.Pack.indexNotFound }
-            guard let pack = try? Data(contentsOf: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack")) else { throw Failure.Pack.packNotFound }
             guard
                 try parse.byte() == 255,
                 try parse.byte() == 116,
                 try parse.byte() == 79,
                 try parse.byte() == 99
             else { throw Failure.Pack.invalidIndex }
-            self.url = url
-            self.id = id
-            self.pack = pack
             parse.discard(1024)
             let count = try parse.number()
             try (0 ..< count).forEach { _ in
@@ -42,17 +34,9 @@ class Pack {
                 entry.id = try parse.hash()
                 entries.append(entry)
             }
-            try (0 ..< count).forEach {
-                entries[$0].crc = try parse.crc()
-            }
+            parse.discard(4 * count)
             try (0 ..< count).forEach {
                 entries[$0].offset = try parse.number()
-            }
-        }
-        
-        func unpack() throws {
-            entries.forEach {
-                
             }
         }
     }
@@ -119,6 +103,12 @@ class Pack {
             try delta($0.1, ref: $0.0)
         }
         guard parse.data.count - parse.index == 20 else { throw Failure.Pack.invalidPack }
+    }
+    
+    func unpack(_ url: URL, id: String) throws {
+//        commits.forEach {
+//            
+//        }
     }
     
     private func commit(_ data: Data) throws {

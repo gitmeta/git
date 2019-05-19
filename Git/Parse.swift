@@ -55,7 +55,6 @@ class Parse {
     func string() throws -> String { return String(decoding: try advance(4), as: UTF8.self) }
     func character() throws -> String { return String(decoding: try advance(1), as: UTF8.self) }
     func hash() throws -> String { return (try advance(20)).map { String(format: "%02hhx", $0) }.joined() }
-    func crc() throws -> String { return (try advance(4)).map { String(format: "%02hhx", $0) }.joined() }
     func skipExtensions() { discard((data.count - 20) - index) }
     func decompress(_ amount: Int) throws -> Data { return Hub.press.decompress(try advance(amount)) }
     func discard(_ bytes: Int) { index += bytes }
