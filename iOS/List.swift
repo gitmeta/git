@@ -101,8 +101,8 @@ class List: UIScrollView {
         @objc private func change() {
             stage.isSelected.toggle()
             UIView.animate(withDuration: 0.3) { [weak self] in
-                self?.label.alpha = self?.stage.isSelected == true ? 1 : 0.2
-                self?.badge.alpha = self?.stage.isSelected == true ? 1 : 0
+                self?.label.alpha = self?.stage.isSelected == true ? 1 : 0.4
+                self?.badge.alpha = self?.stage.isSelected == true ? 1 : 0.3
             }
         }
     }

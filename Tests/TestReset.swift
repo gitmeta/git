@@ -116,4 +116,23 @@ class TestReset: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testIndex() {
+        let expect = expectation(description: "")
+        Hub.create(url) {
+            self.repository = $0
+            let file = self.url.appendingPathComponent("myfile.txt")
+            try! Data("hello world\n".utf8).write(to: file)
+            self.repository.commit([file], message: "My first commit\n") {
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/index").path))
+                try! FileManager.default.removeItem(at: self.url.appendingPathComponent(".git/index"))
+                XCTAssertFalse(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/index").path))
+                self.repository.reset {
+                    XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/index").path))
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

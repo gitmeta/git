@@ -19,7 +19,6 @@ class Reset: Sheet {
             return $0
         } (NSMutableAttributedString())
         label.textColor = .white
-        label.textAlignment = .center
         addSubview(label)
         
         let confirm = UIButton()
@@ -47,7 +46,7 @@ class Reset: Sheet {
         
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true
         
         confirm.widthAnchor.constraint(equalToConstant: 100).isActive = true
         confirm.heightAnchor.constraint(equalToConstant: 36).isActive = true
