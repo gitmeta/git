@@ -78,12 +78,6 @@ class Commit: Sheet {
         save.imageView!.contentMode = .center
         addSubview(save)
         
-        let icon = UIImageView(image: #imageLiteral(resourceName: "node.pdf"))
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.clipsToBounds = true
-        icon.contentMode = .center
-        addSubview(icon)
-        
         let cancel = UIButton()
         cancel.translatesAutoresizingMaskIntoConstraints = false
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
@@ -97,7 +91,7 @@ class Commit: Sheet {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = .local("Commit.title")
         title.textColor = .halo
-        title.font = .systemFont(ofSize: 16, weight: .bold)
+        title.font = .systemFont(ofSize: 14, weight: .bold)
         addSubview(title)
         
         let border = UIView()
@@ -119,13 +113,8 @@ class Commit: Sheet {
         save.heightAnchor.constraint(equalToConstant: 40).isActive = true
         save.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         
-        icon.centerYAnchor.constraint(equalTo: save.centerYAnchor, constant: -2).isActive = true
-        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        icon.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        
-        title.centerYAnchor.constraint(equalTo: icon.centerYAnchor, constant: 2).isActive = true
-        title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 10).isActive = true
+        title.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
+        title.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         
         border.topAnchor.constraint(equalTo: save.bottomAnchor, constant: 5).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true

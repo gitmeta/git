@@ -87,17 +87,11 @@ class Log: Sheet {
         cancel.imageView!.contentMode = .center
         addSubview(cancel)
         
-        let icon = UIImageView(image: #imageLiteral(resourceName: "history.pdf"))
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.clipsToBounds = true
-        icon.contentMode = .center
-        addSubview(icon)
-        
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = .local("Log.title")
         title.textColor = .halo
-        title.font = .systemFont(ofSize: 16, weight: .bold)
+        title.font = .systemFont(ofSize: 14, weight: .bold)
         addSubview(title)
         
         let border = UIView()
@@ -116,13 +110,8 @@ class Log: Sheet {
         cancel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cancel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         
-        icon.centerYAnchor.constraint(equalTo: cancel.centerYAnchor, constant: -2).isActive = true
-        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        icon.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        
-        title.centerYAnchor.constraint(equalTo: icon.centerYAnchor, constant: 2).isActive = true
-        title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 10).isActive = true
+        title.centerYAnchor.constraint(equalTo: cancel.centerYAnchor).isActive = true
+        title.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         
         border.topAnchor.constraint(equalTo: cancel.bottomAnchor, constant: 5).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -146,7 +135,7 @@ class Log: Sheet {
                 let item = Item(items.count - $0.0, commit: $0.1)
                 scroll.addSubview(item)
                 
-                item.topAnchor.constraint(equalTo: top, constant: 30).isActive = true
+                item.topAnchor.constraint(equalTo: top, constant: 10).isActive = true
                 item.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
                 item.widthAnchor.constraint(equalTo: scroll.widthAnchor).isActive = true
                 top = item.bottomAnchor

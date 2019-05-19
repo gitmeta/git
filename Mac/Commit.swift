@@ -95,12 +95,6 @@ class Commit: Sheet {
         save.height.constant = 40
         addSubview(save)
         
-        let icon = NSImageView()
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.image = NSImage(named: "node")
-        icon.imageScaling = .scaleNone
-        addSubview(icon)
-        
         let cancel = Button.Image(self, action: #selector(close))
         cancel.off = NSImage(named: "cancelOff")
         cancel.on = NSImage(named: "cancelOn")
@@ -110,7 +104,7 @@ class Commit: Sheet {
         
         let title = Label(.local("Commit.title"))
         title.textColor = .halo
-        title.font = .systemFont(ofSize: 16, weight: .bold)
+        title.font = .systemFont(ofSize: 14, weight: .bold)
         addSubview(title)
         
         let border = NSView()
@@ -132,21 +126,16 @@ class Commit: Sheet {
         scroll.verticalScrollElasticity = .allowed
         addSubview(scroll)
         
-        cancel.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
+        cancel.topAnchor.constraint(equalTo: topAnchor).isActive = true
         cancel.rightAnchor.constraint(equalTo: save.leftAnchor).isActive = true
         
         save.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        save.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
+        save.topAnchor.constraint(equalTo: topAnchor).isActive = true
         
-        icon.centerYAnchor.constraint(equalTo: topAnchor, constant: 22).isActive = true
-        icon.leftAnchor.constraint(equalTo: leftAnchor, constant: 80).isActive = true
-        icon.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        title.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
+        title.rightAnchor.constraint(equalTo: cancel.leftAnchor, constant: -10).isActive = true
         
-        title.centerYAnchor.constraint(equalTo: icon.centerYAnchor, constant: 2).isActive = true
-        title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 10).isActive = true
-        
-        border.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
+        border.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
