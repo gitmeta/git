@@ -48,7 +48,7 @@ class TestPack: XCTestCase {
         XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", packs.last?.entries.first?.id)
     }
     
-    func testUnpackWithIndex() {
+    func testUnpackWithPack() {
         copy("1")
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
@@ -86,8 +86,16 @@ class TestPack: XCTestCase {
         copy("1")
         let pack = try! Pack(url, id: "1")
         XCTAssertEqual(5, pack.commits.count)
-        XCTAssertEqual(3, pack.trees.count)
+        XCTAssertEqual(5, pack.trees.count)
         XCTAssertEqual(4, pack.blobs.count)
+    }
+    
+    func testHashTreePack1() {
+        copy("1")
+        let pack = try! Pack(url, id: "1")
+        let tree = pack.trees.first(where: { $0.key == "50d65cf62b3d1d7a06d4766693d293ada11f3e8a" })!.value.0
+        debugPrint(String(decoding: pack.trees.first(where: { $0.key == "50d65cf62b3d1d7a06d4766693d293ada11f3e8a" })!.value.1, as: UTF8.self))
+        XCTAssertEqual("50d65cf62b3d1d7a06d4766693d293ada11f3e8a", Hub.hash.tree(tree.serial).1)
     }
     
     func testLoadFetch0() {
