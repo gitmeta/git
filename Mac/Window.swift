@@ -44,12 +44,12 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         contentView!.addSubview(tools)
         self.tools = tools
         
-        location.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 6).isActive = true
-        location.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 74).isActive = true
+        location.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 8).isActive = true
+        location.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 80).isActive = true
         
         branch.topAnchor.constraint(equalTo: location.topAnchor).isActive = true
         branch.leftAnchor.constraint(equalTo: location.rightAnchor, constant: -16).isActive = true
-        branch.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -7).isActive = true
+        branch.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -10).isActive = true
         
         list.topAnchor.constraint(equalTo: location.bottomAnchor, constant: 1).isActive = true
         list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true

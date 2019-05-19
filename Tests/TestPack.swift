@@ -22,21 +22,38 @@ class TestPack: XCTestCase {
         XCTAssertThrowsError(try Pack(url, id: "hello"))
     }
     
-    func testLoadIndex() {
+    func testLoadIndex0() {
         copy("0")
         let pack = try! Pack.Index(url, id: "0")
         XCTAssertEqual(17, pack.entries.count)
-        XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", pack.entries.first?.0)
-        XCTAssertEqual("2a9e0f4d", pack.entries.first?.1)
-        XCTAssertEqual(1185, pack.entries.first?.2)
-        XCTAssertEqual("fe3b1fe02314ddad0ff0b5c86c967c87139cbd8b", pack.entries.last?.0)
-        XCTAssertEqual("d1bc91b1", pack.entries.last?.1)
-        XCTAssertEqual(895, pack.entries.last?.2)
+        XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", pack.entries.first?.id)
+        XCTAssertEqual("2a9e0f4d", pack.entries.first?.crc)
+        XCTAssertEqual(1185, pack.entries.first?.offset)
+        XCTAssertEqual("fe3b1fe02314ddad0ff0b5c86c967c87139cbd8b", pack.entries.last?.id)
+        XCTAssertEqual("d1bc91b1", pack.entries.last?.crc)
+        XCTAssertEqual(895, pack.entries.last?.offset)
+    }
+    
+    func testLoadIndex1() {
+        copy("1")
+        let pack = try! Pack.Index(url, id: "1")
+        XCTAssertEqual(14, pack.entries.count)
+        XCTAssertEqual("335a33ae387dc24f057852fdb92e5abc71bf6b85", pack.entries.first?.id)
+        XCTAssertEqual("54524f1a", pack.entries.first?.crc)
+        XCTAssertEqual(12, pack.entries.first?.offset)
     }
     
     func testLoadAllIndex() {
         copy("0")
-        XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", Pack.load(url).first?.entries.first?.0)
+        copy("1")
+        let packs = Pack.load(url)
+        XCTAssertEqual("335a33ae387dc24f057852fdb92e5abc71bf6b85", packs.first?.entries.first?.id)
+        XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", packs.last?.entries.first?.id)
+    }
+    
+    func testUnpackWithIndex() {
+        copy("1")
+        let pack = try! Pack.Index(url, id: "1")
     }
     
     func testLoadPack() {

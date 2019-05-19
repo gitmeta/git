@@ -46,7 +46,7 @@ class State {
                 let hash = Hub.hash.file(url).1
                 if entries.contains(where: { $0.id == hash }) {
                     if !tree.contains(where: { $0.id == hash }) {
-                        if !pack.contains(where: { packed in packed.entries.contains(where: { $0.0 == hash } ) }) {
+                        if !pack.contains(where: { packed in packed.entries.contains(where: { $0.id == hash } ) }) {
                             result.append((url, .added))
                         }
                     }

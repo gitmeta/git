@@ -12,29 +12,41 @@ class Pack {
     }
     
     class Index {
-        private(set) var version = 2
-        private(set) var entries = [(String, String, Int)]()
+        struct Entry {
+            fileprivate(set) var id = ""
+            fileprivate(set) var crc = ""
+            fileprivate(set) var offset = 0
+        }
+        
+        private(set) var entries = [Entry]()
+        private let url: URL
+        private let id: String
+        private let pack: Data
         
         init(_ url: URL, id: String) throws {
-            guard let parse = Parse(url.appendingPathComponent(".git/objects/pack/pack-\(id).idx"))
-            else { throw Failure.Pack.indexNotFound }
+            guard let parse = Parse(url.appendingPathComponent(".git/objects/pack/pack-\(id).idx")) else { throw Failure.Pack.indexNotFound }
+            guard let pack = try? Data(contentsOf: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack")) else { throw Failure.Pack.packNotFound }
             guard
                 try parse.byte() == 255,
                 try parse.byte() == 116,
                 try parse.byte() == 79,
                 try parse.byte() == 99
-                else { throw Failure.Pack.invalidIndex }
-            version = try parse.number()
-            parse.discard(1020)
+            else { throw Failure.Pack.invalidIndex }
+            self.url = url
+            self.id = id
+            self.pack = pack
+            parse.discard(1024)
             let count = try parse.number()
             try (0 ..< count).forEach { _ in
-                entries.append((try parse.hash(), "", 0))
+                var entry = Entry()
+                entry.id = try parse.hash()
+                entries.append(entry)
             }
             try (0 ..< count).forEach {
-                entries[$0].1 = try parse.crc()
+                entries[$0].crc = try parse.crc()
             }
             try (0 ..< count).forEach {
-                entries[$0].2 = try parse.number()
+                entries[$0].offset = try parse.number()
             }
         }
     }

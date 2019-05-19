@@ -134,6 +134,8 @@
 		20FFDF812282E05D00226033 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF802282E05D00226033 /* Commit.swift */; };
 		20FFDF832282EF0500226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Credentials.swift */; };
 		20FFDF852282EF3C00226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7522718A2100B1987D /* Credentials.swift */; };
+		CE7B8BF02291431700396AB1 /* pack-1.pack in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEE2291431700396AB1 /* pack-1.pack */; };
+		CE7B8BF12291431700396AB1 /* pack-1.idx in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEF2291431700396AB1 /* pack-1.idx */; };
 		CE89826022904EB300E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE89825F22904EB300E9F41F /* Reset.swift */; };
 		CE8982622290560000E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8982612290560000E9F41F /* Reset.swift */; };
 		CED676C6228E820E009D6ADC /* TestReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C5228E820E009D6ADC /* TestReset.swift */; };
@@ -267,6 +269,8 @@
 		20FFDF7E2282E04600226033 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		20FFDF802282E05D00226033 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
 		20FFDF822282EF0500226033 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		CE7B8BEE2291431700396AB1 /* pack-1.pack */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.pack"; sourceTree = "<group>"; };
+		CE7B8BEF2291431700396AB1 /* pack-1.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.idx"; sourceTree = "<group>"; };
 		CE89825F22904EB300E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
 		CE8982612290560000E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
 		CED676C5228E820E009D6ADC /* TestReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReset.swift; sourceTree = "<group>"; };
@@ -365,7 +369,9 @@
 				20CA59C3226F2EA90040992D /* tree3 */,
 				20B8327E22703C9200773058 /* tree4 */,
 				206F2E5F2275DE840058DA7E /* pack-0.idx */,
+				CE7B8BEF2291431700396AB1 /* pack-1.idx */,
 				206F2E602275DE840058DA7E /* pack-0.pack */,
+				CE7B8BEE2291431700396AB1 /* pack-1.pack */,
 				2048A0F9225C745100290E54 /* Tests.plist */,
 				20C21CD4228818730038466A /* MockRest.swift */,
 				2048A0FA225C745100290E54 /* TestAdd.swift */,
@@ -642,6 +648,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE7B8BF12291431700396AB1 /* pack-1.idx in Resources */,
 				204C754922894801007327D5 /* commit2 in Resources */,
 				20CA59C4226F2EA90040992D /* tree3 in Resources */,
 				206F2E612275DE840058DA7E /* pack-0.idx in Resources */,
@@ -661,6 +668,7 @@
 				2048A104225C745100290E54 /* tree0 in Resources */,
 				2048A10D225C745100290E54 /* tree2 in Resources */,
 				20B8327F22703C9200773058 /* tree4 in Resources */,
+				CE7B8BF02291431700396AB1 /* pack-1.pack in Resources */,
 				2048A102225C745100290E54 /* commit0 in Resources */,
 				2048A100225C745100290E54 /* commit1 in Resources */,
 			);

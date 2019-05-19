@@ -45,27 +45,27 @@ class Tools: UIView {
         reset.imageView!.contentMode = .center
         addSubview(reset)
         
-        heightAnchor.constraint(equalToConstant: 100).isActive = true
+        heightAnchor.constraint(equalToConstant: 80).isActive = true
 
-        commit.widthAnchor.constraint(equalToConstant: 65).isActive = true
-        commit.heightAnchor.constraint(equalToConstant: 65).isActive = true
+        commit.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        commit.heightAnchor.constraint(equalToConstant: 50).isActive = true
         commit.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        commit.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10).isActive = true
+        commit.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
 
-        log.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        log.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        log.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        log.heightAnchor.constraint(equalToConstant: 40).isActive = true
         log.rightAnchor.constraint(equalTo: commit.leftAnchor, constant: -20).isActive = true
-        log.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10).isActive = true
+        log.centerYAnchor.constraint(equalTo: commit.centerYAnchor).isActive = true
         
-        credentials.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        credentials.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        credentials.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        credentials.heightAnchor.constraint(equalToConstant: 40).isActive = true
         credentials.rightAnchor.constraint(equalTo: log.leftAnchor, constant: -20).isActive = true
-        credentials.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10).isActive = true
+        credentials.centerYAnchor.constraint(equalTo: commit.centerYAnchor).isActive = true
         
-        reset.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        reset.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        reset.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        reset.heightAnchor.constraint(equalToConstant: 40).isActive = true
         reset.leftAnchor.constraint(equalTo: commit.rightAnchor, constant: 20).isActive = true
-        reset.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10).isActive = true
+        reset.centerYAnchor.constraint(equalTo: commit.centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

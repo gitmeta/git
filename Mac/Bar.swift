@@ -45,7 +45,7 @@ class Bar: NSView {
         let label = Label()
         label.lineBreakMode = .byTruncatingMiddle
         label.textColor = .black
-        label.font = .systemFont(ofSize: 13, weight: .bold)
+        label.font = .systemFont(ofSize: 12, weight: .bold)
         addSubview(label)
         self.label = label
         
@@ -57,7 +57,7 @@ class Bar: NSView {
         label.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -12).isActive = true
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        heightAnchor.constraint(equalToConstant: 28).isActive = true
+        heightAnchor.constraint(equalToConstant: 23).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

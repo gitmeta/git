@@ -13,32 +13,32 @@ class Tools: NSView {
         let commit = Button.Image(self, action: #selector(self.commit))
         commit.off = NSImage(named: "addOff")
         commit.on = NSImage(named: "addOn")
-        commit.width.constant = 65
-        commit.height.constant = 65
+        commit.width.constant = 50
+        commit.height.constant = 50
         addSubview(commit)
         
         let log = Button.Image(self, action: #selector(self.log))
         log.off = NSImage(named: "logOff")
         log.on = NSImage(named: "logOn")
-        log.width.constant = 50
-        log.height.constant = 50
+        log.width.constant = 40
+        log.height.constant = 40
         addSubview(log)
         
         let credentials = Button.Image(NSApp, action: #selector(App.preferences))
         credentials.off = NSImage(named: "credentialsOff")
         credentials.on = NSImage(named: "credentialsOn")
-        credentials.width.constant = 50
-        credentials.height.constant = 50
+        credentials.width.constant = 40
+        credentials.height.constant = 40
         addSubview(credentials)
         
         let reset = Button.Image(self, action: #selector(self.reset))
         reset.off = NSImage(named: "resetOff")
         reset.on = NSImage(named: "resetOn")
-        reset.width.constant = 50
-        reset.height.constant = 50
+        reset.width.constant = 40
+        reset.height.constant = 40
         addSubview(reset)
         
-        heightAnchor.constraint(equalToConstant: 80).isActive = true
+        heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         commit.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         commit.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
