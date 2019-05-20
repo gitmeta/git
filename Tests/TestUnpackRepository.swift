@@ -84,7 +84,6 @@ class TestUnpackRepository: XCTestCase {
         var repository: Repository!
         Hub.create(url) {
             repository = $0
-            self.addPack()
             self.addReference()
             XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/packed-refs").path))
             XCTAssertFalse(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/refs/heads/master").path))

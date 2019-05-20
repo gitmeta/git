@@ -20,13 +20,17 @@ class Packer {
     
     func unpack(_ error: @escaping((Error) -> Void), done: @escaping(() -> Void)) {
         Hub.dispatch.background({ [weak self] in
+            self?.repository?.state.delay()
             guard let url = self?.repository?.url else { return }
             try Pack.pack(url).forEach {
                 try $0.1.unpack(url)
                 try $0.1.remove(url, id: $0.0)
             }
             try self?.references()
-        }, error: error, success: done)
+        }, error: error) { [weak self] in
+            done()
+            self?.repository?.state.refresh()
+        }
     }
     
     private func references() throws {

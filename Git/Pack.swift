@@ -43,23 +43,27 @@ class Pack {
     
     class func index(_ url: URL) throws -> [Index] {
         var result = [Index]()
-        try FileManager.default.contentsOfDirectory(at:
-            url.appendingPathComponent(".git/objects/pack"), includingPropertiesForKeys: nil).forEach {
-                if $0.lastPathComponent.hasSuffix(".idx") {
-                    result.append(try Index(url, id: String($0.lastPathComponent.dropFirst(5).dropLast(4))))
-                }
+        if FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack").path) {
+            try FileManager.default.contentsOfDirectory(at:
+                url.appendingPathComponent(".git/objects/pack"), includingPropertiesForKeys: nil).forEach {
+                    if $0.lastPathComponent.hasSuffix(".idx") {
+                        result.append(try Index(url, id: String($0.lastPathComponent.dropFirst(5).dropLast(4))))
+                    }
+            }
         }
         return result
     }
     
     class func pack(_ url: URL) throws -> [String: Pack] {
         var result = [String: Pack]()
-        try FileManager.default.contentsOfDirectory(at:
-            url.appendingPathComponent(".git/objects/pack"), includingPropertiesForKeys: nil).forEach {
-                if $0.lastPathComponent.hasSuffix(".pack") {
-                    let id = String($0.lastPathComponent.dropFirst(5).dropLast(5))
-                    result[id] = try Pack(url, id: id)
-                }
+        if FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack").path) {
+            try FileManager.default.contentsOfDirectory(at:
+                url.appendingPathComponent(".git/objects/pack"), includingPropertiesForKeys: nil).forEach {
+                    if $0.lastPathComponent.hasSuffix(".pack") {
+                        let id = String($0.lastPathComponent.dropFirst(5).dropLast(5))
+                        result[id] = try Pack(url, id: id)
+                    }
+            }
         }
         return result
     }

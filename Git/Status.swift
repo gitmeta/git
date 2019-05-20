@@ -10,6 +10,7 @@ public enum Status {
 class State {
     weak var repository: Repository?
     var last = Date.distantPast
+    var delta = TimeInterval(1)
     let timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
     
     init() {
@@ -19,10 +20,11 @@ class State {
             Hub.dispatch.background({ [weak self] in
                 return self?.needs == true ? self?.list : nil
             }) { [weak self] in
+                guard let delta = self?.delta else { return }
                 if let changes = $0 {
                     self?.repository?.status?(changes)
                 }
-                self?.timer.schedule(deadline: .now() + 1)
+                self?.timer.schedule(deadline: .now() + delta)
             }
         }
     }
@@ -58,8 +60,13 @@ class State {
     }
     
     func refresh() {
-        last = Date.distantPast
-        timer.schedule(deadline: .now() + 1)
+        last = .distantPast
+        timer.schedule(deadline: .now() + delta)
+    }
+    
+    func delay() {
+        last = .distantFuture
+        timer.schedule(deadline: .distantFuture)
     }
     
     private var contents: [URL] {

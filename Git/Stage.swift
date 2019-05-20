@@ -5,6 +5,7 @@ class Stage {
     
     func commit(_ files: [URL], message: String, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) {
         Hub.dispatch.background({ [weak self] in
+            self?.repository?.state.delay()
             guard let url = self?.repository?.url else { return }
             guard !files.isEmpty else { throw Failure.Commit.empty }
             guard !Hub.session.name.isEmpty else { throw Failure.Commit.credentials }
@@ -30,7 +31,10 @@ class Stage {
             }
             try commit.save(url)
             index.save(url)
-        }, error: error, success: done)
+        }, error: error) { [weak self] in
+            done()
+            self?.repository?.state.refresh()
+        }
     }
     
     func add(_ file: URL, index: Index) throws {

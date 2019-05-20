@@ -5,12 +5,16 @@ class Extract {
     
     func reset(_ error: @escaping((Error) -> Void), done: @escaping(() -> Void)) {
         Hub.dispatch.background({ [weak self] in
+            self?.repository?.state.delay()
             guard let url = self?.repository?.url, let tree = try? Hub.head.tree(url), let list = self?.repository?.state.list else { return }
             let index = Index()
             try self?.remove(list)
             try self?.extract(tree, index: index)
             index.save(url)
-        }, error: error, success: done)
+        }, error: error) { [weak self] in
+            done()
+            self?.repository?.state.refresh()
+        }
     }
     
     private func remove(_ list: [(URL, Status)]) throws {

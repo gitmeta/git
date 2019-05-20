@@ -149,6 +149,7 @@
 		CEE6A9622292785E00977743 /* TestUnpackRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A9612292785E00977743 /* TestUnpackRepository.swift */; };
 		CEE6A964229280FD00977743 /* Packer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A963229280FD00977743 /* Packer.swift */; };
 		CEE6A965229280FD00977743 /* Packer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A963229280FD00977743 /* Packer.swift */; };
+		CEE6A96722928D7100977743 /* TestRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A96622928D7100977743 /* TestRefresh.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -288,6 +289,7 @@
 		CEE6A95F2292782F00977743 /* packed-refs0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "packed-refs0"; sourceTree = "<group>"; };
 		CEE6A9612292785E00977743 /* TestUnpackRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUnpackRepository.swift; sourceTree = "<group>"; };
 		CEE6A963229280FD00977743 /* Packer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packer.swift; sourceTree = "<group>"; };
+		CEE6A96622928D7100977743 /* TestRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRefresh.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -405,6 +407,7 @@
 				2075D19F227DD2EC0004D098 /* TestLog.swift */,
 				206F2E5D2275DDFD0058DA7E /* TestPack.swift */,
 				2048A0F6225C745100290E54 /* TestPress.swift */,
+				CEE6A96622928D7100977743 /* TestRefresh.swift */,
 				205CF270227ABE49002BDAE0 /* TestRepository.swift */,
 				CED676C5228E820E009D6ADC /* TestReset.swift */,
 				20B3E1FF228831C3009D132C /* TestRest.swift */,
@@ -800,6 +803,7 @@
 				CED676C6228E820E009D6ADC /* TestReset.swift in Sources */,
 				206F2E592275BD090058DA7E /* TestContents.swift in Sources */,
 				20671BE9226C70A700A74B7E /* TestList.swift in Sources */,
+				CEE6A96722928D7100977743 /* TestRefresh.swift in Sources */,
 				20A37BED2272E1E100850D12 /* TestStaging.swift in Sources */,
 				2048A10B225C745100290E54 /* TestAdd.swift in Sources */,
 				20671BEE226C7A0000A74B7E /* TestIgnore.swift in Sources */,
