@@ -161,7 +161,7 @@ class Commit: Sheet {
             message: text.string, error: {
                 App.window.alert.error($0.localizedDescription)
         }) { [weak self] in
-            App.window.refresh()
+            App.window.showRefresh()
             App.window.alert.commit(self?.text.string ?? "")
             self?.close()
         }

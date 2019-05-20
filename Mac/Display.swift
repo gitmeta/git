@@ -136,10 +136,10 @@ class Display: NSView {
     @objc private func unpackRepository() {
         loading()
         App.repository?.unpack({
+            App.window.refresh()
             App.window.alert.error($0.localizedDescription)
         }) {
             App.window.alert.update(.local("Display.unpacked"))
-            App.window.refresh()
         }
     }
 }

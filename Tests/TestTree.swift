@@ -109,4 +109,18 @@ class TestTree: XCTestCase {
         tree = try! Tree(id, url: url)
         XCTAssertNotNil(tree.list(url).first(where: { $0.url == file }))
     }
+    
+    func testMakeIndex() {
+        let sub = url.appendingPathComponent("abc", isDirectory: true)
+        try! FileManager.default.createDirectory(at: sub, withIntermediateDirectories: true)
+        let file = sub.appendingPathComponent("another.txt")
+        try! Data("lorem ipsum\n".utf8).write(to: file)
+        let index = Index()
+        let tree = Tree(url, ignore: ignore, update: [file], entries: [])
+        _ = try? tree.save(url)
+        try? tree.map(index, url: url)
+        XCTAssertEqual(1, index.entries.count)
+        XCTAssertEqual(file, index.entries.first?.url)
+        XCTAssertEqual("01a59b011a48660bb3828ec72b2b08990b8cf56b", index.entries.first?.id)
+    }
 }

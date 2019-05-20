@@ -73,7 +73,6 @@ class Reset: Sheet {
             App.view.alert.error($0.localizedDescription)
         }) {
             App.view.alert.update(.local("Reset.success"))
-            App.view.refresh()
         }
     }
 }

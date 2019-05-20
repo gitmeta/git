@@ -57,11 +57,12 @@ class Reset: Sheet {
     
     @objc private func confirm() {
         close()
+        App.window.showRefresh()
         App.repository?.reset({
             App.window.alert.error($0.localizedDescription)
+            App.window.refresh()
         }) {
             App.window.alert.update(.local("Reset.success"))
-            App.window.refresh()
         }
     }
 }

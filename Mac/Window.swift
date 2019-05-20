@@ -160,8 +160,7 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         }) { }
     }
     
-    @objc func refresh() {
-        App.repository?.refresh()
+    func showRefresh() {
         tools.top.constant = 0
         list.documentView!.subviews.forEach { $0.removeFromSuperview() }
         NSAnimationContext.runAnimationGroup({ context in
@@ -171,6 +170,11 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
             list.alphaValue = 0
             display.loading()
         }) { }
+    }
+    
+    @objc func refresh() {
+        App.repository?.refresh()
+        showRefresh()
     }
     
     @objc func showHelp(_: Any?) { Onboard() }

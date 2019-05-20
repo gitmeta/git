@@ -150,6 +150,7 @@
 		CEE6A964229280FD00977743 /* Packer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A963229280FD00977743 /* Packer.swift */; };
 		CEE6A965229280FD00977743 /* Packer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A963229280FD00977743 /* Packer.swift */; };
 		CEE6A96722928D7100977743 /* TestRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A96622928D7100977743 /* TestRefresh.swift */; };
+		CEE6A9692292998000977743 /* TestRestoreIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A9682292998000977743 /* TestRestoreIndex.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -290,6 +291,7 @@
 		CEE6A9612292785E00977743 /* TestUnpackRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUnpackRepository.swift; sourceTree = "<group>"; };
 		CEE6A963229280FD00977743 /* Packer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packer.swift; sourceTree = "<group>"; };
 		CEE6A96622928D7100977743 /* TestRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRefresh.swift; sourceTree = "<group>"; };
+		CEE6A9682292998000977743 /* TestRestoreIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRestoreIndex.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +413,7 @@
 				205CF270227ABE49002BDAE0 /* TestRepository.swift */,
 				CED676C5228E820E009D6ADC /* TestReset.swift */,
 				20B3E1FF228831C3009D132C /* TestRest.swift */,
+				CEE6A9682292998000977743 /* TestRestoreIndex.swift */,
 				20EB2506227713010043EBD2 /* TestSession.swift */,
 				20A37BEC2272E1E100850D12 /* TestStaging.swift */,
 				2048A0FD225C745100290E54 /* TestStatus.swift */,
@@ -811,6 +814,7 @@
 				20948B7E2271987E00B1987D /* TestUser.swift in Sources */,
 				20AFB33B2265B77000A3ECC0 /* TestHead.swift in Sources */,
 				2048A10E225C745100290E54 /* TestStatus.swift in Sources */,
+				CEE6A9692292998000977743 /* TestRestoreIndex.swift in Sources */,
 				20C21CD12288119E0038466A /* TestFetch.swift in Sources */,
 				20AFB33F2265DA5200A3ECC0 /* TestTree.swift in Sources */,
 			);

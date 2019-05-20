@@ -157,7 +157,6 @@ class Commit: Sheet {
             message: text.text, error: {
                 App.view.alert.error($0.localizedDescription)
         }) { [weak self] in
-            App.view.refresh()
             App.view.alert.commit(self?.text.text ?? "")
             self?.close()
         }

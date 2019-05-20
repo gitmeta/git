@@ -27,6 +27,11 @@ class Packer {
                 try $0.1.remove(url, id: $0.0)
             }
             try self?.references()
+            if let tree = try? Hub.head.tree(url) {
+                let index = Index()
+                try tree.map(index, url: url)
+                index.save(url)
+            }
         }, error: error) { [weak self] in
             done()
             self?.repository?.state.refresh()

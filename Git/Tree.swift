@@ -89,6 +89,15 @@ class Tree {
         return items.flatMap { $0 is Blob ? [$0] : (try? Tree($0.id, url: url, trail: $0.url))?.list(url) ?? [] }
     }
     
+    func map(_ index: Index, url: URL) throws {
+        try items.forEach {
+            switch $0.category {
+            case .sub: try Tree($0.id, url: url, trail: $0.url).map(index, url: url)
+            default: index.entry($0.id, url: $0.url)
+            }
+        }
+    }
+    
     @discardableResult func save(_ url: URL) throws -> String {
         try children.values.forEach({ try $0.save(url) })
         return try Hub.content.add(self, url: url)
