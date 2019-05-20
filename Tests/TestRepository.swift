@@ -30,46 +30,4 @@ class TestRepository: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
-    
-    func testNotPacked() {
-        let expect = expectation(description: "")
-        Hub.create(url) {
-            XCTAssertFalse($0.packed)
-            expect.fulfill()
-        }
-        waitForExpectations(timeout: 1)
-    }
-    
-    func testPacked() {
-        let expect = expectation(description: "")
-        Hub.create(url) {
-            try! FileManager.default.createDirectory(at: self.url.appendingPathComponent(".git/objects/pack"), withIntermediateDirectories: true)
-            try! Data().write(to: self.url.appendingPathComponent(".git/objects/pack/pack-test.pack"))
-            XCTAssertTrue($0.packed)
-            expect.fulfill()
-        }
-        waitForExpectations(timeout: 1)
-    }
-    
-    func testUnpack() {
-        let expect = expectation(description: "")
-        var repository: Repository!
-        Hub.create(url) {
-            repository = $0
-            try! FileManager.default.createDirectory(at: self.url.appendingPathComponent(".git/objects/pack"), withIntermediateDirectories: true)
-            try! (try! Data(contentsOf: Bundle(for: TestRepository.self).url(forResource: "pack-1",
-                withExtension: "idx")!)).write(to: self.url.appendingPathComponent(".git/objects/pack/pack-1.idx"))
-            try! (try! Data(contentsOf: Bundle(for: TestRepository.self).url(forResource: "pack-1",
-                withExtension: "pack")!)).write(to: self.url.appendingPathComponent(".git/objects/pack/pack-1.pack"))
-            XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
-            repository.unpack {
-                XCTAssertEqual(Thread.main, Thread.current)
-                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/33/5a33ae387dc24f057852fdb92e5abc71bf6b85").path))
-                XCTAssertFalse(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
-                
-                expect.fulfill()
-            }
-        }
-        waitForExpectations(timeout: 1)
-    }
 }

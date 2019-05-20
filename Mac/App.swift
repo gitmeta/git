@@ -11,16 +11,18 @@ import StoreKit
                 window.notRepository()
                 window.list.update([])
             } else {
-                repository!.status = {
-                    if repository!.packed {
-                        window.packed()
-                    } else {
-                        if $0.isEmpty {
-                            window.upToDate()
+                repository!.status = { [weak repository] status in
+                    repository?.packed {
+                        if $0 {
+                            window.packed()
                         } else {
-                            window.repository()
+                            if status.isEmpty {
+                                window.upToDate()
+                            } else {
+                                window.repository()
+                            }
+                            window.list.update(status)
                         }
-                        window.list.update($0)
                     }
                 }
                 window.refresh()
