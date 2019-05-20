@@ -47,11 +47,9 @@ public class Commit {
     }
     
     @discardableResult func save(_ url: URL) throws -> String {
+        try Hub.head.verify(url)
         let hash = try Hub.content.add(self, url: url)
-        let head = String(decoding: try! Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as: UTF8.self).dropFirst(5)
-        try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/" + head).deletingLastPathComponent(),
-                                                 withIntermediateDirectories: true)
-        try! Data(hash.utf8).write(to: url.appendingPathComponent(".git/" + head), options: .atomic)
+        try Data(hash.utf8).write(to: try Hub.head.url(url), options: .atomic)
         return hash
     }
 }

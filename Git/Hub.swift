@@ -57,8 +57,8 @@ public class Hub {
             d.boolValue,
             FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects").path, isDirectory: &d),
             d.boolValue,
-            let head = try? Data(contentsOf: url.appendingPathComponent(".git/HEAD")),
-            String(decoding: head, as: UTF8.self).contains("ref: refs/") else { return false }
+            let reference = try? Hub.head.reference(url),
+            reference.contains("refs") else { return false }
         return true
     }
     
