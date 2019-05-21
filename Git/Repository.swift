@@ -41,7 +41,7 @@ public class Repository {
     public func unpack(_ error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) { packer.unpack(error ?? { _ in }, done: done ?? { }) }
     public func packed(_ result: @escaping((Bool) -> Void)) { packer.packed(result) }
     public func refresh() { state.refresh() }
-    public var branch: String { return (try? Hub.head.reference(url).replacingOccurrences(of: "refs/heads/", with: "")) ?? "" }
+    public func branch(_ result: @escaping((String) -> Void)) { Hub.head.branch(url, result: result) }
     
     private func commits(_ id: String, map: inout[String: Commit]) throws {
         guard map[id] == nil else { return }

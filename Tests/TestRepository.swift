@@ -24,9 +24,16 @@ class TestRepository: XCTestCase {
     
     func testBranch() {
         let expect = expectation(description: "")
+        var repository: Repository!
         Hub.create(url) {
-            XCTAssertEqual("master", $0.branch)
-            expect.fulfill()
+            repository = $0
+            DispatchQueue.global(qos: .background).async {
+                repository.branch {
+                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual("master", $0)
+                    expect.fulfill()
+                }
+            }
         }
         waitForExpectations(timeout: 1)
     }

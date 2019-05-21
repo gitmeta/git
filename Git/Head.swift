@@ -1,6 +1,12 @@
 import Foundation
 
 class Head {
+    func branch(_ url: URL, result: @escaping((String) -> Void)) {
+        Hub.dispatch.background({ [weak self] in
+            (try? self?.reference(url).replacingOccurrences(of: "refs/heads/", with: "")) ?? ""
+        }, success: result)
+    }
+    
     func tree(_ url: URL) throws -> Tree {
         return try Tree((try commit(url)).tree, url: url)
     }

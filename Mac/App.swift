@@ -5,7 +5,7 @@ import StoreKit
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate {
     static var repository: Repository? {
         didSet {
-            window.branch.label.stringValue = repository?.branch ?? ""
+            repository?.branch { window.branch.label.stringValue = $0 }
             menu.validate()
             if repository == nil {
                 window.notRepository()
