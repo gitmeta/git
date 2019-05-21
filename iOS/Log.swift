@@ -108,7 +108,7 @@ class Log: Sheet {
         
         cancel.widthAnchor.constraint(equalToConstant: 40).isActive = true
         cancel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        cancel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        cancel.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         
         title.centerYAnchor.constraint(equalTo: cancel.centerYAnchor).isActive = true
         title.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true

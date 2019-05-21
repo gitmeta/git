@@ -101,9 +101,10 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         item.view = button
         switch makeItemForIdentifier.rawValue {
         case "directory":
-            button.title = .local("Menu.directory")
-            button.image = NSImage(named: "logo")
+            button.title = .local("Window.directory")
+            button.image = NSImage(named: "logotouch")
             button.imagePosition = .imageLeft
+            button.imageScaling = .scaleNone
             button.bezelColor = .black
             button.target = NSApp
             button.action = #selector(App.panel)

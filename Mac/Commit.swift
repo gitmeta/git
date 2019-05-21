@@ -129,7 +129,7 @@ class Commit: Sheet {
         cancel.topAnchor.constraint(equalTo: topAnchor).isActive = true
         cancel.rightAnchor.constraint(equalTo: save.leftAnchor).isActive = true
         
-        save.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        save.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         save.topAnchor.constraint(equalTo: topAnchor).isActive = true
         
         title.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
