@@ -7,11 +7,9 @@ class Press {
     
     func decompress(_ data: Data) -> Data {
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-        let result = data.subdata(in: 2 ..< data.count).withUnsafeBytes {
-            let read = compression_decode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1),
-                                                 data.count - 2, nil, COMPRESSION_ZLIB)
-            return Data(bytes: buffer, count: read)
-        } as Data
+        let result = data.subdata(in: 2 ..< data.count).withUnsafeBytes { Data(bytes: buffer, count:
+            compression_decode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1), data.count - 2, nil, COMPRESSION_ZLIB))
+        }
         buffer.deallocate()
         return result
     }
@@ -30,30 +28,58 @@ class Press {
     }
     
     func unpack(_ size: Int, data: Data) -> (Int, Data) {
-        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-        let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: self.size)
+        let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
         var result = Data()
         var index = 2
-        while result.count < size {
-            index += 1
-            result = data.subdata(in: 2 ..< index).withUnsafeBytes {
-                let read = compression_decode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1),
-                                                     index - 2, scratch, COMPRESSION_ZLIB)
-                return Data(bytes: buffer, count: read)
-            } as Data
+        if size > 1_000_000 {
+            print(size)
+            print("to")
         }
-        buffer.deallocate()
+        while index < data.count - 20 && result.count < size {
+            index += 1
+            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+            result = data.subdata(in: 2 ..< index).withUnsafeBytes {
+                Data(bytes: buffer, count: compression_decode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1),
+                                                                     index - 2, scratch, COMPRESSION_ZLIB))
+            }
+            buffer.deallocate()
+        }
+        
         scratch.deallocate()
+        
+        
+        
         let adler = adler32(result)
         
+        print("jump::::::::::::::::::::::::::::::::::::::::::::::::                 ")
+        print("\(adler[0]) \(adler[1]) \(adler[2]) \(adler[3])")
         while
             data[index] != adler[0] &&
             data[index + 1] != adler[1] &&
             data[index + 2] != adler[2] &&
             data[index + 3] != adler[3] {
+                print("+    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
             index += 1
         }
+        
+        
+        
         index += 4
+        
+        if adler[3] == data[index] {
+            if data[index] < 128 {
+                print("myfix")
+                index += 1
+            } else {
+                print("avoid fix")
+                if adler[0] == 0 {
+                    print("extra fix")
+                    index += 1
+                }
+            }
+        }
+        
+        print("nexts +    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
         return (index, result)
     }
     

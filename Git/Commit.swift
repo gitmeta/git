@@ -10,6 +10,8 @@ public class Commit {
     
     init(_ data: Data) throws {
         let string = String(decoding: data, as: UTF8.self)
+        print(string)
+        print("\n\n\n")
         let split = string.components(separatedBy: "\n\n")
         let signed = split.first!.components(separatedBy: "\ngpgsig")
         var lines = signed.first!.components(separatedBy: "\n")

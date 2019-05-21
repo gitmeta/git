@@ -89,8 +89,9 @@ class Pack {
             let index = parse.index
             let byte = Int(try parse.byte())
             guard let category = Category(rawValue: (byte >> 4) & 7) else { throw Failure.Pack.object }
+            print(category)
             var expected = byte & 15
-            if byte & 0x80 == 128 {
+            if byte >= 128 {
                 expected = try parse.size(expected, shift: 4)
             }
             
@@ -105,6 +106,7 @@ class Pack {
  
             let content = Hub.press.unpack(expected, data: parse.data.subdata(in: parse.index ..< parse.data.count))
             parse.discard(content.0)
+            guard content.1.count == expected else { throw Failure.Pack.invalidPack }
 
             switch category {
             case .commit: try commit(content.1, index: index)

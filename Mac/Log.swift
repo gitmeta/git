@@ -9,27 +9,20 @@ class Log: Sheet {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
             
-            let circle = NSView()
-            circle.translatesAutoresizingMaskIntoConstraints = false
-            circle.wantsLayer = true
-            circle.layer!.backgroundColor = NSColor.halo.cgColor
-            circle.layer!.cornerRadius = 17
-            addSubview(circle)
-            
             let number = Label(String(index))
             number.alignment = .center
-            number.font = .systemFont(ofSize: 12, weight: .medium)
-            number.textColor = .black
+            number.font = .systemFont(ofSize: 25, weight: .bold)
+            number.textColor = .halo
             addSubview(number)
             
             let author = Label(commit.author.name)
-            author.textColor = NSColor(white: 1, alpha: 0.5)
-            author.font = .systemFont(ofSize: 16, weight: .medium)
+            author.textColor = .halo
+            author.font = .systemFont(ofSize: 14, weight: .medium)
             addSubview(author)
             
             let date = Label({
-                $0.timeStyle = .short
-                $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .long : .none
+                $0.timeStyle = .medium
+                $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .full : .none
                 return $0.string(from: $1)
             } (DateFormatter(), commit.author.date))
             date.textColor = NSColor(white: 1, alpha: 0.5)
@@ -43,22 +36,17 @@ class Log: Sheet {
             addSubview(label)
             self.label = label
             
-            circle.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-            circle.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
-            circle.widthAnchor.constraint(equalToConstant: 34).isActive = true
-            circle.heightAnchor.constraint(equalToConstant: 34).isActive = true
-            
-            number.centerXAnchor.constraint(equalTo: circle.centerXAnchor).isActive = true
-            number.centerYAnchor.constraint(equalTo: circle.centerYAnchor).isActive = true
+            number.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+            number.topAnchor.constraint(equalTo: topAnchor).isActive = true
             
             author.bottomAnchor.constraint(equalTo: date.topAnchor).isActive = true
             author.leftAnchor.constraint(equalTo: date.leftAnchor).isActive = true
             
-            date.bottomAnchor.constraint(equalTo: circle.bottomAnchor).isActive = true
-            date.leftAnchor.constraint(equalTo: circle.rightAnchor, constant: 7).isActive = true
+            date.bottomAnchor.constraint(equalTo: number.bottomAnchor).isActive = true
+            date.leftAnchor.constraint(equalTo: number.rightAnchor, constant: 7).isActive = true
             
-            label.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 30).isActive = true
-            label.leftAnchor.constraint(equalTo: circle.leftAnchor, constant: 6).isActive = true
+            label.topAnchor.constraint(equalTo: number.bottomAnchor, constant: 30).isActive = true
+            label.leftAnchor.constraint(equalTo: number.leftAnchor, constant: 6).isActive = true
             label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -20).isActive = true
             label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
         }

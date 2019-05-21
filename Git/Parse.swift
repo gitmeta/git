@@ -93,7 +93,7 @@ class Parse {
             byte = Int(try self.byte())
             result += (byte & 0x7f) << shift
             shift += 7
-        } while byte & 0x80 == 128
+        } while byte >= 128
         return result
     }
     

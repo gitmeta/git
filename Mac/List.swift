@@ -23,7 +23,7 @@ class List: NSScrollView {
                 if !path.isEmpty {
                     $0.append(NSAttributedString(string:
                         "\(path) ", attributes:
-                        [.font: NSFont.light(14), .foregroundColor: NSColor.halo.withAlphaComponent(0.7)]))
+                        [.font: NSFont.light(14), .foregroundColor: NSColor.halo.withAlphaComponent(0.8)]))
                 }
                 $0.append(NSAttributedString(string: url.lastPathComponent, attributes:
                     [.font: NSFont.bold(14), .foregroundColor: NSColor.halo]))
