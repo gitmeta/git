@@ -28,23 +28,33 @@ class Press {
     }
     
     func unpack(_ size: Int, data: Data) -> (Int, Data) {
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
         let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
         var result = Data()
-        var index = 2
-        if size > 1_000_000 {
-            print(size)
-            print("to")
-        }
-        while index < data.count - 20 && result.count < size {
-            index += 1
-            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-            result = data.subdata(in: 2 ..< index).withUnsafeBytes {
-                Data(bytes: buffer, count: compression_decode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1),
-                                                                     index - 2, scratch, COMPRESSION_ZLIB))
+        var index = size
+        
+        repeat {
+            index /= 2
+            result = decompress(data.subdata(in: 2 ..< index), size: size, buffer: buffer, scratch: scratch)
+        } while result.count != 0
+        
+        while result.count == 0 {
+            let delta = (size - index) / 2
+            if delta < 400 {
+                break
             }
-            buffer.deallocate()
+            result = decompress(data.subdata(in: 2 ..< index + delta), size: size, buffer: buffer, scratch: scratch)
+            if result.count == 0 {
+                index += delta
+            }
         }
         
+        while index < data.count - 20 && result.count < size {
+            index += 1
+            result = decompress(data.subdata(in: 2 ..< index), size: size, buffer: buffer, scratch: scratch)
+        }
+        
+        buffer.deallocate()
         scratch.deallocate()
         
         
@@ -81,6 +91,11 @@ class Press {
         
         print("nexts +    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
         return (index, result)
+    }
+    
+    private func decompress(_ data: Data, size: Int, buffer: UnsafeMutablePointer<UInt8>, scratch: UnsafeMutablePointer<UInt8>) -> Data {
+        return data.withUnsafeBytes { Data(bytes: buffer, count: compression_decode_buffer(
+            buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1), data.count, scratch, COMPRESSION_ZLIB)) }
     }
     
     private func adler32(_ data: Data) -> Data {
