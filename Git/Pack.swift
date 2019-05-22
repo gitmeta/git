@@ -85,16 +85,17 @@ class Pack {
         let parse = Parse(data)
         try parse.discard("PACK")
         parse.discard(4)
-        try (0 ..< (try parse.number())).forEach { _ in
+        let count = try parse.number()
+        try (0 ..< count).forEach {
             let index = parse.index
             let byte = Int(try parse.byte())
             guard let category = Category(rawValue: (byte >> 4) & 7) else { throw Failure.Pack.object }
-            print(category)
+            
             var expected = byte & 15
             if byte >= 128 {
                 expected = try parse.size(expected, shift: 4)
             }
-            
+            print("\($0):\(count) \(category) size: \(expected)")
             var ref = ""
             var ofs = 0
 
@@ -124,7 +125,9 @@ class Pack {
         try offsets.forEach {
             try delta($0.0, data: $0.1, index: $0.2)
         }
-        guard parse.data.count - parse.index == 20 else { throw Failure.Pack.invalidPack }
+        guard parse.data.count - parse.index == 20 else {
+            throw Failure.Pack.invalidPack
+        }
     }
     
     func unpack(_ url: URL) throws {

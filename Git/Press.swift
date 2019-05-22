@@ -31,84 +31,22 @@ class Press {
         var index = 1
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
         var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
-        var status = compression_stream_init(&stream, COMPRESSION_STREAM_DECODE, COMPRESSION_ZLIB)
-        
-        stream.src_size = 0
-        stream.dst_ptr = buffer
-        stream.dst_size = size
-        
         var result = Data()
-        var source: Data?
-        
-        repeat {
-            index += 1
-            var flags = Int32(0)
-            
-            if stream.src_size == 0 {
-                source = data.subdata(in: index ..< index + 1)
-                stream.src_size = source!.count
-//                flags = Int32(COMPRESSION_STREAM_FINALIZE.rawValue)
-                if source!.count < size {
-//                    flags = Int32(COMPRESSION_STREAM_FINALIZE.rawValue)
-                }
-            }
-            
-            if let source = source {
-                let count = source.count
-                source.withUnsafeBytes {
-                    let a = count - stream.src_size
-                    stream.src_ptr = $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1).advanced(by: a)
-                    status = compression_stream_process(&stream, flags)
-                }
-            }
-            
-            switch status {
-            case COMPRESSION_STATUS_OK,
-                 COMPRESSION_STATUS_END:
-                
-                let count = size - stream.dst_size
-                
-                let outputData = Data(bytesNoCopy: buffer,
-                                      count: count,
-                                      deallocator: .none)
-                
-                // Write all produced bytes to the output file.
-                result += outputData
-                
-                // Reset the stream to receive the next batch of output.
+        data.withUnsafeBytes {
+            var status = compression_stream_init(&stream, COMPRESSION_STREAM_DECODE, COMPRESSION_ZLIB)
+            repeat {
+                index += 1
                 stream.dst_ptr = buffer
                 stream.dst_size = size
-            case COMPRESSION_STATUS_ERROR:
-                fatalError("COMPRESSION_STATUS_ERROR.")
-                
-                
-            default:
-                break
-            }
-            
-        } while status == COMPRESSION_STATUS_OK
-        
-//        let adler = adler32(result)
-//
-//        print("jump::::::::::::::::::::::::::::::::::::::::::::::::                 ")
-//        print("\(adler[0]) \(adler[1]) \(adler[2]) \(adler[3])")
-//        while
-//            data[index] != adler[0] &&
-//            data[index + 1] != adler[1] &&
-//            data[index + 2] != adler[2] &&
-//            data[index + 3] != adler[3] {
-//                print("+    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
-//            index += 1
-//        }
-//
-//
-//
+                stream.src_size = 1
+                stream.src_ptr = $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1).advanced(by: index)
+                status = compression_stream_process(&stream, Int32(COMPRESSION_STREAM_FINALIZE.rawValue))
+                result += Data(bytesNoCopy: buffer, count: size - stream.dst_size, deallocator: .none)
+            } while status == COMPRESSION_STATUS_OK
+        }
         index += 5
-//
-
-        //
-//        print("nexts +    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
-//        debugPrint(String(decoding: result, as: UTF8.self))
+        buffer.deallocate()
+        compression_stream_destroy(&stream)
         return (index, result)
     }
     
