@@ -28,39 +28,103 @@ class Press {
     }
     
     func unpack(_ size: Int, data: Data) -> (Int, Data) {
+//        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+//        let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
+        
+        var index = 1
+
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-        let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
+        var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
+        var status = compression_stream_init(&stream, COMPRESSION_STREAM_DECODE, COMPRESSION_ZLIB)
+        
+        stream.src_size = 0
+        stream.dst_ptr = buffer
+        stream.dst_size = size
+        
         var result = Data()
-        var index = size
+        var source: Data?
         
         repeat {
-            index /= 2
-            result = decompress(data.subdata(in: 2 ..< index), size: size, buffer: buffer, scratch: scratch)
-        } while result.count != 0
-        
-        while result.count == 0 {
-            let delta = (size - index) / 2
-            if delta < 400 {
+            index += 1
+            var flags = Int32(0)
+            
+            // If this iteration has consumed all of the source data,
+            // read a new tempData buffer from the input file.
+            if stream.src_size == 0 {
+                source = data.subdata(in: index ..< index + 1)
+                stream.src_size = source!.count
+                if source!.count < size {
+                    flags = Int32(COMPRESSION_STREAM_FINALIZE.rawValue)
+                }
+            }
+            
+            // Perform compression or decompression.
+            if let source = source {
+                let count = source.count
+                source.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
+                    let a = count - stream.src_size
+                    stream.src_ptr = bytes.advanced(by: a)
+                    status = compression_stream_process(&stream, flags)
+                }
+            }
+            
+            switch status {
+            case COMPRESSION_STATUS_OK,
+                 COMPRESSION_STATUS_END:
+                
+                // Get the number of bytes put in the destination buffer. This is the difference between
+                // stream.dst_size before the call (here bufferSize), and stream.dst_size after the call.
+                let count = size - stream.dst_size
+                
+                let outputData = Data(bytesNoCopy: buffer,
+                                      count: count,
+                                      deallocator: .none)
+                
+                // Write all produced bytes to the output file.
+                result += outputData
+                
+                // Reset the stream to receive the next batch of output.
+                stream.dst_ptr = buffer
+                stream.dst_size = size
+            case COMPRESSION_STATUS_ERROR:
+                fatalError("COMPRESSION_STATUS_ERROR.")
+                
+                
+            default:
                 break
             }
-            result = decompress(data.subdata(in: 2 ..< index + delta), size: size, buffer: buffer, scratch: scratch)
-            if result.count == 0 {
-                index += delta
-            }
-        }
+            
+        } while status == COMPRESSION_STATUS_OK
         
-        while index < data.count - 20 && result.count < size {
-            index += 1
-            result = decompress(data.subdata(in: 2 ..< index), size: size, buffer: buffer, scratch: scratch)
-        }
-        
-        buffer.deallocate()
-        scratch.deallocate()
+//
+//        repeat {
+//            index /= 2
+//            result = decompress(data.subdata(in: 2 ..< index), size: size, buffer: buffer, scratch: scratch)
+//        } while result.count != 0
+//
+//        while result.count == 0 {
+//            let delta = (size - index) / 2
+//            if delta < 400 {
+//                break
+//            }
+//            result = decompress(data.subdata(in: 2 ..< index + delta), size: size, buffer: buffer, scratch: scratch)
+//            if result.count == 0 {
+//                index += delta
+//            }
+//        }
+//
+//        while index < data.count - 20 && result.count < size {
+//            index += 1
+//            result = decompress(data.subdata(in: 2 ..< index), size: size, buffer: buffer, scratch: scratch)
+//        }
+//
+//        buffer.deallocate()
+//        scratch.deallocate()
         
         
         
         let adler = adler32(result)
-        
+//
         print("jump::::::::::::::::::::::::::::::::::::::::::::::::                 ")
         print("\(adler[0]) \(adler[1]) \(adler[2]) \(adler[3])")
         while
@@ -71,14 +135,14 @@ class Press {
                 print("+    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
             index += 1
         }
-        
-        
-        
+//
+//
+//
         index += 4
-        
+//
         if adler[3] == data[index] {
-            if data[index] < 128 {
-                print("myfix")
+            if /*data[index] < 128*/ true {
+                print("myfix \(index) \(result.count)")
                 index += 1
             } else {
                 print("avoid fix")
@@ -88,8 +152,9 @@ class Press {
                 }
             }
         }
-        
+//
         print("nexts +    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
+        debugPrint(String(decoding: result, as: UTF8.self))
         return (index, result)
     }
     
