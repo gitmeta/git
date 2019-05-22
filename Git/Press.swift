@@ -28,11 +28,7 @@ class Press {
     }
     
     func unpack(_ size: Int, data: Data) -> (Int, Data) {
-//        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-//        let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
-        
         var index = 1
-
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
         var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
         var status = compression_stream_init(&stream, COMPRESSION_STREAM_DECODE, COMPRESSION_ZLIB)
@@ -48,8 +44,6 @@ class Press {
             index += 1
             var flags = Int32(0)
             
-            // If this iteration has consumed all of the source data,
-            // read a new tempData buffer from the input file.
             if stream.src_size == 0 {
                 source = data.subdata(in: index ..< index + 1)
                 stream.src_size = source!.count
@@ -58,12 +52,11 @@ class Press {
                 }
             }
             
-            // Perform compression or decompression.
             if let source = source {
                 let count = source.count
-                source.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
+                source.withUnsafeBytes {
                     let a = count - stream.src_size
-                    stream.src_ptr = bytes.advanced(by: a)
+                    stream.src_ptr = $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1).advanced(by: a)
                     status = compression_stream_process(&stream, flags)
                 }
             }
@@ -72,8 +65,6 @@ class Press {
             case COMPRESSION_STATUS_OK,
                  COMPRESSION_STATUS_END:
                 
-                // Get the number of bytes put in the destination buffer. This is the difference between
-                // stream.dst_size before the call (here bufferSize), and stream.dst_size after the call.
                 let count = size - stream.dst_size
                 
                 let outputData = Data(bytesNoCopy: buffer,
@@ -95,33 +86,6 @@ class Press {
             }
             
         } while status == COMPRESSION_STATUS_OK
-        
-//
-//        repeat {
-//            index /= 2
-//            result = decompress(data.subdata(in: 2 ..< index), size: size, buffer: buffer, scratch: scratch)
-//        } while result.count != 0
-//
-//        while result.count == 0 {
-//            let delta = (size - index) / 2
-//            if delta < 400 {
-//                break
-//            }
-//            result = decompress(data.subdata(in: 2 ..< index + delta), size: size, buffer: buffer, scratch: scratch)
-//            if result.count == 0 {
-//                index += delta
-//            }
-//        }
-//
-//        while index < data.count - 20 && result.count < size {
-//            index += 1
-//            result = decompress(data.subdata(in: 2 ..< index), size: size, buffer: buffer, scratch: scratch)
-//        }
-//
-//        buffer.deallocate()
-//        scratch.deallocate()
-        
-        
         
         let adler = adler32(result)
 //
