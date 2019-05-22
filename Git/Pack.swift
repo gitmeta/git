@@ -104,7 +104,11 @@ class Pack {
             case .deltaOfs: ofs = index - (try parse.offset())
             default: break
             }
- 
+
+            if ofs < 0 {
+                print("here")
+            }
+            
             let content = Hub.press.unpack(expected, data: parse.data.subdata(in: parse.index ..< parse.data.count))
             parse.discard(content.0)
             guard content.1.count == expected else { throw Failure.Pack.invalidPack }
