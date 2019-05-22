@@ -47,8 +47,9 @@ class Press {
             if stream.src_size == 0 {
                 source = data.subdata(in: index ..< index + 1)
                 stream.src_size = source!.count
+//                flags = Int32(COMPRESSION_STREAM_FINALIZE.rawValue)
                 if source!.count < size {
-                    flags = Int32(COMPRESSION_STREAM_FINALIZE.rawValue)
+//                    flags = Int32(COMPRESSION_STREAM_FINALIZE.rawValue)
                 }
             }
             
@@ -87,38 +88,27 @@ class Press {
             
         } while status == COMPRESSION_STATUS_OK
         
-        let adler = adler32(result)
+//        let adler = adler32(result)
 //
-        print("jump::::::::::::::::::::::::::::::::::::::::::::::::                 ")
-        print("\(adler[0]) \(adler[1]) \(adler[2]) \(adler[3])")
-        while
-            data[index] != adler[0] &&
-            data[index + 1] != adler[1] &&
-            data[index + 2] != adler[2] &&
-            data[index + 3] != adler[3] {
-                print("+    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
-            index += 1
-        }
+//        print("jump::::::::::::::::::::::::::::::::::::::::::::::::                 ")
+//        print("\(adler[0]) \(adler[1]) \(adler[2]) \(adler[3])")
+//        while
+//            data[index] != adler[0] &&
+//            data[index + 1] != adler[1] &&
+//            data[index + 2] != adler[2] &&
+//            data[index + 3] != adler[3] {
+//                print("+    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
+//            index += 1
+//        }
 //
 //
 //
-        index += 4
+        index += 5
 //
-        if adler[3] == data[index] {
-            if /*data[index] < 128*/ true {
-                print("myfix \(index) \(result.count)")
-                index += 1
-            } else {
-                print("avoid fix")
-                if adler[0] == 0 {
-                    print("extra fix")
-                    index += 1
-                }
-            }
-        }
-//
-        print("nexts +    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
-        debugPrint(String(decoding: result, as: UTF8.self))
+
+        //
+//        print("nexts +    \(data[index]) \(data[index + 1]) \(data[index + 2]) \(data[index + 3])")
+//        debugPrint(String(decoding: result, as: UTF8.self))
         return (index, result)
     }
     
