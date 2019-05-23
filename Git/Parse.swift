@@ -109,6 +109,7 @@ class Parse {
                 result += Int(pow(2, (7 * Double(times))))
             }
             times += 1
+            print("offsetting \(byte)")
         } while byte >= 128
         return result
     }

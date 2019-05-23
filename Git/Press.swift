@@ -27,9 +27,35 @@ class Press {
         return data
     }
     
-    func unpack(_ size: Int, data: Data) throws -> (Int, Data) {
-        var index = lead(size, data: data) - 2
+    /*func unpack(_ size: Int, data: Data) -> (Int, Data) {
+        var index = 1
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+        var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
+        var result = Data()
+        data.withUnsafeBytes {
+            var status = compression_stream_init(&stream, COMPRESSION_STREAM_DECODE, COMPRESSION_ZLIB)
+            repeat {
+                index += 1
+                stream.dst_ptr = buffer
+                stream.dst_size = size
+                stream.src_size = 1
+                stream.src_ptr = $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1).advanced(by: index)
+                status = compression_stream_process(&stream, Int32(COMPRESSION_STREAM_FINALIZE.rawValue))
+                result += Data(bytesNoCopy: buffer, count: size - stream.dst_size, deallocator: .none)
+            } while status == COMPRESSION_STATUS_OK
+        }
+        index += 5
+        buffer.deallocate()
+        compression_stream_destroy(&stream)
+        return (index, result)
+    }*/
+    
+    func unpack(_ size: Int, data: Data) throws -> (Int, Data) {
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
+        let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
+        var index = max(data.withUnsafeBytes { Data(bytes: buffer, count: compression_decode_buffer( buffer, size, $0.baseAddress!.bindMemory(
+            to: UInt8.self, capacity: 1).advanced(by: 2), data.count, scratch, COMPRESSION_ZLIB)) }.withUnsafeBytes { compression_encode_buffer(buffer, max(size, self.size), $0.baseAddress!.bindMemory(to: UInt8.self, capacity:
+                1), size, scratch, COMPRESSION_ZLIB) } - 2, 1)
         var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
         var result = Data()
         data.withUnsafeBytes {
@@ -48,11 +74,11 @@ class Press {
                 stream.src_ptr = $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1).advanced(by: 1 + index)
                 status = compression_stream_process(&stream, Int32(COMPRESSION_STREAM_FINALIZE.rawValue))
                 result += Data(bytesNoCopy: buffer, count: size - stream.dst_size, deallocator: .none)
-                print(result.count)
             }
         }
         index += 6
         buffer.deallocate()
+        scratch.deallocate()
         compression_stream_destroy(&stream)
         return (index, result)
     }
