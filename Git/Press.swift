@@ -27,27 +27,18 @@ class Press {
         return data
     }
     
-    func unpack(_ size: Int, data: Data) -> (Int, Data) {
-        var index = 1
+    func unpack(_ size: Int, data: Data) throws -> (Int, Data) {
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-        var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
-        var result = Data()
-        data.withUnsafeBytes {
-            var status = compression_stream_init(&stream, COMPRESSION_STREAM_DECODE, COMPRESSION_ZLIB)
-            repeat {
-                index += 1
-                stream.dst_ptr = buffer
-                stream.dst_size = size
-                stream.src_size = 1
-                stream.src_ptr = $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1).advanced(by: index)
-                status = compression_stream_process(&stream, Int32(COMPRESSION_STREAM_FINALIZE.rawValue))
-                result += Data(bytesNoCopy: buffer, count: size - stream.dst_size, deallocator: .none)
-            } while status == COMPRESSION_STATUS_OK
+        let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
+        let subdata = data.subdata(in: 2 ..< min(size + 2, data.count - 2))
+        let result = subdata.withUnsafeBytes {
+            Data(bytes: buffer, count: compression_decode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1),
+                                                                 subdata.count, scratch, COMPRESSION_ZLIB))
         }
-        index += 5
-        buffer.deallocate()
-        compression_stream_destroy(&stream)
-        return (index, result)
+        guard result.count == size else { throw Failure.Pack.size }
+        return (result.withUnsafeBytes {
+            compression_encode_buffer(buffer, size, $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1), result.count, scratch, COMPRESSION_ZLIB)
+        } + 5, result)
     }
     
     private func decompress(_ data: Data, size: Int, buffer: UnsafeMutablePointer<UInt8>, scratch: UnsafeMutablePointer<UInt8>) -> Data {

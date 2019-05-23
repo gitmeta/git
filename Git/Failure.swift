@@ -43,6 +43,7 @@ public struct Failure: LocalizedError {
         public static let invalidPack = Failure("Pack file malformed.")
         public static let invalidDelta = Failure("Pack delta malformed.")
         public static let object = Failure("Unreadable pack object.")
+        public static let size = Failure("Size not match.")
     }
     
     public struct Fetch {
