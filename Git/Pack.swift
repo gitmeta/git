@@ -111,7 +111,7 @@ class Pack {
             
             let content = try Hub.press.unpack(expected, data: parse.data.subdata(in: parse.index ..< parse.data.count))
             parse.discard(content.0)
-            print("content: \(content.0) size \(expected)")
+            print("content: \(content.0) size \(expected) got \(content.1.count)")
 
             switch category {
             case .commit: try commit(content.1, index: index)
