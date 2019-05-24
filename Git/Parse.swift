@@ -108,7 +108,6 @@ class Parse {
             }
             result += (byte & 0x7f)
             times += 1
-            print("offsetting \(byte)")
         } while byte >= 128
         if times > 1 {
             (1 ..< times).forEach {
@@ -117,10 +116,6 @@ class Parse {
         }
         return result
     }
-    
-    
-    
-    
     
     func advance(_ bytes: Int) throws -> Data {
         let index = self.index + bytes

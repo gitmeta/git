@@ -30,7 +30,7 @@ class Press {
     }
     
     func unpack(_ size: Int, data: Data) throws -> (Int, Data) {
-        var index = max(compress(decompress(data)).count - max(size / 35, 9), 0)
+        var index = max(compress(decompress(data)).count - max(size / 30, 9), 0)
         let result = try data.withUnsafeBytes {
             var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
             let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)

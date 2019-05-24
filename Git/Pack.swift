@@ -86,7 +86,7 @@ class Pack {
         try parse.discard("PACK")
         parse.discard(4)
         let count = try parse.number()
-        try (0 ..< count).forEach {
+        try (0 ..< count).forEach { _ in
             let index = parse.index
             let byte = Int(try parse.byte())
             guard let category = Category(rawValue: (byte >> 4) & 7) else { throw Failure.Pack.object }
@@ -95,7 +95,7 @@ class Pack {
             if byte >= 128 {
                 expected = try parse.size(expected, shift: 4)
             }
-            print("\($0):\(count) \(category) size: \(expected)")
+            
             var ref = ""
             var ofs = 0
 
@@ -105,14 +105,9 @@ class Pack {
             default: break
             }
 
-            if ofs < 0 {
-                print("here")
-            }
-            
             let content = try Hub.press.unpack(expected, data: parse.data.subdata(in: parse.index ..< parse.data.count))
             parse.discard(content.0)
-            print("content: \(content.0) size \(expected) got \(content.1.count)")
-
+            
             switch category {
             case .commit: try commit(content.1, index: index)
             case .tree: try tree(content.1, index: index)
@@ -195,12 +190,7 @@ class Pack {
     private func delta(_ category: Category, base: Data, data: Data, index: Int) throws {
         let parse = Parse(data)
         var result = Data()
-        guard try parse.size() == base.count else {
-            throw Failure.Pack.invalidDelta
-        }
-        if index == 8893274 {
-            print("as")
-        }
+        guard try parse.size() == base.count else { throw Failure.Pack.invalidDelta }
         let expected = try parse.size()
         while parse.index < data.count {
             let byte = Int(try parse.byte())
@@ -217,19 +207,13 @@ class Pack {
                     size += (byte >> $0) & 0x01 == 1 ? Int(try parse.byte()) << shift : 0
                     shift += 8
                 }
-                if size == 0 {
-                    size = 65536
-                }
+                if size == 0 { size = 65536 }
                 result += base.subdata(in: offset ..< offset + size)
             } else {
                 result += try parse.advance(byte)
             }
         }
-        
-        guard result.count == expected else {
-            throw Failure.Pack.invalidDelta
-            
-        }
+        guard result.count == expected else { throw Failure.Pack.invalidDelta }
         switch category {
         case .commit: try commit(result, index: index)
         case .tree: try tree(result, index: index)
