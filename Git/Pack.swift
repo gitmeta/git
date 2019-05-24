@@ -195,7 +195,12 @@ class Pack {
     private func delta(_ category: Category, base: Data, data: Data, index: Int) throws {
         let parse = Parse(data)
         var result = Data()
-        guard try parse.size() == base.count else { throw Failure.Pack.invalidDelta }
+        guard try parse.size() == base.count else {
+            throw Failure.Pack.invalidDelta
+        }
+        if index == 8893274 {
+            print("as")
+        }
         let expected = try parse.size()
         while parse.index < data.count {
             let byte = Int(try parse.byte())
@@ -212,13 +217,19 @@ class Pack {
                     size += (byte >> $0) & 0x01 == 1 ? Int(try parse.byte()) << shift : 0
                     shift += 8
                 }
+                if size == 0 {
+                    size = 65536
+                }
                 result += base.subdata(in: offset ..< offset + size)
             } else {
                 result += try parse.advance(byte)
             }
         }
         
-        guard result.count == expected else { throw Failure.Pack.invalidDelta }
+        guard result.count == expected else {
+            throw Failure.Pack.invalidDelta
+            
+        }
         switch category {
         case .commit: try commit(result, index: index)
         case .tree: try tree(result, index: index)
