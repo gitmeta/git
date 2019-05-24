@@ -51,12 +51,11 @@ class Press {
     }*/
     
     func unpack(_ size: Int, data: Data) throws -> (Int, Data) {
+        var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
         let scratch = UnsafeMutablePointer<UInt8>.allocate(capacity: max(size, self.size))
-        var index = max(data.withUnsafeBytes { Data(bytes: buffer, count: compression_decode_buffer( buffer, size, $0.baseAddress!.bindMemory(
-            to: UInt8.self, capacity: 1).advanced(by: 2), data.count, scratch, COMPRESSION_ZLIB)) }.withUnsafeBytes { compression_encode_buffer(buffer, max(size, self.size), $0.baseAddress!.bindMemory(to: UInt8.self, capacity:
-                1), size, scratch, COMPRESSION_ZLIB) } - 2, 1)
-        var stream = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1).pointee
+        var index = max(data.withUnsafeBytes { Data(bytes: buffer, count: compression_decode_buffer( buffer, max(size, self.size), $0.baseAddress!.bindMemory(
+            to: UInt8.self, capacity: 1).advanced(by: 2), data.count - 2, scratch, COMPRESSION_ZLIB)) }.withUnsafeBytes { compression_encode_buffer(buffer, max(size, self.size), $0.baseAddress!.bindMemory(to: UInt8.self, capacity: 1), size, scratch, COMPRESSION_ZLIB) } - 2, 1)
         var result = Data()
         data.withUnsafeBytes {
             var status = compression_stream_init(&stream, COMPRESSION_STREAM_DECODE, COMPRESSION_ZLIB)
@@ -76,6 +75,7 @@ class Press {
                 result += Data(bytesNoCopy: buffer, count: size - stream.dst_size, deallocator: .none)
             }
         }
+        guard result.count == size else { throw Failure.Pack.size }
         index += 6
         buffer.deallocate()
         scratch.deallocate()
