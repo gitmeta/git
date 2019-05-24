@@ -199,7 +199,7 @@ class Pack {
         let expected = try parse.size()
         while parse.index < data.count {
             let byte = Int(try parse.byte())
-            if byte & 0x80 == 128 {
+            if byte >= 128 {
                 var offset = 0
                 var shift = 0
                 try (0 ..< 4).forEach {

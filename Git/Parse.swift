@@ -103,16 +103,24 @@ class Parse {
         var times = 0
         repeat {
             byte = Int(try self.byte())
-            result <<= times * 7
-            result += (byte & 0x7f)
-            if times >= 1 {
-                result += Int(pow(2, (7 * Double(times))))
+            if times > 0 {
+                result <<= 7
             }
+            result += (byte & 0x7f)
             times += 1
             print("offsetting \(byte)")
         } while byte >= 128
+        if times > 1 {
+            (1 ..< times).forEach {
+                result += Int(pow(2, (7 * Double($0))))
+            }
+        }
         return result
     }
+    
+    
+    
+    
     
     func advance(_ bytes: Int) throws -> Data {
         let index = self.index + bytes
