@@ -123,14 +123,14 @@ class Pack {
             case .reserved: throw Failure.Pack.invalidPack
             }
         }
+        guard parse.data.count - parse.index == 20 else {
+            throw Failure.Pack.invalidPack
+        }
         try deltas.forEach {
             try delta($0.0, data: $0.1, index: $0.2)
         }
         try offsets.forEach {
             try delta($0.0, data: $0.1, index: $0.2)
-        }
-        guard parse.data.count - parse.index == 20 else {
-            throw Failure.Pack.invalidPack
         }
     }
     
