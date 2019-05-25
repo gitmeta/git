@@ -11,44 +11,58 @@ class Log: Sheet {
             
             let number = Label(String(index))
             number.alignment = .center
-            number.font = .systemFont(ofSize: 25, weight: .bold)
+            number.font = .systemFont(ofSize: 20, weight: .bold)
             number.textColor = .halo
             addSubview(number)
             
             let author = Label(commit.author.name)
             author.textColor = .halo
-            author.font = .systemFont(ofSize: 14, weight: .medium)
+            author.font = .systemFont(ofSize: 16, weight: .bold)
             addSubview(author)
             
+            let container = NSView()
+            container.translatesAutoresizingMaskIntoConstraints = false
+            container.wantsLayer = true
+            container.layer!.backgroundColor = NSColor.halo.cgColor
+            container.layer!.cornerRadius = 4
+            addSubview(container)
+            
             let date = Label({
-                $0.timeStyle = .medium
-                $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .full : .none
+                $0.timeStyle = .short
+                $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .medium : .none
                 return $0.string(from: $1)
             } (DateFormatter(), commit.author.date))
-            date.textColor = NSColor(white: 1, alpha: 0.5)
-            date.font = .systemFont(ofSize: 12, weight: .light)
+            date.textColor = .black
+            date.font = .systemFont(ofSize: 12, weight: .regular)
+            date.alignment = .right
             addSubview(date)
             
             let label = Label(commit.message)
             label.textColor = .white
-            label.font = .systemFont(ofSize: 16, weight: .light)
+            label.font = .systemFont(ofSize: 14, weight: .light)
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            label.isSelectable = true
             addSubview(label)
             self.label = label
             
             number.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-            number.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            number.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
             
-            author.bottomAnchor.constraint(equalTo: date.topAnchor).isActive = true
-            author.leftAnchor.constraint(equalTo: date.leftAnchor).isActive = true
+            author.bottomAnchor.constraint(equalTo: number.bottomAnchor, constant: -2).isActive = true
+            author.leftAnchor.constraint(equalTo: number.rightAnchor, constant: 5).isActive = true
             
-            date.bottomAnchor.constraint(equalTo: number.bottomAnchor).isActive = true
-            date.leftAnchor.constraint(equalTo: number.rightAnchor, constant: 7).isActive = true
+            container.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
+            container.heightAnchor.constraint(equalToConstant: 24).isActive = true
+            container.centerYAnchor.constraint(equalTo: number.centerYAnchor).isActive = true
+            container.leftAnchor.constraint(equalTo: date.leftAnchor, constant: -8).isActive = true
             
-            label.topAnchor.constraint(equalTo: number.bottomAnchor, constant: 30).isActive = true
-            label.leftAnchor.constraint(equalTo: number.leftAnchor, constant: 6).isActive = true
-            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -20).isActive = true
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+            date.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+            date.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -8).isActive = true
+            
+            label.topAnchor.constraint(equalTo: number.bottomAnchor, constant: 12).isActive = true
+            label.leftAnchor.constraint(equalTo: number.leftAnchor, constant: 2).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -12).isActive = true
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12).isActive = true
         }
         
         required init?(coder: NSCoder) { return nil }
