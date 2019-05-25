@@ -42,7 +42,7 @@ blob 12\u{0000}hello rorld
             url.appendingPathComponent(".git/objects/ab/helloworld"))
         let tree = try? Tree("abhelloworld", url: url)
         XCTAssertEqual(1, tree?.items.count)
-        XCTAssertNotNil(tree?.items.first as? Tree.Blob)
+        XCTAssertEqual(.blob, tree?.items.first?.category)
         XCTAssertEqual("hello.json", tree?.items.first?.url.lastPathComponent)
         XCTAssertEqual("e0f1ee1826f922f041e557a16173f2a93835825e", tree?.items.first?.id)
     }
@@ -52,8 +52,8 @@ blob 12\u{0000}hello rorld
             url.appendingPathComponent(".git/objects/ab/helloworld"))
         let tree = try? Tree("abhelloworld", url: url)
         XCTAssertEqual(2, tree?.items.count)
-        XCTAssertNotNil(tree?.items.first as? Tree.Blob)
-        XCTAssertNotNil(tree?.items.last as? Tree.Sub)
+        XCTAssertEqual(.blob, tree?.items.first?.category)
+        XCTAssertEqual(.tree, tree?.items.last?.category)
         XCTAssertEqual("hello.json", tree?.items.first?.url.lastPathComponent)
         XCTAssertEqual("e0f1ee1826f922f041e557a16173f2a93835825e", tree?.items.first?.id)
         XCTAssertEqual("mydir", tree?.items.last?.url.lastPathComponent)
@@ -65,7 +65,7 @@ blob 12\u{0000}hello rorld
             url.appendingPathComponent(".git/objects/ab/helloworld"))
         let tree = try? Tree("abhelloworld", url: url)
         XCTAssertEqual(11, tree?.items.count)
-        XCTAssertEqual(11, tree?.items.filter({ $0 is Tree.Blob }).count)
+        XCTAssertEqual(11, tree?.items.filter({ $0.category != .tree }).count)
     }
     
     func testTree4() {

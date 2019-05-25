@@ -41,7 +41,7 @@ class TestTree: XCTestCase {
         XCTAssertEqual(1, tree.items.count)
         XCTAssertEqual(file, tree.items.first?.url)
         XCTAssertEqual("95d09f2b10159347eece71399a7e2e907ea3df4f", tree.items.first?.id)
-        XCTAssertNotNil(tree.items.first as? Tree.Blob)
+        XCTAssertEqual(.blob, tree.items.first?.category)
     }
     
     func testSave() {
@@ -61,12 +61,12 @@ class TestTree: XCTestCase {
         try! Data("lorem ipsum\n".utf8).write(to: file)
         let tree = Tree(url, ignore: ignore, update: [file], entries: [])
         XCTAssertEqual(1, tree.items.count)
-        XCTAssertNotNil(tree.items.first as? Tree.Sub)
+        XCTAssertEqual(.tree, tree.items.first?.category)
         XCTAssertEqual(sub, tree.items.first?.url)
         XCTAssertEqual("12b34e53d16df3d9f2dd6ad8a4c45af37e283dc1", tree.items.first?.id)
         XCTAssertEqual(sub, tree.items.first?.url)
         XCTAssertEqual(1, tree.children.count)
-        XCTAssertNotNil(tree.children.values.first?.items.first as? Tree.Blob)
+        XCTAssertEqual(.blob, tree.children.values.first?.items.first?.category)
         XCTAssertEqual("01a59b011a48660bb3828ec72b2b08990b8cf56b", tree.children.values.first?.items.first?.id)
         XCTAssertEqual(file, tree.children.values.first?.items.first?.url)
     }

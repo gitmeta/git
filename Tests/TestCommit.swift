@@ -301,7 +301,7 @@ Add project files.
                 XCTAssertEqual("481fe7479499b1b5623dfef963b5802d87af8c94", (try? Hub.head.commit(self.url))?.tree)
                 XCTAssertNotNil(tree)
                 XCTAssertEqual(2, tree?.items.count)
-                XCTAssertNotNil(tree?.items.first(where: { $0 is Tree.Sub }))
+                XCTAssertNotNil(tree?.items.first(where: { $0.category == .tree }))
                 expect.fulfill()
             }
         }
@@ -352,7 +352,7 @@ not.js
                 XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", (try? Hub.head.commit(self.url))?.tree)
                 XCTAssertNotNil(tree)
                 XCTAssertEqual(1, tree?.items.count)
-                XCTAssertNotNil(tree?.items.first(where: { $0 is Tree.Blob }))
+                XCTAssertNotNil(tree?.items.first(where: { $0.category != .tree }))
                 expect.fulfill()
             }
         }

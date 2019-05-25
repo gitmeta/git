@@ -1,37 +1,27 @@
 import Foundation
 
 class Tree {
-    class Item {
+    enum Category: String {
+        case blob = "100644"
+        case exec = "100755"
+        case tree = "40000"
+    }
+    
+    class Item: Hashable {
         var id = ""
         var url = URL(fileURLWithPath: "")
-        var category: Category { return .unknown }
-    }
-    
-    class Blob: Item {
-        override var category: Tree.Category { return .blob }
-    }
-    
-    class Sub: Item, Hashable {
-        static func == (lhs: Tree.Sub, rhs: Tree.Sub) -> Bool { return lhs.id == rhs.id }
-        override var category: Tree.Category { return .sub }
-        func hash(into: inout Hasher) { into.combine(id) }
-    }
-    
-    enum Category: String {
-        case unknown
-        case blob = "100644"
-        case sub = "40000"
+        let category: Category
         
-        func make() -> Item {
-            switch self {
-            case .sub: return Sub()
-            default: return Blob()
-            }
+        init(_ category: Category) {
+            self.category = category
         }
+        
+        func hash(into: inout Hasher) { into.combine(id) }
+        static func == (lhs: Item, rhs: Item) -> Bool { return lhs.id == rhs.id }
     }
     
     private(set) var items = [Item]()
-    private(set) var children = [Sub: Tree]()
+    private(set) var children = [Item: Tree]()
     
     convenience init(_ id: String, url: URL, trail: URL? = nil) throws {
         try self.init(Hub.content.get(id, url: url), url: trail ?? url)
@@ -54,7 +44,7 @@ class Tree {
             if content.hasDirectoryPath {
                 let child = Tree(content, ignore: ignore, update: update, entries: entries)
                 if !child.items.isEmpty {
-                    let item = Sub()
+                    let item = Item(.tree)
                     item.url = content
                     item.id = Hub.hash.tree(child.serial).1
                     items.append(item)
@@ -62,12 +52,12 @@ class Tree {
                 }
             } else if !ignore.url(content) {
                 if update.contains(where: { $0.path == content.path }) {
-                    let item = Blob()
+                    let item = Item(.blob)
                     item.url = content
                     item.id = Hub.hash.file(content).1
                     items.append(item)
                 } else if let entry = entries.first(where: { $0.url.path == content.path }) {
-                    let item = Blob()
+                    let item = Item(.blob)
                     item.url = entry.url
                     item.id = entry.id
                     items.append(item)
@@ -78,7 +68,7 @@ class Tree {
     
     private init(_ parse: Parse, url: URL) throws {
         while parse.index < parse.data.count {
-            let item = (Category(rawValue: try parse.ascii(" ")) ?? .blob).make()
+            let item = Item(Category(rawValue: try parse.ascii(" ")) ?? .blob)
             item.url = url.appendingPathComponent(try parse.variable())
             item.id = try parse.hash()
             items.append(item)
@@ -86,14 +76,15 @@ class Tree {
     }
     
     func list(_ url: URL) -> [Item] {
-        return items.flatMap { $0 is Blob ? [$0] : (try? Tree($0.id, url: url, trail: $0.url))?.list(url) ?? [] }
+        return items.flatMap { $0.category != .tree ? [$0] : (try? Tree($0.id, url: url, trail: $0.url))?.list(url) ?? [] }
     }
     
     func map(_ index: Index, url: URL) throws {
         try items.forEach {
-            switch $0.category {
-            case .sub: try Tree($0.id, url: url, trail: $0.url).map(index, url: url)
-            default: index.entry($0.id, url: $0.url)
+            if $0.category == .tree {
+                try Tree($0.id, url: url, trail: $0.url).map(index, url: url)
+            } else {
+                index.entry($0.id, url: $0.url)
             }
         }
     }

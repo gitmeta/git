@@ -38,7 +38,7 @@ class Extract {
         guard let url = repository?.url else { return }
         try tree.items.forEach {
             switch $0.category {
-            case .sub:
+            case .tree:
                 if !FileManager.default.fileExists(atPath: $0.url.path) {
                     try FileManager.default.createDirectory(at: $0.url, withIntermediateDirectories: true)
                 }

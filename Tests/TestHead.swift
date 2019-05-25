@@ -80,7 +80,7 @@ class TestHead: XCTestCase {
             repository.commit([file], message: "hello world") {
                 let tree = try? Hub.head.tree(self.url)
                 XCTAssertEqual(1, tree?.items.count)
-                XCTAssertNotNil(tree?.items.first as? Tree.Blob)
+                XCTAssertEqual(.blob, tree?.items.first?.category)
                 XCTAssertEqual(file, tree?.items.first?.url)
                 XCTAssertEqual("95d09f2b10159347eece71399a7e2e907ea3df4f", tree?.items.first?.id)
                 expect.fulfill()
