@@ -68,13 +68,14 @@ class Log: Sheet {
         required init?(coder: NSCoder) { return nil }
     }
     
+    private weak var scroll: NSScrollView!
+    
     @discardableResult override init() {
         super.init()
         let cancel = Button.Image(self, action: #selector(close))
-        cancel.off = NSImage(named: "cancelOff")
-        cancel.on = NSImage(named: "cancelOn")
-        cancel.width.constant = 40
-        cancel.height.constant = 40
+        cancel.image.image = NSImage(named: "cancel")
+        cancel.width.constant = 24
+        cancel.height.constant = 24
         addSubview(cancel)
         
         let title = Label(.local("Log.title"))
@@ -102,9 +103,10 @@ class Log: Sheet {
         scroll.documentView!.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
         scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: scroll.bottomAnchor).isActive = true
         addSubview(scroll)
+        self.scroll = scroll
         
         cancel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        cancel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        cancel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         
         title.centerYAnchor.constraint(equalTo: cancel.centerYAnchor).isActive = true
         title.rightAnchor.constraint(equalTo: cancel.leftAnchor, constant: -10).isActive = true
@@ -119,7 +121,8 @@ class Log: Sheet {
         scroll.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
         scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
         
-        App.repository?.log { items in
+        App.repository?.log { [weak scroll] items in
+            guard let scroll = scroll else { return }
             var top = scroll.documentView!.topAnchor
             items.enumerated().forEach {
                 let item = Item(items.count - $0.0, commit: $0.1)
@@ -135,4 +138,9 @@ class Log: Sheet {
     }
     
     required init?(coder: NSCoder) { return nil }
+    
+    override func close() {
+        scroll.removeFromSuperview()
+        super.close()
+    }
 }

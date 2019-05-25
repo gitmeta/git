@@ -2,14 +2,7 @@ import AppKit
 
 class Button: NSView {
     class Image: Button {
-        var off: NSImage? { didSet { image.image = off } }
-        var on: NSImage?
-        private weak var image: NSImageView!
-        override var selected: Bool {
-            didSet {
-                image.image = selected ? on : off
-            }
-        }
+        private(set) weak var image: NSImageView!
         
         override init(_ target: AnyObject?, action: Selector?) {
             super.init(target, action: action)
@@ -30,11 +23,6 @@ class Button: NSView {
     
     class Text: Button {
         private(set) weak var label: Label!
-        override var selected: Bool {
-            didSet {
-                alphaValue = selected ? 0.5 : 1
-            }
-        }
         
         override init(_ target: AnyObject?, action: Selector?) {
             super.init(target, action: action)
@@ -89,8 +77,12 @@ class Button: NSView {
     var action: Selector?
     private(set) weak var width: NSLayoutConstraint!
     private(set) weak var height: NSLayoutConstraint!
-    fileprivate var selected = false
     private var drag = CGFloat(0)
+    fileprivate var selected = false {
+        didSet {
+            alphaValue = selected ? 0.4 : 1
+        }
+    }
     
     init(_ target: AnyObject?, action: Selector?) {
         super.init(frame: .zero)

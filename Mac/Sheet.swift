@@ -10,19 +10,14 @@ class Sheet: NSView {
         super.init(frame: .zero)
         wantsLayer = true
         if Sheet.presented == nil {
+            App.window.list.documentView!.subviews.forEach({ $0.removeFromSuperview() })
+            
             Sheet.presented = self
             App.menu.validate()
             translatesAutoresizingMaskIntoConstraints = false
-            layer!.backgroundColor = NSColor.black.cgColor
+            layer!.backgroundColor = NSColor.shade.cgColor
             alphaValue = 0
             App.window.contentView!.addSubview(self)
-            
-            let blur = NSVisualEffectView(frame: .zero)
-            blur.translatesAutoresizingMaskIntoConstraints = false
-            blur.material = .ultraDark
-            blur.blendingMode = .withinWindow
-            blur.isHidden = true
-            addSubview(blur)
             
             let terminate = NSButton()
             terminate.title = String()
@@ -31,11 +26,6 @@ class Sheet: NSView {
             terminate.isBordered = false
             terminate.keyEquivalent = "\u{1b}"
             addSubview(terminate)
-            
-            blur.topAnchor.constraint(equalTo: topAnchor).isActive = true
-            blur.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-            blur.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-            blur.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             
             topAnchor.constraint(equalTo: App.window.contentView!.topAnchor).isActive = true
             bottomAnchor.constraint(equalTo: App.window.contentView!.bottomAnchor).isActive = true
@@ -47,10 +37,8 @@ class Sheet: NSView {
                 context.duration = 0.5
                 context.allowsImplicitAnimation = true
                 alphaValue = 1
-            }) { [weak self, weak blur] in
+            }) { [weak self] in
                 App.window.makeFirstResponder(self)
-                blur?.isHidden = false
-                self?.layer!.backgroundColor = NSColor.clear.cgColor
                 self?.ready?()
             }
         }
@@ -73,10 +61,13 @@ class Sheet: NSView {
     
     @objc func close() {
         App.window.makeFirstResponder(nil)
+        App.window.refresh()
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.4
             context.allowsImplicitAnimation = true
             alphaValue = 0
-        }) { [weak self] in self?.removeFromSuperview() }
+        }) { [weak self] in
+            self?.removeFromSuperview()
+        }
     }
 }

@@ -15,7 +15,7 @@ class Reset: Sheet {
             $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: NSFont.systemFont(ofSize: 16, weight: .bold),
                                                                                      .foregroundColor: NSColor.white]))
             $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .light),
-                                                                                        .foregroundColor: NSColor(white: 1, alpha: 0.6)]))
+                                                                                        .foregroundColor: NSColor(white: 1, alpha: 0.8)]))
             return $0
         } (NSMutableAttributedString())
         addSubview(label)

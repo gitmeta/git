@@ -89,17 +89,15 @@ class Commit: Sheet {
     @discardableResult override init() {
         super.init()
         let save = Button.Image(self, action: #selector(self.save))
-        save.off = NSImage(named: "commitOff")
-        save.on = NSImage(named: "commitOn")
-        save.width.constant = 40
-        save.height.constant = 40
+        save.image.image = NSImage(named: "commit")
+        save.width.constant = 24
+        save.height.constant = 24
         addSubview(save)
         
         let cancel = Button.Image(self, action: #selector(close))
-        cancel.off = NSImage(named: "cancelOff")
-        cancel.on = NSImage(named: "cancelOn")
-        cancel.width.constant = 40
-        cancel.height.constant = 40
+        cancel.image.image = NSImage(named: "cancel")
+        cancel.width.constant = 24
+        cancel.height.constant = 24
         addSubview(cancel)
         
         let title = Label(.local("Commit.title"))
@@ -126,11 +124,11 @@ class Commit: Sheet {
         scroll.verticalScrollElasticity = .allowed
         addSubview(scroll)
         
-        cancel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        cancel.rightAnchor.constraint(equalTo: save.leftAnchor).isActive = true
+        cancel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        cancel.rightAnchor.constraint(equalTo: save.leftAnchor, constant: -10).isActive = true
         
-        save.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
-        save.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        save.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        save.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         
         title.centerYAnchor.constraint(equalTo: save.centerYAnchor).isActive = true
         title.rightAnchor.constraint(equalTo: cancel.leftAnchor, constant: -10).isActive = true

@@ -39,7 +39,7 @@ class Onboard: Sheet {
             images.append(image)
             
             let button = Button.Image(self, action: #selector(show(_:)))
-            button.off = NSImage(named: "dot")
+            button.image.image = NSImage(named: "dot")
             button.width.constant = 50
             button.height.constant = 50
             addSubview(button)
