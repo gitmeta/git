@@ -5,23 +5,17 @@ class Tree {
         case blob = "100644"
         case exec = "100755"
         case tree = "40000"
+        case unknown
     }
     
-    class Item: Hashable {
+    class Item {
         var id = ""
         var url = URL(fileURLWithPath: "")
-        let category: Category
-        
-        init(_ category: Category) {
-            self.category = category
-        }
-        
-        func hash(into: inout Hasher) { into.combine(id) }
-        static func == (lhs: Item, rhs: Item) -> Bool { return lhs.id == rhs.id }
+        var category = Category.unknown
     }
     
     private(set) var items = [Item]()
-    private(set) var children = [Item: Tree]()
+    private(set) var children = [String: Tree]()
     
     convenience init(_ id: String, url: URL, trail: URL? = nil) throws {
         try self.init(Hub.content.get(id, url: url), url: trail ?? url)
@@ -44,20 +38,23 @@ class Tree {
             if content.hasDirectoryPath {
                 let child = Tree(content, ignore: ignore, update: update, entries: entries)
                 if !child.items.isEmpty {
-                    let item = Item(.tree)
+                    let item = Item()
+                    item.category = .tree
                     item.url = content
                     item.id = Hub.hash.tree(child.serial).1
                     items.append(item)
-                    children[item] = child
+                    children[item.id] = child
                 }
             } else if !ignore.url(content) {
                 if update.contains(where: { $0.path == content.path }) {
-                    let item = Item(.blob)
+                    let item = Item()
+                    item.category = .blob
                     item.url = content
                     item.id = Hub.hash.file(content).1
                     items.append(item)
                 } else if let entry = entries.first(where: { $0.url.path == content.path }) {
-                    let item = Item(.blob)
+                    let item = Item()
+                    item.category = .blob
                     item.url = entry.url
                     item.id = entry.id
                     items.append(item)
@@ -68,7 +65,8 @@ class Tree {
     
     private init(_ parse: Parse, url: URL) throws {
         while parse.index < parse.data.count {
-            let item = Item(Category(rawValue: try parse.ascii(" ")) ?? .blob)
+            let item = Item()
+            item.category = Category(rawValue: try parse.ascii(" ")) ?? .unknown
             item.url = url.appendingPathComponent(try parse.variable())
             item.id = try parse.hash()
             items.append(item)
