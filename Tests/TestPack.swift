@@ -50,8 +50,8 @@ class TestPack: XCTestCase {
     func testLoadAllPacks() {
         copy("0")
         copy("1")
-        let packs = try? Pack.pack(url)
-        XCTAssertEqual(2, packs?.count)
+        copy("2")
+        XCTAssertEqual(3, (try? Pack.pack(url))?.count)
     }
     
     func testUnpackWithPack() {
@@ -112,6 +112,21 @@ class TestPack: XCTestCase {
         XCTAssertEqual(5, pack.commits.count)
         XCTAssertEqual(5, pack.trees.count)
         XCTAssertEqual(4, pack.blobs.count)
+    }
+    
+    func testLoadPack2() {
+        copy("2")
+        let pack = try! Pack(url, id: "2")
+        XCTAssertEqual(19, pack.commits.count)
+        XCTAssertEqual(70, pack.trees.count)
+        XCTAssertEqual(66, pack.blobs.count)
+        XCTAssertNotNil(pack.trees.first(where: { $0.0 == "d14d41ee118d52df4b9811b2eacc943f06cd942a" }))
+        XCTAssertNotNil(pack.commits.first(where: { $0.0 == "0807a029cb42acd13ad194248436f093b8e63a4f" }))
+        XCTAssertNotNil(pack.blobs.first(where: { $0.0 == "0ec0ff154d5c479f0af27d7a5064bb570c62500d" }))
+        
+        if let data = pack.trees.first(where: { $0.0 == "d14d41ee118d52df4b9811b2eacc943f06cd942a" })?.1.0.serial {
+            XCTAssertEqual("d14d41ee118d52df4b9811b2eacc943f06cd942a", Hub.hash.tree(data).1)
+        }
     }
     
     func testHashTreePack1() {

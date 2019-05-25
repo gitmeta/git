@@ -142,11 +142,13 @@
 		CE7B8BF722917ACA00396AB1 /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF522917ACA00396AB1 /* Head.swift */; };
 		CE89826022904EB300E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE89825F22904EB300E9F41F /* Reset.swift */; };
 		CE8982622290560000E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8982612290560000E9F41F /* Reset.swift */; };
+		CE9AA0FC2299269C00CAFA91 /* pack-2.pack in Resources */ = {isa = PBXBuildFile; fileRef = CE9AA0FA2299269C00CAFA91 /* pack-2.pack */; };
+		CE9AA0FD2299269C00CAFA91 /* pack-2.idx in Resources */ = {isa = PBXBuildFile; fileRef = CE9AA0FB2299269C00CAFA91 /* pack-2.idx */; };
 		CED676C6228E820E009D6ADC /* TestReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C5228E820E009D6ADC /* TestReset.swift */; };
 		CED676C8228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
 		CED676C9228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
 		CEE6A9602292782F00977743 /* packed-refs0 in Resources */ = {isa = PBXBuildFile; fileRef = CEE6A95F2292782F00977743 /* packed-refs0 */; };
-		CEE6A9622292785E00977743 /* TestUnpackRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A9612292785E00977743 /* TestUnpackRepository.swift */; };
+		CEE6A9622292785E00977743 /* TestUnpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A9612292785E00977743 /* TestUnpack.swift */; };
 		CEE6A964229280FD00977743 /* Packer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A963229280FD00977743 /* Packer.swift */; };
 		CEE6A965229280FD00977743 /* Packer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A963229280FD00977743 /* Packer.swift */; };
 		CEE6A96722928D7100977743 /* TestRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A96622928D7100977743 /* TestRefresh.swift */; };
@@ -285,10 +287,12 @@
 		CE7B8BF522917ACA00396AB1 /* Head.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Head.swift; sourceTree = "<group>"; };
 		CE89825F22904EB300E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
 		CE8982612290560000E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
+		CE9AA0FA2299269C00CAFA91 /* pack-2.pack */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-2.pack"; sourceTree = "<group>"; };
+		CE9AA0FB2299269C00CAFA91 /* pack-2.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-2.idx"; sourceTree = "<group>"; };
 		CED676C5228E820E009D6ADC /* TestReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReset.swift; sourceTree = "<group>"; };
 		CED676C7228E840C009D6ADC /* Extract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extract.swift; sourceTree = "<group>"; };
 		CEE6A95F2292782F00977743 /* packed-refs0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "packed-refs0"; sourceTree = "<group>"; };
-		CEE6A9612292785E00977743 /* TestUnpackRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUnpackRepository.swift; sourceTree = "<group>"; };
+		CEE6A9612292785E00977743 /* TestUnpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUnpack.swift; sourceTree = "<group>"; };
 		CEE6A963229280FD00977743 /* Packer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packer.swift; sourceTree = "<group>"; };
 		CEE6A96622928D7100977743 /* TestRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRefresh.swift; sourceTree = "<group>"; };
 		CEE6A9682292998000977743 /* TestRestoreIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRestoreIndex.swift; sourceTree = "<group>"; };
@@ -391,8 +395,10 @@
 				20B8327E22703C9200773058 /* tree4 */,
 				206F2E5F2275DE840058DA7E /* pack-0.idx */,
 				CE7B8BEF2291431700396AB1 /* pack-1.idx */,
+				CE9AA0FB2299269C00CAFA91 /* pack-2.idx */,
 				206F2E602275DE840058DA7E /* pack-0.pack */,
 				CE7B8BEE2291431700396AB1 /* pack-1.pack */,
+				CE9AA0FA2299269C00CAFA91 /* pack-2.pack */,
 				2048A0F9225C745100290E54 /* Tests.plist */,
 				20C21CD4228818730038466A /* MockRest.swift */,
 				2048A0FA225C745100290E54 /* TestAdd.swift */,
@@ -418,7 +424,7 @@
 				20A37BEC2272E1E100850D12 /* TestStaging.swift */,
 				2048A0FD225C745100290E54 /* TestStatus.swift */,
 				20AFB33E2265DA5200A3ECC0 /* TestTree.swift */,
-				CEE6A9612292785E00977743 /* TestUnpackRepository.swift */,
+				CEE6A9612292785E00977743 /* TestUnpack.swift */,
 				20948B7D2271987E00B1987D /* TestUser.swift */,
 			);
 			path = Tests;
@@ -689,7 +695,9 @@
 				20E76BE6225E264300E023D8 /* compressed0 in Resources */,
 				2048A103225C745100290E54 /* tree1 in Resources */,
 				204C754B22899784007327D5 /* fetch0 in Resources */,
+				CE9AA0FC2299269C00CAFA91 /* pack-2.pack in Resources */,
 				2048A10C225C745100290E54 /* blob0 in Resources */,
+				CE9AA0FD2299269C00CAFA91 /* pack-2.idx in Resources */,
 				2048A104225C745100290E54 /* tree0 in Resources */,
 				2048A10D225C745100290E54 /* tree2 in Resources */,
 				20B8327F22703C9200773058 /* tree4 in Resources */,
@@ -798,7 +806,7 @@
 				206F2E5E2275DDFD0058DA7E /* TestPack.swift in Sources */,
 				2075D1A0227DD2EC0004D098 /* TestLog.swift in Sources */,
 				20C21CD5228818730038466A /* MockRest.swift in Sources */,
-				CEE6A9622292785E00977743 /* TestUnpackRepository.swift in Sources */,
+				CEE6A9622292785E00977743 /* TestUnpack.swift in Sources */,
 				20B3E200228831C3009D132C /* TestRest.swift in Sources */,
 				2048A105225C745100290E54 /* TestHub.swift in Sources */,
 				2048A101225C745100290E54 /* TestIndex.swift in Sources */,

@@ -1,7 +1,7 @@
 import XCTest
 @testable import Git
 
-class TestUnpackRepository: XCTestCase {
+class TestUnpack: XCTestCase {
     private var url: URL!
     
     override func setUp() {
@@ -36,7 +36,7 @@ class TestUnpackRepository: XCTestCase {
         var repository: Repository!
         Hub.create(url) {
             repository = $0
-            self.addPack()
+            self.addPack("1")
             repository.packed {
                 XCTAssertTrue($0)
                 expect.fulfill()
@@ -59,12 +59,12 @@ class TestUnpackRepository: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testUnpack() {
+    func testUnpack1() {
         let expect = expectation(description: "")
         var repository: Repository!
         Hub.create(url) {
             repository = $0
-            self.addPack()
+            self.addPack("1")
             XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
             DispatchQueue.global(qos: .background).async {
                 repository.unpack {
@@ -74,6 +74,22 @@ class TestUnpackRepository: XCTestCase {
                     
                     expect.fulfill()
                 }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testUnpack2() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            self.addPack("2")
+            repository.unpack {
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/d1/4d41ee118d52df4b9811b2eacc943f06cd942a").path))
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/08/07a029cb42acd13ad194248436f093b8e63a4f").path))
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/0e/c0ff154d5c479f0af27d7a5064bb570c62500d").path))
+                expect.fulfill()
             }
         }
         waitForExpectations(timeout: 1)
@@ -97,16 +113,16 @@ class TestUnpackRepository: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    private func addPack() {
+    private func addPack(_ id: String) {
         try! FileManager.default.createDirectory(at: url.appendingPathComponent(".git/objects/pack"), withIntermediateDirectories: true)
-        try! (try! Data(contentsOf: Bundle(for: TestUnpackRepository.self).url(forResource: "pack-1",
-                                                                               withExtension: "idx")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-1.idx"))
-        try! (try! Data(contentsOf: Bundle(for: TestUnpackRepository.self).url(forResource: "pack-1",
-                                                                               withExtension: "pack")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-1.pack"))
+        try! (try! Data(contentsOf: Bundle(for: TestUnpack.self).url(
+            forResource: "pack-\(id)", withExtension: "idx")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-\(id).idx"))
+        try! (try! Data(contentsOf: Bundle(for: TestUnpack.self).url(
+            forResource: "pack-\(id)", withExtension: "pack")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
     }
     
     private func addReference() {
-        try! (try! Data(contentsOf: Bundle(for: TestUnpackRepository.self).url(forResource: "packed-refs0",
+        try! (try! Data(contentsOf: Bundle(for: TestUnpack.self).url(forResource: "packed-refs0",
                                                                                withExtension: nil)!)).write(to: self.url.appendingPathComponent(".git/packed-refs"))
     }
 }
