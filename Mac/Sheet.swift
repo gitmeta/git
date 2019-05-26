@@ -6,7 +6,7 @@ class Sheet: NSView {
     override var acceptsFirstResponder: Bool { return true }
     
     init() {
-        App.window.makeFirstResponder(nil)
+        App.home.makeFirstResponder(nil)
         super.init(frame: .zero)
         wantsLayer = true
         if Sheet.presented == nil {
@@ -15,7 +15,7 @@ class Sheet: NSView {
             translatesAutoresizingMaskIntoConstraints = false
             layer!.backgroundColor = NSColor.shade.cgColor
             alphaValue = 0
-            App.window.contentView!.addSubview(self)
+            App.home.contentView!.addSubview(self)
             
             let terminate = NSButton()
             terminate.title = String()
@@ -25,18 +25,18 @@ class Sheet: NSView {
             terminate.keyEquivalent = "\u{1b}"
             addSubview(terminate)
             
-            topAnchor.constraint(equalTo: App.window.contentView!.topAnchor).isActive = true
-            bottomAnchor.constraint(equalTo: App.window.contentView!.bottomAnchor).isActive = true
-            leftAnchor .constraint(equalTo: App.window.contentView!.leftAnchor).isActive = true
-            rightAnchor.constraint(equalTo: App.window.contentView!.rightAnchor).isActive = true
-            App.window.contentView!.layoutSubtreeIfNeeded()
+            topAnchor.constraint(equalTo: App.home.contentView!.topAnchor).isActive = true
+            bottomAnchor.constraint(equalTo: App.home.contentView!.bottomAnchor).isActive = true
+            leftAnchor .constraint(equalTo: App.home.contentView!.leftAnchor).isActive = true
+            rightAnchor.constraint(equalTo: App.home.contentView!.rightAnchor).isActive = true
+            App.home.contentView!.layoutSubtreeIfNeeded()
             
             NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.5
                 context.allowsImplicitAnimation = true
                 alphaValue = 1
             }) { [weak self] in
-                App.window.makeFirstResponder(self)
+                App.home.makeFirstResponder(self)
                 self?.ready?()
             }
         }
@@ -58,7 +58,7 @@ class Sheet: NSView {
     }
     
     @objc func close() {
-        App.window.makeFirstResponder(nil)
+        App.home.makeFirstResponder(nil)
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.4
             context.allowsImplicitAnimation = true

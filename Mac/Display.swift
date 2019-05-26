@@ -129,17 +129,17 @@ class Display: NSView {
     @objc private func createRepository() {
         loading()
         Hub.create(Hub.session.url, error: {
-            App.window.alert.error($0.localizedDescription)
+            App.home.alert.error($0.localizedDescription)
         }) { App.repository = $0 }
     }
     
     @objc private func unpackRepository() {
         loading()
         App.repository?.unpack({
-            App.window.refresh()
-            App.window.alert.error($0.localizedDescription)
+            App.global.refresh()
+            App.home.alert.error($0.localizedDescription)
         }) {
-            App.window.alert.update(.local("Display.unpacked"))
+            App.home.alert.update(.local("Display.unpacked"))
         }
     }
 }

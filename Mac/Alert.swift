@@ -50,21 +50,21 @@ class Alert {
         view.layer!.cornerRadius = 4
         view.alphaValue = 0
         view.height.constant = 40
-        view.width.constant = App.window.contentView!.frame.width - 20
-        App.window.contentView!.addSubview(view)
+        view.width.constant = App.home.contentView!.frame.width - 20
+        App.home.contentView!.addSubview(view)
         self.view = view
         
-        view.leftAnchor.constraint(equalTo: App.window.contentView!.leftAnchor, constant: 10).isActive = true
-        bottom = view.bottomAnchor.constraint(equalTo: App.window.contentView!.topAnchor)
+        view.leftAnchor.constraint(equalTo: App.home.contentView!.leftAnchor, constant: 10).isActive = true
+        bottom = view.bottomAnchor.constraint(equalTo: App.home.contentView!.topAnchor)
         bottom!.isActive = true
         
-        App.window.contentView!.layoutSubtreeIfNeeded()
+        App.home.contentView!.layoutSubtreeIfNeeded()
         bottom!.constant = 70
         NSAnimationContext.runAnimationGroup({
             $0.duration = 0.6
             $0.allowsImplicitAnimation = true
             view.alphaValue = 1
-            App.window.contentView!.layoutSubtreeIfNeeded()
+            App.home.contentView!.layoutSubtreeIfNeeded()
         }) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self, weak view] in
                 if view != nil && view === self?.view {
@@ -80,7 +80,7 @@ class Alert {
             $0.duration = 0.6
             $0.allowsImplicitAnimation = true
             view?.alphaValue = 0
-            App.window.contentView!.layoutSubtreeIfNeeded()
+            App.home.contentView!.layoutSubtreeIfNeeded()
         }) { [weak self] in
             self?.view?.removeFromSuperview()
             self?.pop()

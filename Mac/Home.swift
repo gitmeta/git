@@ -1,7 +1,7 @@
 import AppKit
 import UserNotifications
 
-class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
+class Home: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
     let alert = Alert()
     private(set) weak var list: List!
     private(set) weak var tools: Tools!
@@ -16,12 +16,10 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         titleVisibility = .hidden
         backgroundColor = .shade
         collectionBehavior = .fullScreenNone
-        minSize = NSSize(width: 400, height: 400)
+        minSize = NSSize(width: 200, height: 200)
         isReleasedWhenClosed = false
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false
-
-        UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
         
         let display = Display()
         contentView!.addSubview(display)
@@ -100,17 +98,17 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         item.view = button
         switch makeItemForIdentifier.rawValue {
         case "directory":
-            button.title = .local("Window.directory")
+            button.title = .local("Home.directory")
             button.image = NSImage(named: "logotouch")
             button.imagePosition = .imageLeft
             button.imageScaling = .scaleNone
             button.bezelColor = .black
-            button.target = NSApp
+            button.target = App.global
             button.action = #selector(App.panel)
         case "refresh":
             button.title = .local("Menu.refresh")
-            button.target = self
-            button.action = #selector(refresh)
+            button.target = App.global
+            button.action = #selector(App.refresh)
         default: break
         }
         return item
@@ -172,15 +170,10 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         }) { }
     }
     
-    @objc func refresh() {
-        App.repository?.refresh()
-        showRefresh()
-    }
-    
     @objc func showHelp(_: Any?) { Onboard() }
     
     override func close() {
         super.close()
-        App.shared.terminate(nil)
+        App.global.terminate(nil)
     }
 }

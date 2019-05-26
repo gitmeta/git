@@ -22,7 +22,7 @@ class Tools: NSView {
         log.height.constant = 27
         addSubview(log)
         
-        let credentials = Button.Image(NSApp, action: #selector(App.preferences))
+        let credentials = Button.Image(App.global, action: #selector(App.preferences))
         credentials.image.image = NSImage(named: "credentials")
         credentials.width.constant = 27
         credentials.height.constant = 27
@@ -58,7 +58,7 @@ class Tools: NSView {
     @objc func reset() { Reset() }
     @objc func commit() {
         if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
-            (NSApp as! App).preferences()
+            App.global.preferences()
         } else {
             Commit()
         }

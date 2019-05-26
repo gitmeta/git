@@ -5,45 +5,48 @@ import StoreKit
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate {
     static var repository: Repository? {
         didSet {
-            repository?.branch { window.branch.label.stringValue = $0 }
+            repository?.branch { home.branch.label.stringValue = $0 }
             menu.validate()
             if repository == nil {
-                window.notRepository()
-                window.list.update([])
+                home.notRepository()
+                home.list.update([])
             } else {
                 repository!.status = { [weak repository] status in
                     repository?.packed {
                         if $0 {
-                            window.packed()
+                            home.packed()
                         } else {
                             if status.isEmpty {
-                                window.upToDate()
+                                home.upToDate()
                             } else {
-                                window.repository()
+                                home.repository()
                             }
-                            window.list.update(status)
+                            home.list.update(status)
                         }
                     }
                 }
-                window.refresh()
+                App.global.refresh()
             }
         }
     }
     
-    private(set) static var menu: Menu!
-    private(set) static var window: Window!
+    private(set) static weak var global: App!
+    private(set) static weak var menu: Menu!
+    private(set) static weak var home: Home!
     
     override init() {
         super.init()
+        App.global = self
         delegate = self
+        UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
     }
     
     required init?(coder: NSCoder) { return nil }
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
     
     func applicationDidFinishLaunching(_: Notification) {
-        let window = Window()
-        App.window = window
+        let window = Home()
+        App.home = window
         window.makeKeyAndOrderFront(nil)
         
         let menu = Menu()
@@ -71,19 +74,24 @@ import StoreKit
     
     @objc func preferences() { Credentials() }
     
+    @objc func refresh() {
+        App.repository?.refresh()
+        App.home.showRefresh()
+    }
+    
     private func open() {
         guard !Hub.session.bookmark.isEmpty
         else {
-            App.window.showHelp(nil)
+            App.home.showHelp(nil)
             return
         }
         var stale = false
         _ = (try? URL(resolvingBookmarkData: Hub.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
             &stale))?.startAccessingSecurityScopedResource()
-        App.window.location.label.stringValue = Hub.session.url.lastPathComponent
-        App.window.branch.label.stringValue = ""
+        App.home.location.label.stringValue = Hub.session.url.lastPathComponent
+        App.home.branch.label.stringValue = ""
         Hub.open(Hub.session.url, error: {
-            App.window.alert.error($0.localizedDescription)
+            App.home.alert.error($0.localizedDescription)
             App.repository = nil
         }) { App.repository = $0 }
     }

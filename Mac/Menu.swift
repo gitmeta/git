@@ -18,7 +18,7 @@ class Menu: NSMenu {
                     #selector(App.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
-                    $0.target = NSApp
+                    $0.target = App.global
                     preferences = $0
                     return $0
                 } (NSMenuItem(title: .local("Menu.preferences"), action: #selector(App.preferences), keyEquivalent: ",")))
@@ -42,7 +42,7 @@ class Menu: NSMenu {
         addItem({
             $0.submenu = {
                 $0.addItem({
-                    $0.target = NSApp
+                    $0.target = App.global
                     $0.keyEquivalentModifierMask = [.command]
                     directory = $0
                     return $0
@@ -50,21 +50,21 @@ class Menu: NSMenu {
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command]
-                    $0.target = App.window
+                    $0.target = App.global
                     $0.isEnabled = false
                     refresh = $0
                     return $0
-                } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(Window.refresh), keyEquivalent: "r")))
+                } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(App.refresh), keyEquivalent: "r")))
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command]
-                    $0.target = App.window.tools
+                    $0.target = App.home.tools
                     $0.isEnabled = false
                     log = $0
                     return $0
                 } (NSMenuItem(title: .local("Menu.log"), action: #selector(Tools.log), keyEquivalent: "y")))
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command]
-                    $0.target = App.window.tools
+                    $0.target = App.home.tools
                     $0.isEnabled = false
                     commit = $0
                     return $0
@@ -72,7 +72,7 @@ class Menu: NSMenu {
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command, .control, .shift]
-                    $0.target = App.window.tools
+                    $0.target = App.home.tools
                     $0.isEnabled = false
                     reset = $0
                     return $0
@@ -86,8 +86,8 @@ class Menu: NSMenu {
         addItem({
             $0.submenu = {
                 $0.addItem(withTitle: .local("Menu.minimize"), action:
-                    #selector(Window.performMiniaturize(_:)), keyEquivalent: "m")
-                $0.addItem(withTitle: .local("Menu.zoom"), action: #selector(Window.performZoom(_:)), keyEquivalent: "p")
+                    #selector(Home.performMiniaturize(_:)), keyEquivalent: "m")
+                $0.addItem(withTitle: .local("Menu.zoom"), action: #selector(Home.performZoom(_:)), keyEquivalent: "p")
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem(withTitle: .local("Menu.bringAllToFront"), action:
                     #selector(App.arrangeInFront(_:)), keyEquivalent: "")
@@ -131,7 +131,7 @@ class Menu: NSMenu {
             help.isEnabled = false
         }
         if #available(OSX 10.12.2, *) {
-            App.window.touchBar = nil
+            App.home.touchBar = nil
         }
     }
 }

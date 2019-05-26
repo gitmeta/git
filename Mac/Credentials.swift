@@ -122,7 +122,7 @@ class Credentials: Sheet, NSTextFieldDelegate {
         cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 10).isActive = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak name] in
-            App.window.makeFirstResponder(name)
+            App.home.makeFirstResponder(name)
         }
     }
     
@@ -131,16 +131,16 @@ class Credentials: Sheet, NSTextFieldDelegate {
     func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
         if doCommandBy == #selector(NSResponder.insertNewline(_:)) {
             if control == name {
-                App.window.makeFirstResponder(email)
+                App.home.makeFirstResponder(email)
             } else {
                 confirm()
             }
             return true
         } else if doCommandBy == #selector(NSResponder.insertTab(_:)) || doCommandBy == #selector(NSResponder.insertBacktab(_:)) {
             if control == name {
-                App.window.makeFirstResponder(email)
+                App.home.makeFirstResponder(email)
             } else {
-                App.window.makeFirstResponder(name)
+                App.home.makeFirstResponder(name)
             }
             return true
         }
@@ -148,11 +148,11 @@ class Credentials: Sheet, NSTextFieldDelegate {
     }
     
     @objc private func confirm() {
-        App.window.makeFirstResponder(nil)
+        App.home.makeFirstResponder(nil)
         Hub.session.update(name.stringValue, email: email.stringValue, error: {
-            App.window.alert.error($0.localizedDescription)
+            App.home.alert.error($0.localizedDescription)
         }) { [weak self] in
-            App.window.alert.update(.local("Credentials.success"))
+            App.home.alert.update(.local("Credentials.success"))
             self?.close()
         }
     }

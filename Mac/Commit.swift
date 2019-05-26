@@ -147,7 +147,7 @@ class Commit: Sheet {
         text.heightAnchor.constraint(greaterThanOrEqualTo: scroll.heightAnchor).isActive = true
         
         ready = { [weak self] in
-            App.window.makeFirstResponder(self?.text)
+            App.home.makeFirstResponder(self?.text)
         }
     }
     
@@ -155,12 +155,12 @@ class Commit: Sheet {
 
     @objc private func save() {
         App.repository?.commit(
-            (App.window.list.documentView!.subviews as! [List.Item]).filter({ $0.stage.checked }).map { $0.url },
+            (App.home.list.documentView!.subviews as! [List.Item]).filter({ $0.stage.checked }).map { $0.url },
             message: text.string, error: {
-                App.window.alert.error($0.localizedDescription)
+                App.home.alert.error($0.localizedDescription)
         }) { [weak self] in
-            App.window.showRefresh()
-            App.window.alert.commit(self?.text.string ?? "")
+            App.home.showRefresh()
+            App.home.alert.commit(self?.text.string ?? "")
             self?.close()
         }
     }
