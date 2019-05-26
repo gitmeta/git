@@ -10,8 +10,6 @@ class Sheet: NSView {
         super.init(frame: .zero)
         wantsLayer = true
         if Sheet.presented == nil {
-            App.window.list.documentView!.subviews.forEach({ $0.removeFromSuperview() })
-            
             Sheet.presented = self
             App.menu.validate()
             translatesAutoresizingMaskIntoConstraints = false
@@ -61,7 +59,6 @@ class Sheet: NSView {
     
     @objc func close() {
         App.window.makeFirstResponder(nil)
-        App.window.refresh()
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.4
             context.allowsImplicitAnimation = true

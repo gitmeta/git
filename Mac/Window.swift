@@ -10,9 +10,8 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
     private weak var display: Display!
     
     init() {
-        super.init(contentRect: NSRect(x: (NSScreen.main!.frame.width - 600) / 2, y: (NSScreen.main!.frame.height - 600) / 2,
-                   width: 600, height: 600), styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable,
-                                                         .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
+        super.init(contentRect: NSRect(x: (NSScreen.main!.frame.width - 600) / 2, y: (NSScreen.main!.frame.height - 600) / 2, width: 600, height: 600),
+                   styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
         backgroundColor = .shade
@@ -179,4 +178,9 @@ class Window: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
     }
     
     @objc func showHelp(_: Any?) { Onboard() }
+    
+    override func close() {
+        super.close()
+        App.shared.terminate(nil)
+    }
 }

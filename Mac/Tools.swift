@@ -50,7 +50,11 @@ class Tools: NSView {
     }
     
     required init?(coder: NSCoder) { return nil }
-    @objc func log() { Log() }
+    
+    @objc func log() {
+        Log().makeKeyAndOrderFront(nil)
+    }
+    
     @objc func reset() { Reset() }
     @objc func commit() {
         if Hub.session.name.isEmpty || Hub.session.email.isEmpty {

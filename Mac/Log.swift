@@ -1,7 +1,7 @@
 import Git
 import AppKit
 
-class Log: Sheet {
+class Log: NSWindow {
     private class Item: NSView {
         private weak var label: Label!
         
@@ -70,24 +70,34 @@ class Log: Sheet {
     
     private weak var scroll: NSScrollView!
     
-    @discardableResult override init() {
-        super.init()
+    init() {
+        super.init(contentRect: NSRect(x: (NSScreen.main!.frame.width - 600) / 2, y: (NSScreen.main!.frame.height - 600) / 2, width: 600, height: 600),
+                   styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
+        titlebarAppearsTransparent = true
+        titleVisibility = .hidden
+        backgroundColor = .black
+        collectionBehavior = .fullScreenNone
+        minSize = NSSize(width: 400, height: 400)
+        isReleasedWhenClosed = false
+        toolbar = NSToolbar(identifier: "")
+        toolbar!.showsBaselineSeparator = false
+        
         let cancel = Button.Image(self, action: #selector(close))
         cancel.image.image = NSImage(named: "cancel")
         cancel.width.constant = 24
         cancel.height.constant = 24
-        addSubview(cancel)
+        contentView!.addSubview(cancel)
         
         let title = Label(.local("Log.title"))
         title.textColor = .halo
         title.font = .systemFont(ofSize: 14, weight: .bold)
-        addSubview(title)
+        contentView!.addSubview(title)
         
         let border = NSView()
         border.translatesAutoresizingMaskIntoConstraints = false
         border.wantsLayer = true
         border.layer!.backgroundColor = NSColor.black.cgColor
-        addSubview(border)
+        contentView!.addSubview(border)
         
         let scroll = NSScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -102,24 +112,24 @@ class Log: Sheet {
         scroll.documentView!.leftAnchor.constraint(equalTo: scroll.leftAnchor).isActive = true
         scroll.documentView!.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
         scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: scroll.bottomAnchor).isActive = true
-        addSubview(scroll)
+        contentView!.addSubview(scroll)
         self.scroll = scroll
         
-        cancel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        cancel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        cancel.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -10).isActive = true
+        cancel.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 8).isActive = true
         
         title.centerYAnchor.constraint(equalTo: cancel.centerYAnchor).isActive = true
         title.rightAnchor.constraint(equalTo: cancel.leftAnchor, constant: -10).isActive = true
         
-        border.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
+        border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 40).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        border.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
-        border.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
+        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
+        border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
         
         scroll.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
-        scroll.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
-        scroll.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
-        scroll.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
+        scroll.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
+        scroll.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
+        scroll.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
         
         App.repository?.log { [weak scroll] items in
             guard let scroll = scroll else { return }
@@ -136,8 +146,6 @@ class Log: Sheet {
             scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: top, constant: 20).isActive = true
         }
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     override func close() {
         scroll.removeFromSuperview()
