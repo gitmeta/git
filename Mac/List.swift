@@ -51,8 +51,8 @@ class List: NSScrollView {
             stage.off = NSImage(named: "checkOff")
             stage.on = NSImage(named: "checkOn")
             stage.checked = true
-            stage.height.constant = 32
-            stage.width.constant = 32
+//            stage.height.constant = 32
+//            stage.width.constant = 32
             addSubview(stage)
             self.stage = stage
             

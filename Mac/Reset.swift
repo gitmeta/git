@@ -27,16 +27,16 @@ class Reset: Sheet {
         confirm.wantsLayer = true
         confirm.layer!.backgroundColor = NSColor.halo.cgColor
         confirm.layer!.cornerRadius = 6
-        confirm.width.constant = 70
-        confirm.height.constant = 28
+//        confirm.width.constant = 70
+//        confirm.height.constant = 28
         addSubview(confirm)
         
         let cancel = Button.Text(self, action: #selector(close))
         cancel.label.textColor = .white
         cancel.label.font = .systemFont(ofSize: 14, weight: .medium)
         cancel.label.stringValue = .local("Reset.cancel")
-        cancel.width.constant = 70
-        cancel.height.constant = 28
+//        cancel.width.constant = 70
+//        cancel.height.constant = 28
         addSubview(cancel)
         
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

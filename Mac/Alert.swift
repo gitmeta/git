@@ -49,8 +49,8 @@ class Alert {
         view.layer!.backgroundColor = NSColor(white: 0, alpha: 0.9).cgColor
         view.layer!.cornerRadius = 4
         view.alphaValue = 0
-        view.height.constant = 40
-        view.width.constant = App.home.contentView!.frame.width - 20
+//        view.height.constant = 40
+//        view.width.constant = App.home.contentView!.frame.width - 20
         App.home.contentView!.addSubview(view)
         self.view = view
         

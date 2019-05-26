@@ -1,7 +1,13 @@
 import AppKit
 import UserNotifications
 
-class Home: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
+class Home: Window, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
+    private weak var directory: Button!
+    
+    
+    
+    
+    
     let alert = Alert()
     private(set) weak var list: List!
     private(set) weak var tools: Tools!
@@ -10,17 +16,70 @@ class Home: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
     private weak var display: Display!
     
     init() {
-        super.init(contentRect: NSRect(x: (NSScreen.main!.frame.width - 600) / 2, y: (NSScreen.main!.frame.height - 600) / 2, width: 600, height: 600),
-                   styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
-        titlebarAppearsTransparent = true
-        titleVisibility = .hidden
-        backgroundColor = .shade
-        collectionBehavior = .fullScreenNone
-        minSize = NSSize(width: 200, height: 200)
-        isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
+        super.init(NSRect(x: (NSScreen.main!.frame.width - 400) / 2, y: (NSScreen.main!.frame.height - 400) / 2, width: 400, height: 400))
         
+        let left = NSView()
+        left.translatesAutoresizingMaskIntoConstraints = false
+        left.wantsLayer = true
+        left.layer!.backgroundColor = NSColor.shade.cgColor
+        contentView!.addSubview(left)
+        
+        let top = NSView()
+        top.translatesAutoresizingMaskIntoConstraints = false
+        top.wantsLayer = true
+        top.layer!.backgroundColor = NSColor.halo.cgColor
+        contentView!.addSubview(top)
+        
+        let add = Button.Image(self, action: nil)
+        add.image.image = NSImage(named: "add")
+        
+        let reset = Button.Image(self, action: nil)
+        reset.image.image = NSImage(named: "reset")
+        
+        let cloud = Button.Image(self, action: nil)
+        cloud.image.image = NSImage(named: "cloud")
+        
+        let log = Button.Image(self, action: nil)
+        log.image.image = NSImage(named: "log")
+        
+        let settings = Button.Image(self, action: nil)
+        settings.image.image = NSImage(named: "settings")
+        
+        let directory = Button.Text(nil, action: nil)
+        directory.label.stringValue = .local("Home.directory")
+        directory.label.font = .systemFont(ofSize: 12, weight: .bold)
+        directory.label.textColor = .black
+        directory.label.alignment = .left
+        contentView!.addSubview(directory)
+        self.directory = directory
+        
+        left.topAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
+        left.widthAnchor.constraint(equalToConstant: 62).isActive = true
+        left.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        left.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
+        
+        top.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
+        top.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        top.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        top.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
+        
+        directory.topAnchor.constraint(equalTo: top.topAnchor).isActive = true
+        directory.bottomAnchor.constraint(equalTo: top.bottomAnchor, constant: -2).isActive = true
+        directory.widthAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
+        directory.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 80).isActive = true
+        
+        var vertical = left.topAnchor
+        [add, reset, cloud, log, settings].forEach {
+            left.addSubview($0)
+            
+            $0.leftAnchor.constraint(equalTo: left.leftAnchor).isActive = true
+            $0.rightAnchor.constraint(equalTo: left.rightAnchor).isActive = true
+            $0.heightAnchor.constraint(equalToConstant: 66).isActive = true
+            $0.topAnchor.constraint(equalTo: vertical, constant: vertical == left.topAnchor ? 10 : 0).isActive = true
+            vertical = $0.bottomAnchor
+        }
+        
+        /*
         let display = Display()
         contentView!.addSubview(display)
         self.display = display
@@ -69,7 +128,7 @@ class Home: NSWindow, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
                     UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
                 }
             }
-        }
+        }*/
     }
     
     @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:

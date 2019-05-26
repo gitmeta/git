@@ -54,8 +54,8 @@ import StoreKit
         mainMenu = menu
         
         Hub.session.load {
-            self.open()
-            self.rate()
+//            self.open()
+//            self.rate()
         }
     }
     

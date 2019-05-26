@@ -84,8 +84,8 @@ class Log: NSWindow {
         
         let cancel = Button.Image(self, action: #selector(close))
         cancel.image.image = NSImage(named: "cancel")
-        cancel.width.constant = 24
-        cancel.height.constant = 24
+//        cancel.width.constant = 24
+//        cancel.height.constant = 24
         contentView!.addSubview(cancel)
         
         let title = Label(.local("Log.title"))

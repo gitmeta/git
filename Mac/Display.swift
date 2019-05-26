@@ -41,8 +41,8 @@ class Display: NSView {
         create.label.stringValue = .local("Display.create")
         create.label.textColor = .black
         create.label.font = .systemFont(ofSize: 14, weight: .medium)
-        create.width.constant = 70
-        create.height.constant = 28
+//        create.width.constant = 70
+//        create.height.constant = 28
         create.isHidden = true
         addSubview(create)
         self.create = create
@@ -54,8 +54,8 @@ class Display: NSView {
         unpack.label.stringValue = .local("Display.unpack")
         unpack.label.textColor = .black
         unpack.label.font = .systemFont(ofSize: 14, weight: .medium)
-        unpack.width.constant = 70
-        unpack.height.constant = 28
+//        unpack.width.constant = 70
+//        unpack.height.constant = 28
         unpack.isHidden = true
         addSubview(unpack)
         self.unpack = unpack

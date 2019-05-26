@@ -74,16 +74,16 @@ class Credentials: Sheet, NSTextFieldDelegate {
         confirm.wantsLayer = true
         confirm.layer!.backgroundColor = NSColor.halo.cgColor
         confirm.layer!.cornerRadius = 6
-        confirm.width.constant = 70
-        confirm.height.constant = 28
+//        confirm.width.constant = 70
+//        confirm.height.constant = 28
         addSubview(confirm)
         
         let cancel = Button.Text(self, action: #selector(close))
         cancel.label.textColor = NSColor(white: 1, alpha: 0.7)
         cancel.label.font = .systemFont(ofSize: 12, weight: .regular)
         cancel.label.stringValue = .local("Credentials.cancel")
-        cancel.width.constant = 70
-        cancel.height.constant = 28
+//        cancel.width.constant = 70
+//        cancel.height.constant = 28
         addSubview(cancel)
         
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

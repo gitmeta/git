@@ -75,8 +75,6 @@ class Button: NSView {
     
     weak var target: AnyObject?
     var action: Selector?
-    private(set) weak var width: NSLayoutConstraint!
-    private(set) weak var height: NSLayoutConstraint!
     private var drag = CGFloat(0)
     fileprivate var selected = false {
         didSet {
@@ -89,11 +87,6 @@ class Button: NSView {
         translatesAutoresizingMaskIntoConstraints = false
         self.target = target
         self.action = action
-        
-        width = widthAnchor.constraint(equalToConstant: 0)
-        height = heightAnchor.constraint(equalToConstant: 0)
-        width.isActive = true
-        height.isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

@@ -90,14 +90,14 @@ class Commit: Sheet {
         super.init()
         let save = Button.Image(self, action: #selector(self.save))
         save.image.image = NSImage(named: "commit")
-        save.width.constant = 24
-        save.height.constant = 24
+//        save.width.constant = 24
+//        save.height.constant = 24
         addSubview(save)
         
         let cancel = Button.Image(self, action: #selector(close))
         cancel.image.image = NSImage(named: "cancel")
-        cancel.width.constant = 24
-        cancel.height.constant = 24
+//        cancel.width.constant = 24
+//        cancel.height.constant = 24
         addSubview(cancel)
         
         let title = Label(.local("Commit.title"))

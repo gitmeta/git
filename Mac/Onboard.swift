@@ -16,8 +16,8 @@ class Onboard: Sheet {
         done.label.stringValue = .local("Onboard.done")
         done.label.textColor = .black
         done.label.font = .systemFont(ofSize: 14, weight: .medium)
-        done.width.constant = 70
-        done.height.constant = 28
+//        done.width.constant = 70
+//        done.height.constant = 28
         addSubview(done)
         
         let label = Label()
@@ -40,8 +40,8 @@ class Onboard: Sheet {
             
             let button = Button.Image(self, action: #selector(show(_:)))
             button.image.image = NSImage(named: "dot")
-            button.width.constant = 50
-            button.height.constant = 50
+//            button.width.constant = 50
+//            button.height.constant = 50
             addSubview(button)
             buttons.append(button)
             

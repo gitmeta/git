@@ -12,26 +12,26 @@ class Tools: NSView {
         
         let commit = Button.Image(self, action: #selector(self.commit))
         commit.image.image = NSImage(named: "add")
-        commit.width.constant = 32
-        commit.height.constant = 32
+//        commit.width.constant = 32
+//        commit.height.constant = 32
         addSubview(commit)
         
         let log = Button.Image(self, action: #selector(self.log))
         log.image.image = NSImage(named: "log")
-        log.width.constant = 27
-        log.height.constant = 27
+//        log.width.constant = 27
+//        log.height.constant = 27
         addSubview(log)
         
         let credentials = Button.Image(App.global, action: #selector(App.preferences))
         credentials.image.image = NSImage(named: "credentials")
-        credentials.width.constant = 27
-        credentials.height.constant = 27
+//        credentials.width.constant = 27
+//        credentials.height.constant = 27
         addSubview(credentials)
         
         let reset = Button.Image(self, action: #selector(self.reset))
         reset.image.image = NSImage(named: "reset")
-        reset.width.constant = 27
-        reset.height.constant = 27
+//        reset.width.constant = 27
+//        reset.height.constant = 27
         addSubview(reset)
         
         heightAnchor.constraint(equalToConstant: 70).isActive = true
