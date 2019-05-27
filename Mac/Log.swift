@@ -71,7 +71,7 @@ class Log: NSWindow {
     private weak var scroll: NSScrollView!
     
     init() {
-        super.init(contentRect: NSRect(x: App.home.frame.minX + 40, y: App.home.frame.minY - 40, width: 600, height: 600),
+        super.init(contentRect: NSRect(x: app.home.frame.minX + 40, y: app.home.frame.minY - 40, width: 600, height: 600),
                    styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
@@ -131,7 +131,7 @@ class Log: NSWindow {
         scroll.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
         scroll.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
         
-        App.repository?.log { [weak scroll] items in
+        app.repository?.log { [weak scroll] items in
             guard let scroll = scroll else { return }
             var top = scroll.documentView!.topAnchor
             items.enumerated().forEach {

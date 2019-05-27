@@ -2,6 +2,13 @@ Alert.error="Error";
 Alert.commit="Commit";
 Alert.update="Success";
 Home.directory="Browse";
+Home.button.packed="Unpack";
+Home.button.create="Create";
+Home.label.create="No repository found";
+Home.label.packed="This repository is packed";
+Home.label.empty="Ready";
+
+/*
 Display.notRepository="No repository in this directory";
 Display.upToDate="No changes";
 Display.create="Start";
@@ -56,3 +63,4 @@ Menu.bringAllToFront="Bring all to front";
 Menu.window="Window";
 Menu.showHelp="Show help";
 Menu.help="Help";
+*/

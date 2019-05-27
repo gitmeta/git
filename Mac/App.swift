@@ -1,42 +1,39 @@
 import Git
 import AppKit
 import StoreKit
+import UserNotifications
 
-@NSApplicationMain class App: NSApplication, NSApplicationDelegate {
-    static var repository: Repository? {
+private(set) weak var app: App!
+
+@NSApplicationMain class App: NSApplication, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
+    private(set) var repository: Repository? {
         didSet {
-            repository?.branch { home.branch.label.stringValue = $0 }
-            menu.validate()
+            options.validate()
             if repository == nil {
-                home.notRepository()
-                home.list.update([])
+                home.update(.create)
             } else {
-                repository!.status = { [weak repository] status in
-                    repository?.packed {
+                repository!.status = { status in
+                    self.repository?.packed {
                         if $0 {
-                            home.packed()
+                            self.home.update(.packed)
                         } else {
-                            if status.isEmpty {
-                                home.upToDate()
-                            } else {
-                                home.repository()
-                            }
-                            home.list.update(status)
+                            self.home.update(.ready, items: status)
                         }
                     }
                 }
-                App.global.refresh()
+                self.refresh()
             }
         }
     }
     
-    private(set) static weak var global: App!
-    private(set) static weak var menu: Menu!
-    private(set) static weak var home: Home!
+    private(set) weak var options: Menu!
+    private(set) weak var home: Home!
+    private(set) weak var open: NSOpenPanel?
+    let alert = Alert()
     
     override init() {
         super.init()
-        App.global = self
+        app = self
         delegate = self
         UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
     }
@@ -44,56 +41,109 @@ import StoreKit
     required init?(coder: NSCoder) { return nil }
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
     
-    func applicationDidFinishLaunching(_: Notification) {
-        let window = Home()
-        App.home = window
-        window.makeKeyAndOrderFront(nil)
-        
-        let menu = Menu()
-        App.menu = menu
-        mainMenu = menu
-        
-        Hub.session.load {
-//            self.open()
-//            self.rate()
+    @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
+        UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        withCompletionHandler([.alert])
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 10) {
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [willPresent.request.identifier])
         }
     }
     
-    @objc func panel() {
-        let panel = NSOpenPanel()
-        panel.canChooseFiles = false
-        panel.canChooseDirectories = true
-        panel.begin {
-            if $0 == .OK {
-                Hub.session.update(panel.url!, bookmark: (try! panel.url!.bookmarkData(options: .withSecurityScope))) {
-                    self.open()
+    @available(OSX 10.12.2, *) override func makeTouchBar() -> NSTouchBar? {
+        let bar = NSTouchBar()
+        bar.delegate = self
+        bar.defaultItemIdentifiers = [.init("directory"), .init("refresh")]
+        return bar
+    }
+    
+    @available(OSX 10.12.2, *) func touchBar(_: NSTouchBar, makeItemForIdentifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
+        let item = NSCustomTouchBarItem(identifier: makeItemForIdentifier)
+        let button = NSButton(title: "", target: nil, action: nil)
+        item.view = button
+        switch makeItemForIdentifier.rawValue {
+        case "directory":
+            button.title = .local("Home.directory")
+            button.image = NSImage(named: "logotouch")
+            button.imagePosition = .imageLeft
+            button.imageScaling = .scaleNone
+            button.bezelColor = .black
+            button.target = self
+            button.action = #selector(browse)
+        case "refresh":
+            button.title = .local("Menu.refresh")
+            button.target = self
+            button.action = #selector(refresh)
+        default: break
+        }
+        return item
+    }
+    
+    func applicationDidFinishLaunching(_: Notification) {
+        let home = Home()
+        home.makeKeyAndOrderFront(nil)
+        self.home = home
+        
+        let options = Menu()
+        mainMenu = options
+        self.options = options
+        
+        Hub.session.load {
+            self.load()
+            self.rate()
+        }
+        
+        if #available(OSX 10.14, *) {
+            UNUserNotificationCenter.current().delegate = self
+            UNUserNotificationCenter.current().getNotificationSettings {
+                if $0.authorizationStatus != .authorized {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
                 }
             }
         }
     }
     
-    @objc func preferences() { Credentials() }
-    
-    @objc func refresh() {
-        App.repository?.refresh()
-        App.home.showRefresh()
+    @objc func browse() {
+        if let open = self.open {
+            open.orderFront(nil)
+        } else {
+            let open = NSOpenPanel()
+            open.canChooseFiles = false
+            open.canChooseDirectories = true
+            open.begin { [weak open] in
+                guard let open = open, $0 == .OK else { return }
+                Hub.session.update(open.url!, bookmark: (try! open.url!.bookmarkData(options: .withSecurityScope))) {
+                    self.load()
+                }
+            }
+            self.open = open
+        }
     }
     
-    private func open() {
+    @objc func settings() { Credentials() }
+    
+    @objc func refresh() {
+        home.update(.loading)
+        repository?.refresh()
+    }
+    
+    @objc func help() {
+        Onboard()
+    }
+    
+    private func load() {
         guard !Hub.session.bookmark.isEmpty
         else {
-            App.home.showHelp(nil)
+            help()
             return
         }
         var stale = false
         _ = (try? URL(resolvingBookmarkData: Hub.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
             &stale))?.startAccessingSecurityScopedResource()
-        App.home.location.label.stringValue = Hub.session.url.lastPathComponent
-        App.home.branch.label.stringValue = ""
+        home.directory.label.stringValue = Hub.session.url.lastPathComponent
         Hub.open(Hub.session.url, error: {
-            App.home.alert.error($0.localizedDescription)
-            App.repository = nil
-        }) { App.repository = $0 }
+            self.alert.error($0.localizedDescription)
+            self.repository = nil
+        }) { self.repository = $0 }
     }
     
     private func rate() {

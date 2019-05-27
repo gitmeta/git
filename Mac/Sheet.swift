@@ -6,16 +6,16 @@ class Sheet: NSView {
     override var acceptsFirstResponder: Bool { return true }
     
     init() {
-        App.home.makeFirstResponder(nil)
+        app.home.makeFirstResponder(nil)
         super.init(frame: .zero)
         wantsLayer = true
         if Sheet.presented == nil {
             Sheet.presented = self
-            App.menu.validate()
+            app.options.validate()
             translatesAutoresizingMaskIntoConstraints = false
             layer!.backgroundColor = NSColor.shade.cgColor
             alphaValue = 0
-            App.home.contentView!.addSubview(self)
+            app.home.contentView!.addSubview(self)
             
             let terminate = NSButton()
             terminate.title = String()
@@ -25,25 +25,25 @@ class Sheet: NSView {
             terminate.keyEquivalent = "\u{1b}"
             addSubview(terminate)
             
-            topAnchor.constraint(equalTo: App.home.contentView!.topAnchor).isActive = true
-            bottomAnchor.constraint(equalTo: App.home.contentView!.bottomAnchor).isActive = true
-            leftAnchor .constraint(equalTo: App.home.contentView!.leftAnchor).isActive = true
-            rightAnchor.constraint(equalTo: App.home.contentView!.rightAnchor).isActive = true
-            App.home.contentView!.layoutSubtreeIfNeeded()
+            topAnchor.constraint(equalTo: app.home.contentView!.topAnchor).isActive = true
+            bottomAnchor.constraint(equalTo: app.home.contentView!.bottomAnchor).isActive = true
+            leftAnchor .constraint(equalTo: app.home.contentView!.leftAnchor).isActive = true
+            rightAnchor.constraint(equalTo: app.home.contentView!.rightAnchor).isActive = true
+            app.home.contentView!.layoutSubtreeIfNeeded()
             
             NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.5
                 context.allowsImplicitAnimation = true
                 alphaValue = 1
             }) { [weak self] in
-                App.home.makeFirstResponder(self)
+                app.home.makeFirstResponder(self)
                 self?.ready?()
             }
         }
     }
     
     required init?(coder: NSCoder) { return nil }
-    deinit { App.menu.validate() }
+    deinit { app.options.validate() }
     
     override func mouseDown(with: NSEvent) { }
     override func mouseDragged(with: NSEvent) { }
@@ -58,7 +58,7 @@ class Sheet: NSView {
     }
     
     @objc func close() {
-        App.home.makeFirstResponder(nil)
+        app.home.makeFirstResponder(nil)
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.4
             context.allowsImplicitAnimation = true

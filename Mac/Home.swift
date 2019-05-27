@@ -1,22 +1,33 @@
+import Git
 import AppKit
-import UserNotifications
 
-class Home: Window, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
-    private weak var directory: Button!
+class Home: NSWindow  {
+    enum State {
+        case loading
+        case ready
+        case packed
+        case create
+    }
     
-    
-    
-    
-    
-    let alert = Alert()
-    private(set) weak var list: List!
-    private(set) weak var tools: Tools!
-    private(set) weak var location: Bar!
-    private(set) weak var branch: Bar!
-    private weak var display: Display!
+    private(set) weak var directory: Button.Text!
+    private(set) weak var list: NSScrollView!
+    private weak var image: NSImageView!
+    private weak var button: Button.Text!
+    private weak var label: Label!
     
     init() {
-        super.init(NSRect(x: (NSScreen.main!.frame.width - 400) / 2, y: (NSScreen.main!.frame.height - 400) / 2, width: 400, height: 400))
+        super.init(contentRect: NSRect(
+            x: (NSScreen.main!.frame.width - 400) / 2, y: (NSScreen.main!.frame.height - 400) / 2, width: 400, height: 400),
+                   styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable, .titled, .unifiedTitleAndToolbar],
+                   backing: .buffered, defer: false)
+        titlebarAppearsTransparent = true
+        titleVisibility = .hidden
+        backgroundColor = .window
+        collectionBehavior = .fullScreenNone
+        minSize = NSSize(width: 100, height: 100)
+        isReleasedWhenClosed = false
+        toolbar = NSToolbar(identifier: "")
+        toolbar!.showsBaselineSeparator = false
         
         let left = NSView()
         left.translatesAutoresizingMaskIntoConstraints = false
@@ -45,13 +56,51 @@ class Home: Window, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         let settings = Button.Image(self, action: nil)
         settings.image.image = NSImage(named: "settings")
         
-        let directory = Button.Text(nil, action: nil)
+        let directory = Button.Text(app, action: #selector(app.browse))
         directory.label.stringValue = .local("Home.directory")
         directory.label.font = .systemFont(ofSize: 12, weight: .bold)
         directory.label.textColor = .black
         directory.label.alignment = .left
         contentView!.addSubview(directory)
         self.directory = directory
+        
+        let list: NSScrollView = NSScrollView()
+        list.translatesAutoresizingMaskIntoConstraints = false
+        list.drawsBackground = false
+        list.hasVerticalScroller = true
+        list.verticalScroller!.controlSize = .mini
+        list.verticalScrollElasticity = .allowed
+        list.documentView = Flipped()
+        list.documentView!.translatesAutoresizingMaskIntoConstraints = false
+        list.documentView!.topAnchor.constraint(equalTo: list.topAnchor).isActive = true
+        list.documentView!.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
+        list.documentView!.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
+        list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: list.bottomAnchor).isActive = true
+        contentView!.addSubview(list)
+        self.list = list
+        
+        let image = NSImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.imageScaling = .scaleNone
+        image.image = NSImage(named: "loading")
+        contentView!.addSubview(image)
+        self.image = image
+        
+        let button = Button.Text(app, action: nil)
+        button.isHidden = true
+        button.label.font = .systemFont(ofSize: 11, weight: .medium)
+        button.label.textColor = .black
+        button.wantsLayer = true
+        button.layer!.cornerRadius = 4
+        button.layer!.backgroundColor = NSColor.halo.cgColor
+        contentView!.addSubview(button)
+        self.button = button
+        
+        let label = Label()
+        label.font = .systemFont(ofSize: 12, weight: .light)
+        label.textColor = NSColor(white: 1, alpha: 0.7)
+        contentView!.addSubview(label)
+        self.label = label
         
         left.topAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
         left.widthAnchor.constraint(equalToConstant: 62).isActive = true
@@ -68,171 +117,70 @@ class Home: Window, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
         directory.widthAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
         directory.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 80).isActive = true
         
+        list.topAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
+        list.leftAnchor.constraint(equalTo: left.rightAnchor).isActive = true
+        list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        list.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        
+        image.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
+        image.centerYAnchor.constraint(equalTo: list.centerYAnchor).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        button.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
+        button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 62).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        
+        label.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
+        label.topAnchor.constraint(equalTo: image.bottomAnchor).isActive = true
+        
         var vertical = left.topAnchor
         [add, reset, cloud, log, settings].forEach {
             left.addSubview($0)
-            
             $0.leftAnchor.constraint(equalTo: left.leftAnchor).isActive = true
             $0.rightAnchor.constraint(equalTo: left.rightAnchor).isActive = true
             $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
             $0.topAnchor.constraint(equalTo: vertical, constant: vertical == left.topAnchor ? 5 : 0).isActive = true
             vertical = $0.bottomAnchor
         }
-        
-        /*
-        let display = Display()
-        contentView!.addSubview(display)
-        self.display = display
-        
-        let location = Bar.Location()
-        contentView!.addSubview(location)
-        self.location = location
-        
-        let branch = Bar.Branch()
-        contentView!.addSubview(branch)
-        self.branch = branch
-        
-        let list = List()
-        contentView!.addSubview(list)
-        self.list = list
-        
-        let tools = Tools()
-        contentView!.addSubview(tools)
-        self.tools = tools
-        
-        location.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 8).isActive = true
-        location.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 80).isActive = true
-        
-        branch.topAnchor.constraint(equalTo: location.topAnchor).isActive = true
-        branch.leftAnchor.constraint(equalTo: location.rightAnchor, constant: -16).isActive = true
-        branch.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -10).isActive = true
-        
-        list.topAnchor.constraint(equalTo: location.bottomAnchor, constant: 1).isActive = true
-        list.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        list.bottomAnchor.constraint(equalTo: tools.topAnchor, constant: -1).isActive = true
-        
-        display.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        display.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        display.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        display.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
-        
-        tools.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        tools.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        tools.top = tools.topAnchor.constraint(equalTo: contentView!.bottomAnchor)
-        
-        if #available(OSX 10.14, *) {
-            UNUserNotificationCenter.current().delegate = self
-            UNUserNotificationCenter.current().getNotificationSettings {
-                if $0.authorizationStatus != .authorized {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
-                }
-            }
-        }*/
     }
     
-    @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
-        UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        withCompletionHandler([.alert])
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 10) {
-            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [willPresent.request.identifier])
-        }
-    }
-    
-    @available(OSX 10.12.2, *) override func makeTouchBar() -> NSTouchBar? {
-        let bar = NSTouchBar()
-        bar.delegate = self
-        if Sheet.presented == nil {
-            bar.defaultItemIdentifiers.append(.init("directory"))
-            if App.repository != nil {
-                bar.defaultItemIdentifiers.append(.init("refresh"))
-            }
-        }
-        return bar
-    }
-    
-    @available(OSX 10.12.2, *) func touchBar(_: NSTouchBar, makeItemForIdentifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
-        let item = NSCustomTouchBarItem(identifier: makeItemForIdentifier)
-        let button = NSButton(title: "", target: nil, action: nil)
-        item.view = button
-        switch makeItemForIdentifier.rawValue {
-        case "directory":
-            button.title = .local("Home.directory")
-            button.image = NSImage(named: "logotouch")
-            button.imagePosition = .imageLeft
-            button.imageScaling = .scaleNone
-            button.bezelColor = .black
-            button.target = App.global
-            button.action = #selector(App.panel)
-        case "refresh":
-            button.title = .local("Menu.refresh")
-            button.target = App.global
-            button.action = #selector(App.refresh)
-        default: break
-        }
-        return item
-    }
-    
-    func repository() {
-        tools.top.constant = -tools.frame.height
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.6
-            context.allowsImplicitAnimation = true
-            contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 1
-            display.repository()
-        }) { }
-    }
-    
-    func notRepository() {
-        tools.top.constant = 0
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.6
-            context.allowsImplicitAnimation = true
-            contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 0
-            display.notRepository()
-        }) { }
-    }
-    
-    func upToDate() {
-        tools.top.constant = -tools.frame.height
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.6
-            context.allowsImplicitAnimation = true
-            contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 0
-            display.upToDate()
-        }) { }
-    }
-    
-    func packed() {
-        tools.top.constant = 0
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.6
-            context.allowsImplicitAnimation = true
-            contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 0
-            display.packed()
-        }) { }
-    }
-    
-    func showRefresh() {
-        tools.top.constant = 0
+    func update(_ state: State, items: [(URL, Status)] = []) {
         list.documentView!.subviews.forEach { $0.removeFromSuperview() }
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.6
-            context.allowsImplicitAnimation = true
-            contentView!.layoutSubtreeIfNeeded()
-            list.alphaValue = 0
-            display.loading()
-        }) { }
+        image.isHidden = state == .ready
+        
+        switch state {
+        case .loading:
+            image.image = NSImage(named: "loading")
+            button.isHidden = true
+            label.isHidden = true
+        case .packed:
+            image.image = NSImage(named: "error")
+            button.isHidden = false
+            button.label.stringValue = .local("Home.button.packed")
+            label.isHidden = false
+            label.stringValue = .local("Home.label.packed")
+        case .ready:
+            button.isHidden = true
+            if items.isEmpty {
+                label.isHidden = false
+                label.stringValue = .local("Home.label.empty")
+            } else {
+                label.isHidden = true
+            }
+        case .create:
+            image.image = NSImage(named: "error")
+            button.isHidden = false
+            button.label.stringValue = .local("Home.button.create")
+            label.isHidden = false
+            label.stringValue = .local("Home.label.create")
+        }
     }
-    
-    @objc func showHelp(_: Any?) { Onboard() }
     
     override func close() {
         super.close()
-        App.global.terminate(nil)
+        NSApp.terminate(nil)
     }
 }

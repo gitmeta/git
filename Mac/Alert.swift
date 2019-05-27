@@ -49,22 +49,22 @@ class Alert {
         view.layer!.backgroundColor = NSColor(white: 0, alpha: 0.9).cgColor
         view.layer!.cornerRadius = 4
         view.alphaValue = 0
-//        view.height.constant = 40
-//        view.width.constant = App.home.contentView!.frame.width - 20
-        App.home.contentView!.addSubview(view)
+        app.home.contentView!.addSubview(view)
         self.view = view
         
-        view.leftAnchor.constraint(equalTo: App.home.contentView!.leftAnchor, constant: 10).isActive = true
-        bottom = view.bottomAnchor.constraint(equalTo: App.home.contentView!.topAnchor)
+        view.leftAnchor.constraint(equalTo: app.home.contentView!.leftAnchor, constant: 10).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        view.widthAnchor.constraint(equalToConstant: app.home.contentView!.frame.width - 20).isActive = true
+        bottom = view.bottomAnchor.constraint(equalTo: app.home.contentView!.topAnchor)
         bottom!.isActive = true
         
-        App.home.contentView!.layoutSubtreeIfNeeded()
+        app.home.contentView!.layoutSubtreeIfNeeded()
         bottom!.constant = 70
         NSAnimationContext.runAnimationGroup({
             $0.duration = 0.6
             $0.allowsImplicitAnimation = true
             view.alphaValue = 1
-            App.home.contentView!.layoutSubtreeIfNeeded()
+            app.home.contentView!.layoutSubtreeIfNeeded()
         }) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self, weak view] in
                 if view != nil && view === self?.view {
@@ -80,7 +80,7 @@ class Alert {
             $0.duration = 0.6
             $0.allowsImplicitAnimation = true
             view?.alphaValue = 0
-            App.home.contentView!.layoutSubtreeIfNeeded()
+            app.home.contentView!.layoutSubtreeIfNeeded()
         }) { [weak self] in
             self?.view?.removeFromSuperview()
             self?.pop()
