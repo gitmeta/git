@@ -15,7 +15,7 @@ class Menu: NSMenu {
         addItem({
             $0.submenu = {
                 $0.addItem(withTitle: .local("Menu.about"), action:
-                    #selector(NSApp.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
+                    #selector(app.about), keyEquivalent: "")
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
                     $0.target = NSApp

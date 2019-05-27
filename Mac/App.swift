@@ -8,7 +8,6 @@ private(set) weak var app: App!
 @NSApplicationMain class App: NSApplication, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
     private(set) var repository: Repository? {
         didSet {
-            options.validate()
             if repository == nil {
                 home.update(.create)
             } else {
@@ -26,9 +25,7 @@ private(set) weak var app: App!
         }
     }
     
-    private(set) weak var options: Menu!
     private(set) weak var home: Home!
-    private(set) weak var open: NSOpenPanel?
     let alert = Alert()
     
     override init() {
@@ -83,9 +80,8 @@ private(set) weak var app: App!
         home.makeKeyAndOrderFront(nil)
         self.home = home
         
-        let options = Menu()
-        mainMenu = options
-        self.options = options
+        let menu = Menu()
+        mainMenu = menu
         
         Hub.session.load {
             self.load()
@@ -102,20 +98,27 @@ private(set) weak var app: App!
         }
     }
     
-    @objc func browse() {
-        if let open = self.open {
-            open.orderFront(nil)
+    @objc func about() {
+        if let about = windows.first(where: { $0 is About }) {
+            about.orderFront(nil)
         } else {
-            let open = NSOpenPanel()
-            open.canChooseFiles = false
-            open.canChooseDirectories = true
-            open.begin { [weak open] in
-                guard let open = open, $0 == .OK else { return }
-                Hub.session.update(open.url!, bookmark: (try! open.url!.bookmarkData(options: .withSecurityScope))) {
+            About().makeKeyAndOrderFront(nil)
+        }
+    }
+    
+    @objc func browse() {
+        if let browse = windows.first(where: { $0 is NSOpenPanel }) {
+            browse.orderFront(nil)
+        } else {
+            let browse = NSOpenPanel()
+            browse.canChooseFiles = false
+            browse.canChooseDirectories = true
+            browse.begin { [weak browse] in
+                guard let url = browse?.url, $0 == .OK else { return }
+                Hub.session.update(url, bookmark: (try! url.bookmarkData(options: .withSecurityScope))) {
                     self.load()
                 }
             }
-            self.open = open
         }
     }
     

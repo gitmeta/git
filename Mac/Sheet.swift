@@ -11,7 +11,7 @@ class Sheet: NSView {
         wantsLayer = true
         if Sheet.presented == nil {
             Sheet.presented = self
-            app.options.validate()
+//            app.options.validate()
             translatesAutoresizingMaskIntoConstraints = false
             layer!.backgroundColor = NSColor.shade.cgColor
             alphaValue = 0
@@ -43,7 +43,6 @@ class Sheet: NSView {
     }
     
     required init?(coder: NSCoder) { return nil }
-    deinit { app.options.validate() }
     
     override func mouseDown(with: NSEvent) { }
     override func mouseDragged(with: NSEvent) { }
