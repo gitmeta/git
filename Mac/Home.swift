@@ -74,8 +74,8 @@ class Home: Window, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
             
             $0.leftAnchor.constraint(equalTo: left.leftAnchor).isActive = true
             $0.rightAnchor.constraint(equalTo: left.rightAnchor).isActive = true
-            $0.heightAnchor.constraint(equalToConstant: 66).isActive = true
-            $0.topAnchor.constraint(equalTo: vertical, constant: vertical == left.topAnchor ? 10 : 0).isActive = true
+            $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            $0.topAnchor.constraint(equalTo: vertical, constant: vertical == left.topAnchor ? 5 : 0).isActive = true
             vertical = $0.bottomAnchor
         }
         
