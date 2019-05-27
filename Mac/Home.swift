@@ -14,9 +14,8 @@ class Home: NSWindow  {
         private(set) weak var check: Button.Check!
         private weak var badge: NSView!
         private weak var label: Label!
-        private weak var hashtag: Label!
         
-        fileprivate init(_ url: URL) {
+        fileprivate init(_ url: URL, status: Status) {
             self.url = url
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +27,7 @@ class Home: NSWindow  {
                 let path = url.deletingLastPathComponent().path.dropFirst(Hub.session.url.path.count + 1)
                 if !path.isEmpty {
                     $0.append(NSAttributedString(string: "\(path) ", attributes: [.font: NSFont.light(12), .foregroundColor:
-                        NSColor.halo.withAlphaComponent(0.8)]))
+                        NSColor.halo.withAlphaComponent(0.9)]))
                 }
                 $0.append(NSAttributedString(string: url.lastPathComponent, attributes: [.font: NSFont.bold(12), .foregroundColor: NSColor.halo]))
                 return $0
@@ -47,9 +46,8 @@ class Home: NSWindow  {
             
             let hashtag = Label()
             hashtag.textColor = .black
-            hashtag.font = .systemFont(ofSize: 12, weight: .light)
+            hashtag.font = .systemFont(ofSize: 10, weight: .light)
             addSubview(hashtag)
-            self.hashtag = hashtag
             
             let check = Button.Check(self, action: #selector(change))
             check.off = NSImage(named: "checkOff")
@@ -57,6 +55,21 @@ class Home: NSWindow  {
             check.checked = true
             addSubview(check)
             self.check = check
+            
+            switch status {
+            case .deleted:
+                badge.layer!.backgroundColor = NSColor.deleted.cgColor
+                hashtag.stringValue = .local("Home.deleted")
+            case .added:
+                badge.layer!.backgroundColor = NSColor.added.cgColor
+                hashtag.stringValue = .local("Home.added")
+            case .modified:
+                badge.layer!.backgroundColor = NSColor.modified.cgColor
+                hashtag.stringValue = .local("Home.modified")
+            case .untracked:
+                badge.layer!.backgroundColor = NSColor.untracked.cgColor
+                hashtag.stringValue = .local("Home.untracked")
+            }
             
             heightAnchor.constraint(equalToConstant: 35).isActive = true
             
@@ -67,10 +80,10 @@ class Home: NSWindow  {
             
             badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             badge.rightAnchor.constraint(equalTo: check.leftAnchor, constant: -4).isActive = true
-            badge.heightAnchor.constraint(equalToConstant: 24).isActive = true
+            badge.heightAnchor.constraint(equalToConstant: 20).isActive = true
             badge.leftAnchor.constraint(equalTo: hashtag.leftAnchor, constant: -9).isActive = true
             
-            hashtag.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -1).isActive = true
+            hashtag.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             hashtag.rightAnchor.constraint(equalTo: badge.rightAnchor, constant: -9).isActive = true
             
             check.widthAnchor.constraint(equalToConstant: 32).isActive = true
@@ -81,24 +94,8 @@ class Home: NSWindow  {
         
         required init?(coder: NSCoder) { return nil }
         
-        fileprivate func status(_ current: Status) {
-            switch current {
-            case .deleted:
-                badge.layer!.backgroundColor = NSColor.deleted.cgColor
-                hashtag.stringValue = .local("Item.deleted")
-            case .added:
-                badge.layer!.backgroundColor = NSColor.added.cgColor
-                hashtag.stringValue = .local("Item.added")
-            case .modified:
-                badge.layer!.backgroundColor = NSColor.modified.cgColor
-                hashtag.stringValue = .local("Item.modified")
-            case .untracked:
-                badge.layer!.backgroundColor = NSColor.untracked.cgColor
-                hashtag.stringValue = .local("Item.untracked")
-            }
-        }
-        
         @objc private func change() {
+            app.home.countItems()
             NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.3
                 context.allowsImplicitAnimation = true
@@ -110,6 +107,7 @@ class Home: NSWindow  {
     
     private(set) weak var directory: Button.Text!
     private(set) weak var list: NSScrollView!
+    private weak var count: Label!
     private weak var image: NSImageView!
     private weak var button: Button.Text!
     private weak var label: Label!
@@ -117,7 +115,7 @@ class Home: NSWindow  {
     
     init() {
         super.init(contentRect: NSRect(
-            x: (NSScreen.main!.frame.width - 400) / 2, y: (NSScreen.main!.frame.height - 400) / 2, width: 400, height: 400),
+            x: (NSScreen.main!.frame.width - 600) / 2, y: (NSScreen.main!.frame.height - 600) / 2, width: 600, height: 600),
                    styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable, .titled, .unifiedTitleAndToolbar],
                    backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
@@ -202,6 +200,13 @@ class Home: NSWindow  {
         contentView!.addSubview(label)
         self.label = label
         
+        let count = Label()
+        count.font = .systemFont(ofSize: 12, weight: .light)
+        count.alignment = .right
+        count.textColor = NSColor(white: 0, alpha: 0.4)
+        contentView!.addSubview(count)
+        self.count = count
+        
         left.topAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
         left.widthAnchor.constraint(equalToConstant: 62).isActive = true
         left.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
@@ -217,10 +222,10 @@ class Home: NSWindow  {
         directory.widthAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
         directory.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 80).isActive = true
         
-        list.topAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
+        list.topAnchor.constraint(equalTo: top.bottomAnchor, constant: 1).isActive = true
         list.leftAnchor.constraint(equalTo: left.rightAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        list.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        list.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
         
         image.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
         image.centerYAnchor.constraint(equalTo: list.centerYAnchor).isActive = true
@@ -236,6 +241,9 @@ class Home: NSWindow  {
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor).isActive = true
         
+        count.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -12).isActive = true
+        count.centerYAnchor.constraint(equalTo: top.centerYAnchor).isActive = true
+        
         var vertical = left.topAnchor
         [add, reset, cloud, log, settings].forEach {
             left.addSubview($0)
@@ -250,12 +258,25 @@ class Home: NSWindow  {
     func update(_ state: State, items: [(URL, Status)] = []) {
         list.documentView!.subviews.forEach { $0.removeFromSuperview() }
         
+        var bottom = list.documentView!.topAnchor
+        items.forEach {
+            let item = Item($0.0, status: $0.1)
+            list.documentView!.addSubview(item)
+            
+            item.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
+            item.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
+            item.topAnchor.constraint(equalTo: bottom, constant: 2).isActive = true
+            bottom = item.bottomAnchor
+        }
+        self.bottom = list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom, constant: 2)
+        
         switch state {
         case .loading:
             image.isHidden = false
             image.image = NSImage(named: "loading")
             button.isHidden = true
             label.isHidden = true
+            count.isHidden = true
         case .packed:
             image.isHidden = false
             image.image = NSImage(named: "error")
@@ -263,8 +284,11 @@ class Home: NSWindow  {
             button.label.stringValue = .local("Home.button.packed")
             label.isHidden = false
             label.stringValue = .local("Home.label.packed")
+            count.isHidden = true
         case .ready:
             button.isHidden = true
+            count.isHidden = false
+            countItems()
             if items.isEmpty {
                 image.isHidden = false
                 image.image = NSImage(named: "updated")
@@ -281,23 +305,18 @@ class Home: NSWindow  {
             button.label.stringValue = .local("Home.button.create")
             label.isHidden = false
             label.stringValue = .local("Home.label.create")
+            count.isHidden = true
         }
-        
-        var bottom = list.documentView!.topAnchor
-        items.forEach {
-            let item = Item($0.0)
-            list.documentView!.addSubview(item)
-            
-            item.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
-            item.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
-            item.topAnchor.constraint(equalTo: bottom, constant: 2).isActive = true
-            bottom = item.bottomAnchor
-        }
-        self.bottom = list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom, constant: 2)
     }
     
     override func close() {
         super.close()
         NSApp.terminate(nil)
+    }
+    
+    private func countItems() {
+        count.stringValue = {
+            "\($0.filter({ $0.check.checked }).count)/\($0.count)"
+        } (list.documentView!.subviews.compactMap({ $0 as? Item }))
     }
 }
