@@ -102,7 +102,7 @@ class Menu: NSMenu {
                 $0.addItem({
                     help = $0
                     return $0
-                } (NSMenuItem(title: .local("Menu.showHelp"), action: #selector(NSApp.showHelp(_:)), keyEquivalent: "/")))
+                } (NSMenuItem(title: .local("Menu.showHelp"), action: #selector(app.help), keyEquivalent: "/")))
                 $0.autoenablesItems = false
                 return $0
             } (NSMenu(title: .local("Menu.help")))

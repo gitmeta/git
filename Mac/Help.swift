@@ -1,80 +1,74 @@
 import AppKit
 
-class Onboard: Sheet {
+class Help: NSWindow {
     private weak var label: Label!
     private weak var centerX: NSLayoutConstraint!
     private var buttons = [Button]()
     private var images = [NSImageView]()
     private var index = 0
     
-    @discardableResult override init() {
-        super.init()
-        let done = Button.Text(self, action: #selector(close))
-        done.wantsLayer = true
-        done.layer!.backgroundColor = NSColor.halo.cgColor
-        done.layer!.cornerRadius = 6
-        done.label.stringValue = .local("Onboard.done")
-        done.label.textColor = .black
-        done.label.font = .systemFont(ofSize: 14, weight: .medium)
-//        done.width.constant = 70
-//        done.height.constant = 28
-        addSubview(done)
+    init() {
+        super.init(contentRect: NSRect(
+            x: (NSScreen.main!.frame.width - 500) / 2, y: (NSScreen.main!.frame.height - 500) / 2, width: 500, height: 500),
+                   styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
+        titlebarAppearsTransparent = true
+        titleVisibility = .hidden
+        backgroundColor = .shade
+        collectionBehavior = .fullScreenNone
+        isReleasedWhenClosed = false
+        toolbar = NSToolbar(identifier: "")
+        toolbar!.showsBaselineSeparator = false
         
         let label = Label()
         label.alignment = .center
         label.textColor = .white
-        label.font = .systemFont(ofSize: 16, weight: .light)
-        addSubview(label)
+        label.font = .systemFont(ofSize: 14, weight: .light)
+        contentView!.addSubview(label)
         self.label = label
         
         var rightImage: NSLayoutXAxisAnchor!
-        var rightButton: NSLayoutXAxisAnchor!
+        var rightButton = contentView!.leftAnchor
         (0 ..< 4).forEach {
             let image = NSImageView()
             image.translatesAutoresizingMaskIntoConstraints = false
             image.image = NSImage(named: "onboard\($0)")
             image.imageScaling = .scaleNone
             image.alphaValue = 0
-            addSubview(image)
+            contentView!.addSubview(image)
             images.append(image)
             
-            let button = Button.Image(self, action: #selector(show(_:)))
-            button.image.image = NSImage(named: "dot")
-//            button.width.constant = 50
-//            button.height.constant = 50
-            addSubview(button)
+            let button = Button(self, action: #selector(show(_:)))
+            button.wantsLayer = true
+            button.layer!.backgroundColor = NSColor.halo.cgColor
+            contentView!.addSubview(button)
             buttons.append(button)
             
-            image.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -100).isActive = true
+            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -100).isActive = true
             image.heightAnchor.constraint(equalToConstant: 200).isActive = true
             image.widthAnchor.constraint(equalToConstant: 200).isActive = true
             
-            button.topAnchor.constraint(equalTo: centerYAnchor, constant: 100).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 20).isActive = true
+            button.widthAnchor.constraint(equalTo: contentView!.widthAnchor, multiplier: 0.25, constant: -2.5).isActive = true
+            button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
+            button.leftAnchor.constraint(equalTo: rightButton, constant: 2).isActive = true
+            rightButton = button.rightAnchor
             
             if $0 == 0 {
-                centerX = image.centerXAnchor.constraint(equalTo: centerXAnchor)
+                centerX = image.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor)
                 centerX.isActive = true
-                
-                button.rightAnchor.constraint(equalTo: centerXAnchor, constant: -50).isActive = true
             } else {
                 image.leftAnchor.constraint(equalTo: rightImage, constant: 100).isActive = true
-                button.leftAnchor.constraint(equalTo: rightButton).isActive = true
             }
             
             rightImage = image.rightAnchor
-            rightButton = button.rightAnchor
         }
         
-        label.topAnchor.constraint(equalTo: centerYAnchor, constant: 25).isActive = true
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        label.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        label.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -50).isActive = true
+        label.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true
         
-        done.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        done.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30).isActive = true
         DispatchQueue.main.async { [weak self] in self?.display(0) }
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     override func keyDown(with: NSEvent) {
         switch with.keyCode {
@@ -100,7 +94,7 @@ class Onboard: Sheet {
             images.enumerated().forEach {
                 $0.1.alphaValue = $0.0 == index ? 1 : 0
             }
-            layoutSubtreeIfNeeded()
+            contentView!.layoutSubtreeIfNeeded()
         }) { }
     }
     

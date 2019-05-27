@@ -131,7 +131,11 @@ private(set) weak var app: App!
     }
     
     @objc func help() {
-        Onboard()
+        if let help = windows.first(where: { $0 is Help }) {
+            help.orderFront(nil)
+        } else {
+            Help().makeKeyAndOrderFront(nil)
+        }
     }
     
     private func load() {
