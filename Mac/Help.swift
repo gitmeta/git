@@ -19,6 +19,11 @@ class Help: NSWindow {
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false
         
+        let title = Label(.local("Help.title"))
+        title.textColor = .halo
+        title.font = .systemFont(ofSize: 16, weight: .bold)
+        contentView!.addSubview(title)
+        
         let label = Label()
         label.alignment = .center
         label.textColor = .white
@@ -43,7 +48,7 @@ class Help: NSWindow {
             contentView!.addSubview(button)
             buttons.append(button)
             
-            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -100).isActive = true
+            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -30).isActive = true
             image.heightAnchor.constraint(equalToConstant: 200).isActive = true
             image.widthAnchor.constraint(equalToConstant: 200).isActive = true
             
@@ -62,6 +67,9 @@ class Help: NSWindow {
             
             rightImage = image.rightAnchor
         }
+        
+        title.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
+        title.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 10).isActive = true
         
         label.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -50).isActive = true
         label.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true

@@ -11,6 +11,7 @@ Home.added="added";
 Home.modified="modified";
 Home.deleted="deleted";
 Home.untracked="new";
+Help.title="Help";
 About.label="Git";
 /*
 Display.notRepository="No repository in this directory";
