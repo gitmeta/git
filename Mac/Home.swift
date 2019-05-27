@@ -9,11 +9,111 @@ class Home: NSWindow  {
         case create
     }
     
+    class Item: NSView {
+        let url: URL
+        private(set) weak var check: Button.Check!
+        private weak var badge: NSView!
+        private weak var label: Label!
+        private weak var hashtag: Label!
+        
+        fileprivate init(_ url: URL) {
+            self.url = url
+            super.init(frame: .zero)
+            translatesAutoresizingMaskIntoConstraints = false
+            wantsLayer = true
+            layer!.backgroundColor = NSColor.darker.cgColor
+            
+            let label = Label()
+            label.attributedStringValue = {
+                let path = url.deletingLastPathComponent().path.dropFirst(Hub.session.url.path.count + 1)
+                if !path.isEmpty {
+                    $0.append(NSAttributedString(string: "\(path) ", attributes: [.font: NSFont.light(12), .foregroundColor:
+                        NSColor.halo.withAlphaComponent(0.8)]))
+                }
+                $0.append(NSAttributedString(string: url.lastPathComponent, attributes: [.font: NSFont.bold(12), .foregroundColor: NSColor.halo]))
+                return $0
+            } (NSMutableAttributedString())
+            label.maximumNumberOfLines = 1
+            label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            addSubview(label)
+            self.label = label
+            
+            let badge = NSView()
+            badge.translatesAutoresizingMaskIntoConstraints = false
+            badge.wantsLayer = true
+            badge.layer!.cornerRadius = 4
+            addSubview(badge)
+            self.badge = badge
+            
+            let hashtag = Label()
+            hashtag.textColor = .black
+            hashtag.font = .systemFont(ofSize: 12, weight: .light)
+            addSubview(hashtag)
+            self.hashtag = hashtag
+            
+            let check = Button.Check(self, action: #selector(change))
+            check.off = NSImage(named: "checkOff")
+            check.on = NSImage(named: "checkOn")
+            check.checked = true
+            addSubview(check)
+            self.check = check
+            
+            heightAnchor.constraint(equalToConstant: 35).isActive = true
+            
+            label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -20).isActive = true
+            label.widthAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
+            
+            badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+            badge.rightAnchor.constraint(equalTo: check.leftAnchor, constant: -4).isActive = true
+            badge.heightAnchor.constraint(equalToConstant: 24).isActive = true
+            badge.leftAnchor.constraint(equalTo: hashtag.leftAnchor, constant: -9).isActive = true
+            
+            hashtag.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -1).isActive = true
+            hashtag.rightAnchor.constraint(equalTo: badge.rightAnchor, constant: -9).isActive = true
+            
+            check.widthAnchor.constraint(equalToConstant: 32).isActive = true
+            check.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
+            check.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            check.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        }
+        
+        required init?(coder: NSCoder) { return nil }
+        
+        fileprivate func status(_ current: Status) {
+            switch current {
+            case .deleted:
+                badge.layer!.backgroundColor = NSColor.deleted.cgColor
+                hashtag.stringValue = .local("Item.deleted")
+            case .added:
+                badge.layer!.backgroundColor = NSColor.added.cgColor
+                hashtag.stringValue = .local("Item.added")
+            case .modified:
+                badge.layer!.backgroundColor = NSColor.modified.cgColor
+                hashtag.stringValue = .local("Item.modified")
+            case .untracked:
+                badge.layer!.backgroundColor = NSColor.untracked.cgColor
+                hashtag.stringValue = .local("Item.untracked")
+            }
+        }
+        
+        @objc private func change() {
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = 0.3
+                context.allowsImplicitAnimation = true
+                label.alphaValue = check.checked ? 1 : 0.4
+                badge.alphaValue = check.checked ? 1 : 0.3
+            }) { }
+        }
+    }
+    
     private(set) weak var directory: Button.Text!
     private(set) weak var list: NSScrollView!
     private weak var image: NSImageView!
     private weak var button: Button.Text!
     private weak var label: Label!
+    private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
     
     init() {
         super.init(contentRect: NSRect(
@@ -22,7 +122,7 @@ class Home: NSWindow  {
                    backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
-        backgroundColor = .window
+        backgroundColor = .black
         collectionBehavior = .fullScreenNone
         minSize = NSSize(width: 100, height: 100)
         isReleasedWhenClosed = false
@@ -149,14 +249,15 @@ class Home: NSWindow  {
     
     func update(_ state: State, items: [(URL, Status)] = []) {
         list.documentView!.subviews.forEach { $0.removeFromSuperview() }
-        image.isHidden = state == .ready
         
         switch state {
         case .loading:
+            image.isHidden = false
             image.image = NSImage(named: "loading")
             button.isHidden = true
             label.isHidden = true
         case .packed:
+            image.isHidden = false
             image.image = NSImage(named: "error")
             button.isHidden = false
             button.label.stringValue = .local("Home.button.packed")
@@ -165,18 +266,34 @@ class Home: NSWindow  {
         case .ready:
             button.isHidden = true
             if items.isEmpty {
+                image.isHidden = false
+                image.image = NSImage(named: "updated")
                 label.isHidden = false
                 label.stringValue = .local("Home.label.empty")
             } else {
+                image.isHidden = true
                 label.isHidden = true
             }
         case .create:
+            image.isHidden = false
             image.image = NSImage(named: "error")
             button.isHidden = false
             button.label.stringValue = .local("Home.button.create")
             label.isHidden = false
             label.stringValue = .local("Home.label.create")
         }
+        
+        var bottom = list.documentView!.topAnchor
+        items.forEach {
+            let item = Item($0.0)
+            list.documentView!.addSubview(item)
+            
+            item.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
+            item.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
+            item.topAnchor.constraint(equalTo: bottom, constant: 2).isActive = true
+            bottom = item.bottomAnchor
+        }
+        self.bottom = list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom, constant: 2)
     }
     
     override func close() {

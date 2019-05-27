@@ -122,6 +122,7 @@ private(set) weak var app: App!
     @objc func settings() { Credentials() }
     
     @objc func refresh() {
+        guard repository != nil else { return }
         home.update(.loading)
         repository?.refresh()
     }
