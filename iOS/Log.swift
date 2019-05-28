@@ -5,7 +5,7 @@ class Log: Sheet {
     private class Item: UIView {
         private weak var label: UILabel!
         
-        init(_ index: Int, commit: Git.Commit) {
+        init(_ index: Int, commit: Commit) {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
             isUserInteractionEnabled = false

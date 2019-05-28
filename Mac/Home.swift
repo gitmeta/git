@@ -165,8 +165,8 @@ class Home: NSWindow  {
         let cloud = Button.Image(self, action: nil)
         cloud.image.image = NSImage(named: "cloud")
         
-        let log = Button.Image(self, action: nil)
-        log.image.image = NSImage(named: "log")
+        let history = Button.Image(app, action: #selector(app.history))
+        history.image.image = NSImage(named: "history")
         
         let settings = Button.Image(app, action: #selector(app.settings))
         settings.image.image = NSImage(named: "settings")
@@ -272,7 +272,7 @@ class Home: NSWindow  {
         count.centerYAnchor.constraint(equalTo: top.centerYAnchor).isActive = true
         
         var vertical = left.topAnchor
-        [add, reset, cloud, log, settings].forEach {
+        [add, reset, cloud, history, settings].forEach {
             left.addSubview($0)
             $0.leftAnchor.constraint(equalTo: left.leftAnchor).isActive = true
             $0.rightAnchor.constraint(equalTo: left.rightAnchor).isActive = true
