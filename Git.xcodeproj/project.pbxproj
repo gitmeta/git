@@ -144,6 +144,7 @@
 		CE9AA0FD2299269C00CAFA91 /* pack-2.idx in Resources */ = {isa = PBXBuildFile; fileRef = CE9AA0FB2299269C00CAFA91 /* pack-2.idx */; };
 		CEA4C582229BF29A0057CEFE /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C581229BF29A0057CEFE /* About.swift */; };
 		CEA4C584229BF98F0057CEFE /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C583229BF98F0057CEFE /* Help.swift */; };
+		CEC67672229D0D5D00B6AFEF /* Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC67671229D0D5D00B6AFEF /* Add.swift */; };
 		CED676C6228E820E009D6ADC /* TestReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C5228E820E009D6ADC /* TestReset.swift */; };
 		CED676C8228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
 		CED676C9228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
@@ -289,6 +290,7 @@
 		CE9AA0FB2299269C00CAFA91 /* pack-2.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-2.idx"; sourceTree = "<group>"; };
 		CEA4C581229BF29A0057CEFE /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		CEA4C583229BF98F0057CEFE /* Help.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
+		CEC67671229D0D5D00B6AFEF /* Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Add.swift; sourceTree = "<group>"; };
 		CED676C5228E820E009D6ADC /* TestReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReset.swift; sourceTree = "<group>"; };
 		CED676C7228E840C009D6ADC /* Extract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extract.swift; sourceTree = "<group>"; };
 		CEE6A95F2292782F00977743 /* packed-refs0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "packed-refs0"; sourceTree = "<group>"; };
@@ -473,6 +475,7 @@
 				2048A12B225C749200290E54 /* Mac.entitlements */,
 				2048A12F225C749200290E54 /* Mac.plist */,
 				CEA4C581229BF29A0057CEFE /* About.swift */,
+				CEC67671229D0D5D00B6AFEF /* Add.swift */,
 				20CCE73F2261D4840014CAC9 /* Alert.swift */,
 				2048A130225C749200290E54 /* App.swift */,
 				2048A131225C749200290E54 /* Button.swift */,
@@ -835,6 +838,7 @@
 				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
 				20948B7822718AEE00B1987D /* Menu.swift in Sources */,
 				20ACA8AC227AE3770053960E /* Commit.swift in Sources */,
+				CEC67672229D0D5D00B6AFEF /* Add.swift in Sources */,
 				20948B74227189B700B1987D /* Sheet.swift in Sources */,
 				205FF45C227C3C1D0085E4F4 /* Log.swift in Sources */,
 				CEA4C584229BF98F0057CEFE /* Help.swift in Sources */,

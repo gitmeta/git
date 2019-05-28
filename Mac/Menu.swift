@@ -11,14 +11,14 @@ class Menu: NSMenu {
     
     init() {
         super.init(title: "")
-        
+        /*
         addItem({
             $0.submenu = {
                 $0.addItem(withTitle: .local("Menu.about"), action:
                     #selector(app.about), keyEquivalent: "")
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
-                    $0.target = NSApp
+                    $0.target = app
                     preferences = $0
                     return $0
                 } (NSMenuItem(title: .local("Menu.preferences"), action: #selector(App.settings), keyEquivalent: ",")))
@@ -68,7 +68,7 @@ class Menu: NSMenu {
                     $0.isEnabled = false
                     commit = $0
                     return $0
-                } (NSMenuItem(title: .local("Menu.commit"), action: #selector(Tools.commit), keyEquivalent: "\r")))
+                } (NSMenuItem(title: .local("Menu.commit"), action: nil, keyEquivalent: "\r")))
                 $0.addItem(NSMenuItem.separator())
                 $0.addItem({
                     $0.keyEquivalentModifierMask = [.command, .control, .shift]
@@ -107,7 +107,7 @@ class Menu: NSMenu {
                 return $0
             } (NSMenu(title: .local("Menu.help")))
             return $0
-        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
+        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))*/
     }
     
     required init(coder: NSCoder) { fatalError() }

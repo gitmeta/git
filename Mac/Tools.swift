@@ -10,7 +10,7 @@ class Tools: NSView {
         wantsLayer = true
         layer!.backgroundColor = NSColor.black.cgColor
         
-        let commit = Button.Image(self, action: #selector(self.commit))
+        let commit = Button.Image(self, action: nil)
         commit.image.image = NSImage(named: "add")
 //        commit.width.constant = 32
 //        commit.height.constant = 32
@@ -22,7 +22,7 @@ class Tools: NSView {
 //        log.height.constant = 27
         addSubview(log)
         
-        let credentials = Button.Image(App.shared, action: #selector(App.settings))
+        let credentials = Button.Image(nil, action: #selector(App.settings))
         credentials.image.image = NSImage(named: "credentials")
 //        credentials.width.constant = 27
 //        credentials.height.constant = 27
@@ -56,11 +56,5 @@ class Tools: NSView {
     }
     
     @objc func reset() { Reset() }
-    @objc func commit() {
-        if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
-            app.settings()
-        } else {
-            Commit()
-        }
-    }
+
 }

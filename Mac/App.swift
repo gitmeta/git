@@ -121,6 +121,7 @@ private(set) weak var app: App!
     }
     
     @objc func settings() { Credentials() }
+    @objc func add() { order(Add.self) }
     @objc func help() { order(Help.self) }
     @objc func about() { order(About.self) }
     

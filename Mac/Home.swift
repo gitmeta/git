@@ -156,7 +156,7 @@ class Home: NSWindow  {
         borderTop.layer!.backgroundColor = .black
         top.addSubview(borderTop)
         
-        let add = Button.Image(self, action: nil)
+        let add = Button.Image(app, action: #selector(app.add))
         add.image.image = NSImage(named: "add")
         
         let reset = Button.Image(self, action: nil)
@@ -338,7 +338,7 @@ class Home: NSWindow  {
     
     override func close() {
         super.close()
-        NSApp.terminate(nil)
+        app.terminate(nil)
     }
     
     private func countItems() {
