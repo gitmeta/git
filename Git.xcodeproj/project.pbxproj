@@ -145,6 +145,7 @@
 		CEA4C582229BF29A0057CEFE /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C581229BF29A0057CEFE /* About.swift */; };
 		CEA4C584229BF98F0057CEFE /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C583229BF98F0057CEFE /* Help.swift */; };
 		CEC67672229D0D5D00B6AFEF /* Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC67671229D0D5D00B6AFEF /* Add.swift */; };
+		CEC67674229D26F700B6AFEF /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC67673229D26F700B6AFEF /* Settings.swift */; };
 		CED676C6228E820E009D6ADC /* TestReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C5228E820E009D6ADC /* TestReset.swift */; };
 		CED676C8228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
 		CED676C9228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
@@ -291,6 +292,7 @@
 		CEA4C581229BF29A0057CEFE /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		CEA4C583229BF98F0057CEFE /* Help.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		CEC67671229D0D5D00B6AFEF /* Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Add.swift; sourceTree = "<group>"; };
+		CEC67673229D26F700B6AFEF /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CED676C5228E820E009D6ADC /* TestReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReset.swift; sourceTree = "<group>"; };
 		CED676C7228E840C009D6ADC /* Extract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extract.swift; sourceTree = "<group>"; };
 		CEE6A95F2292782F00977743 /* packed-refs0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "packed-refs0"; sourceTree = "<group>"; };
@@ -490,6 +492,7 @@
 				205FF45B227C3C1D0085E4F4 /* Log.swift */,
 				20948B7722718AEE00B1987D /* Menu.swift */,
 				CE89825F22904EB300E9F41F /* Reset.swift */,
+				CEC67673229D26F700B6AFEF /* Settings.swift */,
 				20948B73227189B700B1987D /* Sheet.swift */,
 				201A413022636E72001C852A /* Tools.swift */,
 				20B8328222709EA700773058 /* Mac.xcassets */,
@@ -849,6 +852,7 @@
 				20B7D68122645EF800A1A802 /* Display.swift in Sources */,
 				CE89826022904EB300E9F41F /* Reset.swift in Sources */,
 				20FFDF852282EF3C00226033 /* Credentials.swift in Sources */,
+				CEC67674229D26F700B6AFEF /* Settings.swift in Sources */,
 				2048A134225C749200290E54 /* Extensions.swift in Sources */,
 				20CB671D22607F940064C31C /* Label.swift in Sources */,
 				20CCE7402261D4840014CAC9 /* Alert.swift in Sources */,

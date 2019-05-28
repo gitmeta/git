@@ -46,6 +46,9 @@ class Add: NSWindow {
             textContainerInset = NSSize(width: 10, height: 10)
             height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
             height.isActive = true
+            if #available(OSX 10.12.2, *) {
+                isAutomaticTextCompletionEnabled = false
+            }
         }
         
         required init?(coder: NSCoder) { return nil }
@@ -144,7 +147,10 @@ class Add: NSWindow {
     @objc private func commit() {
         makeFirstResponder(nil)
         if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
-            
+            app.settings()
+            if let settings = app.windows.first(where: { $0 is Settings }) as? Settings {
+                settings.sign()
+            }
         } else {
             app.repository?.commit(
                 app.home.list.documentView!.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.checked }).map { $0.url },

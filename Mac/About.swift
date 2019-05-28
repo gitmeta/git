@@ -8,10 +8,7 @@ class About: NSWindow {
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
         backgroundColor = .black
-        collectionBehavior = .fullScreenNone
         isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
         
         let image = NSImageView()
         image.translatesAutoresizingMaskIntoConstraints = false

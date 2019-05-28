@@ -14,6 +14,13 @@ Home.untracked="new";
 Help.title="Help";
 About.label="Git";
 Add.button="Commit";
+Settings.buttonSign="Signature";
+Settings.buttonKey="Credentials";
+Settings.labelSign="Signature for your commits.";
+Settings.signName="Name";
+Settings.signEmail="Email";
+Settings.signSave="Save";
+Settings.signSuccess="Signature updated";
 /*
 Display.notRepository="No repository in this directory";
 Display.upToDate="No changes";

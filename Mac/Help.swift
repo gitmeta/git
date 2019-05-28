@@ -14,10 +14,7 @@ class Help: NSWindow {
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
         backgroundColor = .shade
-        collectionBehavior = .fullScreenNone
         isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
         
         let title = Label(.local("Help.title"))
         title.textColor = .halo
@@ -81,10 +78,8 @@ class Help: NSWindow {
     override func keyDown(with: NSEvent) {
         switch with.keyCode {
         case 36: close()
-        case 123:
-            display(index > 0 ? index - 1 : images.count - 1)
-        case 124:
-            display(index < images.count - 1 ? index + 1 : 0)
+        case 123: display(index > 0 ? index - 1 : images.count - 1)
+        case 124: display(index < images.count - 1 ? index + 1 : 0)
         default: super.keyDown(with: with)
         }
     }

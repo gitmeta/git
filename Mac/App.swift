@@ -120,7 +120,7 @@ private(set) weak var app: App!
         repository?.refresh()
     }
     
-    @objc func settings() { Credentials() }
+    @objc func settings() { order(Settings.self) }
     @objc func add() { order(Add.self) }
     @objc func help() { order(Help.self) }
     @objc func about() { order(About.self) }

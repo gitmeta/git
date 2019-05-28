@@ -168,7 +168,7 @@ class Home: NSWindow  {
         let log = Button.Image(self, action: nil)
         log.image.image = NSImage(named: "log")
         
-        let settings = Button.Image(self, action: nil)
+        let settings = Button.Image(app, action: #selector(app.settings))
         settings.image.image = NSImage(named: "settings")
         
         let directory = Button.Text(app, action: #selector(app.browse))
