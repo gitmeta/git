@@ -98,14 +98,6 @@ private(set) weak var app: App!
         }
     }
     
-    @objc func about() {
-        if let about = windows.first(where: { $0 is About }) {
-            about.orderFront(nil)
-        } else {
-            About().makeKeyAndOrderFront(nil)
-        }
-    }
-    
     @objc func browse() {
         if let browse = windows.first(where: { $0 is NSOpenPanel }) {
             browse.orderFront(nil)
@@ -122,21 +114,15 @@ private(set) weak var app: App!
         }
     }
     
-    @objc func settings() { Credentials() }
-    
     @objc func refresh() {
         guard repository != nil else { return }
         home.update(.loading)
         repository?.refresh()
     }
     
-    @objc func help() {
-        if let help = windows.first(where: { $0 is Help }) {
-            help.orderFront(nil)
-        } else {
-            Help().makeKeyAndOrderFront(nil)
-        }
-    }
+    @objc func settings() { Credentials() }
+    @objc func help() { order(Help.self) }
+    @objc func about() { order(About.self) }
     
     private func load() {
         guard !Hub.session.bookmark.isEmpty
@@ -166,6 +152,14 @@ private(set) weak var app: App!
             var components = DateComponents()
             components.day = 3
             UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+        }
+    }
+    
+    private func order<W: NSWindow>(_ type: W.Type) {
+        if let window = windows.first(where: { $0 is W }) {
+            window.orderFront(nil)
+        } else {
+            W().makeKeyAndOrderFront(nil)
         }
     }
 }

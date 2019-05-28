@@ -19,8 +19,6 @@ class Home: NSWindow  {
             self.url = url
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
-            wantsLayer = true
-            layer!.backgroundColor = NSColor.darker.cgColor
             
             let label = Label()
             label.attributedStringValue = {
@@ -56,6 +54,12 @@ class Home: NSWindow  {
             addSubview(check)
             self.check = check
             
+            let border = NSView()
+            border.translatesAutoresizingMaskIntoConstraints = false
+            border.wantsLayer = true
+            border.layer!.backgroundColor = .black
+            addSubview(border)
+            
             switch status {
             case .deleted:
                 badge.layer!.backgroundColor = NSColor.deleted.cgColor
@@ -71,7 +75,7 @@ class Home: NSWindow  {
                 hashtag.stringValue = .local("Home.untracked")
             }
             
-            heightAnchor.constraint(equalToConstant: 35).isActive = true
+            heightAnchor.constraint(equalToConstant: 46).isActive = true
             
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
@@ -90,6 +94,11 @@ class Home: NSWindow  {
             check.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
             check.topAnchor.constraint(equalTo: topAnchor).isActive = true
             check.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
+            border.heightAnchor.constraint(equalToConstant: 1).isActive = true
+            border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
         
         required init?(coder: NSCoder) { return nil }
@@ -120,7 +129,7 @@ class Home: NSWindow  {
                    backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
-        backgroundColor = .black
+        backgroundColor = .shade
         collectionBehavior = .fullScreenNone
         minSize = NSSize(width: 100, height: 100)
         isReleasedWhenClosed = false
@@ -132,6 +141,12 @@ class Home: NSWindow  {
         left.wantsLayer = true
         left.layer!.backgroundColor = NSColor.shade.cgColor
         contentView!.addSubview(left)
+        
+        let border = NSView()
+        border.translatesAutoresizingMaskIntoConstraints = false
+        border.wantsLayer = true
+        border.layer!.backgroundColor = .black
+        left.addSubview(border)
         
         let top = NSView()
         top.translatesAutoresizingMaskIntoConstraints = false
@@ -201,16 +216,21 @@ class Home: NSWindow  {
         self.label = label
         
         let count = Label()
-        count.font = .systemFont(ofSize: 12, weight: .light)
+        count.font = .systemFont(ofSize: 10, weight: .light)
         count.alignment = .right
-        count.textColor = NSColor(white: 0, alpha: 0.4)
+        count.textColor = NSColor(white: 0, alpha: 0.6)
         contentView!.addSubview(count)
         self.count = count
         
-        left.topAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
+        left.topAnchor.constraint(equalTo: top.bottomAnchor, constant: 1).isActive = true
         left.widthAnchor.constraint(equalToConstant: 62).isActive = true
-        left.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        left.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
         left.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
+        
+        border.topAnchor.constraint(equalTo: left.topAnchor, constant: 1).isActive = true
+        border.bottomAnchor.constraint(equalTo: left.bottomAnchor, constant: -1).isActive = true
+        border.rightAnchor.constraint(equalTo: left.rightAnchor).isActive = true
+        border.widthAnchor.constraint(equalToConstant: 1).isActive = true
         
         top.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
         top.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -265,10 +285,10 @@ class Home: NSWindow  {
             
             item.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
             item.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
-            item.topAnchor.constraint(equalTo: bottom, constant: 2).isActive = true
+            item.topAnchor.constraint(equalTo: bottom).isActive = true
             bottom = item.bottomAnchor
         }
-        self.bottom = list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom, constant: 2)
+        self.bottom = list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom)
         
         switch state {
         case .loading:
