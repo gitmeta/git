@@ -151,7 +151,7 @@ class Home: NSWindow  {
         let top = NSView()
         top.translatesAutoresizingMaskIntoConstraints = false
         top.wantsLayer = true
-        top.layer!.backgroundColor = NSColor.halo.cgColor
+        top.layer!.backgroundColor = NSColor.bar.cgColor
         contentView!.addSubview(top)
         
         let add = Button.Image(self, action: nil)
@@ -172,7 +172,7 @@ class Home: NSWindow  {
         let directory = Button.Text(app, action: #selector(app.browse))
         directory.label.stringValue = .local("Home.directory")
         directory.label.font = .systemFont(ofSize: 12, weight: .bold)
-        directory.label.textColor = .black
+        directory.label.textColor = .halo
         directory.label.alignment = .left
         contentView!.addSubview(directory)
         self.directory = directory
@@ -218,7 +218,7 @@ class Home: NSWindow  {
         let count = Label()
         count.font = .systemFont(ofSize: 10, weight: .light)
         count.alignment = .right
-        count.textColor = NSColor(white: 0, alpha: 0.6)
+        count.textColor = NSColor(white: 1, alpha: 0.6)
         contentView!.addSubview(count)
         self.count = count
         
