@@ -116,17 +116,38 @@ private(set) weak var app: App!
     }
     
     @objc func refresh() {
-        guard repository != nil else { return }
+        guard let repository = repository else { return }
         home.update(.loading)
-        repository?.refresh()
+        repository.refresh()
     }
     
     @objc func settings() { order(Settings.self) }
-    @objc func add() { order(Add.self) }
     @objc func help() { order(Help.self) }
     @objc func about() { order(About.self) }
-    @objc func history() { order(History.self) }
-    @objc func reset() { order(Reset.self) }
+    
+    @objc func add() {
+        if repository == nil {
+            order(Warning.self)
+        } else {
+            order(Add.self)
+        }
+    }
+    
+    @objc func history() {
+        if repository == nil {
+            order(Warning.self)
+        } else {
+            order(History.self)
+        }
+    }
+    
+    @objc func reset() {
+        if repository == nil {
+            order(Warning.self)
+        } else {
+            order(Reset.self)
+        }
+    }
     
     private func load() {
         guard !Hub.session.bookmark.isEmpty

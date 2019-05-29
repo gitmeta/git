@@ -45,3 +45,4 @@ Menu.bringAllToFront="Bring all to front";
 Menu.window="Window";
 Menu.showHelp="Show help";
 Menu.help="Help";
+Warning.label="This is not a\nrepository";

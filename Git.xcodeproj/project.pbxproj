@@ -142,6 +142,7 @@
 		CED676C6228E820E009D6ADC /* TestReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C5228E820E009D6ADC /* TestReset.swift */; };
 		CED676C8228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
 		CED676C9228E840C009D6ADC /* Extract.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Extract.swift */; };
+		CED7E396229E9BB1003B8721 /* Warning.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED7E395229E9BB1003B8721 /* Warning.swift */; };
 		CEE6A9602292782F00977743 /* packed-refs0 in Resources */ = {isa = PBXBuildFile; fileRef = CEE6A95F2292782F00977743 /* packed-refs0 */; };
 		CEE6A9622292785E00977743 /* TestUnpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A9612292785E00977743 /* TestUnpack.swift */; };
 		CEE6A964229280FD00977743 /* Packer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A963229280FD00977743 /* Packer.swift */; };
@@ -281,6 +282,7 @@
 		CEC67673229D26F700B6AFEF /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CED676C5228E820E009D6ADC /* TestReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReset.swift; sourceTree = "<group>"; };
 		CED676C7228E840C009D6ADC /* Extract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extract.swift; sourceTree = "<group>"; };
+		CED7E395229E9BB1003B8721 /* Warning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Warning.swift; sourceTree = "<group>"; };
 		CEE6A95F2292782F00977743 /* packed-refs0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "packed-refs0"; sourceTree = "<group>"; };
 		CEE6A9612292785E00977743 /* TestUnpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUnpack.swift; sourceTree = "<group>"; };
 		CEE6A963229280FD00977743 /* Packer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packer.swift; sourceTree = "<group>"; };
@@ -474,6 +476,7 @@
 				20948B7722718AEE00B1987D /* Menu.swift */,
 				CE89825F22904EB300E9F41F /* Reset.swift */,
 				CEC67673229D26F700B6AFEF /* Settings.swift */,
+				CED7E395229E9BB1003B8721 /* Warning.swift */,
 				20B8328222709EA700773058 /* Mac.xcassets */,
 			);
 			path = Mac;
@@ -825,6 +828,7 @@
 				2055EFDC2276C9C000658C04 /* Home.swift in Sources */,
 				CEA4C582229BF29A0057CEFE /* About.swift in Sources */,
 				2048A136225C749200290E54 /* App.swift in Sources */,
+				CED7E396229E9BB1003B8721 /* Warning.swift in Sources */,
 				CE89826022904EB300E9F41F /* Reset.swift in Sources */,
 				CEC67674229D26F700B6AFEF /* Settings.swift in Sources */,
 				2048A134225C749200290E54 /* Extensions.swift in Sources */,
