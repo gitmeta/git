@@ -44,35 +44,3 @@ Menu.bringAllToFront="Bring all to front";
 Menu.window="Window";
 Menu.showHelp="Show help";
 Menu.help="Help";
-/*
-Display.notRepository="No repository in this directory";
-Display.upToDate="No changes";
-Display.create="Start";
-Display.packed="This repository has been packed.";
-Display.unpack="Unpack";
-Display.unpacked="Repository unpacked";
-
-Credentials.name="Name";
-Credentials.email="Email";
-Credentials.confirm="Save";
-Credentials.cancel="Cancel";
-Credentials.success="Updated credentials";
-Text.placeholder="Commit message";
-Onboard.mac0="Select your working directory\non the top bar";
-Onboard.mac1="You can start a\nnew repository";
-Onboard.mac2="Commit your changes";
-Onboard.mac3="Review your history";
-Onboard.iOS0="Browse your files \non the top bar";
-Onboard.iOS1="Start a repository\non the local directory";
-Onboard.iOS2="Commit your changes";
-Onboard.iOS3="Review your history";
-Onboard.done="Done";
-Commit.title="Commit";
-Log.title="History";
-Create.save="Create";
-Create.cancel="Cancel";
-Create.untitled="Untitled";
-
-
-Reset.cancel="Cancel";
-*/
