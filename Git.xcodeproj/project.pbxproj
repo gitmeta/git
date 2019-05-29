@@ -81,7 +81,6 @@
 		2073D8782267283E00631BCB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2073D8762267283E00631BCB /* Dispatch.swift */; };
 		2075D1A0227DD2EC0004D098 /* TestLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2075D19F227DD2EC0004D098 /* TestLog.swift */; };
 		208D223E228AD12F009AFF08 /* fetch1 in Resources */ = {isa = PBXBuildFile; fileRef = 208D223D228AD12F009AFF08 /* fetch1 */; };
-		20948B74227189B700B1987D /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B73227189B700B1987D /* Sheet.swift */; };
 		20948B7822718AEE00B1987D /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7722718AEE00B1987D /* Menu.swift */; };
 		20948B7B2271986000B1987D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B792271985B00B1987D /* User.swift */; };
 		20948B7C2271986100B1987D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B792271985B00B1987D /* User.swift */; };
@@ -111,10 +110,8 @@
 		20CA59C4226F2EA90040992D /* tree3 in Resources */ = {isa = PBXBuildFile; fileRef = 20CA59C3226F2EA90040992D /* tree3 */; };
 		20CB671A226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
 		20CB671B226071CA0064C31C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6719226071CA0064C31C /* Shared.swift */; };
-		20CB671D22607F940064C31C /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB671C22607F940064C31C /* Label.swift */; };
 		20CB671F2260857E0064C31C /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20CB671E2260857E0064C31C /* Shared.xcassets */; };
 		20CB67202260857E0064C31C /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20CB671E2260857E0064C31C /* Shared.xcassets */; };
-		20CB6722226086030064C31C /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CB6721226086030064C31C /* List.swift */; };
 		20CCE7402261D4840014CAC9 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CCE73F2261D4840014CAC9 /* Alert.swift */; };
 		20E0989E22817B410061123C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E0989D22817B410061123C /* Bar.swift */; };
 		20E098A022819D060061123C /* Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E0989F22819D060061123C /* Create.swift */; };
@@ -230,7 +227,6 @@
 		2073D8762267283E00631BCB /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		2075D19F227DD2EC0004D098 /* TestLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLog.swift; sourceTree = "<group>"; };
 		208D223D228AD12F009AFF08 /* fetch1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch1; sourceTree = "<group>"; };
-		20948B73227189B700B1987D /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		20948B7722718AEE00B1987D /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		20948B792271985B00B1987D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		20948B7D2271987E00B1987D /* TestUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUser.swift; sourceTree = "<group>"; };
@@ -257,9 +253,7 @@
 		20C21CD4228818730038466A /* MockRest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRest.swift; sourceTree = "<group>"; };
 		20CA59C3226F2EA90040992D /* tree3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tree3; sourceTree = "<group>"; };
 		20CB6719226071CA0064C31C /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
-		20CB671C22607F940064C31C /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		20CB671E2260857E0064C31C /* Shared.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Shared.xcassets; sourceTree = "<group>"; };
-		20CB6721226086030064C31C /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20CCE73F2261D4840014CAC9 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		20CCE743226214270014CAC9 /* Git.sketch */ = {isa = PBXFileReference; lastKnownFileType = file; path = Git.sketch; sourceTree = "<group>"; };
 		20E0989D22817B410061123C /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
@@ -477,12 +471,9 @@
 				CEA4C583229BF98F0057CEFE /* Help.swift */,
 				CE29D7B9229D4F9B00C257BF /* History.swift */,
 				2055EFDB2276C9C000658C04 /* Home.swift */,
-				20CB671C22607F940064C31C /* Label.swift */,
-				20CB6721226086030064C31C /* List.swift */,
 				20948B7722718AEE00B1987D /* Menu.swift */,
 				CE89825F22904EB300E9F41F /* Reset.swift */,
 				CEC67673229D26F700B6AFEF /* Settings.swift */,
-				20948B73227189B700B1987D /* Sheet.swift */,
 				20B8328222709EA700773058 /* Mac.xcassets */,
 			);
 			path = Mac;
@@ -830,16 +821,13 @@
 				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
 				20948B7822718AEE00B1987D /* Menu.swift in Sources */,
 				CEC67672229D0D5D00B6AFEF /* Add.swift in Sources */,
-				20948B74227189B700B1987D /* Sheet.swift in Sources */,
 				CEA4C584229BF98F0057CEFE /* Help.swift in Sources */,
 				2055EFDC2276C9C000658C04 /* Home.swift in Sources */,
 				CEA4C582229BF29A0057CEFE /* About.swift in Sources */,
 				2048A136225C749200290E54 /* App.swift in Sources */,
-				20CB6722226086030064C31C /* List.swift in Sources */,
 				CE89826022904EB300E9F41F /* Reset.swift in Sources */,
 				CEC67674229D26F700B6AFEF /* Settings.swift in Sources */,
 				2048A134225C749200290E54 /* Extensions.swift in Sources */,
-				20CB671D22607F940064C31C /* Label.swift in Sources */,
 				20CCE7402261D4840014CAC9 /* Alert.swift in Sources */,
 				2048A137225C749200290E54 /* Button.swift in Sources */,
 			);

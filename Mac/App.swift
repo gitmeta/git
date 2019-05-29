@@ -99,6 +99,7 @@ private(set) weak var app: App!
     }
     
     @objc func browse() {
+        windows.filter({ !($0 is Home) && !($0 is NSOpenPanel) }).forEach({ $0.close() })
         if let browse = windows.first(where: { $0 is NSOpenPanel }) {
             browse.orderFront(nil)
         } else {

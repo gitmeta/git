@@ -113,25 +113,6 @@ class Menu: NSMenu {
     required init(coder: NSCoder) { fatalError() }
     
     func validate() {
-        if Sheet.presented == nil {
-            preferences.isEnabled = true
-            directory.isEnabled = true
-            help.isEnabled = true
-            refresh.isEnabled = app.repository != nil
-            log.isEnabled = app.repository != nil
-            commit.isEnabled = app.repository != nil
-            reset.isEnabled = app.repository != nil
-        } else {
-            preferences.isEnabled = false
-            directory.isEnabled = false
-            refresh.isEnabled = false
-            log.isEnabled = false
-            commit.isEnabled = false
-            reset.isEnabled = false
-            help.isEnabled = false
-        }
-        if #available(OSX 10.12.2, *) {
-            app.home.touchBar = nil
-        }
+        
     }
 }
