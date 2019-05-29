@@ -64,6 +64,9 @@ class History: NSWindow {
     }
     
     private weak var scroll: NSScrollView!
+    private weak var loading: NSImageView!
+    private weak var branch: Label!
+    private weak var bottom: NSLayoutConstraint? { didSet { oldValue?.isActive = false; bottom?.isActive = true } }
     
     init() {
         super.init(contentRect: NSRect(
@@ -78,6 +81,19 @@ class History: NSWindow {
         isReleasedWhenClosed = false
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false
+        
+        let loading = NSImageView()
+        loading.image = NSImage(named: "loading")
+        loading.translatesAutoresizingMaskIntoConstraints = false
+        loading.imageScaling = .scaleNone
+        contentView!.addSubview(loading)
+        self.loading = loading
+        
+        let branch = Label()
+        branch.font = .systemFont(ofSize: 14, weight: .bold)
+        branch.textColor = .halo
+        contentView!.addSubview(branch)
+        self.branch = branch
         
         let border = NSView()
         border.translatesAutoresizingMaskIntoConstraints = false
@@ -101,6 +117,14 @@ class History: NSWindow {
         contentView!.addSubview(scroll)
         self.scroll = scroll
         
+        loading.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
+        loading.bottomAnchor.constraint(equalTo: border.topAnchor).isActive = true
+        loading.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        loading.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        
+        branch.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 18).isActive = true
+        branch.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -20).isActive = true
+        
         border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
         border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
         border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
@@ -111,8 +135,16 @@ class History: NSWindow {
         scroll.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
         scroll.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
         
-        app.repository?.log { [weak scroll] items in
-            guard let scroll = scroll else { return }
+        refresh()
+    }
+    
+    func refresh() {
+        loading.isHidden = false
+        branch.stringValue = ""
+        scroll.documentView!.subviews.forEach { $0.removeFromSuperview() }
+        
+        app.repository?.log { [weak self] items in
+            guard let scroll = self?.scroll else { return }
             var top = scroll.documentView!.topAnchor
             items.enumerated().forEach {
                 let item = Item(items.count - $0.0, commit: $0.1)
@@ -123,7 +155,12 @@ class History: NSWindow {
                 item.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
                 top = item.bottomAnchor
             }
-            scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: top).isActive = true
+            self?.bottom = scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: top)
+        }
+        
+        app.repository?.branch { [weak self] in
+            self?.branch.stringValue = $0
+            self?.loading.isHidden = true
         }
     }
 }
