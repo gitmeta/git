@@ -159,7 +159,7 @@ class Home: NSWindow  {
         let add = Button.Image(app, action: #selector(app.add))
         add.image.image = NSImage(named: "add")
         
-        let reset = Button.Image(self, action: nil)
+        let reset = Button.Image(app, action: #selector(app.reset))
         reset.image.image = NSImage(named: "reset")
         
         let cloud = Button.Image(self, action: nil)

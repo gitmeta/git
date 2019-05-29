@@ -125,6 +125,7 @@ private(set) weak var app: App!
     @objc func help() { order(Help.self) }
     @objc func about() { order(About.self) }
     @objc func history() { order(History.self) }
+    @objc func reset() { order(Reset.self) }
     
     private func load() {
         guard !Hub.session.bookmark.isEmpty

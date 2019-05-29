@@ -21,6 +21,10 @@ Settings.signName="Name";
 Settings.signEmail="Email";
 Settings.signSave="Save";
 Settings.signSuccess="Signature updated";
+Reset.title="Reset changes?\n";
+Reset.subtitle="This will revert anything you have not commited.";
+Reset.confirm="Reset";
+Reset.success="Reverted changes";
 /*
 Display.notRepository="No repository in this directory";
 Display.upToDate="No changes";
@@ -49,11 +53,10 @@ Log.title="History";
 Create.save="Create";
 Create.cancel="Cancel";
 Create.untitled="Untitled";
-Reset.title="Reset changes?\n";
-Reset.subtitle="Revert anything not commited.\nBeware, can't be undone.";
-Reset.confirm="Reset";
+
+
 Reset.cancel="Cancel";
-Reset.success="Reverted changes";
+
 Menu.about="About";
 Menu.preferences="Preferences";
 Menu.hide="Hide";
