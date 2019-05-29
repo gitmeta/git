@@ -4,7 +4,7 @@ final class Warning: NSWindow {
     init() {
         super.init(contentRect: NSRect(
             x: (NSScreen.main!.frame.width - 300) / 2, y: (NSScreen.main!.frame.height - 190) / 2, width: 300, height: 140),
-                   styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar, .docModalWindow], backing: .buffered, defer: false)
+                   styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
         backgroundColor = .shade

@@ -247,9 +247,9 @@ final class Home: NSWindow  {
         borderTop.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         directory.topAnchor.constraint(equalTo: top.topAnchor).isActive = true
-        directory.bottomAnchor.constraint(equalTo: top.bottomAnchor, constant: -2).isActive = true
+        directory.bottomAnchor.constraint(equalTo: top.bottomAnchor, constant: -3).isActive = true
         directory.widthAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
-        directory.leftAnchor.constraint(equalTo: top.leftAnchor, constant: 80).isActive = true
+        directory.leftAnchor.constraint(equalTo: top.leftAnchor, constant: 82).isActive = true
         
         list.topAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: left.rightAnchor).isActive = true
