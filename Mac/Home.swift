@@ -14,6 +14,8 @@ final class Home: NSWindow  {
         private(set) weak var check: Button.Check!
         private weak var badge: NSView!
         private weak var label: Label!
+        override var isOpaque: Bool { return true }
+        override var wantsDefaultClipping: Bool { return false }
         
         fileprivate init(_ url: URL, status: Status) {
             self.url = url
