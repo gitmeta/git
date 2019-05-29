@@ -67,7 +67,7 @@ private(set) weak var app: App!
             button.target = self
             button.action = #selector(browse)
         case "refresh":
-            button.title = .local("Menu.refresh")
+            button.title = .local("Home.refresh")
             button.target = self
             button.action = #selector(refresh)
         default: break

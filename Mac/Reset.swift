@@ -38,8 +38,8 @@ class Reset: NSWindow {
         
         image.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 40).isActive = true
         image.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        image.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        image.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         label.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20).isActive = true

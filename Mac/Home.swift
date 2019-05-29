@@ -266,7 +266,7 @@ class Home: NSWindow  {
         
         label.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
-        label.topAnchor.constraint(equalTo: image.bottomAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 10).isActive = true
         
         count.rightAnchor.constraint(equalTo: top.rightAnchor, constant: -12).isActive = true
         count.centerYAnchor.constraint(equalTo: top.centerYAnchor).isActive = true

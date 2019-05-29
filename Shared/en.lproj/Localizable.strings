@@ -2,6 +2,7 @@ Alert.error="Error";
 Alert.commit="Commit";
 Alert.update="Success";
 Home.directory="Browse";
+Home.refresh="Refresh";
 Home.button.packed="Unpack";
 Home.button.create="Create";
 Home.label.create="No repository found";
