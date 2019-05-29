@@ -1,6 +1,6 @@
 import Foundation
 
-class Ignore {
+final class Ignore {
     private var contains = ["/.git/"]
     private var suffix = ["/.git"]
     

@@ -1,6 +1,6 @@
 import Foundation
 
-class Packer {
+final class Packer {
     weak var repository: Repository?
     
     func packed(_ result: @escaping((Bool) -> Void)) {

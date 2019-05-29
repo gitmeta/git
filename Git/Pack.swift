@@ -1,6 +1,6 @@
 import Foundation
 
-class Pack {
+final class Pack {
     enum Category: Int {
         case commit = 1
         case tree = 2
@@ -11,12 +11,12 @@ class Pack {
         case deltaRef = 7
     }
     
-    class Index {
-        struct Entry {
-            fileprivate(set) var id = ""
-            fileprivate(set) var offset = 0
-        }
-        
+    struct Entry {
+        fileprivate(set) var id = ""
+        fileprivate(set) var offset = 0
+    }
+    
+    final class Index {
         private(set) var entries = [Entry]()
         
         init(_ url: URL, id: String) throws {

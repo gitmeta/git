@@ -1,6 +1,6 @@
 import Foundation
 
-public class Hub {
+public final class Hub {
     public internal(set) static var session = Session()
     static var rest = Rest()
     static let dispatch = Dispatch()

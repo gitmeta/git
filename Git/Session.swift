@@ -1,6 +1,6 @@
 import Foundation
 
-public class Session: Codable {
+public final class Session: Codable {
     public internal(set) var url = URL(fileURLWithPath: "")
     public internal(set) var bookmark = Data()
     public internal(set) var name = ""

@@ -1,6 +1,6 @@
 import Foundation
 
-class Parse {
+final class Parse {
     let data: Data
     private(set) var index = 0
     

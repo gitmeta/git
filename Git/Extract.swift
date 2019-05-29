@@ -1,6 +1,6 @@
 import Foundation
 
-class Extract {
+final class Extract {
     weak var repository: Repository?
     
     func reset(_ error: @escaping((Error) -> Void), done: @escaping(() -> Void)) {

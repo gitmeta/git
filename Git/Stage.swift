@@ -1,6 +1,6 @@
 import Foundation
 
-class Stage {
+final class Stage {
     weak var repository: Repository?
     
     func commit(_ files: [URL], message: String, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) {

@@ -1,6 +1,6 @@
 import Foundation
 
-class Index {
+final class Index {
     struct Entry {
         fileprivate(set) var created = Date()
         fileprivate(set) var modified = Date()

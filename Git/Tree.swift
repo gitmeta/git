@@ -1,6 +1,6 @@
 import Foundation
 
-class Tree {
+final class Tree {
     enum Category: String {
         case blob = "100644"
         case exec = "100755"
@@ -8,7 +8,7 @@ class Tree {
         case unknown
     }
     
-    class Item {
+    final class Item {
         var id = ""
         var url = URL(fileURLWithPath: "")
         var category = Category.unknown

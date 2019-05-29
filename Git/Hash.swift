@@ -1,7 +1,7 @@
 import Foundation
 import CommonCrypto
 
-class Hash {
+final class Hash {
     private var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
     
     func file(_ url: URL) -> (Data, String) {

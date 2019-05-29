@@ -1,6 +1,6 @@
 import Foundation
 
-class Content {
+final class Content {
     @discardableResult func add(_ commit: Commit, url: URL) throws -> String {
         return try {
             try add($0.1, data: $0.0, url: url)

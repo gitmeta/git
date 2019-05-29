@@ -1,6 +1,6 @@
 import Foundation
 
-public class Repository {
+public final class Repository {
     public var status: (([(URL, Status)]) -> Void)?
     public let url: URL
     let state = State()

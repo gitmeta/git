@@ -1,7 +1,7 @@
 import Foundation
 import Compression
 
-class Press {
+final class Press {
     private let prime = UInt32(65521)
     
     func decompress(_ data: Data) -> Data {

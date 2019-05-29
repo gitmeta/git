@@ -1,6 +1,6 @@
 import Foundation
 
-public class Commit {
+public final class Commit {
     public internal(set) var author = User()
     public internal(set) var message = ""
     var committer = User()

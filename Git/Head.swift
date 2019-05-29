@@ -1,6 +1,6 @@
 import Foundation
 
-class Head {
+final class Head {
     func branch(_ url: URL, result: @escaping((String) -> Void)) {
         Hub.dispatch.background({ [weak self] in
             (try? self?.reference(url).replacingOccurrences(of: "refs/heads/", with: "")) ?? ""

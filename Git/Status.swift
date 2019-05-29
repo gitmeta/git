@@ -7,7 +7,7 @@ public enum Status {
     case deleted
 }
 
-class State {
+final class State {
     weak var repository: Repository?
     var last = Date.distantPast
     var delta = TimeInterval(1)

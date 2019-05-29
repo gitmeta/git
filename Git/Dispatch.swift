@@ -1,6 +1,6 @@
 import Foundation
 
-class Dispatch {
+final class Dispatch {
     private let queue = DispatchQueue(label: "", qos: .background, target: .global(qos: .background))
     
     func background(_ send: @escaping(() -> Void)) {
