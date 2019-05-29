@@ -1,7 +1,7 @@
 import Git
 import AppKit
 
-class Home: NSWindow  {
+final class Home: NSWindow  {
     enum State {
         case loading
         case ready
@@ -9,7 +9,7 @@ class Home: NSWindow  {
         case create
     }
     
-    class Item: NSView {
+    final class Item: NSView {
         let url: URL
         private(set) weak var check: Button.Check!
         private weak var badge: NSView!

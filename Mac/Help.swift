@@ -1,6 +1,6 @@
 import AppKit
 
-class Help: NSWindow {
+final class Help: NSWindow {
     private weak var label: Label!
     private weak var centerX: NSLayoutConstraint!
     private var buttons = [Button]()

@@ -5,7 +5,7 @@ import UserNotifications
 
 private(set) weak var app: App!
 
-@NSApplicationMain class App: NSApplication, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
+@NSApplicationMain final class App: NSApplication, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
     private(set) var repository: Repository? {
         didSet {
             if repository == nil {

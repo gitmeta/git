@@ -1,6 +1,6 @@
 import AppKit
 
-class Warning: NSWindow {
+final class Warning: NSWindow {
     init() {
         super.init(contentRect: NSRect(
             x: (NSScreen.main!.frame.width - 300) / 2, y: (NSScreen.main!.frame.height - 190) / 2, width: 300, height: 140),

@@ -1,8 +1,8 @@
 import Git
 import AppKit
 
-class Add: NSWindow {
-    private class Layout: NSLayoutManager, NSLayoutManagerDelegate {
+final class Add: NSWindow {
+    private final class Layout: NSLayoutManager, NSLayoutManagerDelegate {
         private let padding = CGFloat(6)
         
         func layoutManager(_: NSLayoutManager, shouldSetLineFragmentRect: UnsafeMutablePointer<NSRect>,
@@ -23,7 +23,7 @@ class Add: NSWindow {
         }
     }
     
-    private class Text: NSTextView {
+    private final class Text: NSTextView {
         private weak var height: NSLayoutConstraint!
         
         init() {

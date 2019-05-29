@@ -1,8 +1,8 @@
 import Git
 import AppKit
 
-class History: NSWindow {
-    private class Item: NSView {
+final class History: NSWindow {
+    private final class Item: NSView {
         override var isOpaque: Bool { return true }
         override var wantsDefaultClipping: Bool { return false }
         

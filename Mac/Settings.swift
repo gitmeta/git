@@ -1,8 +1,8 @@
 import Git
 import AppKit
 
-class Settings: NSWindow, NSTextFieldDelegate {
-    private class Field: NSView {
+final class Settings: NSWindow, NSTextFieldDelegate {
+    private final class Field: NSView {
         private(set) weak var field: NSTextField!
         private(set) weak var label: Label!
         

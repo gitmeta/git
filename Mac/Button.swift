@@ -1,7 +1,7 @@
 import AppKit
 
 class Button: NSView {
-    class Image: Button {
+    final class Image: Button {
         private(set) weak var image: NSImageView!
         
         override init(_ target: AnyObject?, action: Selector?) {
@@ -21,7 +21,7 @@ class Button: NSView {
         required init?(coder: NSCoder) { return nil }
     }
     
-    class Text: Button {
+    final class Text: Button {
         private(set) weak var label: Label!
         
         override init(_ target: AnyObject?, action: Selector?) {
@@ -39,7 +39,7 @@ class Button: NSView {
         required init?(coder: NSCoder) { return nil }
     }
     
-    class Check: Button {
+    final class Check: Button {
         var checked = false { didSet {
             if checked {
                 image.image = on
@@ -73,10 +73,10 @@ class Button: NSView {
         }
     }
     
-    weak var target: AnyObject?
-    var action: Selector?
+    final weak var target: AnyObject?
+    final var action: Selector?
     private var drag = CGFloat(0)
-    fileprivate var selected = false {
+    final fileprivate var selected = false {
         didSet {
             alphaValue = selected ? 0.4 : 1
         }

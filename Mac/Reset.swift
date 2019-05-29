@@ -1,7 +1,7 @@
 import Git
 import AppKit
 
-class Reset: NSWindow {
+final class Reset: NSWindow {
     init() {
         super.init(contentRect: NSRect(
             x: app.home.frame.minX + 50, y: app.home.frame.maxY - 300, width: 250, height: 250),

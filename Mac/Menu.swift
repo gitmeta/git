@@ -1,6 +1,6 @@
 import AppKit
 
-class Menu: NSMenu {
+final class Menu: NSMenu {
     init() {
         super.init(title: "")
         add(.local("Menu.git"), items: [

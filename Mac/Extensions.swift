@@ -1,8 +1,8 @@
 import AppKit
 
 extension NSFont {
-    class func light(_ size: CGFloat) -> NSFont { return NSFont(name: "SFMono-Light", size: size)! }
-    class func bold(_ size: CGFloat) -> NSFont { return NSFont(name: "SFMono-Bold", size: size)! }
+    final class func light(_ size: CGFloat) -> NSFont { return NSFont(name: "SFMono-Light", size: size)! }
+    final class func bold(_ size: CGFloat) -> NSFont { return NSFont(name: "SFMono-Bold", size: size)! }
 }
 
 extension NSColor {
@@ -14,9 +14,9 @@ extension NSColor {
     static let deleted = #colorLiteral(red: 0.2274509804, green: 0.7803921569, blue: 0.9176470588, alpha: 1)
 }
 
-class Flipped: NSView { override var isFlipped: Bool { return true } }
+final class Flipped: NSView { override var isFlipped: Bool { return true } }
 
-class Label: NSTextField {
+final class Label: NSTextField {
     override var acceptsFirstResponder: Bool { return false }
     
     init(_ string: String = "") {

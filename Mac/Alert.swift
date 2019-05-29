@@ -1,7 +1,7 @@
 import AppKit
 import UserNotifications
 
-class Alert {
+final class Alert {
     private weak var view: NSView?
     private weak var bottom: NSLayoutConstraint?
     private var alert = [(String, String)]()
