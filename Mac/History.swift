@@ -3,6 +3,9 @@ import AppKit
 
 class History: NSWindow {
     private class Item: NSView {
+        override var isOpaque: Bool { return true }
+        override var wantsDefaultClipping: Bool { return false }
+        
         init(_ index: Int, commit: Commit) {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false

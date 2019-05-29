@@ -148,7 +148,7 @@ class Add: NSWindow {
         makeFirstResponder(nil)
         if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
             app.settings()
-            if let settings = app.windows.first(where: { $0 is Settings }) as? Settings {
+            if let settings = app.windows.compactMap({ $0 as? Settings }).first {
                 settings.sign()
             }
         } else {
@@ -160,6 +160,7 @@ class Add: NSWindow {
                 app.home.update(.loading)
                 app.alert.commit(self?.text.string ?? "")
                 self?.close()
+                app.windows.compactMap({ $0 as? History }).first?.refresh()
             }
         }
     }
