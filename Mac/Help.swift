@@ -62,6 +62,7 @@ class Help: NSWindow {
                 image.leftAnchor.constraint(equalTo: rightImage, constant: 100).isActive = true
             }
             
+            
             rightImage = image.rightAnchor
         }
         
@@ -77,7 +78,7 @@ class Help: NSWindow {
     
     override func keyDown(with: NSEvent) {
         switch with.keyCode {
-        case 36: close()
+        case 36, 53: close()
         case 123: display(index > 0 ? index - 1 : images.count - 1)
         case 124: display(index < images.count - 1 ? index + 1 : 0)
         default: super.keyDown(with: with)

@@ -25,6 +25,25 @@ Reset.title="Reset changes?\n";
 Reset.subtitle="This will revert anything you have not commited.";
 Reset.confirm="Reset";
 Reset.success="Reverted changes";
+Menu.about="About";
+Menu.preferences="Preferences";
+Menu.hide="Hide";
+Menu.hideOthers="Hide others";
+Menu.showAll="Show all";
+Menu.quit="Quit";
+Menu.git="Git";
+Menu.directory="Directory";
+Menu.refresh="Refresh";
+Menu.log="History";
+Menu.commit="Commit";
+Menu.reset="Reset";
+Menu.project="Repository";
+Menu.minimize="Minimize";
+Menu.zoom="Zoom";
+Menu.bringAllToFront="Bring all to front";
+Menu.window="Window";
+Menu.showHelp="Show help";
+Menu.help="Help";
 /*
 Display.notRepository="No repository in this directory";
 Display.upToDate="No changes";
@@ -56,24 +75,4 @@ Create.untitled="Untitled";
 
 
 Reset.cancel="Cancel";
-
-Menu.about="About";
-Menu.preferences="Preferences";
-Menu.hide="Hide";
-Menu.hideOthers="Hide others";
-Menu.showAll="Show all";
-Menu.quit="Quit";
-Menu.git="Git";
-Menu.directory="Directory";
-Menu.refresh="Refresh";
-Menu.log="History";
-Menu.commit="Commit";
-Menu.reset="Reset";
-Menu.project="Repository";
-Menu.minimize="Minimize";
-Menu.zoom="Zoom";
-Menu.bringAllToFront="Bring all to front";
-Menu.window="Window";
-Menu.showHelp="Show help";
-Menu.help="Help";
 */
