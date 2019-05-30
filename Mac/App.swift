@@ -79,7 +79,62 @@ private(set) weak var app: App!
         home.makeKeyAndOrderFront(nil)
         self.home = home
         
-        let menu = Menu()
+        let menu = NSMenu()
+        menu.addItem({
+            $0.submenu = NSMenu(title: .local("Menu.git"))
+            $0.submenu!.items = [
+                NSMenuItem(title: .local("Menu.about"), action: #selector(about), keyEquivalent: ""),
+                NSMenuItem.separator(),
+                NSMenuItem(title: .local("Menu.preferences"), action: #selector(settings), keyEquivalent: ","),
+                NSMenuItem.separator(),
+                NSMenuItem(title: .local("Menu.hide"), action: #selector(hide(_:)), keyEquivalent: "h"),
+                { $0.keyEquivalentModifierMask = [.option, .command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.hideOthers"), action: #selector(hideOtherApplications(_:)), keyEquivalent: "h")),
+                NSMenuItem(title: .local("Menu.showAll"), action: #selector(unhideAllApplications(_:)), keyEquivalent: ","),
+                NSMenuItem.separator(),
+                NSMenuItem(title: .local("Menu.quit"), action: #selector(terminate(_:)), keyEquivalent: "q")]
+            return $0
+        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
+        
+        menu.addItem({
+            $0.submenu = NSMenu(title: .local("Menu.project"))
+            $0.submenu!.items = [
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.directory"), action: #selector(browse), keyEquivalent: "o")),
+                NSMenuItem.separator(),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(refresh), keyEquivalent: "r")),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.log"), action: #selector(history), keyEquivalent: "y")),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.commit"), action: #selector(add), keyEquivalent: "\r")),
+                { $0.keyEquivalentModifierMask = [.command, .control, .shift]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.reset"), action: #selector(reset), keyEquivalent: "r"))]
+            return $0
+        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
+        
+        menu.addItem({
+            $0.submenu = NSMenu(title: .local("Menu.window"))
+            $0.submenu!.items = [
+                NSMenuItem(title: .local("Menu.minimize"), action: #selector(Home.performMiniaturize(_:)), keyEquivalent: "m"),
+                NSMenuItem(title: .local("Menu.zoom"), action: #selector(Home.performZoom(_:)), keyEquivalent: "p"),
+                NSMenuItem.separator(),
+                NSMenuItem(title: .local("Menu.bringAllToFront"), action: #selector(arrangeInFront(_:)), keyEquivalent: "")]
+            return $0
+        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
+        
+        menu.addItem({
+            $0.submenu = NSMenu(title: .local("Menu.help"))
+            $0.submenu!.items = [NSMenuItem(title: .local("Menu.showHelp"), action: #selector(help), keyEquivalent: "/")]
+            return $0
+        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
+        
         mainMenu = menu
         
         Hub.session.load {
