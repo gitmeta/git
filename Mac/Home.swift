@@ -215,14 +215,14 @@ final class Home: NSWindow  {
         
         let label = Label()
         label.font = .systemFont(ofSize: 12, weight: .light)
-        label.textColor = NSColor(white: 1, alpha: 0.7)
+        label.textColor = NSColor(white: 1, alpha: 0.5)
         contentView!.addSubview(label)
         self.label = label
         
         let count = Label()
-        count.font = .systemFont(ofSize: 10, weight: .light)
+        count.font = .systemFont(ofSize: 11, weight: .light)
         count.alignment = .right
-        count.textColor = NSColor(white: 1, alpha: 0.6)
+        count.textColor = NSColor.halo.withAlphaComponent(0.8)
         top.addSubview(count)
         self.count = count
         
@@ -258,17 +258,17 @@ final class Home: NSWindow  {
         
         image.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
         image.centerYAnchor.constraint(equalTo: list.centerYAnchor).isActive = true
-        image.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        image.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 38).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 38).isActive = true
         
         button.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
-        button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
+        button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 15).isActive = true
         button.widthAnchor.constraint(equalToConstant: 62).isActive = true
         button.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         label.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
-        label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 10).isActive = true
+        label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
         count.rightAnchor.constraint(equalTo: top.rightAnchor, constant: -12).isActive = true
         count.centerYAnchor.constraint(equalTo: top.centerYAnchor).isActive = true
@@ -317,15 +317,13 @@ final class Home: NSWindow  {
         case .ready:
             button.isHidden = true
             count.isHidden = false
+            label.isHidden = true
             countItems()
             if items.isEmpty {
                 image.isHidden = false
                 image.image = NSImage(named: "updated")
-                label.isHidden = false
-                label.stringValue = .local("Home.label.empty")
             } else {
                 image.isHidden = true
-                label.isHidden = true
             }
         case .create:
             image.isHidden = false
