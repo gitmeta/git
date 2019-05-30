@@ -35,7 +35,6 @@ final class Settings: NSWindow, NSTextFieldDelegate {
                 field.isAutomaticTextCompletionEnabled = false
             }
             addSubview(field)
-            (field.window?.fieldEditor(true, for: field) as? NSTextView)?.insertionPointColor = .halo
             self.field = field
             
             widthAnchor.constraint(equalToConstant: 280).isActive = true

@@ -123,6 +123,7 @@
 		20FFDF812282E05D00226033 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF802282E05D00226033 /* Commit.swift */; };
 		20FFDF832282EF0500226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Credentials.swift */; };
 		CE29D7BA229D4F9B00C257BF /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE29D7B9229D4F9B00C257BF /* History.swift */; };
+		CE32EFD1229FFF1400BC3901 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32EFCF229FFE2400BC3901 /* Cloud.swift */; };
 		CE7B8BF02291431700396AB1 /* pack-1.pack in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEE2291431700396AB1 /* pack-1.pack */; };
 		CE7B8BF12291431700396AB1 /* pack-1.idx in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEF2291431700396AB1 /* pack-1.idx */; };
 		CE7B8BF322917A1C00396AB1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF222917A1C00396AB1 /* Content.swift */; };
@@ -264,6 +265,7 @@
 		20FFDF802282E05D00226033 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
 		20FFDF822282EF0500226033 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		CE29D7B9229D4F9B00C257BF /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		CE32EFCF229FFE2400BC3901 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		CE7B8BEE2291431700396AB1 /* pack-1.pack */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.pack"; sourceTree = "<group>"; };
 		CE7B8BEF2291431700396AB1 /* pack-1.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.idx"; sourceTree = "<group>"; };
 		CE7B8BF222917A1C00396AB1 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 				CED7E395229E9BB1003B8721 /* Alert.swift */,
 				2048A130225C749200290E54 /* App.swift */,
 				2048A131225C749200290E54 /* Button.swift */,
+				CE32EFCF229FFE2400BC3901 /* Cloud.swift */,
 				2048A12E225C749200290E54 /* Extensions.swift */,
 				CEA4C583229BF98F0057CEFE /* Help.swift */,
 				CE29D7B9229D4F9B00C257BF /* History.swift */,
@@ -815,6 +818,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE29D7BA229D4F9B00C257BF /* History.swift in Sources */,
+				CE32EFD1229FFF1400BC3901 /* Cloud.swift in Sources */,
 				20CB671A226071CA0064C31C /* Shared.swift in Sources */,
 				CEC67672229D0D5D00B6AFEF /* Add.swift in Sources */,
 				CEA4C584229BF98F0057CEFE /* Help.swift in Sources */,

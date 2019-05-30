@@ -164,7 +164,7 @@ final class Home: NSWindow  {
         let reset = Button.Image(app, action: #selector(app.reset))
         reset.image.image = NSImage(named: "reset")
         
-        let cloud = Button.Image(self, action: nil)
+        let cloud = Button.Image(app, action: #selector(app.cloud))
         cloud.image.image = NSImage(named: "cloud")
         
         let history = Button.Image(app, action: #selector(app.history))
@@ -311,6 +311,7 @@ final class Home: NSWindow  {
             image.image = NSImage(named: "error")
             button.isHidden = false
             button.label.stringValue = .local("Home.button.packed")
+            button.action = #selector(App.unpack)
             label.isHidden = false
             label.stringValue = .local("Home.label.packed")
             count.isHidden = true
@@ -330,6 +331,7 @@ final class Home: NSWindow  {
             image.image = NSImage(named: "error")
             button.isHidden = false
             button.label.stringValue = .local("Home.button.create")
+            button.action = #selector(App.create)
             label.isHidden = false
             label.stringValue = .local("Home.label.create")
             count.isHidden = true

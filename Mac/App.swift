@@ -120,6 +120,20 @@ private(set) weak var app: App!
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
         menu.addItem({
+            $0.submenu = NSMenu(title: .local("Menu.cloud"))
+            $0.submenu!.items = [
+                NSMenuItem(title: .local("Menu.clone"), action: #selector(cloud), keyEquivalent: ""),
+                NSMenuItem.separator(),
+                { $0.keyEquivalentModifierMask = [.command, .option]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.pull"), action: #selector(pull), keyEquivalent: "d")),
+                { $0.keyEquivalentModifierMask = [.command, .option]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.push"), action: #selector(push), keyEquivalent: "u"))]
+            return $0
+            } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
+        
+        menu.addItem({
             $0.submenu = NSMenu(title: .local("Menu.window"))
             $0.submenu!.items = [
                 NSMenuItem(title: .local("Menu.minimize"), action: #selector(Home.performMiniaturize(_:)), keyEquivalent: "m"),
@@ -170,8 +184,28 @@ private(set) weak var app: App!
         }
     }
     
+    @objc func create() {
+        home.update(.loading)
+        restore()
+        Hub.create(Hub.session.url, error: {
+            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.repository = nil
+        }) { self.repository = $0 }
+    }
+    
+    @objc func unpack() {
+        home.update(.loading)
+        restore()
+        repository?.unpack({
+            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.repository = nil
+        }) {
+            self.alert(.local("Alert.success"), message: .local("App.unpacked"))
+        }
+    }
+    
     @objc func browse() {
-        windows.filter({ !($0 is Home) && !($0 is NSOpenPanel) }).forEach({ $0.close() })
+        restore()
         if let browse = windows.first(where: { $0 is NSOpenPanel }) {
             browse.orderFront(nil)
         } else {
@@ -193,9 +227,8 @@ private(set) weak var app: App!
         repository.refresh()
     }
     
+    @objc func cloud() { order(Cloud.self) }
     @objc func settings() { order(Settings.self) }
-    @objc func help() { order(Help.self) }
-    @objc func about() { order(About.self) }
     
     @objc func add() {
         if repository == nil {
@@ -258,5 +291,33 @@ private(set) weak var app: App!
         } else {
             W().makeKeyAndOrderFront(nil)
         }
+    }
+    
+    private func restore() { windows.filter({ !($0 is Home) }).forEach({ $0.close() }) }
+    @objc private func help() { order(Help.self) }
+    @objc private func about() { order(About.self) }
+    
+    @objc private func pull() {
+        let cloud: Cloud
+        if let _cloud = windows.compactMap({ $0 as? Cloud }).first {
+            cloud = _cloud
+            cloud.orderFront(nil)
+        } else {
+            cloud = Cloud()
+            cloud.makeKeyAndOrderFront(nil)
+        }
+        cloud.pull()
+    }
+    
+    @objc private func push() {
+        let cloud: Cloud
+        if let _cloud = windows.compactMap({ $0 as? Cloud }).first {
+            cloud = _cloud
+            cloud.orderFront(nil)
+        } else {
+            cloud = Cloud()
+            cloud.makeKeyAndOrderFront(nil)
+        }
+        cloud.push()
     }
 }
