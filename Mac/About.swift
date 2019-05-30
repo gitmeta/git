@@ -3,7 +3,7 @@ import AppKit
 final class About: NSWindow {
     init() {
         super.init(contentRect: NSRect(
-            x: (NSScreen.main!.frame.width - 350) / 2, y: (NSScreen.main!.frame.height - 350) / 2, width: 350, height: 350),
+            x: (NSScreen.main!.frame.width - 200) / 2, y: (NSScreen.main!.frame.height - 250) / 2, width: 200, height: 200),
                    styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
@@ -26,11 +26,11 @@ final class About: NSWindow {
         version.font = .light(16)
         contentView!.addSubview(version)
         
-        image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor).isActive = true
+        image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -25).isActive = true
         image.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         
         label.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 80).isActive = true
+        label.topAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 20).isActive = true
         
         version.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         version.topAnchor.constraint(equalTo: label.bottomAnchor).isActive = true
