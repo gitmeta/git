@@ -226,7 +226,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
     @objc private func signSave() {
         makeFirstResponder(nil)
         Hub.session.update(signName.field.stringValue, email: signEmail.field.stringValue, error: {
-            app.alert.error($0.localizedDescription)
-        }) { app.alert.update(.local("Settings.signSuccess")) }
+            app.alert(.local("Alert.error"), message: $0.localizedDescription)
+        }) { app.alert(.local("Alert.success"), message: .local("Settings.signSuccess")) }
     }
 }

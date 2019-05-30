@@ -55,9 +55,9 @@ final class Reset: NSWindow {
         app.home.update(.loading)
         app.repository?.reset({
             app.refresh()
-            app.alert.error($0.localizedDescription)
+            app.alert(.local("Alert.error"), message: $0.localizedDescription)
         }) { [weak self] in
-            app.alert.update(.local("Reset.success"))
+            app.alert(.local("Alert.success"), message: .local("Reset.success"))
             self?.close()
         }
     }

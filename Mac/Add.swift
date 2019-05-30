@@ -155,10 +155,10 @@ final class Add: NSWindow {
             app.repository?.commit(
                 app.home.list.documentView!.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.checked }).map { $0.url },
                 message: text.string, error: {
-                    app.alert.error($0.localizedDescription)
+                    app.alert(.local("Alert.error"), message: $0.localizedDescription)
             }) { [weak self] in
                 app.home.update(.loading)
-                app.alert.commit(self?.text.string ?? "")
+                app.alert(.local("Alert.commit"), message: self?.text.string ?? "")
                 self?.close()
                 app.windows.compactMap({ $0 as? History }).first?.refresh()
             }

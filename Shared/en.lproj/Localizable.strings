@@ -1,6 +1,7 @@
 Alert.error="Error";
-Alert.commit="Commit";
-Alert.update="Success";
+Alert.success="Success";
+Alert.commit="Saved";
+App.noRepository="This is not a repository";
 Home.directory="Browse";
 Home.refresh="Refresh";
 Home.button.packed="Unpack";
@@ -44,4 +45,3 @@ Menu.bringAllToFront="Bring all to front";
 Menu.window="Window";
 Menu.showHelp="Show help";
 Menu.help="Help";
-Warning.label="This is not a\nrepository";

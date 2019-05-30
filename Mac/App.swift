@@ -26,7 +26,6 @@ private(set) weak var app: App!
     }
     
     private(set) weak var home: Home!
-    let alert = Alert()
     
     override init() {
         super.init()
@@ -98,6 +97,24 @@ private(set) weak var app: App!
         }
     }
     
+    func alert(_ title: String, message: String) {
+        if #available(OSX 10.14, *) {
+            UNUserNotificationCenter.current().getNotificationSettings {
+                if $0.authorizationStatus == .authorized {
+                    UNUserNotificationCenter.current().add({
+                        $0.title = title
+                        $0.body = message
+                        return UNNotificationRequest(identifier: UUID().uuidString, content: $0, trigger: nil)
+                    } (UNMutableNotificationContent()))
+                } else {
+                    Alert(title + " " + message).makeKeyAndOrderFront(nil)
+                }
+            }
+        } else {
+            Alert(title + " " + message).makeKeyAndOrderFront(nil)
+        }
+    }
+    
     @objc func browse() {
         windows.filter({ !($0 is Home) && !($0 is NSOpenPanel) }).forEach({ $0.close() })
         if let browse = windows.first(where: { $0 is NSOpenPanel }) {
@@ -127,7 +144,7 @@ private(set) weak var app: App!
     
     @objc func add() {
         if repository == nil {
-            order(Warning.self)
+            Alert(.local("App.noRepository")).makeKeyAndOrderFront(nil)
         } else {
             order(Add.self)
         }
@@ -135,7 +152,7 @@ private(set) weak var app: App!
     
     @objc func history() {
         if repository == nil {
-            order(Warning.self)
+            Alert(.local("App.noRepository")).makeKeyAndOrderFront(nil)
         } else {
             order(History.self)
         }
@@ -143,7 +160,7 @@ private(set) weak var app: App!
     
     @objc func reset() {
         if repository == nil {
-            order(Warning.self)
+            Alert(.local("App.noRepository")).makeKeyAndOrderFront(nil)
         } else {
             order(Reset.self)
         }
@@ -160,7 +177,7 @@ private(set) weak var app: App!
             &stale))?.startAccessingSecurityScopedResource()
         home.directory.label.stringValue = Hub.session.url.lastPathComponent
         Hub.open(Hub.session.url, error: {
-            self.alert.error($0.localizedDescription)
+            Alert($0.localizedDescription).makeKeyAndOrderFront(nil)
             self.repository = nil
         }) { self.repository = $0 }
     }
