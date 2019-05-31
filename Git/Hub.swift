@@ -40,8 +40,7 @@ public final class Hub {
         }, error: error ?? { _ in }, success: done ?? { })
     }
     
-    public class func clone(_ remote: String, local: URL,
-                            error: ((Error) -> Void)? = nil, result: ((Repository) -> Void)? = nil) {
+    public class func clone(_ remote: String, local: URL, error: ((Error) -> Void)? = nil, result: ((URL) -> Void)? = nil) {
         dispatch.background({
             if repository(local) {
                 throw Failure.Clone.already
@@ -50,10 +49,22 @@ public final class Hub {
                 DispatchQueue.main.async { error?(exception) }
             }) { adv in
                 dispatch.background({
+                    if adv.refs.isEmpty {
+                        throw Failure.Fetch.empty
+                    }
                     try rest.pack(remote, want: adv.refs.first!, error: { exception in
                         DispatchQueue.main.async { error?(exception) }
                     }, result: { pack in
-                        
+                        dispatch.background({
+                            guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of:".git", with: ""),
+                                !name.isEmpty
+                            else { throw Failure.Clone.name }
+                            let directory = local.appendingPathComponent(name)
+                            guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
+                            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+                            
+                            return directory
+                        }, error: error ?? { _ in }, success: result ?? { _ in })
                     })
                 }, error: error ?? { _ in })
             }

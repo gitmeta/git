@@ -29,10 +29,17 @@ class TestClone: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
+    func testFailIfNoReference() {
+        let expect = expectation(description: "")
+        rest._adv = Fetch()
+        Hub.clone("", local: url, error: { _ in expect.fulfill() })
+        waitForExpectations(timeout: 1)
+    }
+    
     func testFailOnDownload() {
+        let expect = expectation(description: "")
         var adv = Fetch()
         adv.refs.append("")
-        let expect = expectation(description: "")
         rest._error = Failure.Request.invalid
         rest._adv = adv
         DispatchQueue.global(qos: .background).async {
@@ -46,17 +53,85 @@ class TestClone: XCTestCase {
     
     func testFailIfRepository() {
         let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.create(url) { _ in
             Hub.clone("", local: self.url, error: { _ in expect.fulfill() })
         }
         waitForExpectations(timeout: 1)
     }
     
-//    func testCreatesFolder() {
-//        let expect = expectation(description: "")
-//        Hub.create(url) { _ in
-//            Hub.clone("", local: self.url, error: { _ in expect.fulfill() })
-//        }
-//        waitForExpectations(timeout: 1)
-//    }
+    func testFailIfDirectoryWithSameName() {
+        let expect = expectation(description: "")
+        try? FileManager.default.createDirectory(at: url.appendingPathComponent("monami"), withIntermediateDirectories: true)
+        var adv = Fetch()
+        adv.refs.append("")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.clone("https://host.com/monami.git", local: url, error: {
+            print($0.localizedDescription)
+            expect.fulfill()
+        })
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testSuccess() {
+        let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        DispatchQueue.global(qos: .background).async {
+            Hub.clone("", local: self.url, error: nil) { _ in
+                XCTAssertEqual(Thread.main, Thread.current)
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testResult() {
+        let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.clone("https://host.com/monami.git", local: url, error: nil) {
+            XCTAssertEqual(self.url.appendingPathComponent("monami").path, $0.path)
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testCreatesFolder() {
+        let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.clone("https://host.com/monami.git", local: url, error: nil) {
+            var d: ObjCBool = false
+            XCTAssertTrue(FileManager.default.fileExists(atPath: $0.path, isDirectory: &d))
+            XCTAssertTrue(d.boolValue)
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testCreatesRepository() {
+        let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.clone("https://host.com/monami.git", local: url, error: nil) {
+            Hub.repository($0) {
+                XCTAssertTrue($0)
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

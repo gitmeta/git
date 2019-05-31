@@ -6,7 +6,7 @@ import UserNotifications
 private(set) weak var app: App!
 
 @NSApplicationMain final class App: NSApplication, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
-    var repository: Repository? {
+    private(set) var repository: Repository? {
         didSet {
             if repository == nil {
                 home.update(.create)
@@ -36,6 +36,7 @@ private(set) weak var app: App!
     
     required init?(coder: NSCoder) { return nil }
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
+    func browsed(_ url: URL) { Hub.session.update(url, bookmark: (try! url.bookmarkData(options: .withSecurityScope))) { self.load() } }
     
     @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
         UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -237,10 +238,8 @@ private(set) weak var app: App!
         browse.canChooseFiles = false
         browse.canChooseDirectories = true
         browse.begin { [weak browse] in
-            guard let url = browse?.url, $0 == .OK else { return }
-            Hub.session.update(url, bookmark: (try! url.bookmarkData(options: .withSecurityScope))) {
-                self.load()
-            }
+            guard $0 == .OK, let url = browse?.url else { return }
+            self.browsed(url)
         }
     }
     

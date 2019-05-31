@@ -50,6 +50,7 @@ public struct Failure: LocalizedError {
     
     public struct Fetch {
         public static let advertisement = Failure("Invalid advertisement.")
+        public static let empty = Failure("No references in advertisement.")
     }
     
     public struct Request {
@@ -59,6 +60,8 @@ public struct Failure: LocalizedError {
     
     public struct Clone {
         public static let already = Failure("There is already a repository in this directory.")
+        public static let name = Failure("Failed to create a directory with that repository name.")
+        public static let directory = Failure("A directory already exists with the name of the repository.")
     }
     
     public var errorDescription: String? { return string }

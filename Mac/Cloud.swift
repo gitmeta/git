@@ -212,9 +212,9 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             self?.segment.isEnabled = true
             self?.loading.isHidden = true
         }) { [weak self] in
-            app.repository = $0
             app.alert(.local("Alert.succcess"), message: .local("Cloud.clone.success"))
             self?.close()
+            app.browsed($0)
         }
     }
 }
