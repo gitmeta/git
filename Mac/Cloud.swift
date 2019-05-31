@@ -58,6 +58,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     private weak var segment: NSSegmentedControl!
     private weak var left: NSLayoutConstraint!
     private weak var cloneField: Field!
+    private weak var loading: NSImageView!
     
     init() {
         super.init(contentRect: NSRect(
@@ -98,6 +99,14 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         let push = NSView()
         push.translatesAutoresizingMaskIntoConstraints = false
         contentView!.addSubview(push)
+        
+        let loading = NSImageView()
+        loading.image = NSImage(named: "loading")
+        loading.translatesAutoresizingMaskIntoConstraints = false
+        loading.imageScaling = .scaleNone
+        loading.isHidden = true
+        contentView!.addSubview(loading)
+        self.loading = loading
         
         if app.repository == nil {
             let cloneField = Field()
