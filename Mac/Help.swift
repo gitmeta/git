@@ -78,6 +78,12 @@ final class Help: NSWindow {
     
     override func keyDown(with: NSEvent) {
         switch with.keyCode {
+        case 13:
+            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
+                close()
+            } else {
+                super.keyDown(with: with)
+            }
         case 36, 53: close()
         case 123: display(index > 0 ? index - 1 : images.count - 1)
         case 124: display(index < images.count - 1 ? index + 1 : 0)

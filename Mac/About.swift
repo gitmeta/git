@@ -35,4 +35,17 @@ final class About: NSWindow {
         version.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         version.topAnchor.constraint(equalTo: label.bottomAnchor).isActive = true
     }
+    
+    override func keyDown(with: NSEvent) {
+        switch with.keyCode {
+        case 13:
+            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
+                close()
+            } else {
+                super.keyDown(with: with)
+            }
+        case 53: close()
+        default: super.keyDown(with: with)
+        }
+    }
 }

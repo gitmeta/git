@@ -51,6 +51,19 @@ final class Reset: NSWindow {
         confirm.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -20).isActive = true
     }
     
+    override func keyDown(with: NSEvent) {
+        switch with.keyCode {
+        case 13:
+            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
+                close()
+            } else {
+                super.keyDown(with: with)
+            }
+        case 53: close()
+        default: super.keyDown(with: with)
+        }
+    }
+    
     @objc private func confirm() {
         app.home.update(.loading)
         app.repository?.reset({

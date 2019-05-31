@@ -168,6 +168,19 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         DispatchQueue.main.async { [weak self] in self?.clone()  }
     }
     
+    override func keyDown(with: NSEvent) {
+        switch with.keyCode {
+        case 13:
+            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
+                close()
+            } else {
+                super.keyDown(with: with)
+            }
+        case 53: close()
+        default: super.keyDown(with: with)
+        }
+    }
+    
     private func show(_ item: Int) {
         makeFirstResponder(nil)
         segment.selectedSegment = item

@@ -79,6 +79,19 @@ final class Add: NSWindow {
             layoutManager!.ensureLayout(for: textContainer!)
             height.constant = layoutManager!.usedRect(for: textContainer!).size.height + (textContainerInset.height * 2)
         }
+        
+        override func keyDown(with: NSEvent) {
+            switch with.keyCode {
+            case 13:
+                if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
+                    window!.close()
+                } else {
+                    super.keyDown(with: with)
+                }
+            case 53: window!.makeFirstResponder(nil)
+            default: super.keyDown(with: with)
+            }
+        }
     }
     
     private weak var text: Text!
@@ -142,6 +155,19 @@ final class Add: NSWindow {
         button.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 20).isActive = true
         button.widthAnchor.constraint(equalToConstant: 62).isActive = true
         button.heightAnchor.constraint(equalToConstant: 22).isActive = true
+    }
+    
+    override func keyDown(with: NSEvent) {
+        switch with.keyCode {
+        case 13:
+            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
+                close()
+            } else {
+                super.keyDown(with: with)
+            }
+        case 53: close()
+        default: super.keyDown(with: with)
+        }
     }
     
     @objc private func commit() {
