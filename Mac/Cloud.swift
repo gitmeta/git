@@ -206,6 +206,15 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         buttonClone.isHidden = true
         segment.isEnabled = false
         loading.isHidden = false
-//        Hub.clone(cloneField.field.stringValue, local: <#T##URL#>, error: <#T##((Error) -> Void)?##((Error) -> Void)?##(Error) -> Void#>, result: <#T##((Repository) -> Void)?##((Repository) -> Void)?##(Repository) -> Void#>)
+        Hub.clone(cloneField.field.stringValue, local: Hub.session.url, error: { [weak self] in
+            app.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self?.buttonClone.isHidden = false
+            self?.segment.isEnabled = true
+            self?.loading.isHidden = true
+        }) { [weak self] in
+            app.repository = $0
+            app.alert(.local("Alert.succcess"), message: .local("Cloud.clone.success"))
+            self?.close()
+        }
     }
 }

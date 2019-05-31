@@ -6,7 +6,7 @@ import UserNotifications
 private(set) weak var app: App!
 
 @NSApplicationMain final class App: NSApplication, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
-    private(set) var repository: Repository? {
+    var repository: Repository? {
         didSet {
             if repository == nil {
                 home.update(.create)
@@ -94,6 +94,33 @@ private(set) weak var app: App!
                 NSMenuItem(title: .local("Menu.showAll"), action: #selector(unhideAllApplications(_:)), keyEquivalent: ","),
                 NSMenuItem.separator(),
                 NSMenuItem(title: .local("Menu.quit"), action: #selector(terminate(_:)), keyEquivalent: "q")]
+            return $0
+        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
+        
+        menu.addItem({
+            $0.submenu = NSMenu(title: .local("Menu.edit"))
+            $0.submenu!.items = [
+                { $0.keyEquivalentModifierMask = [.option, .command]
+                    $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.undo"), action: #selector(undo(_:)), keyEquivalent: "z")),
+                { $0.keyEquivalentModifierMask = [.command, .shift]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.redo"), action: #selector(redo(_:)), keyEquivalent: "z")),
+                NSMenuItem.separator(),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.cut"), action: #selector(NSText.cut(_:)), keyEquivalent: "x")),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.copy"), action: #selector(NSText.copy(_:)), keyEquivalent: "c")),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.paste"), action: #selector(NSText.paste(_:)), keyEquivalent: "v")),
+                NSMenuItem(title: .local("Menu.delete"), action: #selector(NSText.delete(_:)), keyEquivalent: ""),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.selectAll"), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a"))]
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
@@ -223,7 +250,14 @@ private(set) weak var app: App!
         repository.refresh()
     }
     
-    @objc func cloud() { orderIfReady(Cloud.self) }
+    @objc func cloud() {
+        if Hub.session.bookmark.isEmpty {
+            browse()
+        } else {
+            order(Cloud.self)
+        }
+    }
+    
     @objc func settings() { order(Settings.self) }
     @objc func add() { orderIfReady(Add.self) }
     @objc func history() { orderIfReady(History.self) }
@@ -288,4 +322,6 @@ private(set) weak var app: App!
     @objc private func about() { order(About.self) }
     @objc private func pull() { orderIfReady(Cloud.self)?.pull() }
     @objc private func push() { orderIfReady(Cloud.self)?.push() }
+    @objc private func undo(_ : Any?) { }
+    @objc private func redo(_ : Any?) { }
 }
