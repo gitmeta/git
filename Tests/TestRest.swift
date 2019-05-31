@@ -19,4 +19,9 @@ class TestRest: XCTestCase {
         XCTAssertThrowsError(try Rest().url("github.com/some/repository.git/", suffix: ""))
         XCTAssertThrowsError(try Rest().url("github.com/some/repository", suffix: ""))
     }
+    
+    func testValidity() {
+        let url = (try? Rest().url("github.com/some/repository.git", suffix: "")) ?? URL(fileURLWithPath: "")
+        XCTAssertEqual("https://github.com/some/repository.git", url.absoluteString)
+    }
 }

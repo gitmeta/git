@@ -57,6 +57,10 @@ public struct Failure: LocalizedError {
         public static let empty = Failure("Empty response from server.")
     }
     
+    public struct Clone {
+        public static let already = Failure("There is already a repository in this directory.")
+    }
+    
     public var errorDescription: String? { return string }
     private let string: String
     private init(_ string: String) { self.string = string }

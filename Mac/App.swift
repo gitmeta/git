@@ -40,7 +40,7 @@ private(set) weak var app: App!
     @available(OSX 10.14, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent:
         UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         withCompletionHandler([.alert])
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 10) {
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 15) {
             UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [willPresent.request.identifier])
         }
     }
@@ -103,10 +103,10 @@ private(set) weak var app: App!
                 { $0.keyEquivalentModifierMask = [.option, .command]
                     $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.undo"), action: #selector(undo(_:)), keyEquivalent: "z")),
+                } (NSMenuItem(title: .local("Menu.undo"), action: Selector(("undo:")), keyEquivalent: "z")),
                 { $0.keyEquivalentModifierMask = [.command, .shift]
                     return $0
-                } (NSMenuItem(title: .local("Menu.redo"), action: #selector(redo(_:)), keyEquivalent: "z")),
+                } (NSMenuItem(title: .local("Menu.redo"), action: Selector(("redo:")), keyEquivalent: "z")),
                 NSMenuItem.separator(),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
@@ -322,6 +322,4 @@ private(set) weak var app: App!
     @objc private func about() { order(About.self) }
     @objc private func pull() { orderIfReady(Cloud.self)?.pull() }
     @objc private func push() { orderIfReady(Cloud.self)?.push() }
-    @objc private func undo(_ : Any?) { }
-    @objc private func redo(_ : Any?) { }
 }
