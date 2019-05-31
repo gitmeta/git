@@ -9,6 +9,7 @@ Home.button.packed="Unpack";
 Home.button.create="Create";
 Home.label.create="Not a repository";
 Home.label.packed="This repository is packed";
+Home.label.first="Browse and select your working directory";
 Home.added="added";
 Home.modified="modified";
 Home.deleted="deleted";

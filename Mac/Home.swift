@@ -7,6 +7,7 @@ final class Home: NSWindow  {
         case ready
         case packed
         case create
+        case first
     }
     
     final class Item: NSView {
@@ -214,8 +215,9 @@ final class Home: NSWindow  {
         self.button = button
         
         let label = Label()
-        label.font = .systemFont(ofSize: 12, weight: .light)
-        label.textColor = NSColor(white: 1, alpha: 0.5)
+        label.font = .systemFont(ofSize: 13, weight: .light)
+        label.textColor = NSColor(white: 1, alpha: 0.6)
+        label.alignment = .center
         contentView!.addSubview(label)
         self.label = label
         
@@ -267,7 +269,7 @@ final class Home: NSWindow  {
         button.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         label.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
         count.rightAnchor.constraint(equalTo: top.rightAnchor, constant: -12).isActive = true
@@ -334,6 +336,13 @@ final class Home: NSWindow  {
             button.action = #selector(App.create)
             label.isHidden = false
             label.stringValue = .local("Home.label.create")
+            count.isHidden = true
+        case .first:
+            image.isHidden = false
+            image.image = NSImage(named: "error")
+            button.isHidden = true
+            label.isHidden = false
+            label.stringValue = .local("Home.label.first")
             count.isHidden = true
         }
     }

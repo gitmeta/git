@@ -5,7 +5,7 @@ class Rest {
     
     func adv(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch.Adv) -> Void)) throws {
         session.dataTask(with: URLRequest(url: try url(remote, suffix: "/info/refs?service=git-upload-pack"), cachePolicy:
-            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 25)) {
+            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)) {
                 if let fail = $2 {
                     error(fail)
                 } else if ($1 as? HTTPURLResponse)?.statusCode == 200, let data = $0, !data.isEmpty {
@@ -21,7 +21,7 @@ class Rest {
     
     func pack(_ remote: String, want: String, error: @escaping((Error) -> Void), result: @escaping(() -> Void)) throws {
         session.dataTask(with: {
-            var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 35)
+            var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 90)
             request.httpMethod = "POST"
             request.setValue("application/x-git-upload-pack-request", forHTTPHeaderField: "Content-Type")
             request.httpBody = Data("""
@@ -34,6 +34,7 @@ class Rest {
             if let fail = $2 {
                 error(fail)
             } else if ($1 as? HTTPURLResponse)?.statusCode == 200, let data = $0, !data.isEmpty {
+                print("got \(data.count)")
 //                do {
 //                    result(try Fetch.Adv(data))
 //                } catch let exception {

@@ -206,17 +206,13 @@ private(set) weak var app: App!
     
     @objc func browse() {
         restore()
-        if let browse = windows.first(where: { $0 is NSOpenPanel }) {
-            browse.orderFront(nil)
-        } else {
-            let browse = NSOpenPanel()
-            browse.canChooseFiles = false
-            browse.canChooseDirectories = true
-            browse.begin { [weak browse] in
-                guard let url = browse?.url, $0 == .OK else { return }
-                Hub.session.update(url, bookmark: (try! url.bookmarkData(options: .withSecurityScope))) {
-                    self.load()
-                }
+        let browse = NSOpenPanel()
+        browse.canChooseFiles = false
+        browse.canChooseDirectories = true
+        browse.begin { [weak browse] in
+            guard let url = browse?.url, $0 == .OK else { return }
+            Hub.session.update(url, bookmark: (try! url.bookmarkData(options: .withSecurityScope))) {
+                self.load()
             }
         }
     }
@@ -227,37 +223,17 @@ private(set) weak var app: App!
         repository.refresh()
     }
     
-    @objc func cloud() { order(Cloud.self) }
+    @objc func cloud() { orderIfReady(Cloud.self) }
     @objc func settings() { order(Settings.self) }
-    
-    @objc func add() {
-        if repository == nil {
-            Alert(.local("App.noRepository")).makeKeyAndOrderFront(nil)
-        } else {
-            order(Add.self)
-        }
-    }
-    
-    @objc func history() {
-        if repository == nil {
-            Alert(.local("App.noRepository")).makeKeyAndOrderFront(nil)
-        } else {
-            order(History.self)
-        }
-    }
-    
-    @objc func reset() {
-        if repository == nil {
-            Alert(.local("App.noRepository")).makeKeyAndOrderFront(nil)
-        } else {
-            order(Reset.self)
-        }
-    }
+    @objc func add() { orderIfReady(Add.self) }
+    @objc func history() { orderIfReady(History.self) }
+    @objc func reset() { orderIfReady(Reset.self) }
     
     private func load() {
         guard !Hub.session.bookmark.isEmpty
         else {
             help()
+            home.update(.first)
             return
         }
         var stale = false
@@ -285,39 +261,31 @@ private(set) weak var app: App!
         }
     }
     
-    private func order<W: NSWindow>(_ type: W.Type) {
-        if let window = windows.first(where: { $0 is W }) {
-            window.orderFront(nil)
-        } else {
-            W().makeKeyAndOrderFront(nil)
+    @discardableResult private func orderIfReady<W: NSWindow>(_ type: W.Type) -> W? {
+        if repository == nil {
+            if Hub.session.bookmark.isEmpty {
+                browse()
+            } else {
+                Alert(.local("App.noRepository")).makeKeyAndOrderFront(nil)
+            }
+            return nil
         }
+        return order(type)
+    }
+    
+    @discardableResult private func order<W: NSWindow>(_ type: W.Type) -> W {
+        if let window = windows.compactMap({ $0 as? W }).first {
+            window.orderFront(nil)
+            return window
+        }
+        let w = W()
+        w.makeKeyAndOrderFront(nil)
+        return w
     }
     
     private func restore() { windows.filter({ !($0 is Home) }).forEach({ $0.close() }) }
     @objc private func help() { order(Help.self) }
     @objc private func about() { order(About.self) }
-    
-    @objc private func pull() {
-        let cloud: Cloud
-        if let _cloud = windows.compactMap({ $0 as? Cloud }).first {
-            cloud = _cloud
-            cloud.orderFront(nil)
-        } else {
-            cloud = Cloud()
-            cloud.makeKeyAndOrderFront(nil)
-        }
-        cloud.pull()
-    }
-    
-    @objc private func push() {
-        let cloud: Cloud
-        if let _cloud = windows.compactMap({ $0 as? Cloud }).first {
-            cloud = _cloud
-            cloud.orderFront(nil)
-        } else {
-            cloud = Cloud()
-            cloud.makeKeyAndOrderFront(nil)
-        }
-        cloud.push()
-    }
+    @objc private func pull() { orderIfReady(Cloud.self)?.pull() }
+    @objc private func push() { orderIfReady(Cloud.self)?.push() }
 }

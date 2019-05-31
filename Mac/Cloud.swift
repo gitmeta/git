@@ -59,6 +59,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     private weak var left: NSLayoutConstraint!
     private weak var cloneField: Field!
     private weak var loading: NSImageView!
+    private weak var buttonClone: Button!
     
     init() {
         super.init(contentRect: NSRect(
@@ -113,7 +114,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             clone.addSubview(cloneField)
             self.cloneField = cloneField
             
-            let buttonClone = Button.Text(self, action: #selector(self.buttonClone))
+            let buttonClone = Button.Text(self, action: #selector(makeClone))
             buttonClone.label.stringValue = .local("Cloud.clone.button")
             buttonClone.label.font = .systemFont(ofSize: 11, weight: .medium)
             buttonClone.label.textColor = .black
@@ -121,6 +122,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             buttonClone.layer!.cornerRadius = 4
             buttonClone.layer!.backgroundColor = NSColor.halo.cgColor
             clone.addSubview(buttonClone)
+            self.buttonClone = buttonClone
             
             cloneField.topAnchor.constraint(equalTo: clone.topAnchor, constant: 20).isActive = true
             cloneField.leftAnchor.constraint(equalTo: clone.leftAnchor, constant: 20).isActive = true
@@ -165,6 +167,9 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         push.widthAnchor.constraint(equalTo: contentView!.widthAnchor).isActive = true
         push.leftAnchor.constraint(equalTo: pull.rightAnchor).isActive = true
         
+        loading.centerYAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -31).isActive = true
+        loading.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
+        
         DispatchQueue.main.async { [weak self] in self?.clone()  }
     }
     
@@ -197,7 +202,10 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     @objc func push() { show(2) }
     @objc private func choose() { show(segment.selectedSegment) }
     
-    @objc private func buttonClone() {
-        
+    @objc private func makeClone() {
+        buttonClone.isHidden = true
+        segment.isEnabled = false
+        loading.isHidden = false
+//        Hub.clone(cloneField.field.stringValue, local: <#T##URL#>, error: <#T##((Error) -> Void)?##((Error) -> Void)?##(Error) -> Void#>, result: <#T##((Repository) -> Void)?##((Repository) -> Void)?##(Repository) -> Void#>)
     }
 }
