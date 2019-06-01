@@ -111,6 +111,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         
         if app.repository == nil {
             let cloneField = Field()
+            cloneField.field.delegate = self
             clone.addSubview(cloneField)
             self.cloneField = cloneField
             
@@ -186,8 +187,17 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         }
     }
     
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
+        if doCommandBy == #selector(NSResponder.insertNewline(_:)) {
+            if control == cloneField.field {
+                makeClone()
+                return true
+            }
+        }
+        return false
+    }
+    
     private func show(_ item: Int) {
-        makeFirstResponder(nil)
         segment.selectedSegment = item
         left.constant = contentView!.frame.width * -CGFloat(item)
         NSAnimationContext.runAnimationGroup({
@@ -203,6 +213,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     @objc private func choose() { show(segment.selectedSegment) }
     
     @objc private func makeClone() {
+        makeFirstResponder(nil)
         buttonClone.isHidden = true
         segment.isEnabled = false
         loading.isHidden = false
@@ -212,7 +223,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             self?.segment.isEnabled = true
             self?.loading.isHidden = true
         }) { [weak self] in
-            app.alert(.local("Alert.succcess"), message: .local("Cloud.clone.success"))
+            app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
             self?.close()
             app.browsed($0)
         }

@@ -5,7 +5,6 @@ public final class Repository {
     public let url: URL
     let state = State()
     let stage = Stage()
-    let history = History()
     let extract = Extract()
     let packer = Packer()
     
@@ -13,7 +12,6 @@ public final class Repository {
         self.url = url
         state.repository = self
         stage.repository = self
-        history.repository = self
         extract.repository = self
         packer.repository = self
     }
@@ -27,7 +25,10 @@ public final class Repository {
     }
     
     public func log(_ result: @escaping(([Commit]) -> Void)) {
-        Hub.dispatch.background({ [weak self] in (try? self?.history.log()) ?? [] }, success: result)
+        Hub.dispatch.background({ [weak self] in
+            guard let url = self?.url, let result = try? History(url).result else { return [] }
+            return result
+        }, success: result)
     }
     
     public func reset(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {

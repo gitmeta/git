@@ -11,19 +11,15 @@ final class Factory {
     }
     
     func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void), result: @escaping((URL) -> Void)) throws {
-        if repository(local) {
-            throw Failure.Clone.already
-        }
+        if repository(local) { throw Failure.Clone.already }
+        guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""), !name.isEmpty
+        else { throw Failure.Clone.name }
+        let directory = local.appendingPathComponent(name)
+        guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
         try rest.adv(remote, error: error) {
             guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
-            try self.rest.pack(remote, want: reference, error: error, result: {
-                guard
-                    let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""),
-                    !name.isEmpty
-                else { throw Failure.Clone.name }
-                let directory = local.appendingPathComponent(name)
-                guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
-                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+            try self.rest.pack(remote, want: reference, error: error) {
                 let repository = try self.create(directory)
                 try $0.unpack(directory)
                 guard let id = $0.commits.first(where: { $0.0 == reference })?.1.0.tree else { throw Failure.Clone.unpack }
@@ -31,7 +27,7 @@ final class Factory {
                 try repository.extract.extract(tree)
                 try Hub.head.update(directory, id: reference)
                 DispatchQueue.main.async { result(directory) }
-            })
+            }
         }
     }
     
