@@ -122,6 +122,12 @@
 		20FFDF7F2282E04600226033 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7E2282E04600226033 /* Log.swift */; };
 		20FFDF812282E05D00226033 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF802282E05D00226033 /* Commit.swift */; };
 		20FFDF832282EF0500226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Credentials.swift */; };
+		CE02C30922A2B2300022DE9B /* Remotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30822A2B2300022DE9B /* Remotes.swift */; };
+		CE02C30A22A2B2300022DE9B /* Remotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30822A2B2300022DE9B /* Remotes.swift */; };
+		CE02C30C22A2B3180022DE9B /* config0 in Resources */ = {isa = PBXBuildFile; fileRef = CE02C30B22A2B3170022DE9B /* config0 */; };
+		CE02C30E22A2B3250022DE9B /* TestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30D22A2B3250022DE9B /* TestConfig.swift */; };
+		CE02C31022A2B3C90022DE9B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30F22A2B3C90022DE9B /* Config.swift */; };
+		CE02C31122A2B3C90022DE9B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30F22A2B3C90022DE9B /* Config.swift */; };
 		CE29D7BA229D4F9B00C257BF /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE29D7B9229D4F9B00C257BF /* History.swift */; };
 		CE32EFD1229FFF1400BC3901 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32EFCF229FFE2400BC3901 /* Cloud.swift */; };
 		CE7B8BF02291431700396AB1 /* pack-1.pack in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEE2291431700396AB1 /* pack-1.pack */; };
@@ -268,6 +274,10 @@
 		20FFDF7E2282E04600226033 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		20FFDF802282E05D00226033 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
 		20FFDF822282EF0500226033 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		CE02C30822A2B2300022DE9B /* Remotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remotes.swift; sourceTree = "<group>"; };
+		CE02C30B22A2B3170022DE9B /* config0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config0; sourceTree = "<group>"; };
+		CE02C30D22A2B3250022DE9B /* TestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConfig.swift; sourceTree = "<group>"; };
+		CE02C30F22A2B3C90022DE9B /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		CE29D7B9229D4F9B00C257BF /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CE32EFCF229FFE2400BC3901 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		CE7B8BEE2291431700396AB1 /* pack-1.pack */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.pack"; sourceTree = "<group>"; };
@@ -340,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				2048A0CF225C744400290E54 /* Commit.swift */,
+				CE02C30F22A2B3C90022DE9B /* Config.swift */,
 				CE7B8BF222917A1C00396AB1 /* Content.swift */,
 				2073D8762267283E00631BCB /* Dispatch.swift */,
 				CED676C7228E840C009D6ADC /* Extract.swift */,
@@ -356,6 +367,7 @@
 				CEE6A963229280FD00977743 /* Packer.swift */,
 				2048A0D6225C744400290E54 /* Parse.swift */,
 				2048A0D1225C744400290E54 /* Press.swift */,
+				CE02C30822A2B2300022DE9B /* Remotes.swift */,
 				2048A0D2225C744400290E54 /* Repository.swift */,
 				20710E072286CA6A00104F72 /* Rest.swift */,
 				2048A0D0225C744400290E54 /* Serial.swift */,
@@ -377,6 +389,7 @@
 				204C754822894801007327D5 /* commit2 */,
 				2094C10C228C03010078FC6C /* commit3 */,
 				20E76BE5225E264300E023D8 /* compressed0 */,
+				CE02C30B22A2B3170022DE9B /* config0 */,
 				204C754A22899784007327D5 /* fetch0 */,
 				208D223D228AD12F009AFF08 /* fetch1 */,
 				20C21CCE228811780038466A /* fetchAdv0 */,
@@ -402,6 +415,7 @@
 				2048A0FA225C745100290E54 /* TestAdd.swift */,
 				20C21CD22288186A0038466A /* TestClone.swift */,
 				20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */,
+				CE02C30D22A2B3250022DE9B /* TestConfig.swift */,
 				206F2E582275BD090058DA7E /* TestContents.swift */,
 				20C21CD02288119E0038466A /* TestFetch.swift */,
 				2048A0F8225C745100290E54 /* TestHash.swift */,
@@ -674,6 +688,7 @@
 				CE7B8BF12291431700396AB1 /* pack-1.idx in Resources */,
 				204C754922894801007327D5 /* commit2 in Resources */,
 				20CA59C4226F2EA90040992D /* tree3 in Resources */,
+				CE02C30C22A2B3180022DE9B /* config0 in Resources */,
 				206F2E612275DE840058DA7E /* pack-0.idx in Resources */,
 				2048A10F225C745100290E54 /* index2 in Resources */,
 				20B83281227043D000773058 /* index4 in Resources */,
@@ -734,6 +749,7 @@
 			files = (
 				2048A0E4225C744400290E54 /* Repository.swift in Sources */,
 				2048A0DE225C744400290E54 /* Commit.swift in Sources */,
+				CE02C31022A2B3C90022DE9B /* Config.swift in Sources */,
 				CE7B8BF322917A1C00396AB1 /* Content.swift in Sources */,
 				2048A0D7225C744400290E54 /* Failure.swift in Sources */,
 				20710E082286CA6A00104F72 /* Rest.swift in Sources */,
@@ -741,6 +757,7 @@
 				2048A0EA225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DA225C744400290E54 /* Hash.swift in Sources */,
 				CEAE6CBF22A26BFE001E1AE1 /* Factory.swift in Sources */,
+				CE02C30922A2B2300022DE9B /* Remotes.swift in Sources */,
 				CEAE6CC222A28062001E1AE1 /* History.swift in Sources */,
 				CED676C8228E840C009D6ADC /* Extract.swift in Sources */,
 				CE7B8BF622917ACA00396AB1 /* Head.swift in Sources */,
@@ -766,6 +783,7 @@
 			files = (
 				2048A0E5225C744400290E54 /* Repository.swift in Sources */,
 				2048A0DF225C744400290E54 /* Commit.swift in Sources */,
+				CE02C31122A2B3C90022DE9B /* Config.swift in Sources */,
 				CE7B8BF422917A1C00396AB1 /* Content.swift in Sources */,
 				2048A0D9225C744400290E54 /* Failure.swift in Sources */,
 				20710E092286CA6A00104F72 /* Rest.swift in Sources */,
@@ -773,6 +791,7 @@
 				2048A0EB225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DB225C744400290E54 /* Hash.swift in Sources */,
 				CEAE6CC022A26BFE001E1AE1 /* Factory.swift in Sources */,
+				CE02C30A22A2B2300022DE9B /* Remotes.swift in Sources */,
 				CEAE6CC322A28062001E1AE1 /* History.swift in Sources */,
 				CED676C9228E840C009D6ADC /* Extract.swift in Sources */,
 				CE7B8BF722917ACA00396AB1 /* Head.swift in Sources */,
@@ -807,6 +826,7 @@
 				20B3E200228831C3009D132C /* TestRest.swift in Sources */,
 				2048A105225C745100290E54 /* TestHub.swift in Sources */,
 				2048A101225C745100290E54 /* TestIndex.swift in Sources */,
+				CE02C30E22A2B3250022DE9B /* TestConfig.swift in Sources */,
 				20AFB33D2265BA7800A3ECC0 /* TestCommit.swift in Sources */,
 				CED676C6228E820E009D6ADC /* TestReset.swift in Sources */,
 				206F2E592275BD090058DA7E /* TestContents.swift in Sources */,

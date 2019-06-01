@@ -7,6 +7,7 @@ public final class Hub {
     static let press = Press()
     static let content = Content()
     static let head = Head()
+    static let remotes = Remotes()
     static let factory = Factory()
     
     public class func repository(_ url: URL, result: @escaping((Bool) -> Void)) {

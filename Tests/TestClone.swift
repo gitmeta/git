@@ -149,13 +149,48 @@ class TestClone: XCTestCase {
         rest._adv = adv
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url) {
-            let readme = $0.appendingPathComponent("README.md")
-            XCTAssertTrue(FileManager.default.fileExists(atPath: readme.path))
+            XCTAssertTrue(FileManager.default.fileExists(atPath: $0.appendingPathComponent("README.md").path))
             XCTAssertEqual("""
 # test
 Test
 
-""", String(decoding: (try? Data(contentsOf: readme)) ?? Data(), as: UTF8.self))
+""", String(decoding: (try? Data(contentsOf: $0.appendingPathComponent("README.md"))) ?? Data(), as: UTF8.self))
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRemotes() {
+        let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.clone("https://host.com/monami.git", local: url) {
+            XCTAssertEqual("54cac1e1086e2709a52d7d1727526b14efec3a77", String(decoding:
+                (try? Data(contentsOf: $0.appendingPathComponent(".git/refs/remotes/origin/master"))) ?? Data(), as: UTF8.self))
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testConfig() {
+        let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.clone("https://host.com/monami.git", local: url) {
+            XCTAssertEqual("""
+[core]
+[remote "origin"]
+    url = https://host.com/monami.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+    remote = origin
+    merge = refs/heads/master
+
+""", String(decoding: (try? Data(contentsOf: $0.appendingPathComponent(".git/config"))) ?? Data(), as: UTF8.self))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)

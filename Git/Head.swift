@@ -17,11 +17,6 @@ final class Head {
         return String(decoding: try Data(contentsOf: try self.url(url)), as: UTF8.self).replacingOccurrences(of: "\n", with: "")
     }
     
-    func reference(_ url: URL) throws -> String {
-        return String(String(decoding: try Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
-            UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")
-    }
-    
     func update(_ url: URL, id: String) throws {
         try verify(url)
         try Data(id.utf8).write(to: try self.url(url), options: .atomic)
@@ -35,5 +30,10 @@ final class Head {
     
     func url(_ url: URL) throws -> URL {
         return url.appendingPathComponent(".git/" + (try reference(url)))
+    }
+    
+    func reference(_ url: URL) throws -> String {
+        return String(String(decoding: try Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
+            UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")
     }
 }

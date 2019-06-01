@@ -11,7 +11,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             
             let label = Label(.local("Cloud.field"))
             label.font = .systemFont(ofSize: 15, weight: .medium)
-            label.textColor = NSColor(white: 1, alpha: 0.4)
+            label.textColor = .halo
             addSubview(label)
             
             let border = NSView()
@@ -55,9 +55,9 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         required init?(coder: NSCoder) { return nil }
     }
     
+    private weak var cloneField: Field?
     private weak var segment: NSSegmentedControl!
     private weak var left: NSLayoutConstraint!
-    private weak var cloneField: Field!
     private weak var loading: NSImageView!
     private weak var buttonClone: Button!
     
@@ -189,7 +189,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
         if doCommandBy == #selector(NSResponder.insertNewline(_:)) {
-            if control == cloneField.field {
+            if control == cloneField?.field {
                 makeClone()
                 return true
             }
@@ -207,21 +207,34 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         }) { }
     }
     
-    @objc func clone() { show(0) }
+    @objc func clone() {
+        makeFirstResponder(cloneField?.field)
+        show(0)
+    }
+    
     @objc func pull() { show(1) }
     @objc func push() { show(2) }
-    @objc private func choose() { show(segment.selectedSegment) }
+    
+    @objc private func choose() {
+        show(segment.selectedSegment)
+        switch segment.selectedSegment {
+        case 0: makeFirstResponder(cloneField?.field)
+        default: break
+        }
+    }
     
     @objc private func makeClone() {
         makeFirstResponder(nil)
         buttonClone.isHidden = true
         segment.isEnabled = false
         loading.isHidden = false
-        Hub.clone(cloneField.field.stringValue, local: Hub.session.url, error: { [weak self] in
+        cloneField?.field.isEditable = false
+        Hub.clone(cloneField!.field.stringValue, local: Hub.session.url, error: { [weak self] in
             app.alert(.local("Alert.error"), message: $0.localizedDescription)
             self?.buttonClone.isHidden = false
             self?.segment.isEnabled = true
             self?.loading.isHidden = true
+            self?.cloneField?.field.isEditable = true
         }) { [weak self] in
             app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
             self?.close()
