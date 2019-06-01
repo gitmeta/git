@@ -13,7 +13,7 @@ final class Alert: NSWindow {
         let back = NSView()
         back.translatesAutoresizingMaskIntoConstraints = false
         back.wantsLayer = true
-        back.layer!.backgroundColor = NSColor(white: 0, alpha: 0.75).cgColor
+        back.layer!.backgroundColor = NSColor(white: 0, alpha: 0.7).cgColor
         back.layer!.cornerRadius = 8
         back.layer!.borderWidth = 1
         back.layer!.borderColor = NSColor.shade.cgColor

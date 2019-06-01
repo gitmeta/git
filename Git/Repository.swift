@@ -16,8 +16,8 @@ public final class Repository {
         packer.repository = self
     }
     
-    public func commit(_ files: [URL], message: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
-        stage.commit(files, message: message, error: error ?? { _ in }, done: done ?? { })
+    public func commit(_ files: [URL], message: String, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
+        stage.commit(files, message: message, error: error, done: done)
     }
     
     public func log(_ result: @escaping(([Commit]) -> Void)) {
@@ -37,8 +37,8 @@ public final class Repository {
         }, success: result)
     }
     
-    public func reset(_ error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) { extract.reset(error ?? { _ in }, done: done ?? { }) }
-    public func unpack(_ error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) { packer.unpack(error ?? { _ in }, done: done ?? { }) }
+    public func reset(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) { extract.reset(error, done: done) }
+    public func unpack(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) { packer.unpack(error, done: done) }
     public func packed(_ result: @escaping((Bool) -> Void)) { packer.packed(result) }
     public func refresh() { state.refresh() }
     public func branch(_ result: @escaping((String) -> Void)) { Hub.head.branch(url, result: result) }

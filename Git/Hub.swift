@@ -13,7 +13,7 @@ public final class Hub {
         dispatch.background({ repository(url) }, success: result)
     }
     
-    public class func create(_ url: URL, error: ((Error) -> Void)? = nil, result: ((Repository) -> Void)? = nil) {
+    public class func create(_ url: URL, error: @escaping((Error) -> Void) = { _ in }, result: @escaping((Repository) -> Void) = { _ in }) {
         dispatch.background({
             guard !repository(url) else { throw Failure.Repository.duplicating }
             let root = url.appendingPathComponent(".git")
@@ -25,35 +25,35 @@ public final class Hub {
             try FileManager.default.createDirectory(at: objects, withIntermediateDirectories: false)
             try Data("ref: refs/heads/master".utf8).write(to: head, options: .atomic)
             return try open(url)
-        }, error: error ?? { _ in }, success: result ?? { _ in })
+        }, error: error, success: result)
     }
     
-    public class func open(_ url: URL, error: ((Error) -> Void)? = nil, result: @escaping((Repository) -> Void)) {
+    public class func open(_ url: URL, error: @escaping((Error) -> Void) = { _ in }, result: @escaping((Repository) -> Void)) {
         dispatch.background({
             return try open(url)
-        }, error: error ?? { _ in }, success: result)
+        }, error: error, success: result)
     }
     
-    public class func delete(_ repository: Repository, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+    public class func delete(_ repository: Repository, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
         dispatch.background({
             try FileManager.default.removeItem(at: repository.url.appendingPathComponent(".git"))
-        }, error: error ?? { _ in }, success: done ?? { })
+        }, error: error, success: done)
     }
     
-    public class func clone(_ remote: String, local: URL, error: ((Error) -> Void)? = nil, result: ((URL) -> Void)? = nil) {
+    public class func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void) = { _ in }, result: @escaping((URL) -> Void) = { _ in }) {
         dispatch.background({
             if repository(local) {
                 throw Failure.Clone.already
             }
             try rest.adv(remote, error: { exception in
-                DispatchQueue.main.async { error?(exception) }
+                DispatchQueue.main.async { error(exception) }
             }) { adv in
                 dispatch.background({
                     if adv.refs.isEmpty {
                         throw Failure.Fetch.empty
                     }
                     try rest.pack(remote, want: adv.refs.first!, error: { exception in
-                        DispatchQueue.main.async { error?(exception) }
+                        DispatchQueue.main.async { error(exception) }
                     }, result: { pack in
                         dispatch.background({
                             guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of:".git", with: ""),
@@ -63,12 +63,15 @@ public final class Hub {
                             guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
                             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
                             
-                            return directory
-                        }, error: error ?? { _ in }, success: result ?? { _ in })
+                            create(directory, error: error) { _ in
+                                
+                            }
+//                            return directory
+                        }, error: error)
                     })
-                }, error: error ?? { _ in })
+                }, error: error)
             }
-        }, error: error ?? { _ in })
+        }, error: error)
     }
     
     private class func repository(_ url: URL) -> Bool {
