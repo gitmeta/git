@@ -5,8 +5,13 @@ final class Extract {
     
     func reset() throws {
         guard let url = repository?.url, let tree = try? Hub.head.tree(url), let list = repository?.state.list else { return }
-        let index = Index()
         try remove(list)
+        try extract(tree)
+    }
+    
+    func extract(_ tree: Tree) throws {
+        guard let url = repository?.url else { return }
+        let index = Index()
         try extract(tree, index: index)
         index.save(url)
     }

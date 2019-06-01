@@ -15,24 +15,27 @@ final class Factory {
             throw Failure.Clone.already
         }
         try rest.adv(remote, error: error) {
-            if $0.refs.isEmpty {
-                throw Failure.Fetch.empty
-            }
-            try self.rest.pack(remote, want: $0.refs.first!, error: error, result: {
-                guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""),
+            guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
+            try self.rest.pack(remote, want: reference, error: error, result: {
+                guard
+                    let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""),
                     !name.isEmpty
-                    else { throw Failure.Clone.name }
+                else { throw Failure.Clone.name }
                 let directory = local.appendingPathComponent(name)
                 guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
                 try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
-                try self.create(directory)
+                let repository = try self.create(directory)
                 try $0.unpack(directory)
+                guard let id = $0.commits.first(where: { $0.0 == reference })?.1.0.tree else { throw Failure.Clone.unpack }
+                let tree = try Tree(id, url: directory)
+                try repository.extract.extract(tree)
+                try Hub.head.update(directory, id: reference)
                 DispatchQueue.main.async { result(directory) }
             })
         }
     }
     
-    @discardableResult func create(_ url: URL) throws -> Repository {
+    func create(_ url: URL) throws -> Repository {
         guard !repository(url) else { throw Failure.Repository.duplicating }
         let root = url.appendingPathComponent(".git")
         let objects = root.appendingPathComponent("objects")

@@ -22,6 +22,11 @@ final class Head {
             UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")
     }
     
+    func update(_ url: URL, id: String) throws {
+        try verify(url)
+        try Data(id.utf8).write(to: try self.url(url), options: .atomic)
+    }
+    
     func verify(_ url: URL) throws {
         if !FileManager.default.fileExists(atPath: try self.url(url).deletingLastPathComponent().path) {
             try FileManager.default.createDirectory(at: try self.url(url).deletingLastPathComponent(), withIntermediateDirectories: true)

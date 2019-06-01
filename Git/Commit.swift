@@ -47,9 +47,8 @@ public final class Commit {
     }
     
     @discardableResult func save(_ url: URL) throws -> String {
-        try Hub.head.verify(url)
-        let hash = try Hub.content.add(self, url: url)
-        try Data(hash.utf8).write(to: try Hub.head.url(url), options: .atomic)
-        return hash
+        let id = try Hub.content.add(self, url: url)
+        try Hub.head.update(url, id: id)
+        return id
     }
 }
