@@ -8,7 +8,7 @@ class TestLog: XCTestCase {
     
     override func setUp() {
         Hub.session = Session()
-        Hub.rest = MockRest()
+        Hub.factory.rest = MockRest()
         Hub.session.name = "hello"
         Hub.session.email = "my@email.com"
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)

@@ -8,7 +8,7 @@ class TestClone: XCTestCase {
     override func setUp() {
         rest = MockRest()
         Hub.session = Session()
-        Hub.rest = rest
+        Hub.factory.rest = rest
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
@@ -20,12 +20,7 @@ class TestClone: XCTestCase {
     func testFail() {
         let expect = expectation(description: "")
         rest._error = Failure.Request.invalid
-        DispatchQueue.global(qos: .background).async {
-            Hub.clone("", local: self.url, error: { _ in
-                XCTAssertEqual(Thread.main, Thread.current)
-                expect.fulfill()
-            })
-        }
+        Hub.clone("", local: url, error: { _ in expect.fulfill() })
         waitForExpectations(timeout: 1)
     }
     
@@ -42,12 +37,7 @@ class TestClone: XCTestCase {
         adv.refs.append("")
         rest._error = Failure.Request.invalid
         rest._adv = adv
-        DispatchQueue.global(qos: .background).async {
-            Hub.clone("", local: self.url, error: { _ in
-                XCTAssertEqual(Thread.main, Thread.current)
-                expect.fulfill()
-            })
-        }
+        Hub.clone("", local: url, error: { _ in expect.fulfill() })
         waitForExpectations(timeout: 1)
     }
     
@@ -84,7 +74,7 @@ class TestClone: XCTestCase {
         rest._adv = adv
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         DispatchQueue.global(qos: .background).async {
-            Hub.clone("", local: self.url, error: nil) { _ in
+            Hub.clone("https://host.com/monami.git", local: self.url) { _ in
                 XCTAssertEqual(Thread.main, Thread.current)
                 expect.fulfill()
             }
@@ -98,7 +88,7 @@ class TestClone: XCTestCase {
         adv.refs.append("")
         rest._adv = adv
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("https://host.com/monami.git", local: url, error: nil) {
+        Hub.clone("https://host.com/monami.git", local: url) {
             XCTAssertEqual(self.url.appendingPathComponent("monami").path, $0.path)
             expect.fulfill()
         }
@@ -111,7 +101,7 @@ class TestClone: XCTestCase {
         adv.refs.append("")
         rest._adv = adv
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("https://host.com/monami.git", local: url, error: nil) {
+        Hub.clone("https://host.com/monami.git", local: url) {
             var d: ObjCBool = false
             XCTAssertTrue(FileManager.default.fileExists(atPath: $0.path, isDirectory: &d))
             XCTAssertTrue(d.boolValue)
@@ -126,7 +116,7 @@ class TestClone: XCTestCase {
         adv.refs.append("")
         rest._adv = adv
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("https://host.com/monami.git", local: url, error: nil) {
+        Hub.clone("https://host.com/monami.git", local: url) {
             Hub.repository($0) {
                 XCTAssertTrue($0)
                 expect.fulfill()

@@ -4,7 +4,7 @@ import XCTest
 class TestUser: XCTestCase {
     override func setUp() {
         Hub.session = Session()
-        Hub.rest = MockRest()
+        Hub.factory.rest = MockRest()
     }
     
     func testNonEmpty() {

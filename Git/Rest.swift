@@ -3,24 +3,22 @@ import Foundation
 class Rest {
     private let session = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: OperationQueue())
     
-    func adv(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) -> Void)) throws {
+    func adv(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
         session.dataTask(with: URLRequest(url: try url(remote, suffix: "/info/refs?service=git-upload-pack"), cachePolicy:
-            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)) {
-                if let fail = $2 {
-                    error(fail)
-                } else if ($1 as? HTTPURLResponse)?.statusCode == 200, let data = $0, !data.isEmpty {
-                    do {
-                        result(try Fetch(data))
-                    } catch let exception {
-                        error(exception)
+            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)) { data, response, fail in
+                Hub.dispatch.background({
+                    if let fail = fail {
+                        throw fail
+                    } else if (response as? HTTPURLResponse)?.statusCode == 200, let data = data, !data.isEmpty {
+                        try result(Fetch(data))
+                    } else {
+                        throw Failure.Request.empty
                     }
-                } else {
-                    error(Failure.Request.empty)
-                }
+                }, error: error)
         }.resume()
     }
     
-    func pack(_ remote: String, want: String, error: @escaping((Error) -> Void), result: @escaping((Pack) -> Void)) throws {
+    func pack(_ remote: String, want: String, error: @escaping((Error) -> Void), result: @escaping((Pack) throws -> Void)) throws {
         session.dataTask(with: {
             var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 90)
             request.httpMethod = "POST"
@@ -31,18 +29,16 @@ class Rest {
 
 """.utf8)
             return request
-        } (try url(remote, suffix: "/git-upload-pack")) as URLRequest) {
-            if let fail = $2 {
-                error(fail)
-            } else if ($1 as? HTTPURLResponse)?.statusCode == 200, let data = $0, !data.isEmpty {
-                do {
-                    result(try Pack(data))
-                } catch let exception {
-                    error(exception)
+        } (try url(remote, suffix: "/git-upload-pack")) as URLRequest) { data, response, fail in
+            Hub.dispatch.background({
+                if let fail = fail {
+                    throw fail
+                } else if (response as? HTTPURLResponse)?.statusCode == 200, let data = data, !data.isEmpty {
+                    try result(Pack(data))
+                } else {
+                    throw Failure.Request.empty
                 }
-            } else {
-                error(Failure.Request.empty)
-            }
+            }, error: error)
         }.resume()
     }
     
