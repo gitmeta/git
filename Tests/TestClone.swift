@@ -124,4 +124,38 @@ class TestClone: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testHead() {
+        let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.clone("https://host.com/monami.git", local: url) {
+            XCTAssertEqual("", try? Hub.head.commit($0).message)
+            XCTAssertEqual("", try? Hub.head.tree($0).items.first?.id)
+            XCTAssertEqual("master", Hub.head.branch($0))
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testUnpacks() {
+        let expect = expectation(description: "")
+        var adv = Fetch()
+        adv.refs.append("")
+        rest._adv = adv
+        rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.clone("https://host.com/monami.git", local: url) {
+            let readme = $0.appendingPathComponent("README.md")
+            XCTAssertTrue(FileManager.default.fileExists(atPath: readme.path))
+            XCTAssertEqual("""
+# test
+Test
+
+""", String(decoding: (try? Data(contentsOf: readme)) ?? Data(), as: UTF8.self))
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

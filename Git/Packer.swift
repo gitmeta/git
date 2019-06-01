@@ -3,38 +3,29 @@ import Foundation
 final class Packer {
     weak var repository: Repository?
     
-    func packed(_ result: @escaping((Bool) -> Void)) {
-        Hub.dispatch.background({ [weak self] in
-            if let url = self?.repository?.url {
-                if (try? FileManager.default.contentsOfDirectory(at: url.appendingPathComponent(".git/objects/pack/"), includingPropertiesForKeys:
-                    nil))?.first( where: { $0.pathExtension == "pack" }) != nil {
-                    return true
-                }
-                if FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/packed-refs").path) {
-                    return true
-                }
+    var packed: Bool {
+        if let url = repository?.url {
+            if (try? FileManager.default.contentsOfDirectory(at: url.appendingPathComponent(".git/objects/pack/"), includingPropertiesForKeys: nil))?.first( where: { $0.pathExtension == "pack" }) != nil {
+                return true
             }
-            return false
-        }, success: result)
+            if FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/packed-refs").path) {
+                return true
+            }
+        }
+        return false
     }
     
-    func unpack(_ error: @escaping((Error) -> Void), done: @escaping(() -> Void)) {
-        Hub.dispatch.background({ [weak self] in
-            self?.repository?.state.delay()
-            guard let url = self?.repository?.url else { return }
-            try Pack.pack(url).forEach {
-                try $0.1.unpack(url)
-                try $0.1.remove(url, id: $0.0)
-            }
-            try self?.references()
-            if let tree = try? Hub.head.tree(url) {
-                let index = Index()
-                try tree.map(index, url: url)
-                index.save(url)
-            }
-        }, error: error) { [weak self] in
-            done()
-            self?.repository?.state.refresh()
+    func unpack() throws {
+        guard let url = repository?.url else { return }
+        try Pack.pack(url).forEach {
+            try $0.1.unpack(url)
+            try $0.1.remove(url, id: $0.0)
+        }
+        try references()
+        if let tree = try? Hub.head.tree(url) {
+            let index = Index()
+            try tree.map(index, url: url)
+            index.save(url)
         }
     }
     

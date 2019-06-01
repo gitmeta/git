@@ -5,6 +5,7 @@ public final class Repository {
     public let url: URL
     let state = State()
     let stage = Stage()
+    let history = History()
     let extract = Extract()
     let packer = Packer()
     
@@ -12,43 +13,49 @@ public final class Repository {
         self.url = url
         state.repository = self
         stage.repository = self
+        history.repository = self
         extract.repository = self
         packer.repository = self
     }
     
     public func commit(_ files: [URL], message: String, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
-        stage.commit(files, message: message, error: error, done: done)
+        Hub.dispatch.background({ [weak self] in
+            self?.state.delay()
+            try self?.stage.commit(files, message: message)
+            self?.refresh()
+        }, error: error, success: done)
     }
     
     public func log(_ result: @escaping(([Commit]) -> Void)) {
+        Hub.dispatch.background({ [weak self] in (try? self?.history.log()) ?? [] }, success: result)
+    }
+    
+    public func reset(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
-            var result = [String: Commit]()
-            if let url = self?.url, let id = try? Hub.head.id(url) {
-                try? self?.commits(id, map: &result)
-            }
-            return result.values.sorted(by: {
-                if $0.author.date > $1.author.date {
-                    return true
-                } else if $0.author.date == $1.author.date {
-                    return $0.parent.count > $1.parent.count
-                }
-                return false
-            })
+            self?.state.delay()
+            try self?.extract.reset()
+            self?.refresh()
+        }, error: error, success: done)
+    }
+    
+    public func unpack(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
+        Hub.dispatch.background({ [weak self] in
+            self?.state.delay()
+            try self?.packer.unpack()
+            self?.refresh()
+        }, error: error, success: done)
+    }
+    
+    public func packed(_ result: @escaping((Bool) -> Void)) {
+        Hub.dispatch.background({ [weak self] in self?.packer.packed ?? false }, success: result)
+    }
+    
+    public func branch(_ result: @escaping((String) -> Void)) {
+        Hub.dispatch.background({ [weak self] in
+            guard let url = self?.url, let branch = Hub.head.branch(url) else { return "" }
+            return branch
         }, success: result)
     }
     
-    public func reset(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) { extract.reset(error, done: done) }
-    public func unpack(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) { packer.unpack(error, done: done) }
-    public func packed(_ result: @escaping((Bool) -> Void)) { packer.packed(result) }
     public func refresh() { state.refresh() }
-    public func branch(_ result: @escaping((String) -> Void)) { Hub.head.branch(url, result: result) }
-    
-    private func commits(_ id: String, map: inout[String: Commit]) throws {
-        guard map[id] == nil else { return }
-        let item = try Commit(try Hub.content.get(id, url: url))
-        map[id] = item
-        try item.parent.forEach {
-            try commits($0, map: &map)
-        }
-    }
 }

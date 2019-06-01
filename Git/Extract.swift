@@ -3,18 +3,12 @@ import Foundation
 final class Extract {
     weak var repository: Repository?
     
-    func reset(_ error: @escaping((Error) -> Void), done: @escaping(() -> Void)) {
-        Hub.dispatch.background({ [weak self] in
-            self?.repository?.state.delay()
-            guard let url = self?.repository?.url, let tree = try? Hub.head.tree(url), let list = self?.repository?.state.list else { return }
-            let index = Index()
-            try self?.remove(list)
-            try self?.extract(tree, index: index)
-            index.save(url)
-        }, error: error) { [weak self] in
-            done()
-            self?.repository?.state.refresh()
-        }
+    func reset() throws {
+        guard let url = repository?.url, let tree = try? Hub.head.tree(url), let list = repository?.state.list else { return }
+        let index = Index()
+        try remove(list)
+        try extract(tree, index: index)
+        index.save(url)
     }
     
     private func remove(_ list: [(URL, Status)]) throws {

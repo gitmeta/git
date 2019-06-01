@@ -18,7 +18,7 @@ final class Factory {
             if $0.refs.isEmpty {
                 throw Failure.Fetch.empty
             }
-            try self.rest.pack(remote, want: $0.refs.first!, error: error, result: { pack in
+            try self.rest.pack(remote, want: $0.refs.first!, error: error, result: {
                 guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""),
                     !name.isEmpty
                     else { throw Failure.Clone.name }
@@ -26,6 +26,7 @@ final class Factory {
                 guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
                 try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
                 try self.create(directory)
+                try $0.unpack(directory)
                 DispatchQueue.main.async { result(directory) }
             })
         }
