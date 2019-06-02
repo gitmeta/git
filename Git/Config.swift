@@ -2,19 +2,28 @@ import Foundation
 
 final class Config {
     struct Remote {
-        var url = ""
-        var fetch = ""
+        fileprivate(set) var url = ""
+        fileprivate(set) var fetch = ""
     }
     
     struct Branch {
-        var remote = ""
-        var merge = ""
+        fileprivate(set) var remote = ""
+        fileprivate(set) var merge = ""
     }
     
-    var remote = [String: Remote]()
-    var branch = [String: Branch]()
+    private(set) var remote = [String: Remote]()
+    private(set) var branch = [String: Branch]()
     
-    init() { }
+    init(_ url: String) {
+        var remote = Remote()
+        remote.url = "https://" + url
+        remote.fetch = "+refs/heads/*:refs/remotes/origin/*"
+        var branch = Branch()
+        branch.remote = "origin"
+        branch.merge = "refs/heads/master"
+        self.remote["origin"] = remote
+        self.branch["master"] = branch
+    }
     
     init(_ url: URL) throws {
         let lines = String(decoding: try Data(contentsOf: url.appendingPathComponent(".git/config")), as: UTF8.self).components(separatedBy: "\n")

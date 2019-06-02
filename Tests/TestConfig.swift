@@ -40,16 +40,14 @@ class TestConfig: XCTestCase {
     }
     
     func testSave() {
-        let config = Config()
-        var remote = Config.Remote()
-        remote.url = "lorem ipsum"
-        remote.fetch = "hello world"
-        config.remote["hello"] = remote
-        try? config.save(url)
+        try? Config("lorem ipsum").save(url)
         XCTAssertEqual("""
-[remote "hello"]
-    url = lorem ipsum
-    fetch = hello world
+[remote "origin"]
+    url = https://lorem ipsum
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+    remote = origin
+    merge = refs/heads/master
 
 """, String(decoding: (try? Data(contentsOf: url.appendingPathComponent(".git/config"))) ?? Data(), as: UTF8.self))
     }

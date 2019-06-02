@@ -122,8 +122,6 @@
 		20FFDF7F2282E04600226033 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7E2282E04600226033 /* Log.swift */; };
 		20FFDF812282E05D00226033 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF802282E05D00226033 /* Commit.swift */; };
 		20FFDF832282EF0500226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Credentials.swift */; };
-		CE02C30922A2B2300022DE9B /* Remotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30822A2B2300022DE9B /* Remotes.swift */; };
-		CE02C30A22A2B2300022DE9B /* Remotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30822A2B2300022DE9B /* Remotes.swift */; };
 		CE02C30C22A2B3180022DE9B /* config0 in Resources */ = {isa = PBXBuildFile; fileRef = CE02C30B22A2B3170022DE9B /* config0 */; };
 		CE02C30E22A2B3250022DE9B /* TestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30D22A2B3250022DE9B /* TestConfig.swift */; };
 		CE02C31022A2B3C90022DE9B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30F22A2B3C90022DE9B /* Config.swift */; };
@@ -274,7 +272,6 @@
 		20FFDF7E2282E04600226033 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		20FFDF802282E05D00226033 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
 		20FFDF822282EF0500226033 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
-		CE02C30822A2B2300022DE9B /* Remotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remotes.swift; sourceTree = "<group>"; };
 		CE02C30B22A2B3170022DE9B /* config0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config0; sourceTree = "<group>"; };
 		CE02C30D22A2B3250022DE9B /* TestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConfig.swift; sourceTree = "<group>"; };
 		CE02C30F22A2B3C90022DE9B /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -367,7 +364,6 @@
 				CEE6A963229280FD00977743 /* Packer.swift */,
 				2048A0D6225C744400290E54 /* Parse.swift */,
 				2048A0D1225C744400290E54 /* Press.swift */,
-				CE02C30822A2B2300022DE9B /* Remotes.swift */,
 				2048A0D2225C744400290E54 /* Repository.swift */,
 				20710E072286CA6A00104F72 /* Rest.swift */,
 				2048A0D0225C744400290E54 /* Serial.swift */,
@@ -757,7 +753,6 @@
 				2048A0EA225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DA225C744400290E54 /* Hash.swift in Sources */,
 				CEAE6CBF22A26BFE001E1AE1 /* Factory.swift in Sources */,
-				CE02C30922A2B2300022DE9B /* Remotes.swift in Sources */,
 				CEAE6CC222A28062001E1AE1 /* History.swift in Sources */,
 				CED676C8228E840C009D6ADC /* Extract.swift in Sources */,
 				CE7B8BF622917ACA00396AB1 /* Head.swift in Sources */,
@@ -791,7 +786,6 @@
 				2048A0EB225C744400290E54 /* Hub.swift in Sources */,
 				2048A0DB225C744400290E54 /* Hash.swift in Sources */,
 				CEAE6CC022A26BFE001E1AE1 /* Factory.swift in Sources */,
-				CE02C30A22A2B2300022DE9B /* Remotes.swift in Sources */,
 				CEAE6CC322A28062001E1AE1 /* History.swift in Sources */,
 				CED676C9228E840C009D6ADC /* Extract.swift in Sources */,
 				CE7B8BF722917ACA00396AB1 /* Head.swift in Sources */,

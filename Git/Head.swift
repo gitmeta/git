@@ -36,4 +36,12 @@ final class Head {
         return String(String(decoding: try Data(contentsOf: url.appendingPathComponent(".git/HEAD")), as:
             UTF8.self).dropFirst(5)).replacingOccurrences(of: "\n", with: "")
     }
+    
+    func remote(_ url: URL, id: String) throws {
+        let remotes = url.appendingPathComponent(".git/refs/remotes/origin/")
+        if !FileManager.default.fileExists(atPath: remotes.path) {
+            try FileManager.default.createDirectory(at: remotes, withIntermediateDirectories: true)
+        }
+        try Data(id.utf8).write(to: remotes.appendingPathComponent("master"), options: .atomic)
+    }
 }

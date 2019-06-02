@@ -26,6 +26,8 @@ final class Factory {
                 let tree = try Tree(id, url: directory)
                 try repository.extract.extract(tree)
                 try Hub.head.update(directory, id: reference)
+                try Hub.head.remote(directory, id: reference)
+                try Config(remote).save(directory)
                 DispatchQueue.main.async { result(directory) }
             }
         }
