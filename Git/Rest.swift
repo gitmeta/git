@@ -3,7 +3,7 @@ import Foundation
 class Rest {
     private let session = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: OperationQueue())
     
-    func adv(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
+    func fetch(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
         session.dataTask(with: URLRequest(url: try url(remote, suffix: "/info/refs?service=git-upload-pack"), cachePolicy:
             .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)) { data, response, fail in
                 Hub.dispatch.background({

@@ -65,6 +65,10 @@ public struct Failure: LocalizedError {
         public static let unpack = Failure("Clone failed while unpacking.")
     }
     
+    public struct Config {
+        public static let none = Failure("Configuration file not found.")
+    }
+    
     public var errorDescription: String? { return string }
     private let string: String
     private init(_ string: String) { self.string = string }

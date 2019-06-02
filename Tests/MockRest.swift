@@ -3,13 +3,13 @@ import Foundation
 
 class MockRest: Rest {
     var _error: Error?
-    var _adv: Fetch?
+    var _fetch: Fetch?
     var _pack: Pack?
     
-    override func adv(_ remote: String, error: @escaping ((Error) -> Void), result: @escaping ((Fetch) throws -> Void)) {
-        if let _adv = self._adv {
+    override func fetch(_ remote: String, error: @escaping ((Error) -> Void), result: @escaping ((Fetch) throws -> Void)) {
+        if let _fetch = self._fetch {
             do {
-                try result(_adv)
+                try result(_fetch)
             } catch let exception {
                 error(exception)
             }

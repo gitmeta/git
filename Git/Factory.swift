@@ -17,7 +17,7 @@ final class Factory {
         let directory = local.appendingPathComponent(name)
         guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
-        try rest.adv(remote, error: error) {
+        try rest.fetch(remote, error: error) {
             guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
             try self.rest.pack(remote, want: reference, error: error) {
                 let repository = try self.create(directory)

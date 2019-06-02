@@ -26,26 +26,26 @@ class TestClone: XCTestCase {
     
     func testFailIfNoReference() {
         let expect = expectation(description: "")
-        rest._adv = Fetch()
+        rest._fetch = Fetch()
         Hub.clone("", local: url, error: { _ in expect.fulfill() })
         waitForExpectations(timeout: 1)
     }
     
     func testFailOnDownload() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._error = Failure.Request.invalid
-        rest._adv = adv
+        rest._fetch = fetch
         Hub.clone("", local: url, error: { _ in expect.fulfill() })
         waitForExpectations(timeout: 1)
     }
     
     func testFailIfRepository() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.create(url) { _ in
             Hub.clone("", local: self.url, error: { _ in expect.fulfill() })
@@ -56,9 +56,9 @@ class TestClone: XCTestCase {
     func testFailIfDirectoryWithSameName() {
         let expect = expectation(description: "")
         try? FileManager.default.createDirectory(at: url.appendingPathComponent("monami"), withIntermediateDirectories: true)
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url, error: {
             print($0.localizedDescription)
@@ -69,9 +69,9 @@ class TestClone: XCTestCase {
     
     func testSuccess() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         DispatchQueue.global(qos: .background).async {
             Hub.clone("https://host.com/monami.git", local: self.url) { _ in
@@ -84,9 +84,9 @@ class TestClone: XCTestCase {
     
     func testResult() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url) {
             XCTAssertEqual(self.url.appendingPathComponent("monami").path, $0.path)
@@ -97,9 +97,9 @@ class TestClone: XCTestCase {
     
     func testCreatesFolder() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url) {
             var d: ObjCBool = false
@@ -112,9 +112,9 @@ class TestClone: XCTestCase {
     
     func testCreatesRepository() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url) {
             Hub.repository($0) {
@@ -127,9 +127,9 @@ class TestClone: XCTestCase {
     
     func testHead() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url) {
             XCTAssertTrue(FileManager.default.fileExists(atPath: $0.appendingPathComponent(".git/index").path))
@@ -144,9 +144,9 @@ class TestClone: XCTestCase {
     
     func testUnpacks() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url) {
             XCTAssertTrue(FileManager.default.fileExists(atPath: $0.appendingPathComponent("README.md").path))
@@ -162,9 +162,9 @@ Test
     
     func testRemotes() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url) {
             XCTAssertEqual("54cac1e1086e2709a52d7d1727526b14efec3a77", String(decoding:
@@ -176,9 +176,9 @@ Test
     
     func testConfig() {
         let expect = expectation(description: "")
-        var adv = Fetch()
-        adv.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._adv = adv
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
         rest._pack = try? Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.clone("https://host.com/monami.git", local: url) {
             XCTAssertEqual("""

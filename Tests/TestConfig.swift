@@ -13,7 +13,12 @@ class TestConfig: XCTestCase {
         try! FileManager.default.removeItem(at: url)
     }
     
+    func testInvalid() {
+        XCTAssertThrowsError(try Config(url))
+    }
+    
     func testParse() {
+        try? Data(contentsOf: Bundle(for: TestConfig.self).url(forResource: "config0", withExtension: nil)!).write(to: url.appendingPathComponent(".git/config"))
         let config = try? Config(url)
         XCTAssertEqual(1, config?.remote.count)
         XCTAssertEqual(1, config?.branch.count)
@@ -32,5 +37,20 @@ class TestConfig: XCTestCase {
     merge = refs/heads/master
 
 """, config?.serial)
+    }
+    
+    func testSave() {
+        let config = Config()
+        var remote = Config.Remote()
+        remote.url = "lorem ipsum"
+        remote.fetch = "hello world"
+        config.remote["hello"] = remote
+        try? config.save(url)
+        XCTAssertEqual("""
+[remote "hello"]
+    url = lorem ipsum
+    fetch = hello world
+
+""", String(decoding: (try? Data(contentsOf: url.appendingPathComponent(".git/config"))) ?? Data(), as: UTF8.self))
     }
 }
