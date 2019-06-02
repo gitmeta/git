@@ -58,5 +58,12 @@ public final class Repository {
         }, success: result)
     }
     
+    public func remote(_ result: @escaping((String) -> Void)) {
+        Hub.dispatch.background({ [weak self] in
+            guard let url = self?.url, let remote = (try? Config(url))?.remote.first?.1.url else { return "" }
+            return remote
+        }, success: result)
+    }
+    
     public func refresh() { state.refresh() }
 }

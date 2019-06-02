@@ -190,6 +190,9 @@ final class Settings: NSWindow, NSTextFieldDelegate {
                 makeFirstResponder(signName.field)
             }
             return true
+        } else if doCommandBy == #selector(NSResponder.cancelOperation(_:)) {
+            makeFirstResponder(nil)
+            return true
         }
         return false
     }

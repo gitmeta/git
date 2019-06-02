@@ -37,4 +37,35 @@ class TestRepository: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testRemoteNone() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            DispatchQueue.global(qos: .background).async {
+                repository.remote {
+                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual("", $0)
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRemote() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            try? Config("hello world").save(self.url)
+            repository.remote {
+                XCTAssertEqual(Thread.main, Thread.current)
+                XCTAssertEqual("https://hello world", $0)
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

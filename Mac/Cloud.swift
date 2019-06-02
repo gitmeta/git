@@ -4,6 +4,7 @@ import AppKit
 final class Cloud: NSWindow, NSTextFieldDelegate {
     private final class Field: NSView {
         private(set) weak var field: NSTextField!
+        private(set) weak var button: Button.Text!
         
         init() {
             super.init(frame: .zero)
@@ -35,31 +36,45 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             addSubview(field)
             self.field = field
             
-            widthAnchor.constraint(equalToConstant: 460).isActive = true
-            heightAnchor.constraint(equalToConstant: 45).isActive = true
+            let button = Button.Text(nil, action: nil)
+            button.label.font = .systemFont(ofSize: 11, weight: .medium)
+            button.label.textColor = .black
+            button.wantsLayer = true
+            button.layer!.cornerRadius = 4
+            button.layer!.backgroundColor = NSColor.halo.cgColor
+            addSubview(button)
+            self.button = button
             
-            label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+            widthAnchor.constraint(equalToConstant: 460).isActive = true
+            
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 14).isActive = true
             label.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
-            border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            border.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 2).isActive = true
             border.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
             border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             
-            field.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 6).isActive = true
+            field.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
             field.heightAnchor.constraint(equalToConstant: 30).isActive = true
             field.leftAnchor.constraint(equalTo: leftAnchor, constant: 60).isActive = true
             field.rightAnchor.constraint(equalTo: rightAnchor, constant: -14).isActive = true
+            
+            button.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            button.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            button.widthAnchor.constraint(equalToConstant: 62).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 22).isActive = true
         }
         
         required init?(coder: NSCoder) { return nil }
     }
     
-    private weak var cloneField: Field?
+    private weak var clonning: Field?
+    private weak var pulling: Field?
+    private weak var pushing: Field?
     private weak var segment: NSSegmentedControl!
     private weak var left: NSLayoutConstraint!
     private weak var loading: NSImageView!
-    private weak var buttonClone: Button!
     
     init() {
         super.init(contentRect: NSRect(
@@ -86,6 +101,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         segment.setLabel(.local("Cloud.pull.title"), forSegment: 1)
         segment.setLabel(.local("Cloud.push.title"), forSegment: 2)
         segment.translatesAutoresizingMaskIntoConstraints = false
+        segment.selectedSegment = 0
         contentView!.addSubview(segment)
         self.segment = segment
         
@@ -110,28 +126,33 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         self.loading = loading
         
         if app.repository == nil {
-            let cloneField = Field()
-            cloneField.field.delegate = self
-            clone.addSubview(cloneField)
-            self.cloneField = cloneField
+            let clonning = Field()
+            clonning.button.target = self
+            clonning.button.action = #selector(makeClone)
+            clonning.button.label.stringValue = .local("Cloud.clone.button")
+            clonning.field.delegate = self
+            clone.addSubview(clonning)
+            self.clonning = clonning
             
-            let buttonClone = Button.Text(self, action: #selector(makeClone))
-            buttonClone.label.stringValue = .local("Cloud.clone.button")
-            buttonClone.label.font = .systemFont(ofSize: 11, weight: .medium)
-            buttonClone.label.textColor = .black
-            buttonClone.wantsLayer = true
-            buttonClone.layer!.cornerRadius = 4
-            buttonClone.layer!.backgroundColor = NSColor.halo.cgColor
-            clone.addSubview(buttonClone)
-            self.buttonClone = buttonClone
+            let pullError = Label(.local("Cloud.pull.error"))
+            pullError.textColor = NSColor(white: 1, alpha: 0.7)
+            pullError.font = .systemFont(ofSize: 16, weight: .light)
+            pull.addSubview(pullError)
             
-            cloneField.topAnchor.constraint(equalTo: clone.topAnchor, constant: 20).isActive = true
-            cloneField.leftAnchor.constraint(equalTo: clone.leftAnchor, constant: 20).isActive = true
+            let pushError = Label(.local("Cloud.push.error"))
+            pushError.textColor = NSColor(white: 1, alpha: 0.7)
+            pushError.font = .systemFont(ofSize: 16, weight: .light)
+            push.addSubview(pushError)
             
-            buttonClone.bottomAnchor.constraint(equalTo: clone.bottomAnchor, constant: -20).isActive = true
-            buttonClone.centerXAnchor.constraint(equalTo: clone.centerXAnchor).isActive = true
-            buttonClone.widthAnchor.constraint(equalToConstant: 62).isActive = true
-            buttonClone.heightAnchor.constraint(equalToConstant: 22).isActive = true
+            clonning.topAnchor.constraint(equalTo: clone.topAnchor, constant: 20).isActive = true
+            clonning.leftAnchor.constraint(equalTo: clone.leftAnchor, constant: 20).isActive = true
+            clonning.bottomAnchor.constraint(equalTo: clone.bottomAnchor, constant: -20).isActive = true
+            
+            pullError.centerXAnchor.constraint(equalTo: pull.centerXAnchor).isActive = true
+            pullError.centerYAnchor.constraint(equalTo: pull.centerYAnchor).isActive = true
+            
+            pushError.centerXAnchor.constraint(equalTo: push.centerXAnchor).isActive = true
+            pushError.centerYAnchor.constraint(equalTo: push.centerYAnchor).isActive = true
         } else {
             let cloneError = Label(.local("Cloud.clone.error"))
             cloneError.textColor = NSColor(white: 1, alpha: 0.7)
@@ -139,9 +160,38 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             cloneError.alignment = .center
             clone.addSubview(cloneError)
             
+            let pulling = Field()
+            pulling.button.target = self
+            pulling.button.action = #selector(makePull)
+            pulling.button.label.stringValue = .local("Cloud.pull.button")
+            pulling.field.delegate = self
+            pull.addSubview(pulling)
+            self.pulling = pulling
+            
+            let pushing = Field()
+            pushing.button.target = self
+            pushing.button.action = #selector(makePush)
+            pushing.button.label.stringValue = .local("Cloud.push.button")
+            pushing.field.delegate = self
+            push.addSubview(pushing)
+            self.pushing = pushing
+            
             cloneError.centerXAnchor.constraint(equalTo: clone.centerXAnchor).isActive = true
             cloneError.centerYAnchor.constraint(equalTo: clone.centerYAnchor).isActive = true
             cloneError.widthAnchor.constraint(lessThanOrEqualToConstant: 350).isActive = true
+            
+            pulling.topAnchor.constraint(equalTo: pull.topAnchor, constant: 20).isActive = true
+            pulling.leftAnchor.constraint(equalTo: pull.leftAnchor, constant: 20).isActive = true
+            pulling.bottomAnchor.constraint(equalTo: pull.bottomAnchor, constant: -20).isActive = true
+            
+            pushing.topAnchor.constraint(equalTo: push.topAnchor, constant: 20).isActive = true
+            pushing.leftAnchor.constraint(equalTo: push.leftAnchor, constant: 20).isActive = true
+            pushing.bottomAnchor.constraint(equalTo: push.bottomAnchor, constant: -20).isActive = true
+            
+            app.repository?.remote { [weak self] in
+                self?.pulling!.field.stringValue = $0.replacingOccurrences(of: "https://", with: "")
+                self?.pushing!.field.stringValue = $0.replacingOccurrences(of: "https://", with: "")
+            }
         }
         
         border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
@@ -170,8 +220,6 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         
         loading.centerYAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -31).isActive = true
         loading.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        
-        DispatchQueue.main.async { [weak self] in self?.clone()  }
     }
     
     override func keyDown(with: NSEvent) {
@@ -189,10 +237,19 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
         if doCommandBy == #selector(NSResponder.insertNewline(_:)) {
-            if control == cloneField?.field {
+            if control == clonning?.field {
                 makeClone()
                 return true
+            } else if control == pulling?.field {
+                makePull()
+                return true
+            } else if control == pushing?.field {
+                makePush()
+                return true
             }
+        } else if doCommandBy == #selector(NSResponder.cancelOperation(_:)) {
+            makeFirstResponder(nil)
+            return true
         }
         return false
     }
@@ -208,37 +265,67 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     }
     
     @objc func clone() {
-        makeFirstResponder(cloneField?.field)
+        makeFirstResponder(clonning?.field)
         show(0)
     }
     
-    @objc func pull() { show(1) }
-    @objc func push() { show(2) }
+    @objc func pull() {
+        makeFirstResponder(pulling?.field)
+        show(1)
+    }
+    
+    @objc func push() {
+        makeFirstResponder(pushing?.field)
+        show(2)
+    }
     
     @objc private func choose() {
         show(segment.selectedSegment)
         switch segment.selectedSegment {
-        case 0: makeFirstResponder(cloneField?.field)
+        case 0: makeFirstResponder(clonning?.field)
+        case 1: makeFirstResponder(pulling?.field)
+        case 2: makeFirstResponder(pushing?.field)
         default: break
         }
     }
     
     @objc private func makeClone() {
         makeFirstResponder(nil)
-        buttonClone.isHidden = true
+        clonning!.button.isHidden = true
         segment.isEnabled = false
         loading.isHidden = false
-        cloneField?.field.isEditable = false
-        Hub.clone(cloneField!.field.stringValue, local: Hub.session.url, error: { [weak self] in
+        clonning!.field.isEditable = false
+        Hub.clone(clonning!.field.stringValue, local: Hub.session.url, error: { [weak self] in
             app.alert(.local("Alert.error"), message: $0.localizedDescription)
-            self?.buttonClone.isHidden = false
+            self?.clonning!.button.isHidden = false
             self?.segment.isEnabled = true
             self?.loading.isHidden = true
-            self?.cloneField?.field.isEditable = true
+            self?.clonning!.field.isEditable = true
         }) { [weak self] in
             app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
             self?.close()
             app.browsed($0)
         }
     }
+    
+    @objc private func makePull() {
+        makeFirstResponder(nil)
+        pulling!.button.isHidden = true
+        segment.isEnabled = false
+        loading.isHidden = false
+        pulling!.field.isEditable = false
+//        Hub.clone(clonning!.field.stringValue, local: Hub.session.url, error: { [weak self] in
+//            app.alert(.local("Alert.error"), message: $0.localizedDescription)
+//            self?.clonning!.button.isHidden = false
+//            self?.segment.isEnabled = true
+//            self?.loading.isHidden = true
+//            self?.clonning!.field.isEditable = true
+//        }) { [weak self] in
+//            app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
+//            self?.close()
+//            app.browsed($0)
+//        }
+    }
+    
+    @objc private func makePush() { }
 }
