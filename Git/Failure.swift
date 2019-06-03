@@ -65,6 +65,10 @@ public struct Failure: LocalizedError {
         public static let unpack = Failure("Clone failed while unpacking.")
     }
     
+    public struct Pull {
+        public static let remote = Failure("No remote specified for this repository.")
+    }
+    
     public struct Config {
         public static let none = Failure("Configuration file not found.")
     }

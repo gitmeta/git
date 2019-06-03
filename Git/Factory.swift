@@ -33,6 +33,14 @@ final class Factory {
         }
     }
     
+    func pull(_ url: URL, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
+        guard let remote = Hub.head.remote(url) else { throw Failure.Pull.remote }
+        try rest.fetch(remote, error: error) {
+            guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
+            
+        }
+    }
+    
     func create(_ url: URL) throws -> Repository {
         guard !repository(url) else { throw Failure.Repository.duplicating }
         let root = url.appendingPathComponent(".git")

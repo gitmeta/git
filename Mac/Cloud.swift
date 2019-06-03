@@ -30,6 +30,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             field.textColor = .white
             field.maximumNumberOfLines = 1
             field.lineBreakMode = .byTruncatingHead
+            field.refusesFirstResponder = true
             if #available(OSX 10.12.2, *) {
                 field.isAutomaticTextCompletionEnabled = false
             }
@@ -269,22 +270,13 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         show(0)
     }
     
-    @objc func pull() {
-        makeFirstResponder(pulling?.field)
-        show(1)
-    }
-    
-    @objc func push() {
-        makeFirstResponder(pushing?.field)
-        show(2)
-    }
+    @objc func pull() { show(1) }
+    @objc func push() { show(2) }
     
     @objc private func choose() {
         show(segment.selectedSegment)
         switch segment.selectedSegment {
         case 0: makeFirstResponder(clonning?.field)
-        case 1: makeFirstResponder(pulling?.field)
-        case 2: makeFirstResponder(pushing?.field)
         default: break
         }
     }

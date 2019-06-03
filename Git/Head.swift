@@ -45,10 +45,12 @@ final class Head {
         try Data(id.utf8).write(to: remotes.appendingPathComponent("master"), options: .atomic)
     }
     
-    func remote(_ url: URL) -> String? {
+    func origin(_ url: URL) -> String? {
         if let data = try? Data(contentsOf: url.appendingPathComponent(".git/refs/remotes/origin/master")) {
             return String(decoding: data, as: UTF8.self)
         }
         return nil
     }
+    
+    func remote(_ url: URL) -> String? { return (try? Config(url))?.remote.first?.1.url }
 }
