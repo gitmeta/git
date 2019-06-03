@@ -142,6 +142,20 @@ class TestClone: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
+    func testWantHave() {
+        let expect = expectation(description: "")
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
+        rest.onPack = { want, have in
+            XCTAssertEqual("54cac1e1086e2709a52d7d1727526b14efec3a77", want)
+            XCTAssertEqual("", have)
+            expect.fulfill()
+        }
+        Hub.clone("host.com/monami.git", local: url)
+        waitForExpectations(timeout: 1)
+    }
+    
     func testUnpacks() {
         let expect = expectation(description: "")
         var fetch = Fetch()

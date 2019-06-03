@@ -18,7 +18,7 @@ class Rest {
         }.resume()
     }
     
-    func pack(_ remote: String, want: String, error: @escaping((Error) -> Void), result: @escaping((Pack) throws -> Void)) throws {
+    func pack(_ remote: String, want: String, have: String = "", error: @escaping((Error) -> Void), result: @escaping((Pack) throws -> Void)) throws {
         session.dataTask(with: {
             var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 90)
             request.httpMethod = "POST"

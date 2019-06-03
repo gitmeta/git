@@ -125,4 +125,24 @@ class TestHub: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testObjects() {
+        let expect = expectation(description: "")
+        Hub.create(url) { _ in
+            try? FileManager.default.createDirectory(at: self.url.appendingPathComponent(".git/objects/ab"), withIntermediateDirectories: true)
+            try? FileManager.default.createDirectory(at: self.url.appendingPathComponent(".git/objects/cd"), withIntermediateDirectories: true)
+            try? Data("h".utf8).write(to: self.url.appendingPathComponent(".git/objects/ab/hello"))
+            try? Data("h".utf8).write(to: self.url.appendingPathComponent(".git/objects/ab/world"))
+            try? Data("h".utf8).write(to: self.url.appendingPathComponent(".git/objects/cd/lorem"))
+            try? Data("h".utf8).write(to: self.url.appendingPathComponent(".git/objects/cd/ipsum"))
+            let objects = Hub.content.objects(self.url)
+            XCTAssertEqual(4, objects.count)
+            XCTAssertNotNil(objects.first(where: { $0 == "abhello" }))
+            XCTAssertNotNil(objects.first(where: { $0 == "abworld" }))
+            XCTAssertNotNil(objects.first(where: { $0 == "cdlorem" }))
+            XCTAssertNotNil(objects.first(where: { $0 == "cdipsum" }))
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

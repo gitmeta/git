@@ -26,7 +26,7 @@ final class Factory {
                 let tree = try Tree(id, url: directory)
                 try repository.extract.extract(tree)
                 try Hub.head.update(directory, id: reference)
-                try Hub.head.remote(directory, id: reference)
+                try Hub.head.origin(directory, id: reference)
                 try Config(remote).save(directory)
                 DispatchQueue.main.async { result(directory) }
             }
@@ -37,7 +37,14 @@ final class Factory {
         guard let remote = Hub.head.remote(url) else { throw Failure.Pull.remote }
         try rest.fetch(remote, error: error) {
             guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
-            
+            if reference == Hub.head.origin(url) {
+                done()
+            } else {
+                try self.rest.pack(remote, want: reference,
+                                   have: Hub.content.objects(url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) { _ in
+                    
+                }
+            }
         }
     }
     

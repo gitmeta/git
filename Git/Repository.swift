@@ -28,7 +28,10 @@ public final class Repository {
         Hub.dispatch.background({ [weak self] in
             guard let url = self?.url else { return }
             self?.state.delay()
-            try Hub.factory.pull(url, error: error, done: done)
+            try Hub.factory.pull(url, error: error) { [weak self] in
+                self?.refresh()
+                DispatchQueue.main.async { done() }
+            }
         }, error: error)
     }
     

@@ -29,6 +29,16 @@ final class Content {
         } (Hub.hash.blob(blob))
     }
     
+    func get(_ id: String, url: URL) throws -> Data {
+        return Hub.press.decompress(try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))")))
+    }
+    
+    func objects(_ url: URL) -> [String] {
+        return FileManager.default.enumerator(at: url.appendingPathComponent(".git/objects/"), includingPropertiesForKeys: nil)!
+            .filter({ !($0 as! URL).hasDirectoryPath }).map({ ($0 as! URL)
+                .resolvingSymlinksInPath().path.dropFirst(url.path.count + 13).replacingOccurrences(of: "/", with: "") })
+    }
+    
     private func add(_ id: String, data: Data, url: URL) throws {
         let folder = url.appendingPathComponent(".git/objects/\(id.prefix(2))")
         let location = folder.appendingPathComponent(String(id.dropFirst(2)))
@@ -40,7 +50,4 @@ final class Content {
         }
     }
     
-    func get(_ id: String, url: URL) throws -> Data {
-        return Hub.press.decompress(try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))")))
-    }
 }
