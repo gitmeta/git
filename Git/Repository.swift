@@ -50,6 +50,14 @@ public final class Repository {
         }, error: error, success: done)
     }
     
+    public func check(_ id: String, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
+        Hub.dispatch.background({ [weak self] in
+            self?.state.delay()
+            
+            self?.refresh()
+        }, error: error, success: done)
+    }
+    
     public func unpack(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
             self?.state.delay()

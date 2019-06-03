@@ -39,9 +39,15 @@ final class State {
     var list: [(URL, Status)] {
         guard let url = repository?.url else { return [] }
         last = Date()
+        let tree = (try? Hub.head.tree(url))?.list(url) ?? []
+        return list(tree)
+    }
+    
+    func list(_ tree: [Tree.Item]) -> [(URL, Status)] {
+        guard let url = repository?.url else { return [] }
         let contents = self.contents
         let index = Index(url)
-        var tree = (try? Hub.head.tree(url))?.list(url) ?? []
+        var tree = tree
         return contents.reduce(into: [(URL, Status)]()) { result, url in
             if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
                 let hash = Hub.hash.file(url).1
@@ -56,7 +62,7 @@ final class State {
             } else {
                 result.append((url, .untracked))
             }
-        } + tree.map({ ($0.url, .deleted) })
+            } + tree.map({ ($0.url, .deleted) })
     }
     
     func refresh() {
