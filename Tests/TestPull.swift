@@ -62,10 +62,13 @@ class TestPull: XCTestCase {
     func testCallFetch() {
         let expect = expectation(description: "")
         var repository: Repository!
-        rest.onFetch = { expect.fulfill() }
+        rest.onFetch = {
+            XCTAssertEqual("host.com/monami.git", $0)
+            expect.fulfill()
+        }
         Hub.create(url) {
             repository = $0
-            try? Config("lorem ipsum").save(self.url)
+            try? Config("host.com/monami.git").save(self.url)
             repository.pull()
         }
         waitForExpectations(timeout: 1)
@@ -77,10 +80,13 @@ class TestPull: XCTestCase {
         var fetch = Fetch()
         fetch.refs.append("hello world")
         rest._fetch = fetch
-        rest.onPack = { _, _ in expect.fulfill() }
+        rest.onPack = { remote, want, have in
+            XCTAssertEqual("host.com/monami.git", remote)
+            expect.fulfill()
+        }
         Hub.create(url) {
             repository = $0
-            try? Config("lorem ipsum").save(self.url)
+            try? Config("host.com/monami.git").save(self.url)
             repository.pull()
         }
         waitForExpectations(timeout: 1)
@@ -92,7 +98,7 @@ class TestPull: XCTestCase {
         var fetch = Fetch()
         fetch.refs.append("hello world")
         rest._fetch = fetch
-        rest.onPack = { want, have in
+        rest.onPack = { remote, want, have in
             XCTAssertEqual("hello world", want)
             expect.fulfill()
         }
@@ -110,7 +116,7 @@ class TestPull: XCTestCase {
         var fetch = Fetch()
         fetch.refs.append("hello world")
         rest._fetch = fetch
-        rest.onPack = { want, have in
+        rest.onPack = { remote, want, have in
             XCTAssertEqual("0032have 11world 0032have 11hello 0032have 99lorem ", have)
             expect.fulfill()
         }
@@ -151,6 +157,30 @@ Test
 
 """, String(decoding: (try? Data(contentsOf: self.url.appendingPathComponent("README.md"))) ?? Data(), as: UTF8.self))
                 expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testUpdateConfig() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            DispatchQueue.global(qos: .background).async {
+                repository.remote("host.com/monami.git") {
+                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual("""
+[remote "origin"]
+    url = https://host.com/monami.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+    remote = origin
+    merge = refs/heads/master
+
+""", String(decoding: (try? Data(contentsOf: self.url.appendingPathComponent(".git/config"))) ?? Data(), as: UTF8.self))
+                    expect.fulfill()
+                }
             }
         }
         waitForExpectations(timeout: 1)

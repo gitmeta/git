@@ -5,8 +5,8 @@ class MockRest: Rest {
     var _error: Error?
     var _fetch: Fetch?
     var _pack: Pack?
-    var onFetch: (() -> Void)?
-    var onPack: ((String, String) -> Void)?
+    var onFetch: ((String) -> Void)?
+    var onPack: ((String, String, String) -> Void)?
     
     override func fetch(_ remote: String, error: @escaping ((Error) -> Void), result: @escaping ((Fetch) throws -> Void)) {
         if let _fetch = self._fetch {
@@ -18,7 +18,7 @@ class MockRest: Rest {
         } else if let _error = self._error {
             error(_error)
         }
-        onFetch?()
+        onFetch?(remote)
     }
     
     override func pack(_ remote: String, want: String, have: String = "", error: @escaping ((Error) -> Void), result: @escaping ((Pack) throws -> Void)) throws {
@@ -31,6 +31,6 @@ class MockRest: Rest {
         } else if let _error = self._error {
             error(_error)
         }
-        onPack?(want, have)
+        onPack?(remote, want, have)
     }
 }

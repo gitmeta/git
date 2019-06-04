@@ -190,8 +190,12 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             pushing.bottomAnchor.constraint(equalTo: push.bottomAnchor, constant: -20).isActive = true
             
             app.repository?.remote { [weak self] in
-                self?.pulling!.field.stringValue = $0.replacingOccurrences(of: "https://", with: "")
-                self?.pushing!.field.stringValue = $0.replacingOccurrences(of: "https://", with: "")
+                var remote = $0
+                if remote.hasPrefix("https://") {
+                    remote.removeFirst(8)
+                }
+                self?.pulling!.field.stringValue = remote
+                self?.pushing!.field.stringValue = remote
             }
         }
         
@@ -238,21 +242,19 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
         if doCommandBy == #selector(NSResponder.insertNewline(_:)) {
-            if control == clonning?.field {
-                makeClone()
-                return true
-            } else if control == pulling?.field {
-                makePull()
-                return true
-            } else if control == pushing?.field {
-                makePush()
-                return true
-            }
+            makeFirstResponder(nil)
+            return true
         } else if doCommandBy == #selector(NSResponder.cancelOperation(_:)) {
             makeFirstResponder(nil)
             return true
         }
         return false
+    }
+    
+    func controlTextDidEndEditing(_ obj: Notification) {
+        if pulling?.field == obj.object as? NSTextField {
+            app.repository!.remote(pulling!.field.stringValue)
+        }
     }
     
     private func show(_ item: Int) {
@@ -306,17 +308,16 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         segment.isEnabled = false
         loading.isHidden = false
         pulling!.field.isEditable = false
-//        Hub.clone(clonning!.field.stringValue, local: Hub.session.url, error: { [weak self] in
-//            app.alert(.local("Alert.error"), message: $0.localizedDescription)
-//            self?.clonning!.button.isHidden = false
-//            self?.segment.isEnabled = true
-//            self?.loading.isHidden = true
-//            self?.clonning!.field.isEditable = true
-//        }) { [weak self] in
-//            app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
-//            self?.close()
-//            app.browsed($0)
-//        }
+        app.repository!.pull({ [weak self] in
+            app.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self?.pulling!.button.isHidden = false
+            self?.segment.isEnabled = true
+            self?.loading.isHidden = true
+            self?.pulling!.field.isEditable = true
+        }) { [weak self] in
+            app.alert(.local("Alert.success"), message: .local("Cloud.pull.success"))
+            self?.close()
+        }
     }
     
     @objc private func makePush() { }

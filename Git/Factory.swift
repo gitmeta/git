@@ -32,7 +32,8 @@ final class Factory {
     }
     
     func pull(_ repository: Repository, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
-        guard let remote = Hub.head.remote(repository.url) else { throw Failure.Pull.remote }
+        guard let raw = Hub.head.remote(repository.url) else { throw Failure.Pull.remote }
+        let remote = raw.hasPrefix("https://") ? String(raw.dropFirst(8)) : raw
         try rest.fetch(remote, error: error) {
             guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
             if reference == Hub.head.origin(repository.url) {
