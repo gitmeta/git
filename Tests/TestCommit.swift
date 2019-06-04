@@ -51,7 +51,9 @@ Add project files.
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         Hub.create(url) { _ in
-            XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", try? commit.save(self.url))
+            let id = try! Hub.content.add(commit, url: self.url)
+            try? Hub.head.update(self.url, id: id)
+            XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", id)
             let object = try? Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/51/92391e9f907eeb47aa38d1c6a3a4ea78e33564"))
             XCTAssertNotNil(object)
@@ -77,7 +79,9 @@ Add project files.
         Hub.create(url) { _ in
             try! "ref: refs/heads/feature/test".write(to: self.url.appendingPathComponent(".git/HEAD"),
                                                       atomically: true, encoding: .utf8)
-            XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", try? commit.save(self.url))
+            let id = try! Hub.content.add(commit, url: self.url)
+            try? Hub.head.update(self.url, id: id)
+            XCTAssertEqual("5192391e9f907eeb47aa38d1c6a3a4ea78e33564", id)
             let object = try? Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/51/92391e9f907eeb47aa38d1c6a3a4ea78e33564"))
             XCTAssertNotNil(object)
@@ -102,7 +106,7 @@ Add project files.
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.parent.append("dc0d3343fa24e912f08bc18aaa6f664a4a020079")
         Hub.create(url) { _ in
-            _ = try? commit.save(self.url)
+            _ = try? Hub.content.add(commit, url: self.url)
             let loaded = try! Commit(Press().decompress(try! Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/51/92391e9f907eeb47aa38d1c6a3a4ea78e33564"))))
             XCTAssertEqual(commit.author.name, loaded.author.name)
@@ -127,7 +131,7 @@ Add project files.
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.message = "Add project files.\n\n\n\n\n\ntest\ntest\ntest\n\n\ntest"
         Hub.create(url) { _ in
-            let id = try! commit.save(self.url)
+            let id = try! Hub.content.add(commit, url: self.url)
             let loaded = try! Commit(Press().decompress(try! Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
             XCTAssertEqual(commit.message, loaded.message)
@@ -142,7 +146,7 @@ Add project files.
         commit.tree = "0d21e2f7f760f77ead2cb85cc128efb13f56401d"
         commit.author.name = "asdasdas asd sa das das dsa dsa das das das as dsa da"
         Hub.create(url) { _ in
-            let id = try! commit.save(self.url)
+            let id = try! Hub.content.add(commit, url: self.url)
             let loaded = try! Commit(Press().decompress(try! Data(contentsOf: self.url.appendingPathComponent(
                 ".git/objects/\(id.prefix(2))/\(id.dropFirst(2))"))))
             XCTAssertEqual(commit.author.name, loaded.author.name)

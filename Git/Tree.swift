@@ -63,6 +63,8 @@ final class Tree {
         }
     }
     
+    init() { }
+    
     private init(_ parse: Parse, url: URL) throws {
         while parse.index < parse.data.count {
             let item = Item()

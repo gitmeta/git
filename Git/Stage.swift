@@ -27,7 +27,7 @@ final class Stage {
         if let parent = try? Hub.head.id(url) {
             commit.parent.append(parent)
         }
-        try commit.save(url)
+        try Hub.head.update(url, id: Hub.content.add(commit, url: url))
         index.save(url)
     }
     

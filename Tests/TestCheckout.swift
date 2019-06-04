@@ -47,4 +47,31 @@ class TestCheckout: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testThreeCommits() {
+        let expect = expectation(description: "")
+        let secondfile = url.appendingPathComponent("secondfile.txt")
+        let thirdfile = url.appendingPathComponent("thirdfile.txt")
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            repository.commit([self.file], message: "hello world") {
+                let first = try! Hub.head.id(self.url)
+                try! Data("this is a second file\n".utf8).write(to: secondfile)
+                repository.commit([secondfile], message: "lorem ipsum 2") {
+                    try! Data("this is a third file\n".utf8).write(to: thirdfile)
+                    try! Data("a modified hello world\n".utf8).write(to: self.file)
+                    repository.commit([self.file, thirdfile], message: "lorem ipsum 3") {
+                        repository.check(first) {
+                            XCTAssertEqual("hello world\n", String(decoding: try! Data(contentsOf: self.file), as: UTF8.self))
+                            XCTAssertFalse(FileManager.default.fileExists(atPath: secondfile.path))
+                            XCTAssertFalse(FileManager.default.fileExists(atPath: thirdfile.path))
+                            expect.fulfill()
+                        }
+                    }
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

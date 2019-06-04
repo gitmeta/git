@@ -22,9 +22,7 @@ final class Factory {
             try self.rest.pack(remote, want: reference, error: error) {
                 let repository = try self.create(directory)
                 try $0.unpack(directory)
-                guard let id = $0.commits.first(where: { $0.0 == reference })?.1.0.tree else { throw Failure.Clone.unpack }
-                let tree = try Tree(id, url: directory)
-                try repository.check.extract(tree)
+                try repository.check.check(reference)
                 try Hub.head.update(directory, id: reference)
                 try Hub.head.origin(directory, id: reference)
                 try Config(remote).save(directory)

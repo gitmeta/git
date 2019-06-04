@@ -45,10 +45,4 @@ public final class Commit {
         result += "author \(author.serial)\ncommitter \(committer.serial)\(gpg)\n\n\(message)"
         return result
     }
-    
-    @discardableResult func save(_ url: URL) throws -> String {
-        let id = try Hub.content.add(self, url: url)
-        try Hub.head.update(url, id: id)
-        return id
-    }
 }

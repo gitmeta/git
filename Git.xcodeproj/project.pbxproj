@@ -350,11 +350,11 @@
 		2048A0CB225C744400290E54 /* Git */ = {
 			isa = PBXGroup;
 			children = (
+				CED676C7228E840C009D6ADC /* Check.swift */,
 				2048A0CF225C744400290E54 /* Commit.swift */,
 				CE02C30F22A2B3C90022DE9B /* Config.swift */,
 				CE7B8BF222917A1C00396AB1 /* Content.swift */,
 				2073D8762267283E00631BCB /* Dispatch.swift */,
-				CED676C7228E840C009D6ADC /* Check.swift */,
 				CEAE6CBE22A26BFE001E1AE1 /* Factory.swift */,
 				2048A0CC225C744400290E54 /* Failure.swift */,
 				20C21CCB2288113C0038466A /* Fetch.swift */,

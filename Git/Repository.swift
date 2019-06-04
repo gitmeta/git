@@ -53,7 +53,7 @@ public final class Repository {
     public func check(_ id: String, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
             self?.state.delay()
-            
+            try self?.check.check(id)
             self?.refresh()
         }, error: error, success: done)
     }

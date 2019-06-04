@@ -4,16 +4,27 @@ final class Check {
     weak var repository: Repository?
     
     func reset() throws {
-        guard let url = repository?.url, let tree = try? Hub.head.tree(url), let list = repository?.state.list else { return }
-        try remove(list)
-        try extract(tree)
+        guard let url = repository?.url, let tree = try? Hub.head.tree(url) else { return }
+        try check(tree)
     }
     
-    func extract(_ tree: Tree) throws {
+    func check(_ id: String) throws {
         guard let url = repository?.url else { return }
+        try check(Tree(Commit(Hub.content.get(id, url: url)).tree, url: url))
+        try Hub.head.update(url, id: id)
+    }
+    
+    private func check(_ tree: Tree) throws {
+        guard let url = repository?.url else { return }
+        try remove()
         let index = Index()
         try extract(tree, index: index)
         index.save(url)
+    }
+    
+    private func remove() throws {
+        guard let list = repository?.state.list else { return }
+        try remove(list)
     }
     
     private func remove(_ list: [(URL, Status)]) throws {
