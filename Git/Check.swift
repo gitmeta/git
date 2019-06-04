@@ -16,19 +16,14 @@ final class Check {
     
     private func check(_ tree: Tree) throws {
         guard let url = repository?.url else { return }
-        try remove()
+        try remove(tree)
         let index = Index()
         try extract(tree, index: index)
         index.save(url)
     }
     
-    private func remove() throws {
-        guard let list = repository?.state.list else { return }
-        try remove(list)
-    }
-    
-    private func remove(_ list: [(URL, Status)]) throws {
-        guard let url = repository?.url else { return }
+    private func remove(_ tree: Tree) throws {
+        guard let url = repository?.url, let list = repository?.state.list(tree) else { return }
         try list.filter({ $0.1 != .deleted }).forEach {
             let path = $0.0.deletingLastPathComponent().path.dropFirst(url.path.count)
             if !path.isEmpty {

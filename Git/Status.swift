@@ -39,15 +39,24 @@ final class State {
     var list: [(URL, Status)] {
         guard let url = repository?.url else { return [] }
         last = Date()
-        let tree = (try? Hub.head.tree(url))?.list(url) ?? []
-        return list(tree)
+        return list((try? Hub.head.tree(url)))
     }
     
-    func list(_ tree: [Tree.Item]) -> [(URL, Status)] {
+    func refresh() {
+        last = .distantPast
+        timer.schedule(deadline: .now() + delta)
+    }
+    
+    func delay() {
+        last = .distantFuture
+        timer.schedule(deadline: .distantFuture)
+    }
+    
+    func list(_ tree: Tree?) -> [(URL, Status)] {
         guard let url = repository?.url else { return [] }
         let contents = self.contents
         let index = Index(url)
-        var tree = tree
+        var tree = tree?.list(url) ?? []
         return contents.reduce(into: [(URL, Status)]()) { result, url in
             if let entries = index?.entries.filter({ $0.url == url }), !entries.isEmpty {
                 let hash = Hub.hash.file(url).1
@@ -62,17 +71,7 @@ final class State {
             } else {
                 result.append((url, .untracked))
             }
-            } + tree.map({ ($0.url, .deleted) })
-    }
-    
-    func refresh() {
-        last = .distantPast
-        timer.schedule(deadline: .now() + delta)
-    }
-    
-    func delay() {
-        last = .distantFuture
-        timer.schedule(deadline: .distantFuture)
+        } + tree.map({ ($0.url, .deleted) })
     }
     
     private var contents: [URL] {
