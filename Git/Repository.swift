@@ -26,9 +26,9 @@ public final class Repository {
     
     public func pull(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
-            guard let url = self?.url else { return }
-            self?.state.delay()
-            try Hub.factory.pull(url, error: error) { [weak self] in
+            guard let self = self else { return }
+            self.state.delay()
+            try Hub.factory.pull(self, error: error) { [weak self] in
                 self?.refresh()
                 DispatchQueue.main.async { done() }
             }

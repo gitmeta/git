@@ -126,4 +126,33 @@ class TestPull: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testCheckout() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
+        rest._pack = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.create(url) {
+            repository = $0
+            try? Config("lorem ipsum").save(self.url)
+            repository.pull {
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/index").path))
+                XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent("README.md").path))
+                XCTAssertEqual("54cac1e1086e2709a52d7d1727526b14efec3a77", try? Hub.head.id(self.url))
+                XCTAssertEqual("Initial commit", try? Hub.head.commit(self.url).message)
+                XCTAssertEqual("54f3a4bf0a60f29d7c4798b590f92ffd56dd6d21", try? Hub.head.tree(self.url).items.first?.id)
+                XCTAssertEqual("54cac1e1086e2709a52d7d1727526b14efec3a77", String(decoding:
+                    (try? Data(contentsOf: self.url.appendingPathComponent(".git/refs/remotes/origin/master"))) ?? Data(), as: UTF8.self))
+                XCTAssertEqual("""
+# test
+Test
+
+""", String(decoding: (try? Data(contentsOf: self.url.appendingPathComponent("README.md"))) ?? Data(), as: UTF8.self))
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

@@ -31,16 +31,20 @@ final class Factory {
         }
     }
     
-    func pull(_ url: URL, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
-        guard let remote = Hub.head.remote(url) else { throw Failure.Pull.remote }
+    func pull(_ repository: Repository, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
+        guard let remote = Hub.head.remote(repository.url) else { throw Failure.Pull.remote }
         try rest.fetch(remote, error: error) {
             guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
-            if reference == Hub.head.origin(url) {
+            if reference == Hub.head.origin(repository.url) {
                 done()
             } else {
-                try self.rest.pack(remote, want: reference,
-                                   have: Hub.content.objects(url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) { _ in
-                    
+                try self.rest.pack(remote, want: reference, have:
+                Hub.content.objects(repository.url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) {
+                    try $0.unpack(repository.url)
+                    try repository.check.check(reference)
+                    try Hub.head.update(repository.url, id: reference)
+                    try Hub.head.origin(repository.url, id: reference)
+                    done()
                 }
             }
         }
