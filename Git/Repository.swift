@@ -5,14 +5,14 @@ public final class Repository {
     public let url: URL
     let state = State()
     let stage = Stage()
-    let extract = Extract()
+    let check = Check()
     let packer = Packer()
     
     init(_ url: URL) {
         self.url = url
         state.repository = self
         stage.repository = self
-        extract.repository = self
+        check.repository = self
         packer.repository = self
     }
     
@@ -45,7 +45,7 @@ public final class Repository {
     public func reset(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
             self?.state.delay()
-            try self?.extract.reset()
+            try self?.check.reset()
             self?.refresh()
         }, error: error, success: done)
     }

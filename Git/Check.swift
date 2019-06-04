@@ -1,6 +1,6 @@
 import Foundation
 
-final class Extract {
+final class Check {
     weak var repository: Repository?
     
     func reset() throws {
