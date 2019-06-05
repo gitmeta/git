@@ -10,7 +10,7 @@ final class Check {
     
     func check(_ id: String) throws {
         guard let url = repository?.url else { return }
-        try check(Tree(Commit(Hub.content.get(id, url: url)).tree, url: url))
+        try check(Tree(Commit(id, url: url).tree, url: url))
         try Hub.head.update(url, id: id)
     }
     
@@ -47,7 +47,7 @@ final class Check {
                 if !FileManager.default.fileExists(atPath: $0.url.path) {
                     try FileManager.default.createDirectory(at: $0.url, withIntermediateDirectories: true)
                 }
-                try extract(try Tree($0.id, url: url, trail: $0.url), index: index)
+                try extract(Tree($0.id, url: url, trail: $0.url), index: index)
             default:
                 let data = try Hub.content.get($0.id, url: url)
                 let parse = Parse(data)

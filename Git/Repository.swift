@@ -6,6 +6,7 @@ public final class Repository {
     let state = State()
     let stage = Stage()
     let check = Check()
+    let merger = Merger()
     let packer = Packer()
     
     init(_ url: URL) {
@@ -13,6 +14,7 @@ public final class Repository {
         state.repository = self
         stage.repository = self
         check.repository = self
+        merger.repository = self
         packer.repository = self
     }
     

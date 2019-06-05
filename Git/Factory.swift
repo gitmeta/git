@@ -42,6 +42,7 @@ final class Factory {
                 try self.rest.pack(remote, want: reference, have:
                 Hub.content.objects(repository.url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) {
                     try $0.unpack(repository.url)
+                    try repository.merger.merge(reference)
                     try repository.check.check(reference)
                     try Hub.head.update(repository.url, id: reference)
                     try Hub.head.origin(repository.url, id: reference)

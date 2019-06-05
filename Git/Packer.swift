@@ -31,7 +31,7 @@ final class Packer {
     
     private func references() throws {
         guard let url = repository?.url, FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/packed-refs").path) else { return }
-        try String(decoding: try Data(contentsOf: url.appendingPathComponent(".git/packed-refs")), as: UTF8.self).components(separatedBy: "\n").forEach {
+        try String(decoding: Data(contentsOf: url.appendingPathComponent(".git/packed-refs")), as: UTF8.self).components(separatedBy: "\n").forEach {
             if $0.first != "#" {
                 let reference = $0.components(separatedBy: " ")
                 guard reference.count >= 2 else { return }

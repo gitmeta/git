@@ -8,6 +8,8 @@ public final class Commit {
     var tree = ""
     var gpg = ""
     
+    convenience init(_ id: String, url: URL) throws { try self.init(Hub.content.get(id, url: url)) }
+    
     init(_ data: Data) throws {
         let string = String(decoding: data, as: UTF8.self)
         let split = string.components(separatedBy: "\n\n")

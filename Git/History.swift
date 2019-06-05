@@ -7,7 +7,7 @@ final class History {
     
     init(_ url: URL) throws {
         self.url = url
-        try commits(try Hub.head.id(url))
+        try commits(Hub.head.id(url))
         result = map.values.sorted {
             if $0.author.date > $1.author.date {
                 return true
@@ -20,7 +20,7 @@ final class History {
     
     private func commits(_ id: String) throws {
         guard map[id] == nil else { return }
-        let item = try Commit(try Hub.content.get(id, url: url))
+        let item = try Commit(id, url: url)
         map[id] = item
         try item.parent.forEach {
             try commits($0)
