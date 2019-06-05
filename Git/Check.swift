@@ -14,11 +14,24 @@ final class Check {
         try Hub.head.update(url, id: id)
     }
     
+    func merge(_ id: String) throws {
+        guard let url = repository?.url else { return }
+        var tree = try Hub.head.tree(url).items
+        try Tree(Commit(id, url: url).tree, url: url).items.forEach { item in
+            if !tree.contains(where: { $0.id == item.id }) {
+                tree.append(item)
+            }
+        }
+        let index = Index()
+        try extract(tree, index: index)
+        index.save(url)
+    }
+    
     private func check(_ tree: Tree) throws {
         guard let url = repository?.url else { return }
         try remove(tree)
         let index = Index()
-        try extract(tree, index: index)
+        try extract(tree.items, index: index)
         index.save(url)
     }
     
@@ -39,15 +52,15 @@ final class Check {
         }
     }
     
-    private func extract(_ tree: Tree, index: Index) throws {
+    private func extract(_ tree: [Tree.Item], index: Index) throws {
         guard let url = repository?.url else { return }
-        try tree.items.forEach {
+        try tree.forEach {
             switch $0.category {
             case .tree:
                 if !FileManager.default.fileExists(atPath: $0.url.path) {
                     try FileManager.default.createDirectory(at: $0.url, withIntermediateDirectories: true)
                 }
-                try extract(Tree($0.id, url: url, trail: $0.url), index: index)
+                try extract(Tree($0.id, url: url, trail: $0.url).items, index: index)
             default:
                 let data = try Hub.content.get($0.id, url: url)
                 let parse = Parse(data)

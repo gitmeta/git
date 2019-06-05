@@ -3,17 +3,18 @@ import Foundation
 final class Merger {
     weak var repository: Repository?
     
-    func merge(_ id: String) throws {
-        guard let url = repository?.url, let local = try? History(url), let remote = try? History(id, url: url) else { return }
-        var found = false
+    func needs(_ id: String) throws -> Bool {
+        guard let url = repository?.url, let local = try? History(url), let remote = try? History(id, url: url) else { return false }
+        var same = false
         var index = 0
         let keys = Array(local.map.keys)
-        while !found && index < keys.count {
-            found = remote.map[keys[index]] != nil
+        while !same && index < keys.count {
+            same = remote.map[keys[index]] != nil
             index += 1
         }
-        if !found {
+        if !same {
             throw Failure.Merge.common
         }
+        return remote.map[try Hub.head.id(url)] == nil && local.map[id] == nil
     }
 }

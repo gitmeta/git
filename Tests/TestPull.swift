@@ -204,4 +204,40 @@ Test
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testMerge() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        var fetch = Fetch()
+        fetch.refs.append("335a33ae387dc24f057852fdb92e5abc71bf6b85")
+        rest._fetch = fetch
+        rest._pack = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch2", withExtension: nil)!))
+        Hub.create(url) {
+            repository = $0
+            try? Config("lorem ipsum").save(self.url)
+            repository.pull {
+                XCTAssertEqual(4, try! FileManager.default.contentsOfDirectory(atPath: self.url.path).count)
+                self.rest._fetch!.refs = ["4ec6903ca199e0e92c6cd3abb5b95f3b7f3d7e4d"]
+                self.rest._pack = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch3", withExtension: nil)!))
+                try! Data("hello world\n".utf8).write(to: self.file)
+                repository.commit([self.file], message: "Add file not tracked in the list.") {
+                    let external = try! Hub.head.id(self.url)
+                    XCTAssertTrue(try! FileManager.default.contentsOfDirectory(atPath: self.url.path).contains("myfile.txt"))
+                    repository.pull {
+                        let commit = try! Hub.head.commit(self.url)
+                        let contents = try! FileManager.default.contentsOfDirectory(atPath: self.url.path)
+                        XCTAssertTrue(contents.contains("myfile.txt"))
+                        XCTAssertTrue(contents.contains("asd.txt"))
+                        XCTAssertEqual(7, contents.count)
+                        XCTAssertEqual(2, commit.parent.count)
+                        XCTAssertEqual("4ec6903ca199e0e92c6cd3abb5b95f3b7f3d7e4d", commit.parent.last)
+                        XCTAssertEqual(external, commit.parent.first)
+                        XCTAssertTrue(repository.state.list.isEmpty)
+                        expect.fulfill()
+                    }
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

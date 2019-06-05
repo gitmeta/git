@@ -189,6 +189,18 @@ Add project files.
         waitForExpectations(timeout: 1)
     }
     
+    func testInvalidUrl() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            Hub.session.name = "hello"
+            Hub.session.email = "world"
+            repository.commit([self.url.appendingPathComponent("none.txt")], message: "hello world\n", error: { _ in expect.fulfill() })
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
     func testFirstCommit() {
         let expect = expectation(description: "")
         let date = Date(timeIntervalSinceNow: -1)
@@ -217,7 +229,7 @@ Add project files.
         waitForExpectations(timeout: 1)
     }
     
-    func testAllowSecondCommitEmpty() {
+    func testNotAllowedCommitEmpty() {
         let expect = expectation(description: "")
         var repository: Repository!
         Hub.create(url) {
@@ -225,9 +237,9 @@ Add project files.
             Hub.session.name = "asd"
             Hub.session.email = "my@email.com"
             repository.commit([self.file], message: "hello world") {
-                repository.commit([self.file], message: "second commit") {
+                repository.commit([self.file], message: "second commit", error: { _ in
                     expect.fulfill()
-                }
+                })
             }
         }
         waitForExpectations(timeout: 1)

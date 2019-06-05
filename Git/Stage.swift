@@ -4,11 +4,16 @@ final class Stage {
     weak var repository: Repository?
     
     func commit(_ files: [URL], message: String) throws {
-        guard let url = repository?.url else { return }
+        guard let url = repository?.url, let list = repository?.state.list else { return }
         guard !files.isEmpty else { throw Failure.Commit.empty }
         guard !Hub.session.name.isEmpty else { throw Failure.Commit.credentials }
         guard !Hub.session.email.isEmpty else { throw Failure.Commit.credentials }
         guard !message.isEmpty else { throw Failure.Commit.message }
+        try files.forEach { file in
+            if !list.contains(where: { $0.0.path == file.path }) {
+                throw Failure.Commit.none
+            }
+        }
         let index = Index(url) ?? Index()
         let ignore = Ignore(url)
         let tree = Tree(url, ignore: ignore, update: files, entries: index.entries)
@@ -27,6 +32,31 @@ final class Stage {
         if let parent = try? Hub.head.id(url) {
             commit.parent.append(parent)
         }
+        try Hub.head.update(url, id: Hub.content.add(commit, url: url))
+        index.save(url)
+    }
+    
+    func merge(_ id: String) throws {
+        guard let url = repository?.url, let files = repository?.state.list.map({ $0.0 }) else { return }
+        guard !Hub.session.name.isEmpty else { throw Failure.Commit.credentials }
+        guard !Hub.session.email.isEmpty else { throw Failure.Commit.credentials }
+        let index = Index(url) ?? Index()
+        let ignore = Ignore(url)
+        let tree = Tree(url, ignore: ignore, update: files, entries: index.entries)
+        let treeId = try tree.save(url)
+        try files.forEach {
+            guard !ignore.url($0) else { throw Failure.Commit.ignored }
+            try? add($0, index: index)
+        }
+        let commit = Commit()
+        commit.author.name = Hub.session.name
+        commit.author.email = Hub.session.email
+        commit.committer.name = Hub.session.name
+        commit.committer.email = Hub.session.email
+        commit.tree = treeId
+        commit.message = "Merge.\n"
+        commit.parent.append(try Hub.head.id(url))
+        commit.parent.append(id)
         try Hub.head.update(url, id: Hub.content.add(commit, url: url))
         index.save(url)
     }
