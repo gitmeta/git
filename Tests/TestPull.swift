@@ -139,7 +139,7 @@ class TestPull: XCTestCase {
         var fetch = Fetch()
         fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
-        rest._pack = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
+        rest._pack = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.create(url) {
             repository = $0
             try? Config("lorem ipsum").save(self.url)
@@ -181,6 +181,25 @@ Test
 """, String(decoding: (try? Data(contentsOf: self.url.appendingPathComponent(".git/config"))) ?? Data(), as: UTF8.self))
                     expect.fulfill()
                 }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testMergeFailNoCommonAncestor() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        var fetch = Fetch()
+        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        rest._fetch = fetch
+        rest._pack = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch0", withExtension: nil)!))
+        Hub.create(url) {
+            repository = $0
+            try? Config("lorem ipsum").save(self.url)
+            repository.commit([self.file], message: "This is a commit that should not be in the history.\n") {
+                repository.pull({ _ in
+                    expect.fulfill()
+                })
             }
         }
         waitForExpectations(timeout: 1)
