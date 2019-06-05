@@ -2,12 +2,16 @@ import Foundation
 
 final class History {
     private(set) var result = [Commit]()
-    private var map = [String: Commit]()
+    private(set) var map = [String: Commit]()
     private let url: URL
     
-    init(_ url: URL) throws {
+    convenience init(_ url: URL) throws {
+        try self.init(Hub.head.id(url), url: url)
+    }
+    
+    init(_ id: String, url: URL) throws {
         self.url = url
-        try commits(Hub.head.id(url))
+        try commits(id)
         result = map.values.sorted {
             if $0.author.date > $1.author.date {
                 return true

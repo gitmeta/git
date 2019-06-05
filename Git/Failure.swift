@@ -72,6 +72,10 @@ public struct Failure: LocalizedError {
         public static let none = Failure("Configuration file not found.")
     }
     
+    public struct Merge {
+        public static let common = Failure("There is no common ancestor in the history of both trees, they can't be merged.")
+    }
+    
     public var errorDescription: String? { return string }
     private let string: String
     private init(_ string: String) { self.string = string }
