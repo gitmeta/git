@@ -48,8 +48,8 @@ final class Factory {
                     } else {
                         try repository.check.check(reference)
                         try Hub.head.update(repository.url, id: reference)
-                        try Hub.head.origin(repository.url, id: reference)
                     }
+                    try Hub.head.origin(repository.url, id: reference)
                     done()
                 }
             }

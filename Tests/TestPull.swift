@@ -233,6 +233,8 @@ Test
                         XCTAssertEqual("4ec6903ca199e0e92c6cd3abb5b95f3b7f3d7e4d", commit.parent.last)
                         XCTAssertEqual(external, commit.parent.first)
                         XCTAssertTrue(repository.state.list.isEmpty)
+                        XCTAssertEqual("4ec6903ca199e0e92c6cd3abb5b95f3b7f3d7e4d", String(decoding:
+                            (try? Data(contentsOf: self.url.appendingPathComponent(".git/refs/remotes/origin/master"))) ?? Data(), as: UTF8.self))
                         expect.fulfill()
                     }
                 }
