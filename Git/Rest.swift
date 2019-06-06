@@ -1,7 +1,16 @@
 import Foundation
 
-class Rest {
-    private let session = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: OperationQueue())
+class Rest: NSObject, URLSessionDelegate {
+    private var session: URLSession!
+    
+    override init() {
+        super.init()
+        session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: OperationQueue())
+    }
+    
+    func urlSession(_: URLSession, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        
+    }
     
     func fetch(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
         session.dataTask(with: URLRequest(url: try url(remote, suffix: "/info/refs?service=git-upload-pack"), cachePolicy:

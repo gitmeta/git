@@ -21,12 +21,14 @@ class TestSession: XCTestCase {
         let session = Session()
         session.name = "lorem ipsum"
         session.email = "lorem@world.com"
+        session.user = "pablo@mousaka.com"
         session.bookmark = data
         session.url = url
         session.save()
         Hub.session.load {
             XCTAssertEqual("lorem ipsum", Hub.session.name)
             XCTAssertEqual("lorem@world.com", Hub.session.email)
+            XCTAssertEqual("pablo@mousaka.com", Hub.session.user)
             XCTAssertEqual(data, Hub.session.bookmark)
             XCTAssertEqual(url.path, Hub.session.url.path)
             XCTAssertEqual(Thread.main, Thread.current)
@@ -63,6 +65,19 @@ class TestSession: XCTestCase {
             Hub.session.load {
                 XCTAssertEqual(data, Hub.session.bookmark)
                 XCTAssertEqual(url.path, Hub.session.url.path)
+                expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testUpdateKey() {
+        let expect = expectation(description: "")
+        XCTAssertTrue(Hub.session.user.isEmpty)
+        Hub.session.update("mousaka@mail.com", password: "some secret stuff") {
+            Hub.session.user = ""
+            Hub.session.load {
+                XCTAssertEqual("mousaka@mail.com", Hub.session.user)
                 expect.fulfill()
             }
         }

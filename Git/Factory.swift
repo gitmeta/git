@@ -12,13 +12,13 @@ final class Factory {
     
     func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void), result: @escaping((URL) -> Void)) throws {
         if repository(local) { throw Failure.Clone.already }
-        guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""), !name.isEmpty
-        else { throw Failure.Clone.name }
-        let directory = local.appendingPathComponent(name)
-        guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
         try rest.fetch(remote, error: error) {
             guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
+            guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""), !name.isEmpty
+                else { throw Failure.Clone.name }
+            let directory = local.appendingPathComponent(name)
+            guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
             try self.rest.pack(remote, want: reference, error: error) {
                 let repository = try self.create(directory)
                 try $0.unpack(directory)

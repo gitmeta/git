@@ -5,8 +5,9 @@ public final class Session: Codable {
     public internal(set) var bookmark = Data()
     public internal(set) var name = ""
     public internal(set) var email = ""
+    public internal(set) var user = ""
     
-    public func load(_ result: (() -> Void)? = nil) {
+    public func load(_ result: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
             guard let data = UserDefaults.standard.data(forKey: "session"),
                 let decoded = try? JSONDecoder().decode(Session.self, from: data)
@@ -15,10 +16,11 @@ public final class Session: Codable {
             self?.email = decoded.email
             self?.url = decoded.url
             self?.bookmark = decoded.bookmark
-        }, success: result ?? { })
+            self?.user = decoded.user
+        }, success: result)
     }
     
-    public func update(_ name: String, email: String, error: ((Error) -> Void)? = nil, done: (() -> Void)? = nil) {
+    public func update(_ name: String, email: String, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
             guard !name.isEmpty else { throw Failure.User.name }
             
@@ -44,15 +46,22 @@ public final class Session: Codable {
             self?.name = name
             self?.email = email
             self?.save()
-        }, error: error ?? { _ in }, success: done ?? { })
+        }, error: error, success: done)
     }
     
-    public func update(_ url: URL, bookmark: Data, done: (() -> Void)? = nil) {
+    public func update(_ user: String, password: String, done: @escaping(() -> Void) = { }) {
+        Hub.dispatch.background ({ [weak self] in
+            self?.user = user
+            self?.save()
+        }, success: done)
+    }
+    
+    public func update(_ url: URL, bookmark: Data, done: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
             self?.url = url
             self?.bookmark = bookmark
             self?.save()
-        }, success: done ?? { })
+        }, success: done)
     }
     
     func save() { UserDefaults.standard.set(try! JSONEncoder().encode(self), forKey: "session") }
