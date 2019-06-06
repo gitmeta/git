@@ -16,24 +16,30 @@ final class Help: NSWindow {
         backgroundColor = .shade
         isReleasedWhenClosed = false
         
+        let border = NSView()
+        border.translatesAutoresizingMaskIntoConstraints = false
+        border.wantsLayer = true
+        border.layer!.backgroundColor = .black
+        contentView!.addSubview(border)
+        
         let title = Label(.local("Help.title"))
         title.textColor = .halo
-        title.font = .systemFont(ofSize: 16, weight: .bold)
+        title.font = .systemFont(ofSize: 14, weight: .medium)
         contentView!.addSubview(title)
         
         let label = Label()
-        label.alignment = .center
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 14, weight: .light)
+        label.textColor = NSColor(white: 1, alpha: 0.8)
+        label.font = .systemFont(ofSize: 16, weight: .light)
         contentView!.addSubview(label)
         self.label = label
         
         var rightImage: NSLayoutXAxisAnchor!
         var rightButton = contentView!.leftAnchor
-        (0 ..< 4).forEach {
+        let steps = ["help.browse", "help.create", "help.files", "settings", "add", "help.commit", "reset", "history", "cloud"]
+        steps.enumerated().forEach {
             let image = NSImageView()
             image.translatesAutoresizingMaskIntoConstraints = false
-            image.image = NSImage(named: "onboard\($0)")
+            image.image = NSImage(named: $0.1)
             image.imageScaling = .scaleNone
             image.alphaValue = 0
             contentView!.addSubview(image)
@@ -45,33 +51,36 @@ final class Help: NSWindow {
             contentView!.addSubview(button)
             buttons.append(button)
             
-            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -30).isActive = true
+            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -100).isActive = true
             image.heightAnchor.constraint(equalToConstant: 200).isActive = true
             image.widthAnchor.constraint(equalToConstant: 200).isActive = true
             
-            button.heightAnchor.constraint(equalToConstant: 20).isActive = true
-            button.widthAnchor.constraint(equalTo: contentView!.widthAnchor, multiplier: 0.25, constant: -2.5).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            button.widthAnchor.constraint(equalTo: contentView!.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -2).isActive = true
             button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
             button.leftAnchor.constraint(equalTo: rightButton, constant: 2).isActive = true
             rightButton = button.rightAnchor
             
-            if $0 == 0 {
+            if $0.0 == 0 {
                 centerX = image.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor)
                 centerX.isActive = true
             } else {
                 image.leftAnchor.constraint(equalTo: rightImage, constant: 100).isActive = true
             }
-            
-            
             rightImage = image.rightAnchor
         }
         
-        title.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        title.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 10).isActive = true
+        title.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 18).isActive = true
+        title.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -20).isActive = true
         
-        label.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -50).isActive = true
+        border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
+        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
+        border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
+        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        label.topAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 50).isActive = true
         label.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 420).isActive = true
         
         DispatchQueue.main.async { [weak self] in self?.display(0) }
     }
@@ -94,7 +103,7 @@ final class Help: NSWindow {
     private func display(_ index: Int) {
         self.index = index
         buttons.enumerated().forEach {
-            $0.1.alphaValue = $0.0 == index ? 1 : 0.3
+            $0.1.alphaValue = $0.0 == index ? 1 : 0.1
         }
         label.stringValue = .local("Onboard.mac\(index)")
         centerX.constant = CGFloat(-300 * index)
