@@ -174,6 +174,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             pushing.button.action = #selector(makePush)
             pushing.button.label.stringValue = .local("Cloud.push.button")
             pushing.field.delegate = self
+            pushing.button.isHidden = true
             push.addSubview(pushing)
             self.pushing = pushing
             

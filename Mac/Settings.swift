@@ -132,6 +132,11 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         signSave.layer!.backgroundColor = NSColor.halo.cgColor
         sign.addSubview(signSave)
         
+        let labelKey = Label(.local("Settings.labelKey"))
+        labelKey.font = .systemFont(ofSize: 14, weight: .light)
+        labelKey.textColor = NSColor(white: 1, alpha: 0.6)
+        key.addSubview(labelKey)
+        
         border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
         border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
         border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
@@ -171,6 +176,10 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         signSave.centerXAnchor.constraint(equalTo: sign.centerXAnchor).isActive = true
         signSave.widthAnchor.constraint(equalToConstant: 62).isActive = true
         signSave.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        
+        labelKey.topAnchor.constraint(equalTo: key.topAnchor, constant: 20).isActive = true
+        labelKey.leftAnchor.constraint(equalTo: key.leftAnchor, constant: 20).isActive = true
+        labelKey.widthAnchor.constraint(lessThanOrEqualToConstant: 280).isActive = true
         
         DispatchQueue.main.async { [weak self] in self?.sign()  }
     }

@@ -20,6 +20,7 @@ Add.button="Commit";
 Settings.buttonSign="Signature";
 Settings.buttonKey="Credentials";
 Settings.labelSign="Signature for your commits.";
+Settings.labelKey="Here you will be able to add your credentials to authenticate in remote servers.";
 Settings.signName="Name";
 Settings.signEmail="Email";
 Settings.signSave="Save";
