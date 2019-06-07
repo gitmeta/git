@@ -65,4 +65,8 @@ public final class Session: Codable {
     }
     
     func save() { UserDefaults.standard.set(try! JSONEncoder().encode(self), forKey: "session") }
+    
+    var credentials: URLCredential? {
+        return URLCredential(user: "vauxhall", password: "", persistence: .forSession)
+    }
 }

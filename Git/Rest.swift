@@ -1,29 +1,22 @@
 import Foundation
 
-class Rest: NSObject, URLSessionDelegate {
+class Rest: NSObject, URLSessionTaskDelegate {
     private var session: URLSession!
     
     override init() {
         super.init()
         session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: OperationQueue())
     }
-    /*
-    func urlSession(_: URLSession, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        
-    }*/
+    
+    func urlSession(_: URLSession, task: URLSessionTask, didReceive: URLAuthenticationChallenge, completionHandler: @escaping
+        (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.useCredential, Hub.session.credentials)
+    }
     
     func fetch(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
         session.dataTask(with: URLRequest(url: try url(remote, suffix: "/info/refs?service=git-upload-pack"), cachePolicy:
-            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)) { data, response, fail in
-                Hub.dispatch.background({
-                    if let fail = fail {
-                        throw fail
-                    } else if (response as? HTTPURLResponse)?.statusCode == 200, let data = data, !data.isEmpty {
-                        try result(Fetch(data))
-                    } else {
-                        throw Failure.Request.empty
-                    }
-                }, error: error)
+            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)) { [weak self] in
+                self?.validate($0, $1, $2, error: error) { try result(Fetch($0)) }
         }.resume()
     }
     
@@ -38,16 +31,8 @@ class Rest: NSObject, URLSessionDelegate {
 
 """.utf8)
             return request
-        } (try url(remote, suffix: "/git-upload-pack")) as URLRequest) { data, response, fail in
-            Hub.dispatch.background({
-                if let fail = fail {
-                    throw fail
-                } else if (response as? HTTPURLResponse)?.statusCode == 200, let data = data, !data.isEmpty {
-                    try result(Pack(data))
-                } else {
-                    throw Failure.Request.empty
-                }
-            }, error: error)
+        } (try url(remote, suffix: "/git-upload-pack")) as URLRequest) { [weak self] in
+            self?.validate($0, $1, $2, error: error) { try result(Pack($0)) }
         }.resume()
     }
     
@@ -57,5 +42,25 @@ class Rest: NSObject, URLSessionDelegate {
             let url = URL(string: "https://" + remote + suffix)
         else { throw Failure.Request.invalid }
         return url
+    }
+    
+    private func validate(_ data: Data?, _ response: URLResponse?, _ fail: Error?,
+                          error: @escaping((Error) -> Void), result: @escaping((Data) throws -> Void)) {
+        Hub.dispatch.background({
+            if let fail = fail {
+                throw fail
+            } else {
+                switch (response as? HTTPURLResponse)?.statusCode {
+                case 200, 201:
+                    if let data = data, !data.isEmpty {
+                        try result(data)
+                    } else {
+                        throw Failure.Request.empty
+                    }
+                case 401: throw Failure.Request.auth
+                default: throw Failure.Request.response
+                }
+            }
+        }, error: error)
     }
 }
