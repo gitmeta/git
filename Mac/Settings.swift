@@ -6,7 +6,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         private(set) weak var field: NSTextField!
         private(set) weak var label: Label!
         
-        init() {
+        init(_ type: NSTextField.Type = NSTextField.self) {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
             
@@ -22,7 +22,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
             border.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
             addSubview(border)
             
-            let field = NSTextField()
+            let field = type.init()
             field.translatesAutoresizingMaskIntoConstraints = false
             field.isBezeled = false
             field.font = .systemFont(ofSize: 14, weight: .regular)
@@ -61,6 +61,8 @@ final class Settings: NSWindow, NSTextFieldDelegate {
     private weak var buttonSign: Button.Text!
     private weak var signName: Field!
     private weak var signEmail: Field!
+    private weak var keyUser: Field!
+    private weak var keyPassword: Field!
     private weak var left: NSLayoutConstraint!
     
     init() {
@@ -137,6 +139,29 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         labelKey.textColor = NSColor(white: 1, alpha: 0.6)
         key.addSubview(labelKey)
         
+        let keyUser = Field()
+        keyUser.field.delegate = self
+        keyUser.label.stringValue = .local("Settings.keyUser")
+        keyUser.field.stringValue = Hub.session.user
+        key.addSubview(keyUser)
+        self.keyUser = keyUser
+        
+        let keyPassword = Field(NSSecureTextField.self)
+        keyPassword.field.delegate = self
+        keyPassword.label.stringValue = .local("Settings.keyPassword")
+        keyPassword.field.stringValue = Hub.session.password
+        key.addSubview(keyPassword)
+        self.keyPassword = keyPassword
+        
+        let keySave = Button.Text(self, action: #selector(self.keySave))
+        keySave.label.stringValue = .local("Settings.keySave")
+        keySave.label.font = .systemFont(ofSize: 11, weight: .medium)
+        keySave.label.textColor = .black
+        keySave.wantsLayer = true
+        keySave.layer!.cornerRadius = 4
+        keySave.layer!.backgroundColor = NSColor.halo.cgColor
+        key.addSubview(keySave)
+        
         border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
         border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
         border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
@@ -164,7 +189,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         key.leftAnchor.constraint(equalTo: sign.rightAnchor).isActive = true
         
         labelSign.topAnchor.constraint(equalTo: sign.topAnchor, constant: 20).isActive = true
-        labelSign.leftAnchor.constraint(equalTo: sign.leftAnchor, constant: 20).isActive = true
+        labelSign.leftAnchor.constraint(equalTo: sign.leftAnchor, constant: 18).isActive = true
         
         signName.topAnchor.constraint(equalTo: labelSign.bottomAnchor, constant: 20).isActive = true
         signName.leftAnchor.constraint(equalTo: sign.leftAnchor, constant: 20).isActive = true
@@ -178,8 +203,18 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         signSave.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         labelKey.topAnchor.constraint(equalTo: key.topAnchor, constant: 20).isActive = true
-        labelKey.leftAnchor.constraint(equalTo: key.leftAnchor, constant: 20).isActive = true
-        labelKey.widthAnchor.constraint(lessThanOrEqualToConstant: 280).isActive = true
+        labelKey.leftAnchor.constraint(equalTo: key.leftAnchor, constant: 18).isActive = true
+        
+        keyUser.topAnchor.constraint(equalTo: labelKey.bottomAnchor, constant: 20).isActive = true
+        keyUser.leftAnchor.constraint(equalTo: key.leftAnchor, constant: 20).isActive = true
+        
+        keyPassword.topAnchor.constraint(equalTo: keyUser.bottomAnchor, constant: 20).isActive = true
+        keyPassword.leftAnchor.constraint(equalTo: key.leftAnchor, constant: 20).isActive = true
+        
+        keySave.bottomAnchor.constraint(equalTo: key.bottomAnchor, constant: -20).isActive = true
+        keySave.centerXAnchor.constraint(equalTo: key.centerXAnchor).isActive = true
+        keySave.widthAnchor.constraint(equalToConstant: 62).isActive = true
+        keySave.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         DispatchQueue.main.async { [weak self] in self?.sign()  }
     }
@@ -190,6 +225,10 @@ final class Settings: NSWindow, NSTextFieldDelegate {
                 makeFirstResponder(signEmail.field)
             } else if control == signEmail.field {
                 signSave()
+            } else if control == keyUser.field {
+                makeFirstResponder(keyPassword.field)
+            } else {
+                keySave()
             }
             return true
         } else if doCommandBy == #selector(NSResponder.insertTab(_:)) || doCommandBy == #selector(NSResponder.insertBacktab(_:)) {
@@ -197,6 +236,10 @@ final class Settings: NSWindow, NSTextFieldDelegate {
                 makeFirstResponder(signEmail.field)
             } else if control == signEmail.field {
                 makeFirstResponder(signName.field)
+            } else if control == keyUser.field {
+                makeFirstResponder(keyPassword.field)
+            } else if control == keyPassword.field {
+                makeFirstResponder(keyUser.field)
             }
             return true
         } else if doCommandBy == #selector(NSResponder.cancelOperation(_:)) {
@@ -252,5 +295,12 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         Hub.session.update(signName.field.stringValue, email: signEmail.field.stringValue, error: {
             app.alert(.local("Alert.error"), message: $0.localizedDescription)
         }) { app.alert(.local("Alert.success"), message: .local("Settings.signSuccess")) }
+    }
+    
+    @objc private func keySave() {
+        makeFirstResponder(nil)
+        Hub.session.update(keyUser.field.stringValue, password: keyPassword.field.stringValue) {
+            app.alert(.local("Alert.success"), message: .local("Settings.keySuccess"))
+        }
     }
 }

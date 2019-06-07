@@ -6,12 +6,44 @@ public final class Session: Codable {
     public internal(set) var name = ""
     public internal(set) var email = ""
     public internal(set) var user = ""
+    public internal(set) var password: String {
+        get { return recover ?? "" }
+        set {
+            if recover == nil {
+                var query = self.query
+                query[kSecValueData as String] = Data(newValue.utf8)
+                SecItemAdd(query as CFDictionary, nil)
+            } else {
+                SecItemUpdate(query as CFDictionary, [kSecValueData: Data(newValue.utf8)] as CFDictionary)
+            }
+        }
+    }
+    
+    var credentials: URLCredential? { return URLCredential(user: user, password: password, persistence: .forSession) }
+    
+    private var recover: String? {
+        var result: CFTypeRef? = [String: Any]() as CFTypeRef
+        var query = self.query
+        query[kSecReturnData as String] = true
+        query[kSecReturnAttributes as String] = true
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
+        SecItemCopyMatching(query as CFDictionary, &result)
+        if let data = (result as? [String: Any])?[String(kSecValueData)] as? Data {
+            return String(decoding: data, as: UTF8.self)
+        }
+        return nil
+    }
+    
+    private var query: [String: Any] {
+        return [kSecClass: kSecClassGenericPassword, kSecAttrKeyType: 42, kSecAttrAccount: "user.key", kSecAttrService: "Git"] as [String: Any]
+    }
     
     public func load(_ result: @escaping(() -> Void) = { }) {
         Hub.dispatch.background({ [weak self] in
             guard let data = UserDefaults.standard.data(forKey: "session"),
                 let decoded = try? JSONDecoder().decode(Session.self, from: data)
             else { return }
+            print(String(decoding: data, as: UTF8.self))
             self?.name = decoded.name
             self?.email = decoded.email
             self?.url = decoded.url
@@ -52,6 +84,7 @@ public final class Session: Codable {
     public func update(_ user: String, password: String, done: @escaping(() -> Void) = { }) {
         Hub.dispatch.background ({ [weak self] in
             self?.user = user
+            self?.password = password
             self?.save()
         }, success: done)
     }
@@ -65,8 +98,4 @@ public final class Session: Codable {
     }
     
     func save() { UserDefaults.standard.set(try! JSONEncoder().encode(self), forKey: "session") }
-    
-    var credentials: URLCredential? {
-        return URLCredential(user: "vauxhall", password: "", persistence: .forSession)
-    }
 }
