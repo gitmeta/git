@@ -7,10 +7,10 @@ class Rest: NSObject, URLSessionDelegate {
         super.init()
         session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: OperationQueue())
     }
-    
+    /*
     func urlSession(_: URLSession, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         
-    }
+    }*/
     
     func fetch(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
         session.dataTask(with: URLRequest(url: try url(remote, suffix: "/info/refs?service=git-upload-pack"), cachePolicy:
