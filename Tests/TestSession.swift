@@ -70,17 +70,4 @@ class TestSession: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
-    
-    func testUpdateKey() {
-        let expect = expectation(description: "")
-        XCTAssertTrue(Hub.session.user.isEmpty)
-        Hub.session.update("mousaka@mail.com", password: "some secret stuff") {
-            Hub.session.user = ""
-            Hub.session.load {
-                XCTAssertEqual("mousaka@mail.com", Hub.session.user)
-                expect.fulfill()
-            }
-        }
-        waitForExpectations(timeout: 1)
-    }
 }
