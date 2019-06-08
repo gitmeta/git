@@ -15,6 +15,8 @@ final class Help: NSWindow {
         titleVisibility = .hidden
         backgroundColor = .shade
         isReleasedWhenClosed = false
+        toolbar = NSToolbar(identifier: "")
+        toolbar!.showsBaselineSeparator = false
         
         let border = NSView()
         border.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +37,7 @@ final class Help: NSWindow {
         
         var rightImage: NSLayoutXAxisAnchor!
         var rightButton = contentView!.leftAnchor
-        let steps = ["help.browse", "help.create", "help.files", "settings", "add", "help.commit", "reset", "history", "cloud"]
+        let steps = ["help.browse", "help.create", "help.files", "settings", "add", "help.commit", "reset", "history", "cloud", "help.url"]
         steps.enumerated().forEach {
             let image = NSImageView()
             image.translatesAutoresizingMaskIntoConstraints = false
@@ -45,29 +47,29 @@ final class Help: NSWindow {
             contentView!.addSubview(image)
             images.append(image)
             
-            let button = Button(self, action: #selector(show(_:)))
-            button.wantsLayer = true
-            button.layer!.backgroundColor = NSColor.halo.cgColor
+            let button = Button.Image(self, action: #selector(show(_:)))
+            button.image.image = NSImage(named: "dot")
             contentView!.addSubview(button)
             buttons.append(button)
             
             image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -100).isActive = true
             image.heightAnchor.constraint(equalToConstant: 200).isActive = true
-            image.widthAnchor.constraint(equalToConstant: 200).isActive = true
+            image.widthAnchor.constraint(equalToConstant: 400).isActive = true
             
-            button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-            button.widthAnchor.constraint(equalTo: contentView!.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -2).isActive = true
-            button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
-            button.leftAnchor.constraint(equalTo: rightButton, constant: 2).isActive = true
-            rightButton = button.rightAnchor
+            button.heightAnchor.constraint(equalToConstant: 80).isActive = true
+            button.widthAnchor.constraint(equalTo: contentView!.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -7).isActive = true
+            button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
             
             if $0.0 == 0 {
+                button.leftAnchor.constraint(equalTo: rightButton, constant: 30).isActive = true
                 centerX = image.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor)
                 centerX.isActive = true
             } else {
+                button.leftAnchor.constraint(equalTo: rightButton).isActive = true
                 image.leftAnchor.constraint(equalTo: rightImage, constant: 100).isActive = true
             }
             rightImage = image.rightAnchor
+            rightButton = button.rightAnchor
         }
         
         title.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 18).isActive = true
@@ -103,10 +105,10 @@ final class Help: NSWindow {
     private func display(_ index: Int) {
         self.index = index
         buttons.enumerated().forEach {
-            $0.1.alphaValue = $0.0 == index ? 1 : 0.1
+            $0.1.alphaValue = $0.0 == index ? 1 : 0.12
         }
         label.stringValue = .local("Onboard.mac\(index)")
-        centerX.constant = CGFloat(-300 * index)
+        centerX.constant = CGFloat(-500 * index)
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 1
             context.allowsImplicitAnimation = true
