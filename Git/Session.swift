@@ -43,7 +43,6 @@ public final class Session: Codable {
             guard let data = UserDefaults.standard.data(forKey: "session"),
                 let decoded = try? JSONDecoder().decode(Session.self, from: data)
             else { return }
-            print(String(decoding: data, as: UTF8.self))
             self?.name = decoded.name
             self?.email = decoded.email
             self?.url = decoded.url

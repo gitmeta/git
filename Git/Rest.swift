@@ -10,7 +10,7 @@ class Rest: NSObject, URLSessionTaskDelegate {
     
     func urlSession(_: URLSession, task: URLSessionTask, didReceive: URLAuthenticationChallenge, completionHandler: @escaping
         (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        completionHandler(.useCredential, Hub.session.credentials)
+        completionHandler(.useCredential, didReceive.previousFailureCount == 0 ? Hub.session.credentials : nil)
     }
     
     func fetch(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
