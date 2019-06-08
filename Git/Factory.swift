@@ -13,7 +13,7 @@ final class Factory {
     func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void), result: @escaping((URL) -> Void)) throws {
         if repository(local) { throw Failure.Clone.already }
         try rest.fetch(remote, error: error) {
-            guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
+            guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
             guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""), !name.isEmpty
                 else { throw Failure.Clone.name }
             let directory = local.appendingPathComponent(name)
@@ -35,7 +35,7 @@ final class Factory {
         guard let raw = Hub.head.remote(repository.url) else { throw Failure.Pull.remote }
         let remote = raw.hasPrefix("https://") ? String(raw.dropFirst(8)) : raw
         try rest.fetch(remote, error: error) {
-            guard let reference = $0.refs.first else { throw Failure.Fetch.empty }
+            guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
             if reference == Hub.head.origin(repository.url) {
                 done()
             } else {

@@ -30,8 +30,8 @@ class TestPull: XCTestCase {
             try? Config("lorem ipsum").save(self.url)
             repository.commit([self.file], message: "hello world\n") {
                 try? Hub.head.origin(self.url, id: try Hub.head.id(self.url))
-                var fetch = Fetch()
-                fetch.refs.append((try? Hub.head.id(self.url)) ?? "")
+                let fetch = Fetch()
+                fetch.branch.append((try? Hub.head.id(self.url)) ?? "")
                 self.rest._fetch = fetch
                 DispatchQueue.global(qos: .background).async {
                     repository.pull {
@@ -77,8 +77,8 @@ class TestPull: XCTestCase {
     func testCallPack() {
         let expect = expectation(description: "")
         var repository: Repository!
-        var fetch = Fetch()
-        fetch.refs.append("hello world")
+        let fetch = Fetch()
+        fetch.branch.append("hello world")
         rest._fetch = fetch
         rest.onPull = { remote, want, have in
             XCTAssertEqual("host.com/monami.git", remote)
@@ -95,8 +95,8 @@ class TestPull: XCTestCase {
     func testWant() {
         let expect = expectation(description: "")
         var repository: Repository!
-        var fetch = Fetch()
-        fetch.refs.append("hello world")
+        let fetch = Fetch()
+        fetch.branch.append("hello world")
         rest._fetch = fetch
         rest.onPull = { remote, want, have in
             XCTAssertEqual("hello world", want)
@@ -113,8 +113,8 @@ class TestPull: XCTestCase {
     func testHave() {
         let expect = expectation(description: "")
         var repository: Repository!
-        var fetch = Fetch()
-        fetch.refs.append("hello world")
+        let fetch = Fetch()
+        fetch.branch.append("hello world")
         rest._fetch = fetch
         rest.onPull = { remote, want, have in
             XCTAssertEqual("0032have 11world 0032have 11hello 0032have 99lorem ", have)
@@ -136,8 +136,8 @@ class TestPull: XCTestCase {
     func testCheckout() {
         let expect = expectation(description: "")
         var repository: Repository!
-        var fetch = Fetch()
-        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        let fetch = Fetch()
+        fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.create(url) {
@@ -189,8 +189,8 @@ Test
     func testMergeFailNoCommonAncestor() {
         let expect = expectation(description: "")
         var repository: Repository!
-        var fetch = Fetch()
-        fetch.refs.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
+        let fetch = Fetch()
+        fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch0", withExtension: nil)!))
         Hub.create(url) {
@@ -208,8 +208,8 @@ Test
     func testMerge() {
         let expect = expectation(description: "")
         var repository: Repository!
-        var fetch = Fetch()
-        fetch.refs.append("335a33ae387dc24f057852fdb92e5abc71bf6b85")
+        let fetch = Fetch()
+        fetch.branch.append("335a33ae387dc24f057852fdb92e5abc71bf6b85")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch2", withExtension: nil)!))
         Hub.create(url) {
@@ -217,7 +217,7 @@ Test
             try? Config("lorem ipsum").save(self.url)
             repository.pull {
                 XCTAssertEqual(4, try! FileManager.default.contentsOfDirectory(atPath: self.url.path).count)
-                self.rest._fetch!.refs = ["4ec6903ca199e0e92c6cd3abb5b95f3b7f3d7e4d"]
+                self.rest._fetch!.branch = ["4ec6903ca199e0e92c6cd3abb5b95f3b7f3d7e4d"]
                 self.rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch3", withExtension: nil)!))
                 try! Data("hello world\n".utf8).write(to: self.file)
                 repository.commit([self.file], message: "Add file not tracked in the list.") {

@@ -102,7 +102,7 @@
 		20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8922802EA5002DDF7B /* Onboard.swift */; };
 		20C21CCC2288113C0038466A /* Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C21CCB2288113C0038466A /* Fetch.swift */; };
 		20C21CCD2288113C0038466A /* Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C21CCB2288113C0038466A /* Fetch.swift */; };
-		20C21CCF228811780038466A /* fetchAdv0 in Resources */ = {isa = PBXBuildFile; fileRef = 20C21CCE228811780038466A /* fetchAdv0 */; };
+		20C21CCF228811780038466A /* fetchPull0 in Resources */ = {isa = PBXBuildFile; fileRef = 20C21CCE228811780038466A /* fetchPull0 */; };
 		20C21CD12288119E0038466A /* TestFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C21CD02288119E0038466A /* TestFetch.swift */; };
 		20C21CD32288186A0038466A /* TestClone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C21CD22288186A0038466A /* TestClone.swift */; };
 		20C21CD5228818730038466A /* MockRest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C21CD4228818730038466A /* MockRest.swift */; };
@@ -127,6 +127,8 @@
 		CE02C31022A2B3C90022DE9B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30F22A2B3C90022DE9B /* Config.swift */; };
 		CE02C31122A2B3C90022DE9B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30F22A2B3C90022DE9B /* Config.swift */; };
 		CE29D7BA229D4F9B00C257BF /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE29D7B9229D4F9B00C257BF /* History.swift */; };
+		CE30748A22ABBA000010017C /* TestPush.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30748922ABBA000010017C /* TestPush.swift */; };
+		CE30748C22ABC4BF0010017C /* fetchPush0 in Resources */ = {isa = PBXBuildFile; fileRef = CE30748B22ABC4BF0010017C /* fetchPush0 */; };
 		CE32EFD1229FFF1400BC3901 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32EFCF229FFE2400BC3901 /* Cloud.swift */; };
 		CE4B5C7222A7AC5700355E81 /* fetch2 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7122A7AC5600355E81 /* fetch2 */; };
 		CE4B5C7422A7B7FE00355E81 /* fetch3 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7322A7B7FD00355E81 /* fetch3 */; };
@@ -261,7 +263,7 @@
 		20BB9F8722802DBD002DDF7B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		20BB9F8922802EA5002DDF7B /* Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
 		20C21CCB2288113C0038466A /* Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetch.swift; sourceTree = "<group>"; };
-		20C21CCE228811780038466A /* fetchAdv0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetchAdv0; sourceTree = "<group>"; };
+		20C21CCE228811780038466A /* fetchPull0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetchPull0; sourceTree = "<group>"; };
 		20C21CD02288119E0038466A /* TestFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFetch.swift; sourceTree = "<group>"; };
 		20C21CD22288186A0038466A /* TestClone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClone.swift; sourceTree = "<group>"; };
 		20C21CD4228818730038466A /* MockRest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRest.swift; sourceTree = "<group>"; };
@@ -283,6 +285,8 @@
 		CE02C30D22A2B3250022DE9B /* TestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConfig.swift; sourceTree = "<group>"; };
 		CE02C30F22A2B3C90022DE9B /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		CE29D7B9229D4F9B00C257BF /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		CE30748922ABBA000010017C /* TestPush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPush.swift; sourceTree = "<group>"; };
+		CE30748B22ABC4BF0010017C /* fetchPush0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetchPush0; sourceTree = "<group>"; };
 		CE32EFCF229FFE2400BC3901 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		CE4B5C7122A7AC5600355E81 /* fetch2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch2; sourceTree = "<group>"; };
 		CE4B5C7322A7B7FD00355E81 /* fetch3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch3; sourceTree = "<group>"; };
@@ -404,7 +408,8 @@
 				208D223D228AD12F009AFF08 /* fetch1 */,
 				CE4B5C7122A7AC5600355E81 /* fetch2 */,
 				CE4B5C7322A7B7FD00355E81 /* fetch3 */,
-				20C21CCE228811780038466A /* fetchAdv0 */,
+				20C21CCE228811780038466A /* fetchPull0 */,
+				CE30748B22ABC4BF0010017C /* fetchPush0 */,
 				2048A0F7225C745100290E54 /* index0 */,
 				2048A0F5225C745100290E54 /* index1 */,
 				2048A0FE225C745100290E54 /* index2 */,
@@ -442,6 +447,7 @@
 				206F2E5D2275DDFD0058DA7E /* TestPack.swift */,
 				2048A0F6225C745100290E54 /* TestPress.swift */,
 				CE9F575C22A50BB300CC89CE /* TestPull.swift */,
+				CE30748922ABBA000010017C /* TestPush.swift */,
 				CEE6A96622928D7100977743 /* TestRefresh.swift */,
 				205CF270227ABE49002BDAE0 /* TestRepository.swift */,
 				CED676C5228E820E009D6ADC /* TestReset.swift */,
@@ -716,12 +722,13 @@
 				2048A108225C745100290E54 /* index0 in Resources */,
 				2094C10D228C03010078FC6C /* commit3 in Resources */,
 				2048A106225C745100290E54 /* index1 in Resources */,
-				20C21CCF228811780038466A /* fetchAdv0 in Resources */,
+				20C21CCF228811780038466A /* fetchPull0 in Resources */,
 				20E76BE6225E264300E023D8 /* compressed0 in Resources */,
 				2048A103225C745100290E54 /* tree1 in Resources */,
 				204C754B22899784007327D5 /* fetch0 in Resources */,
 				CE9AA0FC2299269C00CAFA91 /* pack-2.pack in Resources */,
 				2048A10C225C745100290E54 /* blob0 in Resources */,
+				CE30748C22ABC4BF0010017C /* fetchPush0 in Resources */,
 				CE9AA0FD2299269C00CAFA91 /* pack-2.idx in Resources */,
 				2048A104225C745100290E54 /* tree0 in Resources */,
 				2048A10D225C745100290E54 /* tree2 in Resources */,
@@ -833,6 +840,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20EB2507227713010043EBD2 /* TestSession.swift in Sources */,
+				CE30748A22ABBA000010017C /* TestPush.swift in Sources */,
 				2048A107225C745100290E54 /* TestPress.swift in Sources */,
 				2048A109225C745100290E54 /* TestHash.swift in Sources */,
 				20C21CD32288186A0038466A /* TestClone.swift in Sources */,
