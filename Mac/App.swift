@@ -99,6 +99,28 @@ private(set) weak var app: App!
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
         menu.addItem({
+            $0.submenu = NSMenu(title: .local("Menu.project"))
+            $0.submenu!.items = [
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.directory"), action: #selector(browse), keyEquivalent: "o")),
+                NSMenuItem.separator(),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(refresh), keyEquivalent: "r")),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.log"), action: #selector(history), keyEquivalent: "y")),
+                { $0.keyEquivalentModifierMask = [.command]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.commit"), action: #selector(add), keyEquivalent: "\r")),
+                { $0.keyEquivalentModifierMask = [.command, .control, .shift]
+                    return $0
+                } (NSMenuItem(title: .local("Menu.reset"), action: #selector(reset), keyEquivalent: "r"))]
+            return $0
+        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
+        
+        menu.addItem({
             $0.submenu = NSMenu(title: .local("Menu.edit"))
             $0.submenu!.items = [
                 { $0.keyEquivalentModifierMask = [.option, .command]
@@ -122,28 +144,6 @@ private(set) weak var app: App!
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
                 } (NSMenuItem(title: .local("Menu.selectAll"), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a"))]
-            return $0
-        } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
-        
-        menu.addItem({
-            $0.submenu = NSMenu(title: .local("Menu.project"))
-            $0.submenu!.items = [
-                { $0.keyEquivalentModifierMask = [.command]
-                    return $0
-                } (NSMenuItem(title: .local("Menu.directory"), action: #selector(browse), keyEquivalent: "o")),
-                NSMenuItem.separator(),
-                { $0.keyEquivalentModifierMask = [.command]
-                    return $0
-                } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(refresh), keyEquivalent: "r")),
-                { $0.keyEquivalentModifierMask = [.command]
-                    return $0
-                } (NSMenuItem(title: .local("Menu.log"), action: #selector(history), keyEquivalent: "y")),
-                { $0.keyEquivalentModifierMask = [.command]
-                    return $0
-                } (NSMenuItem(title: .local("Menu.commit"), action: #selector(add), keyEquivalent: "\r")),
-                { $0.keyEquivalentModifierMask = [.command, .control, .shift]
-                    return $0
-                } (NSMenuItem(title: .local("Menu.reset"), action: #selector(reset), keyEquivalent: "r"))]
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         

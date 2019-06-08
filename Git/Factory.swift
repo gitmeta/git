@@ -19,7 +19,7 @@ final class Factory {
             let directory = local.appendingPathComponent(name)
             guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
-            try self.rest.pack(remote, want: reference, error: error) {
+            try self.rest.pull(remote, want: reference, error: error) {
                 let repository = try self.create(directory)
                 try $0.unpack(directory)
                 try repository.check.check(reference)
@@ -39,7 +39,7 @@ final class Factory {
             if reference == Hub.head.origin(repository.url) {
                 done()
             } else {
-                try self.rest.pack(remote, want: reference, have:
+                try self.rest.pull(remote, want: reference, have:
                 Hub.content.objects(repository.url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) {
                     try $0.unpack(repository.url)
                     if try repository.merger.needs(reference) {

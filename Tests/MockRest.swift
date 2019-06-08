@@ -4,9 +4,9 @@ import Foundation
 class MockRest: Rest {
     var _error: Error?
     var _fetch: Fetch?
-    var _pack: Pack?
+    var _pull: Pack?
     var onFetch: ((String) -> Void)?
-    var onPack: ((String, String, String) -> Void)?
+    var onPull: ((String, String, String) -> Void)?
     
     override func fetch(_ remote: String, error: @escaping ((Error) -> Void), result: @escaping ((Fetch) throws -> Void)) {
         if let _fetch = self._fetch {
@@ -21,8 +21,8 @@ class MockRest: Rest {
         onFetch?(remote)
     }
     
-    override func pack(_ remote: String, want: String, have: String = "", error: @escaping ((Error) -> Void), result: @escaping ((Pack) throws -> Void)) throws {
-        if let _pack = self._pack {
+    override func pull(_ remote: String, want: String, have: String = "", error: @escaping ((Error) -> Void), result: @escaping ((Pack) throws -> Void)) throws {
+        if let _pack = self._pull {
             do {
                 try result(_pack)
             } catch let exception {
@@ -31,6 +31,6 @@ class MockRest: Rest {
         } else if let _error = self._error {
             error(_error)
         }
-        onPack?(remote, want, have)
+        onPull?(remote, want, have)
     }
 }
