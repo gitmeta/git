@@ -38,7 +38,6 @@ public struct Failure: LocalizedError {
     }
     
     public struct Pack {
-        public static let indexNotFound = Failure("Index file for pack not found.")
         public static let packNotFound = Failure("Pack file not found.")
         public static let invalidIndex = Failure("Index file for pack malformed.")
         public static let invalidPack = Failure("Pack file malformed.")

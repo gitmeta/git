@@ -13,38 +13,8 @@ class TestPack: XCTestCase {
         try! FileManager.default.removeItem(at: url)
     }
     
-    func testIndexNotFound() {
-        XCTAssertThrowsError(try Pack.Index(url, id: "hello"))
-    }
-    
     func testPackNotFound() {
         XCTAssertThrowsError(try Pack(url, id: "hello"))
-    }
-    
-    func testLoadIndex0() {
-        copy("0")
-        let pack = try! Pack.Index(url, id: "0")
-        XCTAssertEqual(17, pack.entries.count)
-        XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", pack.entries.first?.id)
-        XCTAssertEqual(1185, pack.entries.first?.offset)
-        XCTAssertEqual("fe3b1fe02314ddad0ff0b5c86c967c87139cbd8b", pack.entries.last?.id)
-        XCTAssertEqual(895, pack.entries.last?.offset)
-    }
-    
-    func testLoadIndex1() {
-        copy("1")
-        let pack = try! Pack.Index(url, id: "1")
-        XCTAssertEqual(14, pack.entries.count)
-        XCTAssertEqual("335a33ae387dc24f057852fdb92e5abc71bf6b85", pack.entries.first?.id)
-        XCTAssertEqual(12, pack.entries.first?.offset)
-    }
-    
-    func testLoadAllIndex() {
-        copy("0")
-        copy("1")
-        let packs = try? Pack.index(url)
-        XCTAssertEqual("335a33ae387dc24f057852fdb92e5abc71bf6b85", packs?.first?.entries.first?.id)
-        XCTAssertEqual("18d66ecb5629953eee044aea8997ed800b468613", packs?.last?.entries.first?.id)
     }
     
     func testLoadAllPacks() {
@@ -95,7 +65,8 @@ class TestPack: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
         let pack = try? Pack(url, id: "1")
         try? pack?.remove(url, id: "1")
-        
+        XCTAssertFalse(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack/pack-1.idx").path))
     }
     
     func testLoadPack0() {

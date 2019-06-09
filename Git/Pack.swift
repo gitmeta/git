@@ -11,36 +11,6 @@ final class Pack {
         case deltaRef = 7
     }
     
-    struct Entry {
-        fileprivate(set) var id = ""
-        fileprivate(set) var offset = 0
-    }
-    
-    final class Index {
-        private(set) var entries = [Entry]()
-        
-        init(_ url: URL, id: String) throws {
-            guard let parse = Parse(url.appendingPathComponent(".git/objects/pack/pack-\(id).idx")) else { throw Failure.Pack.indexNotFound }
-            guard
-                try parse.byte() == 255,
-                try parse.byte() == 116,
-                try parse.byte() == 79,
-                try parse.byte() == 99
-            else { throw Failure.Pack.invalidIndex }
-            parse.discard(1024)
-            let count = try parse.number()
-            try (0 ..< count).forEach { _ in
-                var entry = Entry()
-                entry.id = try parse.hash()
-                entries.append(entry)
-            }
-            parse.discard(4 * count)
-            try (0 ..< count).forEach {
-                entries[$0].offset = try parse.number()
-            }
-        }
-    }
-    
     final class Maker {
         var data: Data { return serial.data }
         private var commits = [String: Commit]()
@@ -71,19 +41,6 @@ final class Pack {
         private func tree(_ id: String) throws {
             
         }
-    }
-    
-    class func index(_ url: URL) throws -> [Index] {
-        var result = [Index]()
-        if FileManager.default.fileExists(atPath: url.appendingPathComponent(".git/objects/pack").path) {
-            try FileManager.default.contentsOfDirectory(at:
-                url.appendingPathComponent(".git/objects/pack"), includingPropertiesForKeys: nil).forEach {
-                    if $0.lastPathComponent.hasSuffix(".idx") {
-                        result.append(try Index(url, id: String($0.lastPathComponent.dropFirst(5).dropLast(4))))
-                    }
-            }
-        }
-        return result
     }
     
     class func pack(_ url: URL) throws -> [String: Pack] {
