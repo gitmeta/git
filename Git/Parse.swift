@@ -91,7 +91,7 @@ final class Parse {
         var shift = shift
         repeat {
             byte = Int(try self.byte())
-            result += (byte & 0x7f) << shift
+            result += (byte & 127) << shift
             shift += 7
         } while byte >= 128
         return result
@@ -106,7 +106,7 @@ final class Parse {
             if times > 0 {
                 result <<= 7
             }
-            result += (byte & 0x7f)
+            result += (byte & 127)
             times += 1
         } while byte >= 128
         if times > 1 {

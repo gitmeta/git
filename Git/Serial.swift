@@ -24,6 +24,7 @@ final class Serial {
         }.1)
     }
     
+    func compress(_ data: Data) { self.data.append(Hub.press.compress(data)) }
     func serial(_ serial: Serial) { data.append(serial.data) }
     func nulled(_ string: String) { self.string(string + "\u{0000}") }
     func string(_ string: String) { data.append(Data(string.utf8)) }

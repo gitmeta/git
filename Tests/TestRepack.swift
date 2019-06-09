@@ -33,11 +33,13 @@ class TestRepack: XCTestCase {
             repository = $0
             repository.commit([file], message: "First commit\n") {
                 if let packed = try? Pack.Maker(self.url, from: Hub.head.id(self.url)).data {
-                    XCTAssertEqual(20, packed.count)
                     let pack = try? Pack(packed)
+                    XCTAssertEqual(1, pack?.commits.count)
+                    XCTAssertEqual(1, pack?.trees.count)
+                    XCTAssertEqual(1, pack?.blobs.count)
                     XCTAssertEqual(try! Hub.head.id(self.url), pack?.commits.keys.first)
-                    XCTAssertEqual("", pack?.trees.keys.first)
-                    XCTAssertEqual("", pack?.blobs.keys.first)
+                    XCTAssertEqual("92b8b694ffb1675e5975148e1121810081dbdffe", pack?.trees.keys.first)
+                    XCTAssertEqual("b15ee8c932e63ad42a744b0c6e1a6c8d20d348ba", pack?.blobs.keys.first)
                     expect.fulfill()
                 }
             }

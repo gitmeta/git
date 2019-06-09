@@ -26,21 +26,69 @@ final class Pack {
             try commit(from)
             serial.string("PACK0002")
             serial.number(UInt32(commits.count + trees.count + blobs.count))
-            try commits.values.forEach {
-                let data = Data($0.serial.utf8)
-                
-            }
+            commits.values.forEach { add(.commit, data: Data($0.serial.utf8)) }
+            trees.values.forEach { add(.tree, data: $0.serial) }
+            blobs.values.forEach { add(.blob, data: $0) }
+            serial.hash()
         }
         
         private func commit(_ id: String) throws {
             let item = try Commit(id, url: url)
+            commits[id] = item
             try item.parent.filter({ $0 != to }).forEach({ try commit($0) })
             try tree(item.tree)
         }
         
         private func tree(_ id: String) throws {
-            
+            let item = try Tree(id, url: url)
+            trees[id] = item
+            try item.items.forEach { try $0.category == .tree ? tree($0.id) : blob($0.id) }
         }
+        
+        private func blob(_ id: String) throws {
+            try blobs[id] = Hub.content.get(id, url: url)
+        }
+        
+        private func add(_ category: Category, data: Data) {
+            var count = data.count
+            var byte = UInt8(0)
+            var next = false
+            if count > 15 {
+                byte = 1
+                next = true
+            }
+            byte <<= 3
+            byte += UInt8(category.rawValue)
+            byte <<= 4
+            byte += UInt8(count & 15)
+            count >>= 4
+            serial.number(byte)
+            while next {
+                if count >= 128 {
+                    byte = 1
+                } else {
+                    byte = 0
+                    next = false
+                }
+                byte <<= 7
+                byte += UInt8(count & 127)
+                count >>= 7
+                serial.number(byte)
+            }
+            serial.compress(data)
+        }
+        /*
+        func size(_ carry: Int = 0, shift: Int = 0) throws -> Int {
+            var byte = 0
+            var result = carry
+            var shift = shift
+            repeat {
+                byte = Int(try self.byte())
+                result += (byte & 0x7f) << shift
+                shift += 7
+            } while byte >= 128
+            return result
+        }*/
     }
     
     class func pack(_ url: URL) throws -> [String: Pack] {
