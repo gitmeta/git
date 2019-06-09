@@ -55,24 +55,12 @@ final class Factory {
     }
     
     func push(_ repository: Repository, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
-        try rest.download(Hub.head.remote(repository.url), error: error) {
-            guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
-            if reference == Hub.head.origin(repository.url) {
+        try rest.upload(Hub.head.remote(repository.url), error: error) {
+            guard let reference = $0.branch.first, let current = try? Hub.head.id(repository.url), reference != current
+            else { return done() }
+            try self.rest.push(Hub.head.remote(repository.url), old: reference, new: current, pack: Pack.Maker(repository.url, from: current, to: reference).data, error: error) {
+                try Hub.head.origin(repository.url, id: reference)
                 done()
-            } else {
-                /*try self.rest.push(Hub.head.remote(repository.url), want: reference, have:
-                Hub.content.objects(repository.url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) {
-                    try $0.unpack(repository.url)
-                    if try repository.merger.needs(reference) {
-                        try repository.check.merge(reference)
-                        try repository.stage.merge(reference)
-                    } else {
-                        try repository.check.check(reference)
-                        try Hub.head.update(repository.url, id: reference)
-                    }
-                    try Hub.head.origin(repository.url, id: reference)
-                    done()
-                }*/
             }
         }
     }

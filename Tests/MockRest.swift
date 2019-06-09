@@ -23,10 +23,23 @@ class MockRest: Rest {
         onDownload?(remote)
     }
     
-    override func pull(_ remote: String, want: String, have: String = "", error: @escaping ((Error) -> Void), result: @escaping ((Pack) throws -> Void)) throws {
-        if let _pack = self._pull {
+    override func upload(_ remote: String, error: @escaping ((Error) -> Void), result: @escaping ((Fetch) throws -> Void)) throws {
+        if let _fetch = self._fetch {
             do {
-                try result(_pack)
+                try result(_fetch)
+            } catch let exception {
+                error(exception)
+            }
+        } else if let _error = self._error {
+            error(_error)
+        }
+        onUpload?(remote)
+    }
+    
+    override func pull(_ remote: String, want: String, have: String = "", error: @escaping ((Error) -> Void), result: @escaping ((Pack) throws -> Void)) throws {
+        if let _pull = self._pull {
+            do {
+                try result(_pull)
             } catch let exception {
                 error(exception)
             }
@@ -34,5 +47,14 @@ class MockRest: Rest {
             error(_error)
         }
         onPull?(remote, want, have)
+    }
+    
+    override func push(_ remote: String, old: String, new: String, pack: Data, error: @escaping ((Error) -> Void), done: @escaping (() throws -> Void)) throws {
+        if let _error = self._error {
+            error(_error)
+        } else {
+            try done()
+        }
+        onPush?(remote, old, new)
     }
 }

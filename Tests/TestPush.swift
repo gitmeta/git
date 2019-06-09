@@ -61,6 +61,8 @@ class TestPush: XCTestCase {
     func testCallPush() {
         let expect = expectation(description: "")
         var repository: Repository!
+        let file = url.appendingPathComponent("file.txt")
+        try! Data("hello world\n".utf8).write(to: file)
         let fetch = Fetch()
         fetch.branch.append("hello world")
         rest._fetch = fetch
@@ -71,7 +73,28 @@ class TestPush: XCTestCase {
         Hub.create(url) {
             repository = $0
             try? Config("host.com/monami.git").save(self.url)
-            repository.push()
+            repository.commit([file], message: "My first commit\n") {
+                repository.push()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testNoCommits() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        let fetch = Fetch()
+        fetch.branch.append("hello world")
+        rest._fetch = fetch
+        Hub.create(url) {
+            repository = $0
+            try? Config("host.com/monami.git").save(self.url)
+            DispatchQueue.global(qos: .background).async {
+                repository.push {
+                    XCTAssertEqual(Thread.main, Thread.current)
+                    expect.fulfill()
+                }
+            }
         }
         waitForExpectations(timeout: 1)
     }

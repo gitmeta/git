@@ -43,6 +43,18 @@ class Rest: NSObject, URLSessionTaskDelegate {
         }.resume()
     }
     
+    func push(_ remote: String, old: String, new: String, pack: Data, error: @escaping((Error) -> Void), done: @escaping(() throws -> Void)) throws {
+        session.dataTask(with: {
+            var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 90)
+            request.httpMethod = "POST"
+            request.setValue("application/x-git-receive-pack-request", forHTTPHeaderField: "Content-Type")
+            request.httpBody = Data("0068\(old) \(new) refs/heads/master 0000".utf8) + pack
+            return request
+            } (try url(remote, suffix: "/git-receive-pack")) as URLRequest) { [weak self] in
+                self?.validate($0, $1, $2, error: error) { _ in try done() }
+        }.resume()
+    }
+    
     func url(_ remote: String, suffix: String) throws -> URL {
         guard !remote.isEmpty, !remote.hasPrefix("http://"), !remote.hasPrefix("https://"), remote.hasSuffix(".git"),
             let remote = remote.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
