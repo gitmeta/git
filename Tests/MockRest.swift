@@ -5,10 +5,12 @@ class MockRest: Rest {
     var _error: Error?
     var _fetch: Fetch?
     var _pull: Pack?
-    var onFetch: ((String) -> Void)?
+    var onDownload: ((String) -> Void)?
+    var onUpload: ((String) -> Void)?
     var onPull: ((String, String, String) -> Void)?
+    var onPush: ((String, String, String) -> Void)?
     
-    override func fetch(_ remote: String, error: @escaping ((Error) -> Void), result: @escaping ((Fetch) throws -> Void)) {
+    override func download(_ remote: String, error: @escaping ((Error) -> Void), result: @escaping ((Fetch) throws -> Void)) {
         if let _fetch = self._fetch {
             do {
                 try result(_fetch)
@@ -18,7 +20,7 @@ class MockRest: Rest {
         } else if let _error = self._error {
             error(_error)
         }
-        onFetch?(remote)
+        onDownload?(remote)
     }
     
     override func pull(_ remote: String, want: String, have: String = "", error: @escaping ((Error) -> Void), result: @escaping ((Pack) throws -> Void)) throws {

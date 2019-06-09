@@ -62,7 +62,16 @@ class TestRepository: XCTestCase {
             try? Config("hello world").save(self.url)
             repository.remote {
                 XCTAssertEqual(Thread.main, Thread.current)
-                XCTAssertEqual("https://hello world", $0)
+                XCTAssertEqual("""
+[remote "origin"]
+    url = https://hello world
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+    remote = origin
+    merge = refs/heads/master
+
+""", String(decoding: try! Data(contentsOf: self.url.appendingPathComponent(".git/config")), as: UTF8.self))
+                XCTAssertEqual("hello world", $0)
                 expect.fulfill()
             }
         }

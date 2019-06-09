@@ -67,8 +67,8 @@ public struct Failure: LocalizedError {
         public static let directory = Failure("A directory already exists with the name of the repository.")
     }
     
-    public struct Pull {
-        public static let remote = Failure("No remote specified for this repository.")
+    public struct Remote {
+        public static let none = Failure("No remote specified for this repository.")
     }
     
     public struct Config {

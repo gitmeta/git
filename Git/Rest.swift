@@ -13,10 +13,17 @@ class Rest: NSObject, URLSessionTaskDelegate {
         completionHandler(.useCredential, didReceive.previousFailureCount == 0 ? Hub.session.credentials : nil)
     }
     
-    func fetch(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
+    func download(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
         session.dataTask(with: URLRequest(url: try url(remote, suffix: "/info/refs?service=git-upload-pack"), cachePolicy:
             .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)) { [weak self] in
                 self?.validate($0, $1, $2, error: error) { try result(.Pull($0)) }
+        }.resume()
+    }
+    
+    func upload(_ remote: String, error: @escaping((Error) -> Void), result: @escaping((Fetch) throws -> Void)) throws {
+        session.dataTask(with: URLRequest(url: try url(remote, suffix: "/info/refs?service=git-receive-pack"), cachePolicy:
+            .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)) { [weak self] in
+                self?.validate($0, $1, $2, error: error) { try result(.Push($0)) }
         }.resume()
     }
     

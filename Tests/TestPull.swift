@@ -44,25 +44,10 @@ class TestPull: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testFailIfNoRemote() {
-        let expect = expectation(description: "")
-        var repository: Repository!
-        Hub.create(url) {
-            repository = $0
-            DispatchQueue.global(qos: .background).async {
-                repository.pull({ _ in
-                    XCTAssertEqual(Thread.main, Thread.current)
-                    expect.fulfill()
-                })
-            }
-        }
-        waitForExpectations(timeout: 1)
-    }
-    
     func testCallFetch() {
         let expect = expectation(description: "")
         var repository: Repository!
-        rest.onFetch = {
+        rest.onDownload = {
             XCTAssertEqual("host.com/monami.git", $0)
             expect.fulfill()
         }
@@ -74,7 +59,7 @@ class TestPull: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testCallPack() {
+    func testCallPull() {
         let expect = expectation(description: "")
         var repository: Repository!
         let fetch = Fetch()

@@ -37,6 +37,17 @@ public final class Repository {
         }, error: error)
     }
     
+    public func push(_ error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
+        Hub.dispatch.background({ [weak self] in
+            guard let self = self else { return }
+            self.state.delay()
+            try Hub.factory.push(self, error: error) { [weak self] in
+                self?.refresh()
+                DispatchQueue.main.async { done() }
+            }
+        }, error: error)
+    }
+    
     public func log(_ result: @escaping(([Commit]) -> Void)) {
         Hub.dispatch.background({ [weak self] in
             guard let url = self?.url, let result = try? History(url).result else { return [] }
@@ -81,8 +92,8 @@ public final class Repository {
     
     public func remote(_ result: @escaping((String) -> Void)) {
         Hub.dispatch.background({ [weak self] in
-            guard let url = self?.url, let remote = Hub.head.remote(url) else { return "" }
-            return remote
+            guard let url = self?.url else { return "" }
+            return Hub.head.remote(url)
         }, success: result)
     }
     

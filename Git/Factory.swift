@@ -12,7 +12,7 @@ final class Factory {
     
     func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void), result: @escaping((URL) -> Void)) throws {
         if repository(local) { throw Failure.Clone.already }
-        try rest.fetch(remote, error: error) {
+        try rest.download(remote, error: error) {
             guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
             guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""), !name.isEmpty
                 else { throw Failure.Clone.name }
@@ -32,14 +32,12 @@ final class Factory {
     }
     
     func pull(_ repository: Repository, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
-        guard let raw = Hub.head.remote(repository.url) else { throw Failure.Pull.remote }
-        let remote = raw.hasPrefix("https://") ? String(raw.dropFirst(8)) : raw
-        try rest.fetch(remote, error: error) {
+        try rest.download(Hub.head.remote(repository.url), error: error) {
             guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
             if reference == Hub.head.origin(repository.url) {
                 done()
             } else {
-                try self.rest.pull(remote, want: reference, have:
+                try self.rest.pull(Hub.head.remote(repository.url), want: reference, have:
                 Hub.content.objects(repository.url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) {
                     try $0.unpack(repository.url)
                     if try repository.merger.needs(reference) {
@@ -52,6 +50,29 @@ final class Factory {
                     try Hub.head.origin(repository.url, id: reference)
                     done()
                 }
+            }
+        }
+    }
+    
+    func push(_ repository: Repository, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
+        try rest.download(Hub.head.remote(repository.url), error: error) {
+            guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
+            if reference == Hub.head.origin(repository.url) {
+                done()
+            } else {
+                /*try self.rest.push(Hub.head.remote(repository.url), want: reference, have:
+                Hub.content.objects(repository.url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) {
+                    try $0.unpack(repository.url)
+                    if try repository.merger.needs(reference) {
+                        try repository.check.merge(reference)
+                        try repository.stage.merge(reference)
+                    } else {
+                        try repository.check.check(reference)
+                        try Hub.head.update(repository.url, id: reference)
+                    }
+                    try Hub.head.origin(repository.url, id: reference)
+                    done()
+                }*/
             }
         }
     }

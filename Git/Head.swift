@@ -52,5 +52,10 @@ final class Head {
         return nil
     }
     
-    func remote(_ url: URL) -> String? { return (try? Config(url))?.remote.first?.1.url }
+    func remote(_ url: URL) -> String {
+        if let raw = (try? Config(url))?.remote.first?.1.url, raw.hasPrefix("https://") {
+            return String(raw.dropFirst(8))
+        }
+        return ""
+    }
 }
