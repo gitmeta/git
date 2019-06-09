@@ -1,7 +1,7 @@
 import Foundation
 
 final class Pack {
-    enum Category: Int {
+    private enum Category: Int {
         case commit = 1
         case tree = 2
         case blob = 3
@@ -38,6 +38,38 @@ final class Pack {
             try (0 ..< count).forEach {
                 entries[$0].offset = try parse.number()
             }
+        }
+    }
+    
+    final class Maker {
+        var data: Data { return serial.data }
+        private var commits = [String: Commit]()
+        private var trees = [String: Tree]()
+        private var blobs = [String: Data]()
+        private let url: URL
+        private let to: String?
+        private let serial = Serial()
+        
+        init(_ url: URL, from: String, to: String? = nil) throws {
+            self.url = url
+            self.to = to
+            try commit(from)
+            serial.string("PACK0002")
+            serial.number(UInt32(commits.count + trees.count + blobs.count))
+            try commits.values.forEach {
+                let data = Data($0.serial.utf8)
+                
+            }
+        }
+        
+        private func commit(_ id: String) throws {
+            let item = try Commit(id, url: url)
+            try item.parent.filter({ $0 != to }).forEach({ try commit($0) })
+            try tree(item.tree)
+        }
+        
+        private func tree(_ id: String) throws {
+            
         }
     }
     
