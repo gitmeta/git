@@ -9,18 +9,18 @@ final class Hash {
     }
     
     func blob(_ data: Data) -> (Data, String) {
-        let packed = Data(("blob \(data.count)\u{0000}").utf8) + data
+        let packed = "blob \(data.count)\u{0000}".utf8 + data
         return (packed, hash(packed))
     }
     
     func tree(_ data: Data) -> (Data, String) {
-        let packed = Data(("tree \(data.count)\u{0000}").utf8) + data
+        let packed = "tree \(data.count)\u{0000}".utf8 + data
         return (packed, hash(packed))
     }
     
     func commit(_ serial: String) -> (Data, String) {
         return {
-            let packed = Data(("commit \($0.count)\u{0000}").utf8) + $0
+            let packed = "commit \($0.count)\u{0000}".utf8 + $0
             return (packed, hash(packed))
         } (Data(serial.utf8))
     }

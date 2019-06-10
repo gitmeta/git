@@ -174,7 +174,6 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
             pushing.button.action = #selector(makePush)
             pushing.button.label.stringValue = .local("Cloud.push.button")
             pushing.field.delegate = self
-            pushing.button.isHidden = true
             push.addSubview(pushing)
             self.pushing = pushing
             
@@ -321,5 +320,21 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         }
     }
     
-    @objc private func makePush() { }
+    @objc private func makePush() {
+        makeFirstResponder(nil)
+        pushing!.button.isHidden = true
+        segment.isEnabled = false
+        loading.isHidden = false
+        pushing!.field.isEditable = false
+        app.repository!.push({ [weak self] in
+            app.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self?.pushing!.button.isHidden = false
+            self?.segment.isEnabled = true
+            self?.loading.isHidden = true
+            self?.pushing!.field.isEditable = true
+        }) { [weak self] in
+            app.alert(.local("Alert.success"), message: .local("Cloud.push.success"))
+            self?.close()
+        }
+    }
 }

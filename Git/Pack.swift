@@ -24,7 +24,8 @@ final class Pack {
             self.url = url
             self.to = to
             try commit(from)
-            serial.string("PACK0002")
+            serial.string("PACK")
+            serial.number(UInt32(1))
             serial.number(UInt32(commits.count + trees.count + blobs.count))
             commits.values.forEach { add(.commit, data: Data($0.serial.utf8)) }
             trees.values.forEach { add(.tree, data: $0.serial) }
@@ -77,18 +78,6 @@ final class Pack {
             }
             serial.compress(data)
         }
-        /*
-        func size(_ carry: Int = 0, shift: Int = 0) throws -> Int {
-            var byte = 0
-            var result = carry
-            var shift = shift
-            repeat {
-                byte = Int(try self.byte())
-                result += (byte & 0x7f) << shift
-                shift += 7
-            } while byte >= 128
-            return result
-        }*/
     }
     
     class func pack(_ url: URL) throws -> [String: Pack] {

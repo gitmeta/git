@@ -48,9 +48,9 @@ class Rest: NSObject, URLSessionTaskDelegate {
             var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 90)
             request.httpMethod = "POST"
             request.setValue("application/x-git-receive-pack-request", forHTTPHeaderField: "Content-Type")
-            request.httpBody = Data("0068\(old) \(new) refs/heads/master 0000".utf8) + pack
+            request.httpBody = Data("0068\(old) \(new) refs/heads/master 0000 ".utf8) + pack
             return request
-            } (try url(remote, suffix: "/git-receive-pack")) as URLRequest) { [weak self] in
+        } (try url(remote, suffix: "/git-receive-pack")) as URLRequest) { [weak self] in
                 self?.validate($0, $1, $2, error: error) { _ in try done() }
         }.resume()
     }
@@ -65,6 +65,9 @@ class Rest: NSObject, URLSessionTaskDelegate {
     
     private func validate(_ data: Data?, _ response: URLResponse?, _ fail: Error?,
                           error: @escaping((Error) -> Void), result: @escaping((Data) throws -> Void)) {
+        if let data = data {
+            print(String(decoding: data, as: UTF8.self))
+        }
         Hub.dispatch.background({
             if let fail = fail {
                 throw fail

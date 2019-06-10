@@ -27,7 +27,7 @@ final class Serial {
     func compress(_ data: Data) { self.data.append(Hub.press.compress(data)) }
     func serial(_ serial: Serial) { data.append(serial.data) }
     func nulled(_ string: String) { self.string(string + "\u{0000}") }
-    func string(_ string: String) { data.append(Data(string.utf8)) }
+    func string(_ string: String) { data.append(contentsOf: string.utf8) }
     func number<T: BinaryInteger>(_ number: T) { withUnsafeBytes(of: number) { data.append(contentsOf: $0.reversed()) } }
     func hash() { data.append(contentsOf: Hub.hash.digest(data)) }
 }
