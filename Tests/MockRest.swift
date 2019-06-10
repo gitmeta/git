@@ -8,7 +8,7 @@ class MockRest: Rest {
     var onDownload: ((String) -> Void)?
     var onUpload: ((String) -> Void)?
     var onPull: ((String, String, String) -> Void)?
-    var onPush: ((String, String, String) -> Void)?
+    var onPush: ((String, String, String, Data) -> Void)?
     
     override func download(_ remote: String, error: @escaping ((Error) -> Void), result: @escaping ((Fetch) throws -> Void)) {
         if let _fetch = self._fetch {
@@ -55,6 +55,6 @@ class MockRest: Rest {
         } else {
             try done()
         }
-        onPush?(remote, old, new)
+        onPush?(remote, old, new, pack)
     }
 }

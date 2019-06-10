@@ -66,8 +66,58 @@ class TestPush: XCTestCase {
         let fetch = Fetch()
         fetch.branch.append("hello world")
         rest._fetch = fetch
-        rest.onPush = { remote, want, have in
+        rest.onPush = { remote, old, new, pack in
             XCTAssertEqual("host.com/monami.git", remote)
+            expect.fulfill()
+        }
+        Hub.create(url) {
+            repository = $0
+            try? Config("host.com/monami.git").save(self.url)
+            repository.commit([file], message: "My first commit\n") {
+                repository.push()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testOldAndNew() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        let file = url.appendingPathComponent("file.txt")
+        try! Data("hello world\n".utf8).write(to: file)
+        let fetch = Fetch()
+        fetch.branch.append("hello world")
+        rest._fetch = fetch
+        rest.onPush = { remote, old, new, pack in
+            XCTAssertEqual("hello world", old)
+            XCTAssertEqual("host.com/monami.git", remote)
+            XCTAssertEqual(try! Hub.head.id(self.url), new)
+            expect.fulfill()
+        }
+        Hub.create(url) {
+            repository = $0
+            try? Config("host.com/monami.git").save(self.url)
+            repository.commit([file], message: "My first commit\n") {
+                repository.push()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testPack() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        let file = url.appendingPathComponent("file.txt")
+        try! Data("hello world\n".utf8).write(to: file)
+        let fetch = Fetch()
+        fetch.branch.append("hello world")
+        rest._fetch = fetch
+        rest.onPush = { remote, old, new, pack in
+            let pack = try? Pack(pack)
+            XCTAssertNotNil(pack?.commits[new])
+            XCTAssertEqual(1, pack?.commits.count)
+            XCTAssertEqual(1, pack?.trees.count)
+            XCTAssertEqual(1, pack?.blobs.count)
             expect.fulfill()
         }
         Hub.create(url) {
@@ -104,13 +154,47 @@ class TestPush: XCTestCase {
         let file = url.appendingPathComponent("file.txt")
         try! Data("hello world\n".utf8).write(to: file)
         var repository: Repository!
+        rest.onPush = { remote, old, new, pack in
+            let pack = try? Pack(pack)
+            XCTAssertEqual(2, pack?.commits.count)
+            expect.fulfill()
+        }
+        Hub.create(url) {
+            repository = $0
+            repository.commit([file], message: "First commit\n") {
+                let fetch = Fetch()
+                fetch.branch.append("another id")
+                self.rest._fetch = fetch
+                try! Data("Updated\n".utf8).write(to: file)
+                repository.commit([file], message: "Second commit\n") {
+                    repository.push()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func test2Commits1Uploaded() {
+        let expect = expectation(description: "")
+        let file = url.appendingPathComponent("file.txt")
+        try! Data("hello world\n".utf8).write(to: file)
+        var repository: Repository!
+        rest.onPush = { remote, old, new, pack in
+            let pack = try? Pack(pack)
+            XCTAssertNotNil(pack?.commits[new])
+            XCTAssertEqual(1, pack?.commits.count)
+            expect.fulfill()
+        }
         Hub.create(url) {
             repository = $0
             repository.commit([file], message: "First commit\n") {
                 let fetch = Fetch()
                 fetch.branch.append(try! Hub.head.id(self.url))
                 self.rest._fetch = fetch
-                expect.fulfill()
+                try! Data("Updated\n".utf8).write(to: file)
+                repository.commit([file], message: "Second commit\n") {
+                    repository.push()
+                }
             }
         }
         waitForExpectations(timeout: 1)
