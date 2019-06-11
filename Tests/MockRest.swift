@@ -5,6 +5,7 @@ class MockRest: Rest {
     var _error: Error?
     var _fetch: Fetch?
     var _pull: Pack?
+    var _push = "000eunpack ok"
     var onDownload: ((String) -> Void)?
     var onUpload: ((String) -> Void)?
     var onPull: ((String, String, String) -> Void)?
@@ -49,11 +50,11 @@ class MockRest: Rest {
         onPull?(remote, want, have)
     }
     
-    override func push(_ remote: String, old: String, new: String, pack: Data, error: @escaping ((Error) -> Void), done: @escaping (() throws -> Void)) throws {
+    override func push(_ remote: String, old: String, new: String, pack: Data, error: @escaping ((Error) -> Void), done: @escaping ((String) throws -> Void)) throws {
         if let _error = self._error {
             error(_error)
         } else {
-            try done()
+            try done(_push)
         }
         onPush?(remote, old, new, pack)
     }

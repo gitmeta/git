@@ -130,14 +130,24 @@ Test
         XCTAssertEqual(23, pack.blobs.count)
     }
     
+    func testPack0Hash() {
+        let data = try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-0.pack", withExtension: nil)!)
+        XCTAssertEqual(data.suffix(20), Hub.hash.digest(data.subdata(in: 0 ..< data.count - 20)))
+    }
+    
+    func testPack1Hash() {
+        let data = try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-1.pack", withExtension: nil)!)
+        XCTAssertEqual(data.suffix(20), Hub.hash.digest(data.subdata(in: 0 ..< data.count - 20)))
+    }
+    
+    func testPack2Hash() {
+        let data = try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-2.pack", withExtension: nil)!)
+        XCTAssertEqual(data.suffix(20), Hub.hash.digest(data.subdata(in: 0 ..< data.count - 20)))
+    }
+    
     private func copy(_ id: String) {
         try! (try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-\(id)",
             withExtension: "idx")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-\(id).idx"))
-        try! (try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-\(id)",
-            withExtension: "pack")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
-    }
-    
-    private func fetch(_ id: String) {
         try! (try! Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "pack-\(id)",
             withExtension: "pack")!)).write(to: url.appendingPathComponent(".git/objects/pack/pack-\(id).pack"))
     }

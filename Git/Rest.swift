@@ -43,26 +43,18 @@ class Rest: NSObject, URLSessionTaskDelegate {
         }.resume()
     }
     
-    func push(_ remote: String, old: String, new: String, pack: Data, error: @escaping((Error) -> Void), done: @escaping(() throws -> Void)) throws {
+    func push(_ remote: String, old: String, new: String, pack: Data, error: @escaping((Error) -> Void), done: @escaping((String) throws -> Void)) throws {
         session.dataTask(with: {
-            let serial = Serial()
-            let string = """
-\(old) \(new) refs/heads/master\0 report-status
-
-"""
-            
-            serial.string("00\(String(string.count + 4, radix: 16))")
-            debugPrint(string)
-            debugPrint(String(decoding: serial.data, as: UTF8.self))
-            serial.string(string)
-            serial.string("0000")
             var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 90)
             request.httpMethod = "POST"
             request.setValue("application/x-git-receive-pack-request", forHTTPHeaderField: "Content-Type")
-            request.httpBody = serial.data + Data(pack.reversed())
+            request.httpBody = """
+0077\(old) \(new) refs/heads/master\0 report-status
+0000
+""".utf8 + pack
             return request
         } (try url(remote, suffix: "/git-receive-pack")) as URLRequest) { [weak self] in
-                self?.validate($0, $1, $2, error: error) { _ in try done() }
+            self?.validate($0, $1, $2, error: error) { try done(String(decoding: $0, as: UTF8.self)) }
         }.resume()
     }
     
@@ -76,9 +68,6 @@ class Rest: NSObject, URLSessionTaskDelegate {
     
     private func validate(_ data: Data?, _ response: URLResponse?, _ fail: Error?,
                           error: @escaping((Error) -> Void), result: @escaping((Data) throws -> Void)) {
-        if let data = data {
-            print(String(decoding: data, as: UTF8.self))
-        }
         Hub.dispatch.background({
             if let fail = fail {
                 throw fail

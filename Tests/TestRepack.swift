@@ -39,7 +39,7 @@ class TestRepack: XCTestCase {
                     XCTAssertEqual(1, pack?.blobs.count)
                     XCTAssertEqual(try! Hub.head.id(self.url), pack?.commits.keys.first)
                     XCTAssertEqual("92b8b694ffb1675e5975148e1121810081dbdffe", pack?.trees.keys.first)
-                    XCTAssertEqual("b15ee8c932e63ad42a744b0c6e1a6c8d20d348ba", pack?.blobs.keys.first)
+                    XCTAssertEqual("3b18e512dba79e4c8300dd08aeb37f8e728b8dad", pack?.blobs.keys.first)
                     expect.fulfill()
                 }
             }
@@ -69,8 +69,8 @@ class TestRepack: XCTestCase {
                         XCTAssertNotNil(pack?.commits[second])
                         XCTAssertNotNil(pack?.trees["9ba091b521c5e794814b5a5ca78a29727c9cf31f"])
                         XCTAssertNotNil(pack?.trees["82424451ac502bd69712561a524e2d97fd932c69"])
-                        XCTAssertNotNil(pack?.blobs["257d6486476026d4fc0136232cac56b0649dedc1"])
-                        XCTAssertNotNil(pack?.blobs["b15ee8c932e63ad42a744b0c6e1a6c8d20d348ba"])
+                        XCTAssertNotNil(pack?.blobs["3b18e512dba79e4c8300dd08aeb37f8e728b8dad"])
+                        XCTAssertNotNil(pack?.blobs["01a59b011a48660bb3828ec72b2b08990b8cf56b"])
                         expect.fulfill()
                     }
                 }
@@ -101,8 +101,8 @@ class TestRepack: XCTestCase {
                         XCTAssertNil(pack?.commits[first])
                         XCTAssertNotNil(pack?.trees["9ba091b521c5e794814b5a5ca78a29727c9cf31f"])
                         XCTAssertNil(pack?.trees["82424451ac502bd69712561a524e2d97fd932c69"])
-                        XCTAssertNotNil(pack?.blobs["257d6486476026d4fc0136232cac56b0649dedc1"])
-                        XCTAssertNotNil(pack?.blobs["b15ee8c932e63ad42a744b0c6e1a6c8d20d348ba"])
+                        XCTAssertNotNil(pack?.blobs["3b18e512dba79e4c8300dd08aeb37f8e728b8dad"])
+                        XCTAssertNotNil(pack?.blobs["01a59b011a48660bb3828ec72b2b08990b8cf56b"])
                         expect.fulfill()
                     }
                 }
@@ -121,7 +121,6 @@ class TestRepack: XCTestCase {
         Hub.create(url) {
             repository = $0
             repository.commit([file1], message: "First commit\n") {
-                let first = try! Hub.head.id(self.url)
                 repository.commit([file2], message: "Second commit\n") {
                     let second = try! Hub.head.id(self.url)
                     if let packed = try? Pack.Maker(self.url, from: second, to: "").data {
@@ -129,6 +128,27 @@ class TestRepack: XCTestCase {
                         XCTAssertEqual(2, pack?.commits.count)
                         XCTAssertEqual(2, pack?.trees.count)
                         XCTAssertEqual(2, pack?.blobs.count)
+                        expect.fulfill()
+                    }
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testHash() {
+        let expect = expectation(description: "")
+        let file1 = url.appendingPathComponent("file1.txt")
+        let file2 = url.appendingPathComponent("file2.txt")
+        try! Data("hello world\n".utf8).write(to: file1)
+        try! Data("lorem ipsum\n".utf8).write(to: file2)
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            repository.commit([file1], message: "First commit\n") {
+                repository.commit([file2], message: "Second commit\n") {
+                    if let packed = try? Pack.Maker(self.url, from: Hub.head.id(self.url)).data {
+                        XCTAssertEqual(packed.suffix(20), Hub.hash.digest(packed.subdata(in: 0 ..< packed.count - 20)))
                         expect.fulfill()
                     }
                 }

@@ -174,6 +174,29 @@ class TestPush: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
+    func test2CommitsEmptyResponse() {
+        let expect = expectation(description: "")
+        let file = url.appendingPathComponent("file.txt")
+        try! Data("hello world\n".utf8).write(to: file)
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            repository.commit([file], message: "First commit\n") {
+                let fetch = Fetch()
+                fetch.branch.append("another id")
+                self.rest._fetch = fetch
+                self.rest._push = ""
+                try! Data("Updated\n".utf8).write(to: file)
+                repository.commit([file], message: "Second commit\n") {
+                    repository.push({ _ in
+                        expect.fulfill()
+                    })
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
     func test2Commits1Uploaded() {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("file.txt")

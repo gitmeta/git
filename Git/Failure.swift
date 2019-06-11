@@ -68,6 +68,7 @@ public struct Failure: LocalizedError {
     
     public struct Remote {
         public static let none = Failure("No remote specified for this repository.")
+        public static let push = Failure("Failed to sending changes to remote.")
     }
     
     public struct Config {

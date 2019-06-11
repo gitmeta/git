@@ -12,7 +12,7 @@ class TestUnpack: XCTestCase {
     }
     
     override func tearDown() {
-        try! FileManager.default.removeItem(at: url)
+        try? FileManager.default.removeItem(at: url)
     }
     
     func testNotPacked() {

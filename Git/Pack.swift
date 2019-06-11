@@ -47,7 +47,7 @@ final class Pack {
         }
         
         private func blob(_ id: String) throws {
-            try blobs[id] = Hub.content.get(id, url: url)
+            try blobs[id] = Hub.content.get(id, url: url).drop(while: { String(decoding: [$0], as: UTF8.self) != "\u{0000}" }).dropFirst()
         }
         
         private func add(_ category: Category, data: Data) {
