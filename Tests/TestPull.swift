@@ -102,7 +102,7 @@ class TestPull: XCTestCase {
         fetch.branch.append("hello world")
         rest._fetch = fetch
         rest.onPull = { remote, want, have in
-            XCTAssertEqual("0032have 11world 0032have 11hello 0032have 99lorem ", have)
+            XCTAssertEqual("0032have 11world\n0032have 11hello\n0032have 99lorem\n", have)
             expect.fulfill()
         }
         Hub.create(url) {

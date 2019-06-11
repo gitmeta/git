@@ -45,12 +45,21 @@ class Rest: NSObject, URLSessionTaskDelegate {
     
     func push(_ remote: String, old: String, new: String, pack: Data, error: @escaping((Error) -> Void), done: @escaping(() throws -> Void)) throws {
         session.dataTask(with: {
+            let serial = Serial()
+            let string = """
+\(old) \(new) refs/heads/master\0 report-status
+
+"""
+            
+            serial.string("00\(String(string.count + 4, radix: 16))")
+            debugPrint(string)
+            debugPrint(String(decoding: serial.data, as: UTF8.self))
+            serial.string(string)
+            serial.string("0000")
             var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 90)
             request.httpMethod = "POST"
             request.setValue("application/x-git-receive-pack-request", forHTTPHeaderField: "Content-Type")
-            request.httpBody = """
-0069\(old) \(new) refs/heads/master\0\n0000
-""".utf8 + pack
+            request.httpBody = serial.data + Data(pack.reversed())
             return request
         } (try url(remote, suffix: "/git-receive-pack")) as URLRequest) { [weak self] in
                 self?.validate($0, $1, $2, error: error) { _ in try done() }

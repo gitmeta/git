@@ -59,7 +59,7 @@ final class Factory {
             guard let reference = $0.branch.first, let current = try? Hub.head.id(repository.url), reference != current
             else { return done() }
             try self.rest.push(Hub.head.remote(repository.url), old: reference, new: current, pack: Pack.Maker(repository.url, from: current, to: reference).data, error: error) {
-                try Hub.head.origin(repository.url, id: reference)
+//                try Hub.head.origin(repository.url, id: reference)
                 done()
             }
         }
