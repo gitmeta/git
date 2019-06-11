@@ -34,7 +34,7 @@ class Rest: NSObject, URLSessionTaskDelegate {
             request.setValue("application/x-git-upload-pack-request", forHTTPHeaderField: "Content-Type")
             request.httpBody = Data("""
 0032want \(want)
-00000009done
+0000\(have)0009done
 
 """.utf8)
             return request
@@ -48,7 +48,9 @@ class Rest: NSObject, URLSessionTaskDelegate {
             var request = URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 90)
             request.httpMethod = "POST"
             request.setValue("application/x-git-receive-pack-request", forHTTPHeaderField: "Content-Type")
-            request.httpBody = Data("0068\(old) \(new) refs/heads/master 0000 ".utf8) + pack
+            request.httpBody = """
+0069\(old) \(new) refs/heads/master\0\n0000
+""".utf8 + pack
             return request
         } (try url(remote, suffix: "/git-receive-pack")) as URLRequest) { [weak self] in
                 self?.validate($0, $1, $2, error: error) { _ in try done() }

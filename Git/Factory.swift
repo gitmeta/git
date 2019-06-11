@@ -38,7 +38,7 @@ final class Factory {
                 done()
             } else {
                 try self.rest.pull(Hub.head.remote(repository.url), want: reference, have:
-                Hub.content.objects(repository.url).reduce(into: "") { $0 += "0032have \($1) " }, error: error) {
+                Hub.content.objects(repository.url).reduce(into: "") { $0 += "0032have \($1)\n" }, error: error) {
                     try $0.unpack(repository.url)
                     if try repository.merger.needs(reference) {
                         try repository.check.merge(reference)
