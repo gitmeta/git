@@ -25,7 +25,7 @@ final class Pack {
             self.to = to
             try commit(from)
             serial.string("PACK")
-            serial.number(UInt32(1))
+            serial.number(UInt32(2))
             serial.number(UInt32(commits.count + trees.count + blobs.count))
             commits.values.forEach { add(.commit, data: Data($0.serial.utf8)) }
             trees.values.forEach { add(.tree, data: $0.serial) }
