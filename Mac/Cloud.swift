@@ -254,6 +254,10 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         if pulling?.field == obj.object as? NSTextField {
             app.repository!.remote(pulling!.field.stringValue)
+            pushing!.field.stringValue = pulling!.field.stringValue
+        } else if pushing?.field == obj.object as? NSTextField {
+            app.repository!.remote(pushing!.field.stringValue)
+            pulling!.field.stringValue = pushing!.field.stringValue
         }
     }
     
