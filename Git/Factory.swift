@@ -56,8 +56,8 @@ final class Factory {
     
     func push(_ repository: Repository, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
         try rest.upload(Hub.head.remote(repository.url), error: error) {
-            guard let reference = $0.branch.first, let current = try? Hub.head.id(repository.url), reference != current
-            else { return done() }
+            guard let current = try? Hub.head.id(repository.url) else { throw Failure.Remote.empty }
+            guard let reference = $0.branch.first,  reference != current else { return done() }
             try repository.merger.known(reference)
             try self.rest.push(Hub.head.remote(repository.url), old: reference, new: current, pack: Pack.Maker(repository.url, from: current, to: reference).data, error: error) {
                 if $0.hasPrefix("000eunpack ok") {

@@ -150,12 +150,7 @@ class TestPush: XCTestCase {
         Hub.create(url) {
             repository = $0
             try? Config("host.com/monami.git").save(self.url)
-            DispatchQueue.global(qos: .background).async {
-                repository.push {
-                    XCTAssertEqual(Thread.main, Thread.current)
-                    expect.fulfill()
-                }
-            }
+            repository.push({ _ in expect.fulfill() })
         }
         waitForExpectations(timeout: 1)
     }
