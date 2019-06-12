@@ -77,7 +77,8 @@ public struct Failure: LocalizedError {
     }
     
     public struct Merge {
-        public static let common = Failure("There is no common ancestor in the history of both trees, they can't be merged.")
+        public static let common = Failure("These repositories are not compatible.")
+        public static let unknown = Failure("Remote repository is different than local, try Pull before Push.")
     }
     
     public var errorDescription: String? { return string }

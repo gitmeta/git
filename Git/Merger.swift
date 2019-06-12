@@ -17,4 +17,11 @@ final class Merger {
         }
         return remote.map[try Hub.head.id(url)] == nil && local.map[id] == nil
     }
+    
+    func known(_ id: String) throws {
+        guard let url = repository?.url, let history = try? History(url) else { return }
+        if history.map[id] == nil {
+            throw Failure.Merge.unknown
+        }
+    }
 }

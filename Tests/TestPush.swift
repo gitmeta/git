@@ -63,9 +63,6 @@ class TestPush: XCTestCase {
         var repository: Repository!
         let file = url.appendingPathComponent("file.txt")
         try! Data("hello world\n".utf8).write(to: file)
-        let fetch = Fetch()
-        fetch.branch.append("hello world")
-        rest._fetch = fetch
         rest.onPush = { remote, old, new, pack in
             XCTAssertEqual("host.com/monami.git", remote)
             expect.fulfill()
@@ -74,7 +71,13 @@ class TestPush: XCTestCase {
             repository = $0
             try? Config("host.com/monami.git").save(self.url)
             repository.commit([file], message: "My first commit\n") {
-                repository.push()
+                let fetch = Fetch()
+                fetch.branch.append(try! Hub.head.id(self.url))
+                self.rest._fetch = fetch
+                try! Data("hello world updated\n".utf8).write(to: file)
+                repository.commit([file], message: "My second commit\n") {
+                    repository.push()
+                }
             }
         }
         waitForExpectations(timeout: 1)
@@ -85,11 +88,9 @@ class TestPush: XCTestCase {
         var repository: Repository!
         let file = url.appendingPathComponent("file.txt")
         try! Data("hello world\n".utf8).write(to: file)
-        let fetch = Fetch()
-        fetch.branch.append("hello world")
-        rest._fetch = fetch
+        var id = ""
         rest.onPush = { remote, old, new, pack in
-            XCTAssertEqual("hello world", old)
+            XCTAssertEqual(id, old)
             XCTAssertEqual("host.com/monami.git", remote)
             XCTAssertEqual(try! Hub.head.id(self.url), new)
             expect.fulfill()
@@ -98,7 +99,14 @@ class TestPush: XCTestCase {
             repository = $0
             try? Config("host.com/monami.git").save(self.url)
             repository.commit([file], message: "My first commit\n") {
-                repository.push()
+                let fetch = Fetch()
+                id = try! Hub.head.id(self.url)
+                fetch.branch.append(id)
+                self.rest._fetch = fetch
+                try! Data("hello world updated\n".utf8).write(to: file)
+                repository.commit([file], message: "My second commit\n") {
+                    repository.push()
+                }
             }
         }
         waitForExpectations(timeout: 1)
@@ -109,9 +117,6 @@ class TestPush: XCTestCase {
         var repository: Repository!
         let file = url.appendingPathComponent("file.txt")
         try! Data("hello world\n".utf8).write(to: file)
-        let fetch = Fetch()
-        fetch.branch.append("hello world")
-        rest._fetch = fetch
         rest.onPush = { remote, old, new, pack in
             let pack = try? Pack(pack)
             XCTAssertNotNil(pack?.commits[new])
@@ -124,7 +129,13 @@ class TestPush: XCTestCase {
             repository = $0
             try? Config("host.com/monami.git").save(self.url)
             repository.commit([file], message: "My first commit\n") {
-                repository.push()
+                let fetch = Fetch()
+                fetch.branch.append(try! Hub.head.id(self.url))
+                self.rest._fetch = fetch
+                try! Data("hello world updated\n".utf8).write(to: file)
+                repository.commit([file], message: "My second commit\n") {
+                    repository.push()
+                }
             }
         }
         waitForExpectations(timeout: 1)
@@ -149,7 +160,7 @@ class TestPush: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func test2Commits() {
+    func test3Commits() {
         let expect = expectation(description: "")
         let file = url.appendingPathComponent("file.txt")
         try! Data("hello world\n".utf8).write(to: file)
@@ -163,11 +174,14 @@ class TestPush: XCTestCase {
             repository = $0
             repository.commit([file], message: "First commit\n") {
                 let fetch = Fetch()
-                fetch.branch.append("another id")
+                fetch.branch.append(try! Hub.head.id(self.url))
                 self.rest._fetch = fetch
                 try! Data("Updated\n".utf8).write(to: file)
                 repository.commit([file], message: "Second commit\n") {
-                    repository.push()
+                    try! Data("Updated again\n".utf8).write(to: file)
+                    repository.commit([file], message: "Third commit\n") {
+                        repository.push()
+                    }
                 }
             }
         }
@@ -218,6 +232,26 @@ class TestPush: XCTestCase {
                 repository.commit([file], message: "Second commit\n") {
                     repository.push()
                 }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testUnknownReference() {
+        let expect = expectation(description: "")
+        let file = url.appendingPathComponent("file.txt")
+        try! Data("hello world\n".utf8).write(to: file)
+        var repository: Repository!
+        Hub.create(url) {
+            repository = $0
+            repository.commit([file], message: "First commit\n") {
+                let fetch = Fetch()
+                fetch.branch.append("unknown reference")
+                self.rest._fetch = fetch
+                try! Data("Updated\n".utf8).write(to: file)
+                repository.push({ _ in
+                    expect.fulfill()
+                })
             }
         }
         waitForExpectations(timeout: 1)
