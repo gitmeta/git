@@ -58,6 +58,7 @@ public struct Failure: LocalizedError {
         public static let empty = Failure("Empty response from server.")
         public static let auth = Failure("Couldn't authenticate to server, please review the url provided or your credentials.")
         public static let response = Failure("Invalid response from server.")
+        public static let none = Failure("Couldn't find this resource or doesn't exists.")
     }
     
     public struct Clone {

@@ -105,6 +105,8 @@ private(set) weak var app: App!
                     return $0
                 } (NSMenuItem(title: .local("Menu.directory"), action: #selector(browse), keyEquivalent: "o")),
                 NSMenuItem.separator(),
+                NSMenuItem(title: .local("Menu.cloud"), action: #selector(cloud), keyEquivalent: ""),
+                NSMenuItem.separator(),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
                 } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(refresh), keyEquivalent: "r")),
@@ -146,20 +148,6 @@ private(set) weak var app: App!
                 } (NSMenuItem(title: .local("Menu.selectAll"), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a"))]
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
-        
-        menu.addItem({
-            $0.submenu = NSMenu(title: .local("Menu.cloud"))
-            $0.submenu!.items = [
-                NSMenuItem(title: .local("Menu.clone"), action: #selector(cloud), keyEquivalent: ""),
-                NSMenuItem.separator(),
-                { $0.keyEquivalentModifierMask = [.command, .option]
-                    return $0
-                } (NSMenuItem(title: .local("Menu.pull"), action: #selector(pull), keyEquivalent: "d")),
-                { $0.keyEquivalentModifierMask = [.command, .option]
-                    return $0
-                } (NSMenuItem(title: .local("Menu.push"), action: #selector(push), keyEquivalent: "u"))]
-            return $0
-            } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
         menu.addItem({
             $0.submenu = NSMenu(title: .local("Menu.window"))
@@ -319,6 +307,4 @@ private(set) weak var app: App!
     private func restore() { windows.filter({ !($0 is Home) }).forEach({ $0.close() }) }
     @objc private func help() { order(Help.self) }
     @objc private func about() { order(About.self) }
-    @objc private func pull() { orderIfReady(Cloud.self)?.pull() }
-    @objc private func push() { orderIfReady(Cloud.self)?.push() }
 }

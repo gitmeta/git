@@ -26,7 +26,7 @@ final class Help: NSWindow {
         
         let title = Label(.local("Help.title"))
         title.textColor = .halo
-        title.font = .systemFont(ofSize: 14, weight: .medium)
+        title.font = .systemFont(ofSize: 14, weight: .bold)
         contentView!.addSubview(title)
         
         let label = Label()

@@ -80,6 +80,7 @@ class Rest: NSObject, URLSessionTaskDelegate {
                         throw Failure.Request.empty
                     }
                 case 401: throw Failure.Request.auth
+                case 404: throw Failure.Request.none
                 default: throw Failure.Request.response
                 }
             }
