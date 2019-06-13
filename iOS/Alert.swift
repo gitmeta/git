@@ -2,6 +2,7 @@ import UIKit
 import UserNotifications
 
 class Alert {
+    /*
     private weak var view: UIView?
     private weak var bottom: NSLayoutConstraint?
     private var alert = [(String, String)]()
@@ -85,5 +86,6 @@ class Alert {
             self?.pop()
         }
     }
+    */
 }
 

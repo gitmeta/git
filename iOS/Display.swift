@@ -1,6 +1,7 @@
 import UIKit
 
 class Display: UIView {
+    /*
     private weak var image: UIImageView!
     private weak var create: UIButton!
     private weak var message: UILabel!
@@ -98,4 +99,6 @@ class Display: UIView {
         message.text = .local("Display.upToDate")
         create.isHidden = true
     }
+ 
+ */
 }

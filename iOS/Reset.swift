@@ -69,10 +69,10 @@ class Reset: Sheet {
     
     @objc private func confirm() {
         close()
-        App.repository?.reset({
-            App.view.alert.error($0.localizedDescription)
-        }) {
-            App.view.alert.update(.local("Reset.success"))
-        }
+//        App.repository?.reset({
+//            App.view.alert.error($0.localizedDescription)
+//        }) {
+//            App.view.alert.update(.local("Reset.success"))
+//        }
     }
 }

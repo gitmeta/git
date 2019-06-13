@@ -2,6 +2,7 @@ import Git
 import UIKit
 
 class Credentials: Sheet, UITextFieldDelegate {
+    /*
     private weak var name: UITextField!
     private weak var email: UITextField!
     
@@ -167,5 +168,5 @@ class Credentials: Sheet, UITextFieldDelegate {
             App.view.alert.update(.local("Credentials.success"))
             self?.close()
         }
-    }
+    }*/
 }

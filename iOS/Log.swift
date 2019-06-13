@@ -1,7 +1,7 @@
 import Git
 import UIKit
 
-class Log: Sheet {
+class Log: Sheet {/*
     private class Item: UIView {
         private weak var label: UILabel!
         
@@ -144,5 +144,5 @@ class Log: Sheet {
         }
     }
     
-    required init?(coder: NSCoder) { return nil }
+    required init?(coder: NSCoder) { return nil }*/
 }

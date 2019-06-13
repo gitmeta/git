@@ -2,6 +2,7 @@ import UIKit
 import UserNotifications
 
 class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNotificationCenterDelegate {
+    /*
     let alert = Alert()
     private(set) weak var branch: Bar!
     private(set) weak var list: List!
@@ -161,4 +162,5 @@ class View: UIViewController, UIDocumentBrowserViewControllerDelegate, UNUserNot
             App.view.present(browse, animated: true)
         }
     }
+    */
 }

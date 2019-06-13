@@ -2,6 +2,7 @@ import Git
 import UIKit
 
 class Tools: UIView {
+    /*
     weak var top: NSLayoutConstraint! { didSet { top.isActive = true } }
     
     init() {
@@ -79,4 +80,5 @@ class Tools: UIView {
             Commit()
         }
     }
+ */
 }

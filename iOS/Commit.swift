@@ -2,6 +2,7 @@ import Git
 import UIKit
 
 class Commit: Sheet {
+    /*
     private class Layout: NSLayoutManager, NSLayoutManagerDelegate {
         private let padding = CGFloat(6)
         
@@ -160,5 +161,5 @@ class Commit: Sheet {
             App.view.alert.commit(self?.text.text ?? "")
             self?.close()
         }
-    }
+    }*/
 }
