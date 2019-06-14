@@ -139,47 +139,24 @@ final class Home: NSWindow  {
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false
         
-        let left = NSView()
-        left.translatesAutoresizingMaskIntoConstraints = false
-        contentView!.addSubview(left)
-        
         let borderLeft = NSView()
         borderLeft.translatesAutoresizingMaskIntoConstraints = false
         borderLeft.wantsLayer = true
         borderLeft.layer!.backgroundColor = .black
-        left.addSubview(borderLeft)
-        
-        let top = NSView()
-        top.translatesAutoresizingMaskIntoConstraints = false
-        contentView!.addSubview(top)
+        contentView!.addSubview(borderLeft)
         
         let borderTop = NSView()
         borderTop.translatesAutoresizingMaskIntoConstraints = false
         borderTop.wantsLayer = true
         borderTop.layer!.backgroundColor = .black
-        top.addSubview(borderTop)
-        
-        let add = Button.Image(app, action: #selector(app.add))
-        add.image.image = NSImage(named: "add")
-        
-        let reset = Button.Image(app, action: #selector(app.reset))
-        reset.image.image = NSImage(named: "reset")
-        
-        let cloud = Button.Image(app, action: #selector(app.cloud))
-        cloud.image.image = NSImage(named: "cloud")
-        
-        let history = Button.Image(app, action: #selector(app.history))
-        history.image.image = NSImage(named: "history")
-        
-        let settings = Button.Image(app, action: #selector(app.settings))
-        settings.image.image = NSImage(named: "settings")
+        contentView!.addSubview(borderTop)
         
         let directory = Button.Text(app, action: #selector(app.browse))
         directory.label.stringValue = .local("Home.directory")
         directory.label.font = .systemFont(ofSize: 12, weight: .bold)
         directory.label.textColor = .halo
         directory.label.alignment = .left
-        top.addSubview(directory)
+        contentView!.addSubview(directory)
         self.directory = directory
         
         let list: NSScrollView = NSScrollView()
@@ -225,36 +202,26 @@ final class Home: NSWindow  {
         count.font = .systemFont(ofSize: 11, weight: .light)
         count.alignment = .right
         count.textColor = NSColor.halo.withAlphaComponent(0.8)
-        top.addSubview(count)
+        contentView!.addSubview(count)
         self.count = count
         
-        left.topAnchor.constraint(equalTo: top.bottomAnchor, constant: 1).isActive = true
-        left.widthAnchor.constraint(equalToConstant: 62).isActive = true
-        left.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
-        left.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        
-        borderLeft.topAnchor.constraint(equalTo: left.topAnchor, constant: 1).isActive = true
-        borderLeft.bottomAnchor.constraint(equalTo: left.bottomAnchor, constant: -1).isActive = true
-        borderLeft.rightAnchor.constraint(equalTo: left.rightAnchor).isActive = true
+        borderLeft.topAnchor.constraint(equalTo: borderTop.bottomAnchor, constant: 2).isActive = true
+        borderLeft.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
+        borderLeft.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 62).isActive = true
         borderLeft.widthAnchor.constraint(equalToConstant: 1).isActive = true
         
-        top.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        top.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        top.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
-        top.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        
-        borderTop.leftAnchor.constraint(equalTo: top.leftAnchor, constant: 2).isActive = true
-        borderTop.rightAnchor.constraint(equalTo: top.rightAnchor, constant: -2).isActive = true
-        borderTop.bottomAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
+        borderTop.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
+        borderTop.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
+        borderTop.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 40).isActive = true
         borderTop.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        directory.topAnchor.constraint(equalTo: top.topAnchor).isActive = true
-        directory.bottomAnchor.constraint(equalTo: top.bottomAnchor, constant: -3).isActive = true
+        directory.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
+        directory.bottomAnchor.constraint(equalTo: borderTop.topAnchor, constant: -3).isActive = true
         directory.widthAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
-        directory.leftAnchor.constraint(equalTo: top.leftAnchor, constant: 82).isActive = true
+        directory.leftAnchor.constraint(equalTo: borderTop.leftAnchor, constant: 82).isActive = true
         
-        list.topAnchor.constraint(equalTo: top.bottomAnchor).isActive = true
-        list.leftAnchor.constraint(equalTo: left.rightAnchor).isActive = true
+        list.topAnchor.constraint(equalTo: borderTop.bottomAnchor).isActive = true
+        list.leftAnchor.constraint(equalTo: borderLeft.rightAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
         
@@ -272,17 +239,20 @@ final class Home: NSWindow  {
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
-        count.rightAnchor.constraint(equalTo: top.rightAnchor, constant: -12).isActive = true
-        count.centerYAnchor.constraint(equalTo: top.centerYAnchor).isActive = true
+        count.rightAnchor.constraint(equalTo: borderTop.rightAnchor, constant: -12).isActive = true
+        count.centerYAnchor.constraint(equalTo: directory.centerYAnchor).isActive = true
         
-        var vertical = left.topAnchor
-        [add, reset, cloud, history, settings].forEach {
-            left.addSubview($0)
-            $0.leftAnchor.constraint(equalTo: left.leftAnchor).isActive = true
-            $0.rightAnchor.constraint(equalTo: left.rightAnchor).isActive = true
-            $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
-            $0.topAnchor.constraint(equalTo: vertical, constant: vertical == left.topAnchor ? 5 : 0).isActive = true
-            vertical = $0.bottomAnchor
+        var vertical = borderLeft.topAnchor
+        [("add", #selector(app.add)), ("reset", #selector(app.reset)), ("cloud", #selector(app.cloud)), ("history", #selector(app.history)), ("settings", #selector(app.settings))].forEach {
+            let button = Button.Image(app, action: $0.1)
+            button.image.image = NSImage(named: $0.0)
+            contentView!.addSubview(button)
+            
+            button.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
+            button.rightAnchor.constraint(equalTo: borderLeft.leftAnchor).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            button.topAnchor.constraint(equalTo: vertical, constant: vertical == borderLeft.topAnchor ? 5 : 0).isActive = true
+            vertical = button.bottomAnchor
         }
     }
     
