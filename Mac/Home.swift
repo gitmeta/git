@@ -2,14 +2,6 @@ import Git
 import AppKit
 
 final class Home: NSWindow  {
-    enum State {
-        case loading
-        case ready
-        case packed
-        case create
-        case first
-    }
-    
     final class Item: NSView {
         let url: URL
         private(set) weak var check: Button.Check!
