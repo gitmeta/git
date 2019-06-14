@@ -156,6 +156,7 @@
 		CEC1AC8922AD325400526588 /* TestRepack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1AC8822AD325400526588 /* TestRepack.swift */; };
 		CEC67672229D0D5D00B6AFEF /* Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC67671229D0D5D00B6AFEF /* Add.swift */; };
 		CEC67674229D26F700B6AFEF /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC67673229D26F700B6AFEF /* Settings.swift */; };
+		CEC8AB3422B3C5AD00E2F244 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC8AB3322B3C5AD00E2F244 /* Tab.swift */; };
 		CED676C6228E820E009D6ADC /* TestReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C5228E820E009D6ADC /* TestReset.swift */; };
 		CED676C8228E840C009D6ADC /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Check.swift */; };
 		CED676C9228E840C009D6ADC /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED676C7228E840C009D6ADC /* Check.swift */; };
@@ -310,6 +311,7 @@
 		CEC1AC8822AD325400526588 /* TestRepack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepack.swift; sourceTree = "<group>"; };
 		CEC67671229D0D5D00B6AFEF /* Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Add.swift; sourceTree = "<group>"; };
 		CEC67673229D26F700B6AFEF /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		CEC8AB3322B3C5AD00E2F244 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		CED676C5228E820E009D6ADC /* TestReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReset.swift; sourceTree = "<group>"; };
 		CED676C7228E840C009D6ADC /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
 		CED7E395229E9BB1003B8721 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -496,6 +498,7 @@
 				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
 				CE8982612290560000E9F41F /* Reset.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
+				CEC8AB3322B3C5AD00E2F244 /* Tab.swift */,
 				20FFDF782282C27900226033 /* Tools.swift */,
 				209ACF2E2282ACB9001F3523 /* View.swift */,
 				20BB9F8122802152002DDF7B /* iOS.xcassets */,
@@ -902,6 +905,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20FFDF812282E05D00226033 /* Commit.swift in Sources */,
+				CEC8AB3422B3C5AD00E2F244 /* Tab.swift in Sources */,
 				209ACF2D2282ABE4001F3523 /* Alert.swift in Sources */,
 				209ACF2F2282ACB9001F3523 /* View.swift in Sources */,
 				20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */,
