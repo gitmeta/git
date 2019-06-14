@@ -1,6 +1,6 @@
 import UIKit
 
-class Tab: UIView {
+final class Tab: UIView {
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false

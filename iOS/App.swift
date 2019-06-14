@@ -5,7 +5,7 @@ import UserNotifications
 
 private(set) weak var app: App!
 
-@UIApplicationMain class App: UIViewController, UIApplicationDelegate {
+@UIApplicationMain final class App: UIViewController, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
