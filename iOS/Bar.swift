@@ -1,32 +1,7 @@
 import UIKit
 
-class Bar: UIControl {
-    class Location: Bar {
-        override init() {
-            super.init()
-            label.text = .local("Bar.location")
-            background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-            background.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-            label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        }
-        
-        required init?(coder: NSCoder) { return nil }
-    }
-    
-    class Branch: Bar {
-        override init() {
-            super.init()
-            isUserInteractionEnabled = false
-            background.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-            background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-            label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        }
-        
-        required init?(coder: NSCoder) { return nil }
-    }
-    
+final class Bar: UIControl {
     private(set) weak var label: UILabel!
-    private weak var background: UIView!
     
     init() {
         super.init(frame: .zero)

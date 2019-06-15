@@ -13,7 +13,7 @@ final class Tab: UIView {
         
         var left = leftAnchor
         
-        [("settings", #selector(app.add)), ("add", #selector(app.add))].forEach {
+        [("settings", #selector(app.add)), ("history", #selector(app.add)), ("add", #selector(app.add)), ("reset", #selector(app.add)), ("cloud", #selector(app.add))].forEach {
             let button = UIButton()
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(app, action: $0.1, for: .touchUpInside)
