@@ -7,37 +7,27 @@ final class Bar: UIControl {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
-        layer.cornerRadius = 4
-        
-        let background = UIView()
-        background.translatesAutoresizingMaskIntoConstraints = false
-        background.backgroundColor = .halo
-        background.alpha = 0.6
-        background.isUserInteractionEnabled = false
-        addSubview(background)
-        self.background = background
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .bold)
-        label.textColor = .black
+        label.textColor = .halo
+        label.text = .local("Home.directory")
         addSubview(label)
         self.label = label
         
-        background.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        label.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        label.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
+        label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        label.widthAnchor.constraint(greaterThanOrEqualToConstant: 10).isActive = true
-        label.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 16).isActive = true
-        label.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -16).isActive = true
-        label.topAnchor.constraint(equalTo: background.topAnchor).isActive = true
-        label.bottomAnchor.constraint(equalTo: background.bottomAnchor).isActive = true
-        
-        heightAnchor.constraint(equalToConstant: 28).isActive = true
+        heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
     override var isHighlighted: Bool { didSet { hover() } }
     override var isSelected: Bool { didSet { hover() } }
-    private func hover() { background.alpha = isHighlighted || isSelected ? 1 : 0.6 }
+    
+    private func hover() {
+        label.alpha = isHighlighted || isSelected ? 0.2 : 1
+    }
 }
