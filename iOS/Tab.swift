@@ -8,34 +8,46 @@ final class Tab: UIView {
         let border = UIView()
         border.isUserInteractionEnabled = true
         border.translatesAutoresizingMaskIntoConstraints = false
-        border.backgroundColor = .shade
+        border.backgroundColor = .halo
         addSubview(border)
         
         var left = leftAnchor
         
-        [("settings", #selector(app.add)), ("history", #selector(app.add)), ("add", #selector(app.add)), ("reset", #selector(app.add)), ("cloud", #selector(app.add))].forEach {
+        [("home", #selector(add)), ("add", #selector(add)), ("reset", #selector(add)), ("cloud", #selector(add)), ("history", #selector(add)), ("settings", #selector(add))].forEach {
             let button = UIButton()
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.addTarget(app, action: $0.1, for: .touchUpInside)
-            button.setImage(UIImage(named: $0.0), for: [])
+            button.addTarget(self, action: $0.1, for: .touchUpInside)
+            button.setImage(UIImage(named: $0.0), for: .selected)
+            button.setImage(UIImage(named: $0.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
             button.imageView!.clipsToBounds = true
             button.imageView!.contentMode = .center
+            button.imageView!.tintColor = UIColor.halo.withAlphaComponent(0.4)
             addSubview(button)
             
             button.leftAnchor.constraint(equalTo: left).isActive = true
-            button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.2).isActive = true
+            button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.166).isActive = true
             button.topAnchor.constraint(equalTo: topAnchor).isActive = true
             button.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             left = button.rightAnchor
         }
         
-        heightAnchor.constraint(equalToConstant: 60).isActive = true
+        heightAnchor.constraint(equalToConstant: 62).isActive = true
         
         border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        border.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         border.topAnchor.constraint(equalTo: topAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
+    
+    private func select(_ button: UIButton) {
+        subviews.compactMap({ $0 as? UIButton }).forEach({ $0.isSelected = false })
+        button.isSelected = true
+    }
+    
+    @objc private func add(_ button: UIButton) {
+        select(button)
+        app.add()
+    }
 }

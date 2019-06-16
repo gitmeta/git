@@ -25,6 +25,7 @@ private(set) weak var app: App!
         view.addSubview(tab)
         
         let bar = Bar()
+        view.addSubview(bar)
         self.bar = bar
         
         tab.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -42,5 +43,7 @@ private(set) weak var app: App!
         }
     }
     
-    @objc func add() { }
+    func add() {
+        
+    }
 }

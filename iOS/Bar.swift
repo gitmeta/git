@@ -8,6 +8,12 @@ final class Bar: UIControl {
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
         
+        let border = UIView()
+        border.isUserInteractionEnabled = true
+        border.translatesAutoresizingMaskIntoConstraints = false
+        border.backgroundColor = .halo
+        addSubview(border)
+        
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .bold)
@@ -16,9 +22,14 @@ final class Bar: UIControl {
         addSubview(label)
         self.label = label
         
-        label.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
-        label.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
+        label.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+        label.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        border.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
         heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
@@ -26,8 +37,5 @@ final class Bar: UIControl {
     required init?(coder: NSCoder) { return nil }
     override var isHighlighted: Bool { didSet { hover() } }
     override var isSelected: Bool { didSet { hover() } }
-    
-    private func hover() {
-        label.alpha = isHighlighted || isSelected ? 0.2 : 1
-    }
+    private func hover() { alpha = isHighlighted || isSelected ? 0.3 : 1 }
 }
