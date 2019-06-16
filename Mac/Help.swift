@@ -30,7 +30,7 @@ final class Help: NSWindow {
         contentView!.addSubview(title)
         
         let label = Label()
-        label.textColor = NSColor(white: 1, alpha: 0.8)
+        label.textColor = .init(white: 1, alpha: 0.8)
         label.font = .systemFont(ofSize: 16, weight: .light)
         contentView!.addSubview(label)
         self.label = label

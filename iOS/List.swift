@@ -133,7 +133,7 @@ class List: UIScrollView {
                 
                 let border = UIView()
                 border.isUserInteractionEnabled = false
-                border.backgroundColor = UIColor(white: 0, alpha: 0.3)
+                border.backgroundColor = .init(white: 0, alpha: 0.3)
                 border.translatesAutoresizingMaskIntoConstraints = false
                 addSubview(border)
                 

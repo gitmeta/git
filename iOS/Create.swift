@@ -44,7 +44,7 @@ class Create: UIViewController, UITextFieldDelegate {
         create.layer.cornerRadius = 20
         create.backgroundColor = .halo
         create.setTitleColor(.black, for: .normal)
-        create.setTitleColor(UIColor(white: 0, alpha: 0.2), for: .highlighted)
+        create.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
         create.setTitle(.local("Create.save"), for: [])
         create.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
         create.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +56,7 @@ class Create: UIViewController, UITextFieldDelegate {
         cancel.layer.cornerRadius = 20
         cancel.backgroundColor = .halo
         cancel.setTitleColor(.black, for: .normal)
-        cancel.setTitleColor(UIColor(white: 0, alpha: 0.2), for: .highlighted)
+        cancel.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
         cancel.setTitle(.local("Create.cancel"), for: [])
         cancel.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
         cancel.translatesAutoresizingMaskIntoConstraints = false

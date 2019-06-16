@@ -108,7 +108,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         
         let labelSign = Label(.local("Settings.labelSign"))
         labelSign.font = .systemFont(ofSize: 14, weight: .light)
-        labelSign.textColor = NSColor(white: 1, alpha: 0.6)
+        labelSign.textColor = .init(white: 1, alpha: 0.6)
         sign.addSubview(labelSign)
         
         let signName = Field()
@@ -136,7 +136,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         
         let labelKey = Label(.local("Settings.labelKey"))
         labelKey.font = .systemFont(ofSize: 14, weight: .light)
-        labelKey.textColor = NSColor(white: 1, alpha: 0.6)
+        labelKey.textColor = .init(white: 1, alpha: 0.6)
         key.addSubview(labelKey)
         
         let keyUser = Field()
@@ -272,7 +272,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
             buttonSign.layer!.backgroundColor = NSColor(white: 1, alpha: 0.6).cgColor
             buttonKey.layer!.backgroundColor = .clear
             buttonSign.label.textColor = .black
-            buttonKey.label.textColor = NSColor(white: 1, alpha: 0.5)
+            buttonKey.label.textColor = .init(white: 1, alpha: 0.5)
         }) { }
     }
     
@@ -285,7 +285,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
             contentView!.layoutSubtreeIfNeeded()
             buttonSign.layer!.backgroundColor = .clear
             buttonKey.layer!.backgroundColor = NSColor(white: 1, alpha: 0.6).cgColor
-            buttonSign.label.textColor = NSColor(white: 1, alpha: 0.5)
+            buttonSign.label.textColor = .init(white: 1, alpha: 0.5)
             buttonKey.label.textColor = .black
         }) { }
     }

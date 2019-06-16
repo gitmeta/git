@@ -151,7 +151,7 @@ final class Home: NSWindow  {
         contentView!.addSubview(directory)
         self.directory = directory
         
-        let list: NSScrollView = NSScrollView()
+        let list = NSScrollView()
         list.translatesAutoresizingMaskIntoConstraints = false
         list.drawsBackground = false
         list.hasVerticalScroller = true
@@ -185,7 +185,7 @@ final class Home: NSWindow  {
         
         let label = Label()
         label.font = .systemFont(ofSize: 13, weight: .light)
-        label.textColor = NSColor(white: 1, alpha: 0.6)
+        label.textColor = .init(white: 1, alpha: 0.6)
         label.alignment = .center
         contentView!.addSubview(label)
         self.label = label

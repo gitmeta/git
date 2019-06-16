@@ -16,7 +16,7 @@ class Onboard: Sheet {
         done.layer.cornerRadius = 6
         done.setTitle(.local("Onboard.done"), for: [])
         done.setTitleColor(.black, for: .normal)
-        done.setTitleColor(UIColor(white: 0, alpha: 0.2), for: .highlighted)
+        done.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
         done.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
         addSubview(done)
         

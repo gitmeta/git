@@ -29,25 +29,26 @@ final class Tab: UIView {
             button.topAnchor.constraint(equalTo: topAnchor).isActive = true
             button.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             left = button.rightAnchor
+            
+            if $0.0 == "home" {
+                button.isSelected = true
+            }
         }
         
         heightAnchor.constraint(equalToConstant: 62).isActive = true
         
         border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        border.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.topAnchor.constraint(equalTo: topAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
-    
-    private func select(_ button: UIButton) {
-        subviews.compactMap({ $0 as? UIButton }).forEach({ $0.isSelected = false })
-        button.isSelected = true
-    }
+    private func select(_ button: UIButton) { subviews.compactMap({ $0 as? UIButton }).forEach({ $0.isSelected = $0 === button }) }
     
     @objc private func add(_ button: UIButton) {
+        guard !button.isSelected else { return }
         select(button)
-        app.add()
+        app.show(Home())
     }
 }

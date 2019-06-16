@@ -27,7 +27,7 @@ class Reset: Sheet {
         confirm.addTarget(self, action: #selector(self.confirm), for: .touchUpInside)
         confirm.setTitle(.local("Reset.confirm"), for: [])
         confirm.setTitleColor(.black, for: .normal)
-        confirm.setTitleColor(UIColor(white: 0, alpha: 0.2), for: .highlighted)
+        confirm.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
         confirm.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
         confirm.backgroundColor = .halo
         confirm.layer.cornerRadius = 6
@@ -38,7 +38,7 @@ class Reset: Sheet {
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
         cancel.setTitle(.local("Reset.cancel"), for: [])
         cancel.setTitleColor(.white, for: .normal)
-        cancel.setTitleColor(UIColor(white: 1, alpha: 0.2), for: .highlighted)
+        cancel.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
         cancel.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
         addSubview(cancel)
         
