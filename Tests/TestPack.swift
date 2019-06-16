@@ -75,6 +75,9 @@ class TestPack: XCTestCase {
         XCTAssertEqual(3, pack?.commits.count)
         XCTAssertEqual(10, pack?.trees.count)
         XCTAssertEqual(4, pack?.blobs.count)
+        pack?.trees.forEach {
+            XCTAssertEqual($0.key, Hub.hash.tree($0.value.0.serial).1)
+        }
     }
     
     func testLoadPack1() {
@@ -87,14 +90,14 @@ class TestPack: XCTestCase {
     
     func testLoadPack2() {
         copy("2")
-        let pack = try! Pack(url, id: "2")
-        XCTAssertEqual(19, pack.commits.count)
-        XCTAssertEqual(70, pack.trees.count)
-        XCTAssertEqual(66, pack.blobs.count)
-        XCTAssertNotNil(pack.trees.first(where: { $0.0 == "d14d41ee118d52df4b9811b2eacc943f06cd942a" }))
-        XCTAssertNotNil(pack.commits.first(where: { $0.0 == "0807a029cb42acd13ad194248436f093b8e63a4f" }))
-        XCTAssertNotNil(pack.blobs.first(where: { $0.0 == "0ec0ff154d5c479f0af27d7a5064bb570c62500d" }))
-        if let data = pack.trees.first(where: { $0.0 == "d14d41ee118d52df4b9811b2eacc943f06cd942a" })?.1.0.serial {
+        let pack = try? Pack(url, id: "2")
+        XCTAssertEqual(19, pack?.commits.count)
+        XCTAssertEqual(70, pack?.trees.count)
+        XCTAssertEqual(66, pack?.blobs.count)
+        XCTAssertNotNil(pack?.trees.first(where: { $0.0 == "d14d41ee118d52df4b9811b2eacc943f06cd942a" }))
+        XCTAssertNotNil(pack?.commits.first(where: { $0.0 == "0807a029cb42acd13ad194248436f093b8e63a4f" }))
+        XCTAssertNotNil(pack?.blobs.first(where: { $0.0 == "0ec0ff154d5c479f0af27d7a5064bb570c62500d" }))
+        if let data = pack?.trees.first(where: { $0.0 == "d14d41ee118d52df4b9811b2eacc943f06cd942a" })?.1.0.serial {
             XCTAssertEqual("d14d41ee118d52df4b9811b2eacc943f06cd942a", Hub.hash.tree(data).1)
         }
     }
@@ -124,10 +127,10 @@ Test
     }
     
     func testLoadFetch1() {
-        let pack = try! Pack(Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "fetch1", withExtension: nil)!))
-        XCTAssertEqual(23, pack.commits.count)
-        XCTAssertEqual(43, pack.trees.count)
-        XCTAssertEqual(23, pack.blobs.count)
+        let pack = try? Pack(Data(contentsOf: Bundle(for: TestPack.self).url(forResource: "fetch1", withExtension: nil)!))
+        XCTAssertEqual(23, pack?.commits.count)
+        XCTAssertEqual(43, pack?.trees.count)
+        XCTAssertEqual(23, pack?.blobs.count)
     }
     
     func testPack0Hash() {

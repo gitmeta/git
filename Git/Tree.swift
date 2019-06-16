@@ -96,7 +96,11 @@ final class Tree {
     
     var serial: Data {
         let serial = Serial()
-        items.sorted(by: { $0.url.path.compare($1.url.path) != .orderedDescending }).forEach {
+        items.sorted(by: {
+            let left = $0.url.lastPathComponent + ($0.category == .tree ? "/" : "")
+            let right = $1.url.lastPathComponent + ($1.category == .tree ? "/" : "")
+            return left.compare(right) != .orderedDescending
+        }).forEach {
             serial.string($0.category.rawValue + " ")
             serial.nulled($0.url.lastPathComponent)
             serial.hex($0.id)

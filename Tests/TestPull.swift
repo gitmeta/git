@@ -196,7 +196,7 @@ Test
         let fetch = Fetch()
         fetch.branch.append("335a33ae387dc24f057852fdb92e5abc71bf6b85")
         rest._fetch = fetch
-        rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch2", withExtension: nil)!))
+        rest._pull = try? Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch2", withExtension: nil)!))
         Hub.create(url) {
             repository = $0
             try? Config("lorem ipsum").save(self.url)
