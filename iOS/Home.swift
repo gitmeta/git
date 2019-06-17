@@ -248,7 +248,7 @@ final class Home: UIView {
                 button.isHidden = true
                 count.isHidden = false
                 label.isHidden = true
-                self.countItems()
+                self.recount()
                 if $1.isEmpty {
                     image.isHidden = false
                     image.image = UIImage(named: "updated")
@@ -278,14 +278,14 @@ final class Home: UIView {
     required init?(coder: NSCoder) { return nil }
     
     @objc private func change(_ button: UIButton) {
-        countItems()
+        recount()
         UIView.animate(withDuration: 0.3) {
             (button.superview as! Item).label.alpha = button.isSelected ? 1 : 0.4
             (button.superview as! Item).badge.alpha = button.isSelected ? 1 : 0.3
         }
     }
     
-    private func countItems() {
+    private func recount() {
         count.text = {
             "\($0.filter({ $0.check.isSelected }).count)/\($0.count)"
         } (list.subviews.compactMap({ $0 as? Item }))

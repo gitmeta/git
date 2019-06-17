@@ -99,7 +99,7 @@ final class Home: NSWindow  {
         required init?(coder: NSCoder) { return nil }
         
         @objc private func change() {
-            app.home.countItems()
+            app.home.recount()
             NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.3
                 context.allowsImplicitAnimation = true
@@ -283,7 +283,7 @@ final class Home: NSWindow  {
             button.isHidden = true
             count.isHidden = false
             label.isHidden = true
-            countItems()
+            recount()
             if items.isEmpty {
                 image.isHidden = false
                 image.image = NSImage(named: "updated")
@@ -314,7 +314,7 @@ final class Home: NSWindow  {
         app.terminate(nil)
     }
     
-    private func countItems() {
+    private func recount() {
         count.stringValue = {
             "\($0.filter({ $0.check.checked }).count)/\($0.count)"
         } (list.documentView!.subviews.compactMap({ $0 as? Item }))

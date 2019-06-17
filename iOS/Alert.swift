@@ -5,9 +5,9 @@ final class Alert: UIView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         isUserInteractionEnabled = false
-        backgroundColor = .init(white: 0, alpha: 0.7)
+        backgroundColor = .shade
         layer.cornerRadius = 8
-        layer.borderColor = UIColor.white.cgColor
+        layer.borderColor = UIColor.halo.cgColor
         layer.borderWidth = 1
         alpha = 0
         
@@ -15,31 +15,33 @@ final class Alert: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = message
         label.textColor = .white
-        label.font = .systemFont(ofSize: 15, weight: .medium)
+        label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textAlignment = .center
         addSubview(label)
         
         app.view.addSubview(self)
         
-        heightAnchor.constraint(equalToConstant: 90).isActive = true
-        leftAnchor.constraint(equalTo: app.view.leftAnchor, constant: 20).isActive = true
-        rightAnchor.constraint(equalTo: app.view.rightAnchor, constant: -20).isActive = true
-        let top = topAnchor.constraint(equalTo: app.view.topAnchor, constant: -90)
+        heightAnchor.constraint(equalToConstant: 60).isActive = true
+        leftAnchor.constraint(equalTo: app.view.leftAnchor, constant: 4).isActive = true
+        rightAnchor.constraint(equalTo: app.view.rightAnchor, constant: -4).isActive = true
+        let top = topAnchor.constraint(equalTo: app.view.topAnchor, constant: -60)
         top.isActive = true
         
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
         app.view.layoutIfNeeded()
+        top.constant = 30
         
         UIView.animate(withDuration: 0.5, animations: { [weak self] in
-            top.constant = 120
             self?.alpha = 1
+            app.view.layoutIfNeeded()
         }) { _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+                top.constant = -90
                 UIView.animate(withDuration: 0.5, animations: { [weak self] in
                     self?.alpha = 0
-                    top.constant = -90
+                    app.view.layoutIfNeeded()
                 }, completion: { [weak self] _ in
                     self?.removeFromSuperview()
                 })

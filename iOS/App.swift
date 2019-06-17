@@ -37,7 +37,19 @@ private(set) weak var app: App!
         self.window = window
         
         Hub.session.load {
-            self.load()
+            if !Hub.session.bookmark.isEmpty {
+                self.help()
+                self.update?(.first, [])
+            }
+            Hub.session.update(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data()) {
+                Hub.open(Hub.session.url, error: {
+                    Alert($0.localizedDescription)
+                    self.repository = nil
+                }) {
+                    self.repository = $0
+                    Alert("hello world")
+                }
+            }
             self.rate()
         }
         
@@ -85,19 +97,6 @@ private(set) weak var app: App!
         } else {
             content.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         }
-    }
-    
-    private func load() {
-        guard !Hub.session.bookmark.isEmpty
-        else {
-            help()
-            update?(.first, [])
-            return
-        }
-        Hub.open(Hub.session.url, error: {
-            Alert($0.localizedDescription)
-            self.repository = nil
-        }) { self.repository = $0 }
     }
     
     private func rate() {
