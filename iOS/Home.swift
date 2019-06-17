@@ -217,57 +217,58 @@ final class Home: UIView {
         var bottom = list.topAnchor
         items.forEach {
             let item = Item($0.0, status: $0.1)
-            list.documentView!.addSubview(item)
+            list.addSubview(item)
             
             item.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
             item.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
             item.topAnchor.constraint(equalTo: bottom).isActive = true
             bottom = item.bottomAnchor
         }
-        self.bottom = list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom)
+        self.bottom = list.bottomAnchor.constraint(greaterThanOrEqualTo: bottom)
+        button.removeTarget(self, action: nil, for: .allEvents)
         
         switch state {
         case .loading:
             image.isHidden = false
-            image.image = NSImage(named: "loading")
+            image.image = UIImage(named: "loading")
             button.isHidden = true
             label.isHidden = true
             count.isHidden = true
         case .packed:
             image.isHidden = false
-            image.image = NSImage(named: "error")
+            image.image = UIImage(named: "error")
             button.isHidden = false
-            button.label.stringValue = .local("Home.button.packed")
-            button.action = #selector(App.unpack)
+            button.setTitle(.local("Home.button.packed"), for: [])
+//            button.addTarget(app, action: #selector(app.unpack), for: .touchUpInside)
             label.isHidden = false
-            label.stringValue = .local("Home.label.packed")
+            label.text = .local("Home.label.packed")
             count.isHidden = true
         case .ready:
             button.isHidden = true
             count.isHidden = false
             label.isHidden = true
-            countItems()
+//            countItems()
             if items.isEmpty {
                 image.isHidden = false
-                image.image = NSImage(named: "updated")
+                image.image = UIImage(named: "updated")
             } else {
                 image.isHidden = true
             }
         case .create:
             image.isHidden = false
-            image.image = NSImage(named: "error")
+            image.image = UIImage(named: "error")
             button.isHidden = false
-            button.label.stringValue = .local("Home.button.create")
-            button.action = #selector(App.create)
+            button.setTitle(.local("Home.button.create"), for: [])
+//            button.addTarget(app, action: #selector(app.create), for: .touchUpInside)
             label.isHidden = false
-            label.stringValue = .local("Home.label.create")
+            label.text = .local("Home.label.create")
             count.isHidden = true
         case .first:
             image.isHidden = false
-            image.image = NSImage(named: "error")
+            image.image = UIImage(named: "error")
             button.isHidden = true
             label.isHidden = false
-            label.stringValue = .local("Home.label.first")
+            label.text = .local("Home.label.first")
             count.isHidden = true
         }
     }

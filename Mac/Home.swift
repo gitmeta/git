@@ -275,7 +275,7 @@ final class Home: NSWindow  {
             image.image = NSImage(named: "error")
             button.isHidden = false
             button.label.stringValue = .local("Home.button.packed")
-            button.action = #selector(App.unpack)
+            button.action = #selector(app.unpack)
             label.isHidden = false
             label.stringValue = .local("Home.label.packed")
             count.isHidden = true
@@ -295,7 +295,7 @@ final class Home: NSWindow  {
             image.image = NSImage(named: "error")
             button.isHidden = false
             button.label.stringValue = .local("Home.button.create")
-            button.action = #selector(App.create)
+            button.action = #selector(app.create)
             label.isHidden = false
             label.stringValue = .local("Home.label.create")
             count.isHidden = true
