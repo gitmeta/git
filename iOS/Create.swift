@@ -1,33 +1,26 @@
 import UIKit
 
-class Create: UIViewController, UITextFieldDelegate {
+final class Create: UIView, UITextFieldDelegate {
     private let result: ((URL?) -> Void)
     private weak var name: UITextField!
     
     init(_ result: @escaping((URL?) -> Void)) {
         self.result = result
-        super.init(nibName: nil, bundle: nil)
-        modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overCurrentContext
-    }
-    
-    required init?(coder: NSCoder) { return nil }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .shade
-        
-        let background = UIView()
-        background.translatesAutoresizingMaskIntoConstraints = false
-        background.backgroundColor = .black
-        view.addSubview(background)
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .init(white: 0, alpha: 0.9)
+        alpha = 0
         
         let name = UITextField()
         name.translatesAutoresizingMaskIntoConstraints = false
         name.tintColor = .halo
-        name.textColor = .halo
+        name.textColor = .white
+        name.backgroundColor = .black
+        name.layer.cornerRadius = 6
+        name.layer.borderColor = UIColor.halo.cgColor
+        name.layer.borderWidth = 1
         name.delegate = self
-        name.font = .systemFont(ofSize: 24, weight: .medium)
+        name.font = .systemFont(ofSize: 18, weight: .medium)
         name.autocorrectionType = .no
         name.autocapitalizationType = .none
         name.spellCheckingType = .no
@@ -35,79 +28,73 @@ class Create: UIViewController, UITextFieldDelegate {
         name.keyboardAppearance = .dark
         name.keyboardType = .alphabet
         name.textAlignment = .center
-        view.addSubview(name)
+        addSubview(name)
         self.name = name
         
         let create = UIButton()
         create.addTarget(self, action: #selector(self.create), for: .touchUpInside)
         create.translatesAutoresizingMaskIntoConstraints = false
-        create.layer.cornerRadius = 20
+        create.layer.cornerRadius = 4
         create.backgroundColor = .halo
         create.setTitleColor(.black, for: .normal)
         create.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
         create.setTitle(.local("Create.save"), for: [])
-        create.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
+        create.titleLabel!.font = .systemFont(ofSize: 12, weight: .medium)
         create.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(create)
+        addSubview(create)
         
         let cancel = UIButton()
         cancel.addTarget(self, action: #selector(self.cancel), for: .touchUpInside)
         cancel.translatesAutoresizingMaskIntoConstraints = false
-        cancel.layer.cornerRadius = 20
-        cancel.backgroundColor = .halo
-        cancel.setTitleColor(.black, for: .normal)
-        cancel.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
+        cancel.setTitleColor(.init(white: 1, alpha: 0.6), for: .normal)
+        cancel.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
         cancel.setTitle(.local("Create.cancel"), for: [])
-        cancel.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
+        cancel.titleLabel!.font = .systemFont(ofSize: 12, weight: .medium)
         cancel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(cancel)
+        addSubview(cancel)
         
-        background.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        background.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        background.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        background.bottomAnchor.constraint(equalTo: name.bottomAnchor).isActive = true
-
-        name.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        name.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        name.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        name.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
+        name.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        name.leftAnchor.constraint(equalTo: leftAnchor, constant: 30).isActive = true
+        name.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
         
-        create.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 20).isActive = true
-        create.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -100).isActive = true
-        create.widthAnchor.constraint(equalToConstant: 270).isActive = true
-        create.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        create.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 30).isActive = true
+        create.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        create.widthAnchor.constraint(equalToConstant: 68).isActive = true
+        create.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
-        cancel.topAnchor.constraint(equalTo: create.bottomAnchor, constant: 20).isActive = true
-        cancel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -100).isActive = true
-        cancel.widthAnchor.constraint(equalToConstant: 270).isActive = true
-        cancel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        cancel.topAnchor.constraint(equalTo: create.bottomAnchor, constant: 30).isActive = true
+        cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        cancel.widthAnchor.constraint(equalToConstant: 68).isActive = true
+        cancel.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
-        if #available(iOS 11.0, *) {
-            name.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        } else {
-            name.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
-        }
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            self?.alpha = 1
+        }) { [weak name] _ in name?.becomeFirstResponder() }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        name.becomeFirstResponder()
-    }
+    required init?(coder: NSCoder) { return nil }
     
     func textFieldShouldReturn(_: UITextField) -> Bool {
         name.resignFirstResponder()
         return true
     }
     
-    @objc private func create() {
-//        App.shared.endEditing(true)
-//        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name.text!.isEmpty ?
-//            .local("Create.untitled") : name.text!)
-//        FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
-//        result(url)
+    private func finish(_ url: URL?) {
+        app.window!.endEditing(true)
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            self?.alpha = 0
+        }) { [weak self] _ in
+            self?.result(url)
+            self?.removeFromSuperview()
+        }
     }
     
-    @objc private func cancel() {
-//        App.shared.endEditing(true)
-//        result(nil)
+    @objc private func create() {
+        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name.text!.isEmpty ? .local("Create.untitled") : name.text!)
+        FileManager.default.createFile(atPath: url.path, contents: nil)
+        finish(url)
     }
+    
+    @objc private func cancel() { finish(nil) }
 }

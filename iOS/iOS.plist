@@ -53,6 +53,8 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Save selected images to photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SFMono-Light.otf</string>

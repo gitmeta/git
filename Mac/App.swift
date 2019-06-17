@@ -205,7 +205,10 @@ private(set) weak var app: App!
         Hub.create(Hub.session.url, error: {
             self.alert(.local("Alert.error"), message: $0.localizedDescription)
             self.repository = nil
-        }) { self.repository = $0 }
+        }) {
+            self.repository = $0
+            self.alert(.local("Alert.success"), message: .local("Home.created"))
+        }
     }
     
     @objc func unpack() {

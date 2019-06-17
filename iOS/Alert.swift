@@ -1,15 +1,17 @@
 import UIKit
 
-final class Alert: UIView {
+final class Alert: UIControl {
+    private weak var top: NSLayoutConstraint!
+    
     @discardableResult init(_ message: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        isUserInteractionEnabled = false
         backgroundColor = .shade
         layer.cornerRadius = 8
         layer.borderColor = UIColor.halo.cgColor
         layer.borderWidth = 1
         alpha = 0
+        addTarget(self, action: #selector(dismiss), for: .touchUpInside)
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -24,7 +26,7 @@ final class Alert: UIView {
         heightAnchor.constraint(equalToConstant: 60).isActive = true
         leftAnchor.constraint(equalTo: app.view.leftAnchor, constant: 4).isActive = true
         rightAnchor.constraint(equalTo: app.view.rightAnchor, constant: -4).isActive = true
-        let top = topAnchor.constraint(equalTo: app.view.topAnchor, constant: -60)
+        top = topAnchor.constraint(equalTo: app.view.topAnchor, constant: -60)
         top.isActive = true
         
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
@@ -36,18 +38,18 @@ final class Alert: UIView {
         UIView.animate(withDuration: 0.5, animations: { [weak self] in
             self?.alpha = 1
             app.view.layoutIfNeeded()
-        }) { _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-                top.constant = -90
-                UIView.animate(withDuration: 0.5, animations: { [weak self] in
-                    self?.alpha = 0
-                    app.view.layoutIfNeeded()
-                }, completion: { [weak self] _ in
-                    self?.removeFromSuperview()
-                })
-            }
-        }
+        }) { _ in DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) { [weak self] in self?.dismiss() } }
     }
     
     required init?(coder: NSCoder) { return nil }
+    
+    @objc private func dismiss() {
+        top.constant = -90
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            self?.alpha = 0
+            app.view.layoutIfNeeded()
+        }, completion: { [weak self] _ in
+            self?.removeFromSuperview()
+        })
+    }
 }

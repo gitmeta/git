@@ -191,9 +191,9 @@ final class Home: NSWindow  {
         self.label = label
         
         let count = Label()
-        count.font = .systemFont(ofSize: 11, weight: .light)
+        count.font = .systemFont(ofSize: 11, weight: .regular)
         count.alignment = .right
-        count.textColor = NSColor.halo.withAlphaComponent(0.8)
+        count.textColor = .halo
         contentView!.addSubview(count)
         self.count = count
         

@@ -5,7 +5,7 @@ import UserNotifications
 
 private(set) weak var app: App!
 
-@UIApplicationMain final class App: UIViewController, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+@UIApplicationMain final class App: UIViewController, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIDocumentBrowserViewControllerDelegate {
     var window: UIWindow?
     var update: ((State, [(URL, Status)]) -> Void)?
     private weak var tab: Tab!
@@ -29,6 +29,25 @@ private(set) weak var app: App!
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let tab = Tab()
+        view.addSubview(tab)
+        self.tab = tab
+        
+        tab.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tab.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        if #available(iOS 11.0, *) {
+            tab.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        } else {
+            tab.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        }
+        
+        show(Home())
+    }
+    
     func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         app = self
         let window = UIWindow()
@@ -47,7 +66,6 @@ private(set) weak var app: App!
                     self.repository = nil
                 }) {
                     self.repository = $0
-                    Alert("hello world")
                 }
             }
             self.rate()
@@ -65,23 +83,29 @@ private(set) weak var app: App!
         return true
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let tab = Tab()
-        view.addSubview(tab)
-        self.tab = tab
-
-        tab.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tab.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        
-        if #available(iOS 11.0, *) {
-            tab.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        } else {
-            tab.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    @available(iOS 10.0, *) func userNotificationCenter(_: UNUserNotificationCenter, willPresent: UNNotification, withCompletionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        withCompletionHandler([.alert])
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 15) {
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [willPresent.request.identifier])
         }
+    }
+    
+    @available(iOS 11.0, *) func documentBrowser(_: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
+        let create = Create { didRequestDocumentCreationWithHandler($0, $0 == nil ? .none : .move) }
+        presentedViewController!.view.addSubview(create)
         
-        show(Home())
+        create.topAnchor.constraint(equalTo: presentedViewController!.view.topAnchor).isActive = true
+        create.bottomAnchor.constraint(equalTo: presentedViewController!.view.bottomAnchor).isActive = true
+        create.leftAnchor.constraint(equalTo: presentedViewController!.view.leftAnchor).isActive = true
+        create.rightAnchor.constraint(equalTo: presentedViewController!.view.rightAnchor).isActive = true
+    }
+    
+    @available(iOS 11.0, *) func documentBrowser(_: UIDocumentBrowserViewController, didPickDocumentsAt: [URL]) {
+        let share = UIActivityViewController(activityItems: didPickDocumentsAt, applicationActivities: nil)
+        share.popoverPresentationController?.sourceView = presentedViewController!.view
+        share.popoverPresentationController?.sourceRect = .zero
+        share.popoverPresentationController?.permittedArrowDirections = .any
+        presentedViewController!.present(share, animated: true)
     }
     
     func show(_ content: UIView) {
@@ -96,6 +120,57 @@ private(set) weak var app: App!
             content.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         } else {
             content.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        }
+    }
+    
+    func alert(_ title: String, message: String) {
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().getNotificationSettings {
+                if $0.authorizationStatus == .authorized {
+                    UNUserNotificationCenter.current().add({
+                        $0.title = title
+                        $0.body = message
+                        return UNNotificationRequest(identifier: UUID().uuidString, content: $0, trigger: nil)
+                    } (UNMutableNotificationContent()))
+                } else {
+                    Alert(title + " " + message)
+                }
+            }
+        } else {
+            Alert(title + " " + message)
+        }
+    }
+    
+    @objc func browse() {
+        if #available(iOS 11.0, *) {
+            let browse = UIDocumentBrowserViewController()
+            browse.browserUserInterfaceStyle = .dark
+            browse.delegate = self
+            browse.additionalLeadingNavigationBarButtonItems = [.init(barButtonSystemItem: .stop, target: self, action: #selector(back))]
+            present(browse, animated: true)
+        }
+    }
+    
+    @objc func create() {
+        home()
+        update?(.loading, [])
+        Hub.create(Hub.session.url, error: {
+            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.repository = nil
+        }) {
+            self.repository = $0
+            self.alert(.local("Alert.success"), message: .local("Home.created"))
+        }
+    }
+    
+    @objc func unpack() {
+        home()
+        update?(.loading, [])
+        repository?.unpack({
+            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.repository = nil
+        }) {
+            self.alert(.local("Alert.success"), message: .local("App.unpacked"))
         }
     }
     
@@ -114,5 +189,10 @@ private(set) weak var app: App!
         }
     }
     
+    private func home() {
+        if !view.subviews.contains(where: { $0 is Home }) { show(Home()) }
+    }
+    
     @objc private func help() { /*order(Help.self)*/ }
+    @objc private func back() { dismiss(animated: true) }
 }

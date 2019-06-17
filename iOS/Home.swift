@@ -53,7 +53,6 @@ final class Home: UIView {
             let border = UIView()
             border.isUserInteractionEnabled = false
             border.translatesAutoresizingMaskIntoConstraints = false
-            border.translatesAutoresizingMaskIntoConstraints = false
             border.backgroundColor = .shade
             addSubview(border)
             
@@ -72,7 +71,7 @@ final class Home: UIView {
                 hashtag.text = .local("Home.untracked")
             }
             
-            heightAnchor.constraint(equalToConstant: 46).isActive = true
+            heightAnchor.constraint(equalToConstant: 60).isActive = true
             
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
@@ -133,6 +132,7 @@ final class Home: UIView {
         browse.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
         browse.layer.cornerRadius = 4
         browse.backgroundColor = .halo
+        browse.addTarget(app, action: #selector(app.browse), for: .touchUpInside)
         addSubview(browse)
         
         let list = UIScrollView()
@@ -170,9 +170,9 @@ final class Home: UIView {
         
         let count = UILabel()
         count.translatesAutoresizingMaskIntoConstraints = false
-        count.font = .systemFont(ofSize: 12, weight: .light)
+        count.font = .systemFont(ofSize: 12, weight: .regular)
         count.textAlignment = .right
-        count.textColor = UIColor.halo.withAlphaComponent(0.8)
+        count.textColor = .halo
         addSubview(count)
         self.count = count
         
@@ -218,10 +218,11 @@ final class Home: UIView {
             var bottom = self.list.topAnchor
             $1.forEach {
                 let item = Item($0.0, status: $0.1)
+                item.check.addTarget(self, action: #selector(self.change(_:)), for: .touchUpInside)
                 list.addSubview(item)
                 
                 item.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
-                item.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
+                item.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
                 item.topAnchor.constraint(equalTo: bottom).isActive = true
                 bottom = item.bottomAnchor
             }
@@ -240,7 +241,7 @@ final class Home: UIView {
                 image.image = UIImage(named: "error")
                 button.isHidden = false
                 button.setTitle(.local("Home.button.packed"), for: [])
-                //            button.addTarget(app, action: #selector(app.unpack), for: .touchUpInside)
+                button.addTarget(app, action: #selector(app.unpack), for: .touchUpInside)
                 label.isHidden = false
                 label.text = .local("Home.label.packed")
                 count.isHidden = true
@@ -260,7 +261,7 @@ final class Home: UIView {
                 image.image = UIImage(named: "error")
                 button.isHidden = false
                 button.setTitle(.local("Home.button.create"), for: [])
-                //            button.addTarget(app, action: #selector(app.create), for: .touchUpInside)
+                button.addTarget(app, action: #selector(app.create), for: .touchUpInside)
                 label.isHidden = false
                 label.text = .local("Home.label.create")
                 count.isHidden = true
@@ -278,6 +279,7 @@ final class Home: UIView {
     required init?(coder: NSCoder) { return nil }
     
     @objc private func change(_ button: UIButton) {
+        button.isSelected.toggle()
         recount()
         UIView.animate(withDuration: 0.3) {
             (button.superview as! Item).label.alpha = button.isSelected ? 1 : 0.4
