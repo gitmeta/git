@@ -1,7 +1,12 @@
 import Foundation
 
 public final class Session: Codable {
+    public enum Purchase: String, Codable {
+        case unknown
+    }
+    
     public internal(set) var url = URL(fileURLWithPath: "")
+    public internal(set) var purchase = [Purchase]()
     public internal(set) var bookmark = Data()
     public internal(set) var name = ""
     public internal(set) var email = ""
