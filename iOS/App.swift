@@ -5,9 +5,29 @@ import UserNotifications
 
 private(set) weak var app: App!
 
-@UIApplicationMain final class App: UIViewController, UIApplicationDelegate {
+@UIApplicationMain final class App: UIViewController, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
+    var update: ((State, [(URL, Status)]) -> Void)?
     private weak var tab: Tab!
+    private(set) var repository: Repository? {
+        didSet {
+            if repository == nil {
+                update?(.create, [])
+            } else {
+                repository!.status = { status in
+                    self.repository?.packed {
+                        if $0 {
+                            self.update?(.packed, [])
+                        } else {
+                            self.update?(.ready, status)
+                        }
+                    }
+                }
+                update?(.loading, [])
+                repository!.refresh()
+            }
+        }
+    }
     
     func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         app = self
@@ -15,6 +35,21 @@ private(set) weak var app: App!
         window.rootViewController = self
         window.makeKeyAndVisible()
         self.window = window
+        
+        Hub.session.load {
+            self.load()
+            self.rate()
+        }
+        
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
+            UNUserNotificationCenter.current().getNotificationSettings {
+                if $0.authorizationStatus != .authorized {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
+                }
+            }
+        }
+        
         return true
     }
     
@@ -51,4 +86,34 @@ private(set) weak var app: App!
             content.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         }
     }
+    
+    private func load() {
+        guard !Hub.session.bookmark.isEmpty
+        else {
+            help()
+            update?(.first, [])
+            return
+        }
+        Hub.open(Hub.session.url, error: {
+            Alert($0.localizedDescription)
+            self.repository = nil
+        }) { self.repository = $0 }
+    }
+    
+    private func rate() {
+        if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {
+            if Date() >= expected {
+                var components = DateComponents()
+                components.month = 4
+                UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+                if #available(iOS 10.3, *) { SKStoreReviewController.requestReview() }
+            }
+        } else {
+            var components = DateComponents()
+            components.day = 3
+            UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+        }
+    }
+    
+    @objc private func help() { /*order(Help.self)*/ }
 }

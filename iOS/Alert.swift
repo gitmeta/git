@@ -1,91 +1,51 @@
 import UIKit
-import UserNotifications
 
-class Alert {
-    /*
-    private weak var view: UIView?
-    private weak var bottom: NSLayoutConstraint?
-    private var alert = [(String, String)]()
-    
-    func error(_ message: String) { show(.local("Alert.error"), message: message) }
-    func commit(_ message: String) { show(.local("Alert.commit"), message: message) }
-    func update(_ message: String) { show(.local("Alert.update"), message: message) }
-    
-    private func show(_ title: String, message: String) {
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().getNotificationSettings { [weak self] in
-                if $0.authorizationStatus == .authorized {
-                    self?.notify(title, message: message)
-                } else {
-                    self?.fallback(title, message: message)
-                }
-            }
-        } else {
-            fallback(title, message: message)
-        }
-    }
-    
-    @available(iOS 10.0, *) private func notify(_ title: String, message: String) {
-        UNUserNotificationCenter.current().add({
-            $0.title = title
-            $0.body = message
-            return UNNotificationRequest(identifier: UUID().uuidString, content: $0, trigger: nil)
-        } (UNMutableNotificationContent()))
-    }
-    
-    private func fallback(_ title: String, message: String) {
-        alert.append((title, message))
-        if view == nil {
-            DispatchQueue.main.async { [weak self] in self?.pop() }
-        }
-    }
-    
-    private func pop() {
-        guard !alert.isEmpty else { return }
-        let view = UIButton()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.addTarget(self, action: #selector(remove), for: .touchUpInside)
-        view.setTitleColor(UIColor(white: 0, alpha: 0.8), for: .normal)
-        view.setTitleColor(UIColor(white: 0, alpha: 0.2), for: .highlighted)
-        view.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
-        view.setTitle({ "\($0.0): \($0.1)" } (alert.removeFirst()), for: [])
-        view.backgroundColor = UIColor(white: 1, alpha: 0.9)
-        view.layer.cornerRadius = 4
-        view.alpha = 0
-        App.view.view.addSubview(view)
-        self.view = view
+final class Alert: UIView {
+    @discardableResult init(_ message: String) {
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        isUserInteractionEnabled = false
+        backgroundColor = .init(white: 0, alpha: 0.7)
+        layer.cornerRadius = 8
+        layer.borderColor = UIColor.white.cgColor
+        layer.borderWidth = 1
+        alpha = 0
         
-        view.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        view.leftAnchor.constraint(equalTo: App.view.view.leftAnchor, constant: 20).isActive = true
-        view.rightAnchor.constraint(equalTo: App.view.view.rightAnchor, constant: -20).isActive = true
-        bottom = view.bottomAnchor.constraint(equalTo: App.view.view.topAnchor)
-        bottom!.isActive = true
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = message
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 15, weight: .medium)
+        label.textAlignment = .center
+        addSubview(label)
         
-        App.view.view.layoutIfNeeded()
-        bottom!.constant = 55
+        app.view.addSubview(self)
         
-        UIView.animate(withDuration: 0.6, animations: {
-            view.alpha = 1
-            App.view.view.layoutIfNeeded()
+        heightAnchor.constraint(equalToConstant: 90).isActive = true
+        leftAnchor.constraint(equalTo: app.view.leftAnchor, constant: 20).isActive = true
+        rightAnchor.constraint(equalTo: app.view.rightAnchor, constant: -20).isActive = true
+        let top = topAnchor.constraint(equalTo: app.view.topAnchor, constant: -90)
+        top.isActive = true
+        
+        label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
+        app.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            top.constant = 120
+            self?.alpha = 1
         }) { _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) { [weak self, weak view] in
-                if view != nil && view === self?.view {
-                    self?.remove()
-                }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
+                UIView.animate(withDuration: 0.5, animations: { [weak self] in
+                    self?.alpha = 0
+                    top.constant = -90
+                }, completion: { [weak self] _ in
+                    self?.removeFromSuperview()
+                })
             }
         }
     }
     
-    @objc private func remove() {
-        bottom?.constant = 0
-        UIView.animate(withDuration: 0.6, animations: { [weak self] in
-            self?.view?.alpha = 0
-            App.view.view.layoutIfNeeded()
-        }) { [weak self] _ in
-            self?.view?.removeFromSuperview()
-            self?.pop()
-        }
-    }
-    */
+    required init?(coder: NSCoder) { return nil }
 }
-

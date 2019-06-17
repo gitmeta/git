@@ -6,6 +6,7 @@ import UserNotifications
 private(set) weak var app: App!
 
 @NSApplicationMain final class App: NSApplication, NSApplicationDelegate, UNUserNotificationCenterDelegate, NSTouchBarDelegate {
+    private(set) weak var home: Home!
     private(set) var repository: Repository? {
         didSet {
             if repository == nil {
@@ -20,12 +21,10 @@ private(set) weak var app: App!
                         }
                     }
                 }
-                self.refresh()
+                refresh()
             }
         }
     }
-    
-    private(set) weak var home: Home!
     
     override init() {
         super.init()
