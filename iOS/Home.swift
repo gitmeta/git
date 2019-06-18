@@ -2,7 +2,7 @@ import Git
 import UIKit
 
 final class Home: UIView {
-    private class Item: UIView {
+    final class Item: UIView {
         let url: URL
         private(set) weak var check: UIButton!
         private(set) weak var badge: UIView!
@@ -100,7 +100,7 @@ final class Home: UIView {
         required init?(coder: NSCoder) { return nil }
     }
     
-    private weak var list: UIScrollView!
+    private(set) weak var list: UIScrollView!
     private weak var image: UIImageView!
     private weak var button: UIButton!
     private weak var label: UILabel!
@@ -210,73 +210,72 @@ final class Home: UIView {
         
         count.rightAnchor.constraint(equalTo: browse.leftAnchor, constant: -12).isActive = true
         count.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
-        
-        app.update = { [weak self] in
-            guard let self = self else { return }
-            self.list.subviews.forEach { $0.removeFromSuperview() }
-            
-            var bottom = self.list.topAnchor
-            $1.forEach {
-                let item = Item($0.0, status: $0.1)
-                item.check.addTarget(self, action: #selector(self.change(_:)), for: .touchUpInside)
-                list.addSubview(item)
-                
-                item.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
-                item.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-                item.topAnchor.constraint(equalTo: bottom).isActive = true
-                bottom = item.bottomAnchor
-            }
-            self.bottom = list.bottomAnchor.constraint(greaterThanOrEqualTo: bottom)
-            button.removeTarget(self, action: nil, for: .allEvents)
-            
-            switch $0 {
-            case .loading:
-                image.isHidden = false
-                image.image = UIImage(named: "loading")
-                button.isHidden = true
-                label.isHidden = true
-                count.isHidden = true
-            case .packed:
-                image.isHidden = false
-                image.image = UIImage(named: "error")
-                button.isHidden = false
-                button.setTitle(.local("Home.button.packed"), for: [])
-                button.addTarget(app, action: #selector(app.unpack), for: .touchUpInside)
-                label.isHidden = false
-                label.text = .local("Home.label.packed")
-                count.isHidden = true
-            case .ready:
-                button.isHidden = true
-                count.isHidden = false
-                label.isHidden = true
-                self.recount()
-                if $1.isEmpty {
-                    image.isHidden = false
-                    image.image = UIImage(named: "updated")
-                } else {
-                    image.isHidden = true
-                }
-            case .create:
-                image.isHidden = false
-                image.image = UIImage(named: "error")
-                button.isHidden = false
-                button.setTitle(.local("Home.button.create"), for: [])
-                button.addTarget(app, action: #selector(app.create), for: .touchUpInside)
-                label.isHidden = false
-                label.text = .local("Home.label.create")
-                count.isHidden = true
-            case .first:
-                image.isHidden = false
-                image.image = UIImage(named: "error")
-                button.isHidden = true
-                label.isHidden = false
-                label.text = .local("Home.label.first")
-                count.isHidden = true
-            }
-        }
     }
     
     required init?(coder: NSCoder) { return nil }
+    
+    func update(_ state: State, items: [(URL, Status)] = []) {
+        list.subviews.forEach { $0.removeFromSuperview() }
+        
+        var bottom = list.topAnchor
+        items.forEach {
+            let item = Item($0.0, status: $0.1)
+            item.check.addTarget(self, action: #selector(change(_:)), for: .touchUpInside)
+            list.addSubview(item)
+            
+            item.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
+            item.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+            item.topAnchor.constraint(equalTo: bottom).isActive = true
+            bottom = item.bottomAnchor
+        }
+        self.bottom = list.bottomAnchor.constraint(greaterThanOrEqualTo: bottom)
+        button.removeTarget(self, action: nil, for: .allEvents)
+        
+        switch state {
+        case .loading:
+            image.isHidden = false
+            image.image = UIImage(named: "loading")
+            button.isHidden = true
+            label.isHidden = true
+            count.isHidden = true
+        case .packed:
+            image.isHidden = false
+            image.image = UIImage(named: "error")
+            button.isHidden = false
+            button.setTitle(.local("Home.button.packed"), for: [])
+            button.addTarget(app, action: #selector(app.unpack), for: .touchUpInside)
+            label.isHidden = false
+            label.text = .local("Home.label.packed")
+            count.isHidden = true
+        case .ready:
+            button.isHidden = true
+            count.isHidden = false
+            label.isHidden = true
+            recount()
+            if items.isEmpty {
+                image.isHidden = false
+                image.image = UIImage(named: "updated")
+            } else {
+                image.isHidden = true
+            }
+        case .create:
+            image.isHidden = false
+            image.image = UIImage(named: "error")
+            button.isHidden = false
+            button.setTitle(.local("Home.button.create"), for: [])
+            button.addTarget(app, action: #selector(app.create), for: .touchUpInside)
+            label.isHidden = false
+            label.text = .local("Home.label.create")
+            count.isHidden = true
+        case .first:
+            image.isHidden = false
+            image.image = UIImage(named: "error")
+            button.isHidden = true
+            label.isHidden = false
+            label.text = .local("Home.label.first")
+            count.isHidden = true
+        }
+    }
     
     @objc private func change(_ button: UIButton) {
         button.isSelected.toggle()

@@ -7,23 +7,24 @@ private(set) weak var app: App!
 
 @UIApplicationMain final class App: UIViewController, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIDocumentBrowserViewControllerDelegate {
     var window: UIWindow?
-    var update: ((State, [(URL, Status)]) -> Void)?
+    private(set) weak var home: Home!
+    private(set) weak var add: Add!
     private weak var tab: Tab!
     private(set) var repository: Repository? {
         didSet {
             if repository == nil {
-                update?(.create, [])
+                home.update(.create)
             } else {
                 repository!.status = { status in
                     self.repository?.packed {
                         if $0 {
-                            self.update?(.packed, [])
+                            self.home.update(.packed)
                         } else {
-                            self.update?(.ready, status)
+                            self.home.update(.ready, items: status)
                         }
                     }
                 }
-                update?(.loading, [])
+                home.update(.loading)
                 repository!.refresh()
             }
         }
@@ -45,7 +46,28 @@ private(set) weak var app: App!
             tab.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
-        show(Home())
+        let home = Home()
+        self.home = home
+        
+        let add = Add()
+        self.add = add
+        
+        [home, add].forEach {
+            $0.isHidden = true
+            view.addSubview($0)
+            
+            $0.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+            $0.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+            $0.bottomAnchor.constraint(equalTo: tab.topAnchor).isActive = true
+            
+            if #available(iOS 11.0, *) {
+                $0.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+            } else {
+                $0.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            }
+        }
+        
+        show(home)
     }
     
     func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -58,7 +80,7 @@ private(set) weak var app: App!
         Hub.session.load {
             if !Hub.session.bookmark.isEmpty {
                 self.help()
-                self.update?(.first, [])
+                self.home.update(.first)
             }
             Hub.session.update(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data()) {
                 Hub.open(Hub.session.url, error: {
@@ -108,21 +130,6 @@ private(set) weak var app: App!
         presentedViewController!.present(share, animated: true)
     }
     
-    func show(_ content: UIView) {
-        view.subviews.forEach({ if $0 != tab { $0.removeFromSuperview() } })
-        view.addSubview(content)
-        
-        content.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        content.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        content.bottomAnchor.constraint(equalTo: tab.topAnchor).isActive = true
-        
-        if #available(iOS 11.0, *) {
-            content.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        } else {
-            content.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        }
-    }
-    
     func alert(_ title: String, message: String) {
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().getNotificationSettings {
@@ -141,38 +148,7 @@ private(set) weak var app: App!
         }
     }
     
-    @objc func browse() {
-        if #available(iOS 11.0, *) {
-            let browse = UIDocumentBrowserViewController()
-            browse.browserUserInterfaceStyle = .dark
-            browse.delegate = self
-            browse.additionalLeadingNavigationBarButtonItems = [.init(barButtonSystemItem: .stop, target: self, action: #selector(back))]
-            present(browse, animated: true)
-        }
-    }
-    
-    @objc func create() {
-        home()
-        update?(.loading, [])
-        Hub.create(Hub.session.url, error: {
-            self.alert(.local("Alert.error"), message: $0.localizedDescription)
-            self.repository = nil
-        }) {
-            self.repository = $0
-            self.alert(.local("Alert.success"), message: .local("Home.created"))
-        }
-    }
-    
-    @objc func unpack() {
-        home()
-        update?(.loading, [])
-        repository?.unpack({
-            self.alert(.local("Alert.error"), message: $0.localizedDescription)
-            self.repository = nil
-        }) {
-            self.alert(.local("Alert.success"), message: .local("App.unpacked"))
-        }
-    }
+    func show(_ view: UIView) { [home, add].forEach { $0?.isHidden = $0 !== view } }
     
     private func rate() {
         if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {
@@ -189,8 +165,35 @@ private(set) weak var app: App!
         }
     }
     
-    private func home() {
-        if !view.subviews.contains(where: { $0 is Home }) { show(Home()) }
+    @objc func browse() {
+        if #available(iOS 11.0, *) {
+            let browse = UIDocumentBrowserViewController()
+            browse.browserUserInterfaceStyle = .dark
+            browse.delegate = self
+            browse.additionalLeadingNavigationBarButtonItems = [.init(barButtonSystemItem: .stop, target: self, action: #selector(back))]
+            present(browse, animated: true)
+        }
+    }
+    
+    @objc func create() {
+        home.update(.loading)
+        Hub.create(Hub.session.url, error: {
+            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.repository = nil
+        }) {
+            self.repository = $0
+            self.alert(.local("Alert.success"), message: .local("Home.created"))
+        }
+    }
+    
+    @objc func unpack() {
+        home.update(.loading)
+        repository?.unpack({
+            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.repository = nil
+        }) {
+            self.alert(.local("Alert.success"), message: .local("App.unpacked"))
+        }
     }
     
     @objc private func help() { /*order(Help.self)*/ }

@@ -13,7 +13,7 @@ final class Tab: UIView {
         
         var left = leftAnchor
         
-        [("home", #selector(add)), ("add", #selector(add)), ("reset", #selector(add)), ("cloud", #selector(add)), ("history", #selector(add)), ("settings", #selector(add))].forEach {
+        [("home", #selector(home)), ("add", #selector(add)), ("reset", #selector(add)), ("cloud", #selector(add)), ("history", #selector(add)), ("settings", #selector(add))].forEach {
             let button = UIButton()
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: $0.1, for: .touchUpInside)
@@ -46,9 +46,15 @@ final class Tab: UIView {
     required init?(coder: NSCoder) { return nil }
     private func select(_ button: UIButton) { subviews.compactMap({ $0 as? UIButton }).forEach({ $0.isSelected = $0 === button }) }
     
+    @objc private func home(_ button: UIButton) {
+        guard !button.isSelected else { return }
+        select(button)
+        app.show(app.home)
+    }
+    
     @objc private func add(_ button: UIButton) {
         guard !button.isSelected else { return }
         select(button)
-        app.show(Home())
+        app.show(app.add)
     }
 }
