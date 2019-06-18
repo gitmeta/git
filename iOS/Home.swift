@@ -103,6 +103,7 @@ final class Home: UIView {
     private(set) weak var list: UIScrollView!
     private weak var image: UIImageView!
     private weak var button: UIButton!
+    private weak var reset: UIButton!
     private weak var label: UILabel!
     private weak var count: UILabel!
     private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
@@ -176,6 +177,17 @@ final class Home: UIView {
         addSubview(count)
         self.count = count
         
+        let reset = UIButton()
+        reset.translatesAutoresizingMaskIntoConstraints = false
+        reset.isHidden = true
+        reset.setImage(UIImage(named: "reset"), for: .normal)
+        reset.setImage(UIImage(named: "reset")?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        reset.imageView!.contentMode = .center
+        reset.imageView!.clipsToBounds = true
+        reset.imageView!.tintColor = UIColor.halo.withAlphaComponent(0.2)
+        addSubview(reset)
+        self.reset = reset
+        
         title.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         title.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
         
@@ -208,8 +220,13 @@ final class Home: UIView {
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 260).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
-        count.rightAnchor.constraint(equalTo: browse.leftAnchor, constant: -12).isActive = true
+        count.rightAnchor.constraint(equalTo: browse.leftAnchor, constant: -15).isActive = true
         count.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
+        
+        reset.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        reset.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        reset.rightAnchor.constraint(equalTo: count.leftAnchor).isActive = true
+        reset.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -238,6 +255,7 @@ final class Home: UIView {
             button.isHidden = true
             label.isHidden = true
             count.isHidden = true
+            reset.isHidden = true
         case .packed:
             image.isHidden = false
             image.image = UIImage(named: "error")
@@ -247,10 +265,12 @@ final class Home: UIView {
             label.isHidden = false
             label.text = .local("Home.label.packed")
             count.isHidden = true
+            reset.isHidden = true
         case .ready:
             button.isHidden = true
             count.isHidden = false
             label.isHidden = true
+            reset.isHidden = false
             recount()
             if items.isEmpty {
                 image.isHidden = false
@@ -267,6 +287,7 @@ final class Home: UIView {
             label.isHidden = false
             label.text = .local("Home.label.create")
             count.isHidden = true
+            reset.isHidden = true
         case .first:
             image.isHidden = false
             image.image = UIImage(named: "error")
@@ -274,6 +295,7 @@ final class Home: UIView {
             label.isHidden = false
             label.text = .local("Home.label.first")
             count.isHidden = true
+            reset.isHidden = true
         }
     }
     

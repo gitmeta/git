@@ -29,14 +29,14 @@ final class Tab: UIView {
         
         var left = leftAnchor
         
-        ([("home", app.home), ("add", app.add), ("reset", app.reset), ("cloud", app.reset), ("history", app.reset), ("settings", app.reset)] as [(String, UIView)]).forEach {
+        ([("settings", app.reset), ("cloud", app.reset), ("home", app.home), ("add", app.add), ("history", app.reset)] as [(String, UIView)]).forEach {
             let button = Button(UIImage(named: $0.0)!)
             button.target = $0.1
             button.addTarget(self, action: #selector(choose(_:)), for: .touchUpInside)
             addSubview(button)
             
             button.leftAnchor.constraint(equalTo: left).isActive = true
-            button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.166).isActive = true
+            button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.2).isActive = true
             button.topAnchor.constraint(equalTo: topAnchor).isActive = true
             button.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             left = button.rightAnchor
