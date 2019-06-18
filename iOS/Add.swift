@@ -38,9 +38,8 @@ final class Add: UIView {
             super.init(frame: .zero, textContainer: {
                 storage.addLayoutManager($1)
                 $1.addTextContainer($0)
-                $0.lineBreakMode = .byCharWrapping
                 return $0
-            } (NSTextContainer(), Layout()) )
+            } (NSTextContainer(), Layout()))
             translatesAutoresizingMaskIntoConstraints = false
             backgroundColor = .clear
             alwaysBounceVertical = true
@@ -134,7 +133,7 @@ final class Add: UIView {
     @objc private func commit() {
         text.resignFirstResponder()
         if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
-            // sign
+            Signature()
         } else {
             app.repository?.commit(
                 app.home.list.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.isSelected }).map { $0.url },

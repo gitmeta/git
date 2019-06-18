@@ -39,7 +39,7 @@ final class Create: UIView, UITextFieldDelegate {
         create.setTitleColor(.black, for: .normal)
         create.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
         create.setTitle(.local("Create.save"), for: [])
-        create.titleLabel!.font = .systemFont(ofSize: 12, weight: .medium)
+        create.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
         create.translatesAutoresizingMaskIntoConstraints = false
         addSubview(create)
         
@@ -49,7 +49,7 @@ final class Create: UIView, UITextFieldDelegate {
         cancel.setTitleColor(.init(white: 1, alpha: 0.6), for: .normal)
         cancel.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
         cancel.setTitle(.local("Create.cancel"), for: [])
-        cancel.titleLabel!.font = .systemFont(ofSize: 12, weight: .medium)
+        cancel.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
         cancel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(cancel)
         

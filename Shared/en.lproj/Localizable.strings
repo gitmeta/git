@@ -32,6 +32,7 @@ Settings.keyUser="User";
 Settings.keyPassword="Password";
 Settings.keySave="Save";
 Settings.keySuccess="Credentials updated";
+Settings.close="Cancel";
 Reset.title="Reset changes?\n";
 Reset.subtitle="This will revert anything you have not commited.";
 Reset.confirm="Reset";

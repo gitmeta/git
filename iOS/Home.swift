@@ -151,7 +151,7 @@ final class Home: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
-        button.titleLabel!.font = .systemFont(ofSize: 12, weight: .medium)
+        button.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
         button.setTitleColor(.black, for: .normal)
         button.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
         button.layer.cornerRadius = 4

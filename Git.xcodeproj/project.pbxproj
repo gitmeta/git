@@ -120,7 +120,7 @@
 		20FFDF7D2282CD7C00226033 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7C2282CD7C00226033 /* List.swift */; };
 		20FFDF7F2282E04600226033 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7E2282E04600226033 /* Log.swift */; };
 		20FFDF812282E05D00226033 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF802282E05D00226033 /* Commit.swift */; };
-		20FFDF832282EF0500226033 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Credentials.swift */; };
+		20FFDF832282EF0500226033 /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Signature.swift */; };
 		CE02C30C22A2B3180022DE9B /* config0 in Resources */ = {isa = PBXBuildFile; fileRef = CE02C30B22A2B3170022DE9B /* config0 */; };
 		CE02C30E22A2B3250022DE9B /* TestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30D22A2B3250022DE9B /* TestConfig.swift */; };
 		CE02C31022A2B3C90022DE9B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30F22A2B3C90022DE9B /* Config.swift */; };
@@ -282,7 +282,7 @@
 		20FFDF7C2282CD7C00226033 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20FFDF7E2282E04600226033 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		20FFDF802282E05D00226033 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
-		20FFDF822282EF0500226033 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		20FFDF822282EF0500226033 /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signature.swift; sourceTree = "<group>"; };
 		CE02C30B22A2B3170022DE9B /* config0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config0; sourceTree = "<group>"; };
 		CE02C30D22A2B3250022DE9B /* TestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConfig.swift; sourceTree = "<group>"; };
 		CE02C30F22A2B3C90022DE9B /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -487,12 +487,11 @@
 			children = (
 				2048A125225C748900290E54 /* iOS.plist */,
 				2048A124225C748900290E54 /* iOS.storyboard */,
-				209ACF2C2282ABE4001F3523 /* Alert.swift */,
 				CE805F7622B8B4DE00423BC8 /* Add.swift */,
+				209ACF2C2282ABE4001F3523 /* Alert.swift */,
 				2048A126225C748900290E54 /* App.swift */,
 				20FFDF802282E05D00226033 /* Commit.swift */,
 				20E0989F22819D060061123C /* Create.swift */,
-				20FFDF822282EF0500226033 /* Credentials.swift */,
 				20BB9F8322802A61002DDF7B /* Display.swift */,
 				20BB9F8722802DBD002DDF7B /* Extensions.swift */,
 				CEB4964D22B65D5000F87342 /* Home.swift */,
@@ -501,6 +500,7 @@
 				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
 				CE8982612290560000E9F41F /* Reset.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
+				20FFDF822282EF0500226033 /* Signature.swift */,
 				CEC8AB3322B3C5AD00E2F244 /* Tab.swift */,
 				20FFDF782282C27900226033 /* Tools.swift */,
 				209ACF2E2282ACB9001F3523 /* View.swift */,
@@ -920,7 +920,7 @@
 				20BB9F8422802A61002DDF7B /* Display.swift in Sources */,
 				CE8982622290560000E9F41F /* Reset.swift in Sources */,
 				20FFDF7F2282E04600226033 /* Log.swift in Sources */,
-				20FFDF832282EF0500226033 /* Credentials.swift in Sources */,
+				20FFDF832282EF0500226033 /* Signature.swift in Sources */,
 				20FFDF792282C27900226033 /* Tools.swift in Sources */,
 				20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */,
 				2048A129225C748900290E54 /* App.swift in Sources */,
