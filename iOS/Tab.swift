@@ -1,6 +1,22 @@
 import UIKit
 
 final class Tab: UIView {
+    private final class Button: UIButton {
+        weak var target: UIView!
+        
+        init(_ image: UIImage) {
+            super.init(frame: .zero)
+            translatesAutoresizingMaskIntoConstraints = false
+            setImage(image, for: .selected)
+            setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+            imageView!.clipsToBounds = true
+            imageView!.contentMode = .center
+            imageView!.tintColor = UIColor.halo.withAlphaComponent(0.4)
+        }
+        
+        required init?(coder: NSCoder) { return nil }
+    }
+    
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -13,15 +29,10 @@ final class Tab: UIView {
         
         var left = leftAnchor
         
-        [("home", #selector(home)), ("add", #selector(add)), ("reset", #selector(add)), ("cloud", #selector(add)), ("history", #selector(add)), ("settings", #selector(add))].forEach {
-            let button = UIButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.addTarget(self, action: $0.1, for: .touchUpInside)
-            button.setImage(UIImage(named: $0.0), for: .selected)
-            button.setImage(UIImage(named: $0.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
-            button.imageView!.clipsToBounds = true
-            button.imageView!.contentMode = .center
-            button.imageView!.tintColor = UIColor.halo.withAlphaComponent(0.4)
+        ([("home", app.home), ("add", app.add), ("reset", app.reset), ("cloud", app.reset), ("history", app.reset), ("settings", app.reset)] as [(String, UIView)]).forEach {
+            let button = Button(UIImage(named: $0.0)!)
+            button.target = $0.1
+            button.addTarget(self, action: #selector(choose(_:)), for: .touchUpInside)
             addSubview(button)
             
             button.leftAnchor.constraint(equalTo: left).isActive = true
@@ -44,17 +55,9 @@ final class Tab: UIView {
     }
     
     required init?(coder: NSCoder) { return nil }
-    private func select(_ button: UIButton) { subviews.compactMap({ $0 as? UIButton }).forEach({ $0.isSelected = $0 === button }) }
     
-    @objc private func home(_ button: UIButton) {
-        guard !button.isSelected else { return }
-        select(button)
-        app.show(app.home)
-    }
-    
-    @objc private func add(_ button: UIButton) {
-        guard !button.isSelected else { return }
-        select(button)
-        app.show(app.add)
+    @objc private func choose(_ button: Button) {
+        subviews.compactMap({ $0 as? Button }).forEach({ $0.isSelected = $0 === button })
+        app.show(button.target)
     }
 }

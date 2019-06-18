@@ -1,10 +1,12 @@
 import Git
 import UIKit
 
-class Reset: Sheet {
-    @discardableResult override init() {
-        super.init()
-        let image = UIImageView(image: #imageLiteral(resourceName: "error.pdf"))
+final class Reset: UIView {
+    init() {
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        let image = UIImageView(image: UIImage(named: "error"))
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .center
         image.clipsToBounds = true
@@ -12,67 +14,44 @@ class Reset: Sheet {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
         label.attributedText = {
-            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold),
-                                                                                     .foregroundColor: UIColor.white]))
-            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .light),
-                                                                                        .foregroundColor: UIColor(white: 1, alpha: 0.6)]))
+            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold), .foregroundColor: UIColor.white]))
+            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light), .foregroundColor: UIColor(white: 1, alpha: 0.7)]))
             return $0
         } (NSMutableAttributedString())
         addSubview(label)
         
         let confirm = UIButton()
         confirm.translatesAutoresizingMaskIntoConstraints = false
-        confirm.addTarget(self, action: #selector(self.confirm), for: .touchUpInside)
         confirm.setTitle(.local("Reset.confirm"), for: [])
+        confirm.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
         confirm.setTitleColor(.black, for: .normal)
-        confirm.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
-        confirm.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
+        confirm.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
+        confirm.layer.cornerRadius = 4
         confirm.backgroundColor = .halo
-        confirm.layer.cornerRadius = 6
+        confirm.addTarget(self, action: #selector(self.confirm), for: .touchUpInside)
         addSubview(confirm)
         
-        let cancel = UIButton()
-        cancel.translatesAutoresizingMaskIntoConstraints = false
-        cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
-        cancel.setTitle(.local("Reset.cancel"), for: [])
-        cancel.setTitleColor(.white, for: .normal)
-        cancel.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
-        cancel.titleLabel!.font = .systemFont(ofSize: 14, weight: .medium)
-        addSubview(cancel)
-        
+        image.topAnchor.constraint(equalTo: topAnchor, constant: 100).isActive = true
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        image.bottomAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
         
-        confirm.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        confirm.heightAnchor.constraint(equalToConstant: 32).isActive = true
         confirm.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        confirm.bottomAnchor.constraint(equalTo: cancel.topAnchor, constant: -20).isActive = true
-        
-        cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        cancel.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        cancel.heightAnchor.constraint(equalToConstant: 32).isActive = true
-        
-        if #available(iOS 11.0, *) {
-            cancel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -40).isActive = true
-        } else {
-            cancel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40).isActive = true
-        }
+        confirm.widthAnchor.constraint(equalToConstant: 68).isActive = true
+        confirm.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        confirm.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 40).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
     
     @objc private func confirm() {
-        close()
-//        App.repository?.reset({
-//            App.view.alert.error($0.localizedDescription)
-//        }) {
-//            App.view.alert.update(.local("Reset.success"))
-//        }
+        app.repository?.reset({
+            app.alert(.local("Alert.error"), message: $0.localizedDescription)
+        }) { app.alert(.local("Alert.success"), message: .local("Reset.success")) }
     }
 }
