@@ -46,6 +46,7 @@ final class Add: UIView {
             alwaysBounceVertical = true
             textColor = .white
             tintColor = .halo
+            keyboardDismissMode = .interactive
             font = .light(20)
             keyboardType = .alphabet
             keyboardAppearance = .dark
@@ -90,9 +91,19 @@ final class Add: UIView {
         button.addTarget(self, action: #selector(commit), for: .touchUpInside)
         addSubview(button)
         
+        let title = UILabel()
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.font = .systemFont(ofSize: 12, weight: .bold)
+        title.textColor = .halo
+        title.text = .local("Add.title")
+        addSubview(title)
+        
         let text = Text()
         addSubview(text)
         self.text = text
+        
+        title.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+        title.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
         
         border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -100,7 +111,7 @@ final class Add: UIView {
         border.bottomAnchor.constraint(equalTo: topAnchor, constant: 55).isActive = true
         
         button.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        button.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
+        button.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
         button.widthAnchor.constraint(equalToConstant: 68).isActive = true
         button.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
