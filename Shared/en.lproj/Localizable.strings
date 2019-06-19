@@ -25,6 +25,7 @@ Market.title="Purchases";
 Market.purchase="Purchase";
 Market.purchased="Purchased";
 Market.cloud="\nEdit and configure remotes for your repository.\nClone (downloading a repository).\nSynch (pull and push updates to a remote repository).";
+Market.restore="Restore";
 Settings.buttonSign="Signature";
 Settings.buttonKey="Credentials";
 Settings.labelSign="Signature for your commits.";

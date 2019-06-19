@@ -75,6 +75,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     private weak var request: SKProductsRequest?
     private weak var image: UIImageView!
     private weak var list: UIScrollView!
+    private weak var restore: Button.Yes!
     private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
     private var products = [SKProduct]() { didSet { refresh() } }
     private let formatter = NumberFormatter()
@@ -96,6 +97,11 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         title.textColor = .halo
         title.text = .local("Market.title")
         addSubview(title)
+        
+        let restore = Button.Yes(.local("Market.restore"))
+        restore.addTarget(self, action: #selector(restoring), for: .touchUpInside)
+        addSubview(restore)
+        self.restore = restore
         
         let image = UIImageView(image: UIImage(named: "loading"))
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -127,6 +133,9 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         image.widthAnchor.constraint(equalToConstant: 38).isActive = true
         image.heightAnchor.constraint(equalToConstant: 38).isActive = true
+        
+        restore.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
+        restore.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -158,6 +167,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     
     private func refresh() {
         image.isHidden = true
+        restore.isHidden = false
         list.subviews.forEach { $0.removeFromSuperview() }
         var bottom = list.topAnchor
         products.forEach { product in
@@ -194,6 +204,13 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     private func show(_ image: String) {
         self.image.image = UIImage(named: image)
         self.image.isHidden = false
+        restore.isHidden = true
+        list.subviews.forEach { $0.removeFromSuperview() }
+    }
+    
+    @objc private func restoring() {
+        SKPaymentQueue.default().restoreCompletedTransactions()
+        show("loading")
     }
     
     @objc private func purchase(_ button: Button.Yes) {
