@@ -7,6 +7,7 @@ private(set) weak var app: App!
 
 @UIApplicationMain final class App: UIViewController, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIDocumentBrowserViewControllerDelegate {
     var window: UIWindow?
+    private(set) weak var market: Market!
     private(set) weak var home: Home!
     private(set) weak var add: Add!
     private weak var tab: Tab!
@@ -33,6 +34,9 @@ private(set) weak var app: App!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let market = Market()
+        self.market = market
+        
         let home = Home()
         self.home = home
         
@@ -52,7 +56,7 @@ private(set) weak var app: App!
             tab.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
-        [home, add].forEach {
+        [market, home, add].forEach {
             $0.isHidden = true
             view.addSubview($0)
             
@@ -148,7 +152,7 @@ private(set) weak var app: App!
         }
     }
     
-    func show(_ view: UIView) { [home, add].forEach { $0?.isHidden = $0 !== view } }
+    func show(_ view: UIView) { [market, home, add].forEach { $0?.isHidden = $0 !== view } }
     
     private func rate() {
         if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {

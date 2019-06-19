@@ -134,6 +134,7 @@
 		CE4B5C7622A7C44800355E81 /* TestMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B5C7522A7C44800355E81 /* TestMerge.swift */; };
 		CE7169B022A796A500730F66 /* Merger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7169AF22A796A500730F66 /* Merger.swift */; };
 		CE7169B122A796A500730F66 /* Merger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7169AF22A796A500730F66 /* Merger.swift */; };
+		CE728C8B22BA109600B2EA3E /* Market.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE728C8A22BA109600B2EA3E /* Market.swift */; };
 		CE7B8BF02291431700396AB1 /* pack-1.pack in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEE2291431700396AB1 /* pack-1.pack */; };
 		CE7B8BF12291431700396AB1 /* pack-1.idx in Resources */ = {isa = PBXBuildFile; fileRef = CE7B8BEF2291431700396AB1 /* pack-1.idx */; };
 		CE7B8BF322917A1C00396AB1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF222917A1C00396AB1 /* Content.swift */; };
@@ -294,6 +295,7 @@
 		CE4B5C7322A7B7FD00355E81 /* fetch3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch3; sourceTree = "<group>"; };
 		CE4B5C7522A7C44800355E81 /* TestMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMerge.swift; sourceTree = "<group>"; };
 		CE7169AF22A796A500730F66 /* Merger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merger.swift; sourceTree = "<group>"; };
+		CE728C8A22BA109600B2EA3E /* Market.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Market.swift; sourceTree = "<group>"; };
 		CE7B8BEE2291431700396AB1 /* pack-1.pack */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.pack"; sourceTree = "<group>"; };
 		CE7B8BEF2291431700396AB1 /* pack-1.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.idx"; sourceTree = "<group>"; };
 		CE7B8BF222917A1C00396AB1 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
@@ -497,6 +499,7 @@
 				CEB4964D22B65D5000F87342 /* Home.swift */,
 				20FFDF7C2282CD7C00226033 /* List.swift */,
 				20FFDF7E2282E04600226033 /* Log.swift */,
+				CE728C8A22BA109600B2EA3E /* Market.swift */,
 				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
 				CE8982612290560000E9F41F /* Reset.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
@@ -910,6 +913,7 @@
 				20FFDF812282E05D00226033 /* Commit.swift in Sources */,
 				CEC8AB3422B3C5AD00E2F244 /* Tab.swift in Sources */,
 				209ACF2D2282ABE4001F3523 /* Alert.swift in Sources */,
+				CE728C8B22BA109600B2EA3E /* Market.swift in Sources */,
 				209ACF2F2282ACB9001F3523 /* View.swift in Sources */,
 				CEB4964E22B65D5000F87342 /* Home.swift in Sources */,
 				20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */,
