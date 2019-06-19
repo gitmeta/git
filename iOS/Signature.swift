@@ -101,23 +101,11 @@ final class Signature: UIView, UITextFieldDelegate {
         base.addSubview(email)
         self.email = email
         
-        let save = UIButton()
-        save.translatesAutoresizingMaskIntoConstraints = false
-        save.setTitle(.local("Settings.signSave"), for: [])
-        save.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        save.setTitleColor(.black, for: .normal)
-        save.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
-        save.layer.cornerRadius = 4
-        save.backgroundColor = .halo
+        let save = Button.Yes(.local("Settings.signSave"))
         save.addTarget(self, action: #selector(self.save), for: .touchUpInside)
         base.addSubview(save)
         
-        let close = UIButton()
-        close.translatesAutoresizingMaskIntoConstraints = false
-        close.setTitle(.local("Settings.close"), for: [])
-        close.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        close.setTitleColor(.init(white: 1, alpha: 0.6), for: .normal)
-        close.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
+        let close = Button.No(.local("Settings.close"))
         close.addTarget(self, action: #selector(self.close), for: .touchUpInside)
         base.addSubview(close)
         
@@ -150,13 +138,9 @@ final class Signature: UIView, UITextFieldDelegate {
         
         save.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         save.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 40).isActive = true
-        save.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        save.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         close.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         close.topAnchor.constraint(equalTo: save.bottomAnchor, constant: 20).isActive = true
-        close.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        close.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         app.view.layoutIfNeeded()
         

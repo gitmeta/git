@@ -20,23 +20,11 @@ final class Reset: Sheet {
         } (NSMutableAttributedString())
         base.addSubview(label)
         
-        let confirm = UIButton()
-        confirm.translatesAutoresizingMaskIntoConstraints = false
-        confirm.setTitle(.local("Reset.confirm"), for: [])
-        confirm.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        confirm.setTitleColor(.black, for: .normal)
-        confirm.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
-        confirm.layer.cornerRadius = 4
-        confirm.backgroundColor = .halo
+        let confirm = Button.Yes(.local("Reset.confirm"))
         confirm.addTarget(self, action: #selector(self.confirm), for: .touchUpInside)
         base.addSubview(confirm)
         
-        let cancel = UIButton()
-        cancel.translatesAutoresizingMaskIntoConstraints = false
-        cancel.setTitle(.local("Reset.cancel"), for: [])
-        cancel.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        cancel.setTitleColor(.init(white: 1, alpha: 0.6), for: .normal)
-        cancel.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
+        let cancel = Button.No(.local("Reset.cancel"))
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
         base.addSubview(cancel)
         
@@ -50,14 +38,10 @@ final class Reset: Sheet {
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
         
         confirm.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
-        confirm.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        confirm.heightAnchor.constraint(equalToConstant: 28).isActive = true
         confirm.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true
         
         cancel.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 20).isActive = true
-        cancel.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        cancel.heightAnchor.constraint(equalToConstant: 28).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

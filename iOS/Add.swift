@@ -79,14 +79,7 @@ final class Add: UIView {
         border.backgroundColor = .halo
         addSubview(border)
         
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(.local("Add.button"), for: [])
-        button.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
-        button.layer.cornerRadius = 4
-        button.backgroundColor = .halo
+        let button = Button.Yes(.local("Add.button"))
         button.addTarget(self, action: #selector(commit), for: .touchUpInside)
         addSubview(button)
         
@@ -111,8 +104,6 @@ final class Add: UIView {
         
         button.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         button.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         text.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         text.leftAnchor.constraint(equalTo: leftAnchor).isActive = true

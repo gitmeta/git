@@ -126,14 +126,7 @@ final class Home: UIView {
         title.text = .local("Home.title")
         addSubview(title)
         
-        let browse = UIButton()
-        browse.translatesAutoresizingMaskIntoConstraints = false
-        browse.setTitle(.local("Home.directory"), for: [])
-        browse.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        browse.setTitleColor(.black, for: .normal)
-        browse.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
-        browse.layer.cornerRadius = 4
-        browse.backgroundColor = .halo
+        let browse = Button.Yes(.local("Home.directory"))
         browse.addTarget(app, action: #selector(app.browse), for: .touchUpInside)
         addSubview(browse)
         
@@ -150,14 +143,7 @@ final class Home: UIView {
         addSubview(image)
         self.image = image
         
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.isHidden = true
-        button.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
-        button.layer.cornerRadius = 4
-        button.backgroundColor = .halo
+        let button = Button.Yes("")
         addSubview(button)
         self.button = button
         
@@ -212,8 +198,6 @@ final class Home: UIView {
         
         browse.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         browse.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
-        browse.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        browse.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         list.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -227,8 +211,6 @@ final class Home: UIView {
         
         button.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 15).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 260).isActive = true
@@ -238,12 +220,12 @@ final class Home: UIView {
         count.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
         
         reset.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        reset.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        reset.rightAnchor.constraint(equalTo: count.leftAnchor).isActive = true
+        reset.widthAnchor.constraint(equalToConstant: 55).isActive = true
+        reset.rightAnchor.constraint(equalTo: count.leftAnchor, constant: -5).isActive = true
         reset.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
         
         cloud.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        cloud.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        cloud.widthAnchor.constraint(equalToConstant: 55).isActive = true
         cloud.rightAnchor.constraint(equalTo: reset.leftAnchor).isActive = true
         cloud.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
     }

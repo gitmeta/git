@@ -31,26 +31,12 @@ final class Create: UIView, UITextFieldDelegate {
         addSubview(name)
         self.name = name
         
-        let create = UIButton()
+        let create = Button.Yes(.local("Create.save"))
         create.addTarget(self, action: #selector(self.create), for: .touchUpInside)
-        create.translatesAutoresizingMaskIntoConstraints = false
-        create.layer.cornerRadius = 4
-        create.backgroundColor = .halo
-        create.setTitleColor(.black, for: .normal)
-        create.setTitleColor(.init(white: 0, alpha: 0.2), for: .highlighted)
-        create.setTitle(.local("Create.save"), for: [])
-        create.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        create.translatesAutoresizingMaskIntoConstraints = false
         addSubview(create)
         
-        let cancel = UIButton()
+        let cancel = Button.No(.local("Create.cancel"))
         cancel.addTarget(self, action: #selector(self.cancel), for: .touchUpInside)
-        cancel.translatesAutoresizingMaskIntoConstraints = false
-        cancel.setTitleColor(.init(white: 1, alpha: 0.6), for: .normal)
-        cancel.setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
-        cancel.setTitle(.local("Create.cancel"), for: [])
-        cancel.titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
-        cancel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(cancel)
         
         name.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
@@ -60,13 +46,9 @@ final class Create: UIView, UITextFieldDelegate {
         
         create.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 30).isActive = true
         create.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        create.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        create.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         cancel.topAnchor.constraint(equalTo: create.bottomAnchor, constant: 30).isActive = true
         cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        cancel.widthAnchor.constraint(equalToConstant: 68).isActive = true
-        cancel.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.alpha = 1
