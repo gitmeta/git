@@ -104,6 +104,7 @@ final class Home: UIView {
     private weak var image: UIImageView!
     private weak var button: UIButton!
     private weak var reset: UIButton!
+    private weak var cloud: UIButton!
     private weak var label: UILabel!
     private weak var count: UILabel!
     private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
@@ -181,13 +182,25 @@ final class Home: UIView {
         reset.translatesAutoresizingMaskIntoConstraints = false
         reset.isHidden = true
         reset.setImage(UIImage(named: "reset"), for: .normal)
-        reset.setImage(UIImage(named: "reset")?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        reset.setImage(UIImage(named: "reset")!.withRenderingMode(.alwaysTemplate), for: .highlighted)
         reset.imageView!.contentMode = .center
         reset.imageView!.clipsToBounds = true
         reset.imageView!.tintColor = UIColor.halo.withAlphaComponent(0.2)
-        reset.addTarget(self, action: #selector(ask), for: .touchUpInside)
+        reset.addTarget(self, action: #selector(reseting), for: .touchUpInside)
         addSubview(reset)
         self.reset = reset
+        
+        let cloud = UIButton()
+        cloud.translatesAutoresizingMaskIntoConstraints = false
+        cloud.isHidden = true
+        cloud.setImage(UIImage(named: "cloud"), for: .normal)
+        cloud.setImage(UIImage(named: "cloud")!.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        cloud.imageView!.contentMode = .center
+        cloud.imageView!.clipsToBounds = true
+        cloud.imageView!.tintColor = UIColor.halo.withAlphaComponent(0.2)
+        cloud.addTarget(self, action: #selector(clouding), for: .touchUpInside)
+        addSubview(cloud)
+        self.cloud = cloud
         
         title.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         title.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
@@ -228,6 +241,11 @@ final class Home: UIView {
         reset.widthAnchor.constraint(equalToConstant: 50).isActive = true
         reset.rightAnchor.constraint(equalTo: count.leftAnchor).isActive = true
         reset.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
+        
+        cloud.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        cloud.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        cloud.rightAnchor.constraint(equalTo: reset.leftAnchor).isActive = true
+        cloud.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -257,6 +275,7 @@ final class Home: UIView {
             label.isHidden = true
             count.isHidden = true
             reset.isHidden = true
+            cloud.isHidden = true
         case .packed:
             image.isHidden = false
             image.image = UIImage(named: "error")
@@ -267,11 +286,13 @@ final class Home: UIView {
             label.text = .local("Home.label.packed")
             count.isHidden = true
             reset.isHidden = true
+            cloud.isHidden = true
         case .ready:
             button.isHidden = true
             count.isHidden = false
             label.isHidden = true
             reset.isHidden = false
+            cloud.isHidden = false
             recount()
             if items.isEmpty {
                 image.isHidden = false
@@ -289,6 +310,7 @@ final class Home: UIView {
             label.text = .local("Home.label.create")
             count.isHidden = true
             reset.isHidden = true
+            cloud.isHidden = true
         case .first:
             image.isHidden = false
             image.image = UIImage(named: "error")
@@ -297,6 +319,7 @@ final class Home: UIView {
             label.text = .local("Home.label.first")
             count.isHidden = true
             reset.isHidden = true
+            cloud.isHidden = true
         }
     }
     
@@ -315,5 +338,13 @@ final class Home: UIView {
         }
     }
     
-    @objc private func ask() { Reset() }
+    @objc private func reseting() { Reset() }
+    
+    @objc private func clouding() {
+        if Hub.session.purchase.contains(.cloud) {
+            
+        } else {
+            app.alert(.local("Alert.purchase"), message: .local("Cloud.purchase"))
+        }
+    }
 }

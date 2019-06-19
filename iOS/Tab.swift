@@ -2,7 +2,7 @@ import UIKit
 
 final class Tab: UIView {
     private final class Button: UIButton {
-        weak var target: UIView!
+        var target: (() -> Void)!
         
         init(_ image: UIImage) {
             super.init(frame: .zero)
@@ -29,7 +29,7 @@ final class Tab: UIView {
         
         var left = leftAnchor
         
-        ([("settings", app.home), ("market", app.market), ("home", app.home), ("add", app.add), ("history", app.home)] as [(String, UIView)]).forEach {
+        ([("settings", app.home), ("market", app.market), ("home", app.home), ("add", app.add), ("history", app.home)] as [(String, (() -> Void))]).forEach {
             let button = Button(UIImage(named: $0.0)!)
             button.target = $0.1
             button.addTarget(self, action: #selector(choose(_:)), for: .touchUpInside)
@@ -58,6 +58,6 @@ final class Tab: UIView {
     
     @objc private func choose(_ button: Button) {
         subviews.compactMap({ $0 as? Button }).forEach({ $0.isSelected = $0 === button })
-        app.show(button.target)
+        button.target()
     }
 }

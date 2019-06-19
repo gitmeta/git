@@ -1,8 +1,8 @@
 import Foundation
 
 public final class Session: Codable {
-    public enum Purchase: String, Codable {
-        case unknown
+    public enum Purchase: String, Codable, CaseIterable {
+        case cloud
     }
     
     public internal(set) var url = URL(fileURLWithPath: "")

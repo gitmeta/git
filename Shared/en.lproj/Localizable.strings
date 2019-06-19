@@ -1,6 +1,7 @@
 Alert.error="Error";
 Alert.success="Success";
 Alert.commit="Saved";
+Alert.purchase="Feature not purchased";
 App.noRepository="This is not a repository";
 App.unpacked="Repository unpacked";
 Add.title="Add";
@@ -38,6 +39,7 @@ Reset.subtitle="This will revert anything you have not commited.";
 Reset.confirm="Reset";
 Reset.cancel="Cancel";
 Reset.success="Reverted changes";
+Cloud.purchase="Cloud and remotes feature can be purchased in the store section.";
 Cloud.title="Cloud";
 Cloud.field="https://";
 Cloud.clone.button="Clone";

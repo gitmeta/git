@@ -1,5 +1,5 @@
 import UIKit
-
+/*
 class Onboard: Sheet {
     private weak var label: UILabel!
     private weak var centerX: NSLayoutConstraint!
@@ -110,3 +110,4 @@ class Onboard: Sheet {
     
     @objc private func show(_ button: UIButton) { display(buttons.firstIndex(of: button)!) }
 }
+*/

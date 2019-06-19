@@ -136,7 +136,7 @@ final class Add: UIView {
             Signature()
         } else {
             app.repository?.commit(
-                app.home.list.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.isSelected }).map { $0.url },
+                app._home.list.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.isSelected }).map { $0.url },
                 message: text.text, error: { app.alert(.local("Alert.error"), message: $0.localizedDescription)
             }) {
                 app.alert(.local("Alert.commit"), message: self.text.text ?? "")

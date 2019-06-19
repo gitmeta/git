@@ -7,25 +7,25 @@ private(set) weak var app: App!
 
 @UIApplicationMain final class App: UIViewController, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIDocumentBrowserViewControllerDelegate {
     var window: UIWindow?
-    private(set) weak var market: Market!
-    private(set) weak var home: Home!
-    private(set) weak var add: Add!
+    private(set) weak var _home: Home!
+    private weak var _market: Market!
+    private weak var _add: Add!
     private weak var tab: Tab!
     private(set) var repository: Repository? {
         didSet {
             if repository == nil {
-                home.update(.create)
+                _home.update(.create)
             } else {
                 repository!.status = { status in
                     self.repository?.packed {
                         if $0 {
-                            self.home.update(.packed)
+                            self._home.update(.packed)
                         } else {
-                            self.home.update(.ready, items: status)
+                            self._home.update(.ready, items: status)
                         }
                     }
                 }
-                home.update(.loading)
+                _home.update(.loading)
                 repository!.refresh()
             }
         }
@@ -34,14 +34,14 @@ private(set) weak var app: App!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let market = Market()
-        self.market = market
+        let _market = Market()
+        self._market = _market
         
-        let home = Home()
-        self.home = home
+        let _home = Home()
+        self._home = _home
         
-        let add = Add()
-        self.add = add
+        let _add = Add()
+        self._add = _add
         
         let tab = Tab()
         view.addSubview(tab)
@@ -56,7 +56,7 @@ private(set) weak var app: App!
             tab.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
-        [market, home, add].forEach {
+        [_market, _home, _add].forEach {
             $0.isHidden = true
             view.addSubview($0)
             
@@ -71,7 +71,7 @@ private(set) weak var app: App!
             }
         }
         
-        show(home)
+        show(_home)
     }
     
     func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -84,7 +84,7 @@ private(set) weak var app: App!
         Hub.session.load {
             if !Hub.session.bookmark.isEmpty {
                 self.help()
-                self.home.update(.first)
+                self._home.update(.first)
             }
             Hub.session.update(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data()) {
                 Hub.open(Hub.session.url, error: {
@@ -152,7 +152,16 @@ private(set) weak var app: App!
         }
     }
     
-    func show(_ view: UIView) { [market, home, add].forEach { $0?.isHidden = $0 !== view } }
+    func market() {
+        show(_market)
+        _market.start()
+    }
+    
+    func home() { show(_home) }
+    func add() { show(_add) }
+    private func show(_ view: UIView) { [_market, _home, _add].forEach { $0?.isHidden = $0 !== view } }
+    @objc private func help() { /*order(Help.self)*/ }
+    @objc private func back() { dismiss(animated: true) }
     
     private func rate() {
         if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {
@@ -180,7 +189,7 @@ private(set) weak var app: App!
     }
     
     @objc func create() {
-        home.update(.loading)
+        _home.update(.loading)
         Hub.create(Hub.session.url, error: {
             self.alert(.local("Alert.error"), message: $0.localizedDescription)
             self.repository = nil
@@ -191,7 +200,7 @@ private(set) weak var app: App!
     }
     
     @objc func unpack() {
-        home.update(.loading)
+        _home.update(.loading)
         repository?.unpack({
             self.alert(.local("Alert.error"), message: $0.localizedDescription)
             self.repository = nil
@@ -199,7 +208,4 @@ private(set) weak var app: App!
             self.alert(.local("Alert.success"), message: .local("App.unpacked"))
         }
     }
-    
-    @objc private func help() { /*order(Help.self)*/ }
-    @objc private func back() { dismiss(animated: true) }
 }

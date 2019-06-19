@@ -1,21 +1,9 @@
 import Git
 import UIKit
 
-final class Reset: UIView {
-    @discardableResult init() {
-        super.init(frame: .zero)
-        guard !app.view.subviews.contains(where: { $0 is Signature }) else { return }
-        translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.shade.withAlphaComponent(0.95)
-        alpha = 0
-        app.view.addSubview(self)
-        
-        let base = UIView()
-        base.translatesAutoresizingMaskIntoConstraints = false
-        base.backgroundColor = .black
-        base.layer.cornerRadius = 6
-        addSubview(base)
-        
+final class Reset: Sheet {
+    @discardableResult override init() {
+        super.init()
         let image = UIImageView(image: UIImage(named: "error"))
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .center
@@ -52,17 +40,6 @@ final class Reset: UIView {
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
         base.addSubview(cancel)
         
-        topAnchor.constraint(equalTo: app.view.topAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: app.view.bottomAnchor).isActive = true
-        leftAnchor.constraint(equalTo: app.view.leftAnchor).isActive = true
-        rightAnchor.constraint(equalTo: app.view.rightAnchor).isActive = true
-        
-        base.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-        base.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        base.heightAnchor.constraint(equalToConstant: 310).isActive = true
-        let top = base.topAnchor.constraint(equalTo: topAnchor, constant: -290)
-        top.isActive = true
-        
         image.topAnchor.constraint(equalTo: base.topAnchor, constant: 60).isActive = true
         image.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         image.widthAnchor.constraint(equalToConstant: 60).isActive = true
@@ -81,14 +58,6 @@ final class Reset: UIView {
         cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 20).isActive = true
         cancel.widthAnchor.constraint(equalToConstant: 68).isActive = true
         cancel.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        
-        app.view.layoutIfNeeded()
-        
-        top.constant = -20
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            self?.alpha = 1
-            self?.layoutIfNeeded()
-        }
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -97,12 +66,5 @@ final class Reset: UIView {
         app.repository?.reset({
             app.alert(.local("Alert.error"), message: $0.localizedDescription)
         }) { app.alert(.local("Alert.success"), message: .local("Reset.success")) }
-    }
-    
-    @objc private func close() {
-        app.window!.endEditing(true)
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.alpha = 0
-        }) { [weak self] _ in self?.removeFromSuperview() }
     }
 }
