@@ -9,7 +9,6 @@ private(set) weak var app: App!
     var window: UIWindow?
     private(set) weak var home: Home!
     private(set) weak var add: Add!
-    private(set) weak var reset: Reset!
     private weak var tab: Tab!
     private(set) var repository: Repository? {
         didSet {
@@ -40,9 +39,6 @@ private(set) weak var app: App!
         let add = Add()
         self.add = add
         
-        let reset = Reset()
-        self.reset = reset
-        
         let tab = Tab()
         view.addSubview(tab)
         self.tab = tab
@@ -56,7 +52,7 @@ private(set) weak var app: App!
             tab.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
-        [home, add, reset].forEach {
+        [home, add].forEach {
             $0.isHidden = true
             view.addSubview($0)
             
@@ -152,7 +148,7 @@ private(set) weak var app: App!
         }
     }
     
-    func show(_ view: UIView) { [home, add, reset].forEach { $0?.isHidden = $0 !== view } }
+    func show(_ view: UIView) { [home, add].forEach { $0?.isHidden = $0 !== view } }
     
     private func rate() {
         if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {

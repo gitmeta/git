@@ -36,6 +36,7 @@ Settings.close="Cancel";
 Reset.title="Reset changes?\n";
 Reset.subtitle="This will revert anything you have not commited.";
 Reset.confirm="Reset";
+Reset.cancel="Cancel";
 Reset.success="Reverted changes";
 Cloud.title="Cloud";
 Cloud.field="https://";

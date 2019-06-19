@@ -185,6 +185,7 @@ final class Home: UIView {
         reset.imageView!.contentMode = .center
         reset.imageView!.clipsToBounds = true
         reset.imageView!.tintColor = UIColor.halo.withAlphaComponent(0.2)
+        reset.addTarget(self, action: #selector(ask), for: .touchUpInside)
         addSubview(reset)
         self.reset = reset
         
@@ -299,6 +300,12 @@ final class Home: UIView {
         }
     }
     
+    private func recount() {
+        count.text = {
+            "\($0.filter({ $0.check.isSelected }).count)/\($0.count)"
+        } (list.subviews.compactMap({ $0 as? Item }))
+    }
+    
     @objc private func change(_ button: UIButton) {
         button.isSelected.toggle()
         recount()
@@ -308,9 +315,5 @@ final class Home: UIView {
         }
     }
     
-    private func recount() {
-        count.text = {
-            "\($0.filter({ $0.check.isSelected }).count)/\($0.count)"
-        } (list.subviews.compactMap({ $0 as? Item }))
-    }
+    @objc private func ask() { Reset() }
 }
