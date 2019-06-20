@@ -86,7 +86,6 @@
 		20948B7E2271987E00B1987D /* TestUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20948B7D2271987E00B1987D /* TestUser.swift */; };
 		2094C10D228C03010078FC6C /* commit3 in Resources */ = {isa = PBXBuildFile; fileRef = 2094C10C228C03010078FC6C /* commit3 */; };
 		209ACF2D2282ABE4001F3523 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209ACF2C2282ABE4001F3523 /* Alert.swift */; };
-		209ACF2F2282ACB9001F3523 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209ACF2E2282ACB9001F3523 /* View.swift */; };
 		20A37BED2272E1E100850D12 /* TestStaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A37BEC2272E1E100850D12 /* TestStaging.swift */; };
 		20AFB33B2265B77000A3ECC0 /* TestHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33A2265B77000A3ECC0 /* TestHead.swift */; };
 		20AFB33D2265BA7800A3ECC0 /* TestCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */; };
@@ -96,7 +95,6 @@
 		20B83281227043D000773058 /* index4 in Resources */ = {isa = PBXBuildFile; fileRef = 20B83280227043CF00773058 /* index4 */; };
 		20B8328322709EA700773058 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20B8328222709EA700773058 /* Mac.xcassets */; };
 		20BB9F8222802152002DDF7B /* iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20BB9F8122802152002DDF7B /* iOS.xcassets */; };
-		20BB9F8422802A61002DDF7B /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8322802A61002DDF7B /* Display.swift */; };
 		20BB9F8622802D8A002DDF7B /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8522802D8A002DDF7B /* Sheet.swift */; };
 		20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8722802DBD002DDF7B /* Extensions.swift */; };
 		20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8922802EA5002DDF7B /* Onboard.swift */; };
@@ -116,9 +114,6 @@
 		20EB2504227711E20043EBD2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2503227711E20043EBD2 /* Session.swift */; };
 		20EB2505227711E20043EBD2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2503227711E20043EBD2 /* Session.swift */; };
 		20EB2507227713010043EBD2 /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB2506227713010043EBD2 /* TestSession.swift */; };
-		20FFDF792282C27900226033 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF782282C27900226033 /* Tools.swift */; };
-		20FFDF7D2282CD7C00226033 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7C2282CD7C00226033 /* List.swift */; };
-		20FFDF7F2282E04600226033 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7E2282E04600226033 /* Log.swift */; };
 		20FFDF832282EF0500226033 /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Signature.swift */; };
 		CE02C30C22A2B3180022DE9B /* config0 in Resources */ = {isa = PBXBuildFile; fileRef = CE02C30B22A2B3170022DE9B /* config0 */; };
 		CE02C30E22A2B3250022DE9B /* TestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30D22A2B3250022DE9B /* TestConfig.swift */; };
@@ -256,7 +251,6 @@
 		20948B7D2271987E00B1987D /* TestUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUser.swift; sourceTree = "<group>"; };
 		2094C10C228C03010078FC6C /* commit3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = commit3; sourceTree = "<group>"; };
 		209ACF2C2282ABE4001F3523 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		209ACF2E2282ACB9001F3523 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		20A37BEC2272E1E100850D12 /* TestStaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStaging.swift; sourceTree = "<group>"; };
 		20AFB33A2265B77000A3ECC0 /* TestHead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHead.swift; sourceTree = "<group>"; };
 		20AFB33C2265BA7800A3ECC0 /* TestCommit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCommit.swift; sourceTree = "<group>"; };
@@ -266,7 +260,6 @@
 		20B83280227043CF00773058 /* index4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = index4; sourceTree = "<group>"; };
 		20B8328222709EA700773058 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		20BB9F8122802152002DDF7B /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
-		20BB9F8322802A61002DDF7B /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		20BB9F8522802D8A002DDF7B /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		20BB9F8722802DBD002DDF7B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		20BB9F8922802EA5002DDF7B /* Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
@@ -283,9 +276,6 @@
 		20E76BE5225E264300E023D8 /* compressed0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = compressed0; sourceTree = "<group>"; };
 		20EB2503227711E20043EBD2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		20EB2506227713010043EBD2 /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
-		20FFDF782282C27900226033 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
-		20FFDF7C2282CD7C00226033 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
-		20FFDF7E2282E04600226033 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		20FFDF822282EF0500226033 /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signature.swift; sourceTree = "<group>"; };
 		CE02C30B22A2B3170022DE9B /* config0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config0; sourceTree = "<group>"; };
 		CE02C30D22A2B3250022DE9B /* TestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConfig.swift; sourceTree = "<group>"; };
@@ -504,12 +494,9 @@
 				CE728C8C22BA1AD500B2EA3E /* Cloud.swift */,
 				20E0989F22819D060061123C /* Create.swift */,
 				CE31565C22BB8ECA00C3EC22 /* Credentials.swift */,
-				20BB9F8322802A61002DDF7B /* Display.swift */,
 				20BB9F8722802DBD002DDF7B /* Extensions.swift */,
 				CE31566022BBA60900C3EC22 /* History.swift */,
 				CEB4964D22B65D5000F87342 /* Home.swift */,
-				20FFDF7C2282CD7C00226033 /* List.swift */,
-				20FFDF7E2282E04600226033 /* Log.swift */,
 				CE728C8A22BA109600B2EA3E /* Market.swift */,
 				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
 				CE8982612290560000E9F41F /* Reset.swift */,
@@ -517,8 +504,6 @@
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
 				20FFDF822282EF0500226033 /* Signature.swift */,
 				CEC8AB3322B3C5AD00E2F244 /* Tab.swift */,
-				20FFDF782282C27900226033 /* Tools.swift */,
-				209ACF2E2282ACB9001F3523 /* View.swift */,
 				20BB9F8122802152002DDF7B /* iOS.xcassets */,
 			);
 			path = iOS;
@@ -925,23 +910,18 @@
 				CEC8AB3422B3C5AD00E2F244 /* Tab.swift in Sources */,
 				209ACF2D2282ABE4001F3523 /* Alert.swift in Sources */,
 				CE728C8B22BA109600B2EA3E /* Market.swift in Sources */,
-				209ACF2F2282ACB9001F3523 /* View.swift in Sources */,
 				CE728C8D22BA1AD500B2EA3E /* Cloud.swift in Sources */,
 				CEB4964E22B65D5000F87342 /* Home.swift in Sources */,
 				CE728C8F22BA425500B2EA3E /* Button.swift in Sources */,
 				CE31565F22BB941100C3EC22 /* Settings.swift in Sources */,
 				20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */,
-				20FFDF7D2282CD7C00226033 /* List.swift in Sources */,
 				20CB671B226071CA0064C31C /* Shared.swift in Sources */,
 				20E098A022819D060061123C /* Create.swift in Sources */,
 				CE805F7722B8B4DE00423BC8 /* Add.swift in Sources */,
-				20BB9F8422802A61002DDF7B /* Display.swift in Sources */,
 				CE31565D22BB8ECA00C3EC22 /* Credentials.swift in Sources */,
 				CE8982622290560000E9F41F /* Reset.swift in Sources */,
-				20FFDF7F2282E04600226033 /* Log.swift in Sources */,
 				CE31566122BBA60900C3EC22 /* History.swift in Sources */,
 				20FFDF832282EF0500226033 /* Signature.swift in Sources */,
-				20FFDF792282C27900226033 /* Tools.swift in Sources */,
 				20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */,
 				2048A129225C748900290E54 /* App.swift in Sources */,
 				20BB9F8622802D8A002DDF7B /* Sheet.swift in Sources */,
