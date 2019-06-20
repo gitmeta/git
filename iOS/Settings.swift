@@ -25,6 +25,10 @@ final class Settings: UIView {
         version.font = .light(16)
         addSubview(version)
         
+        let refresh = Button.Yes(.local("Settings.refresh"))
+        refresh.addTarget(self, action: #selector(self.refresh), for: .touchUpInside)
+        addSubview(refresh)
+        
         let sign = Button.Yes(.local("Settings.buttonSign"))
         sign.addTarget(self, action: #selector(self.sign), for: .touchUpInside)
         addSubview(sign)
@@ -48,7 +52,10 @@ final class Settings: UIView {
         version.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         version.topAnchor.constraint(equalTo: label.bottomAnchor).isActive = true
         
-        sign.topAnchor.constraint(equalTo: version.bottomAnchor, constant: 50).isActive = true
+        refresh.topAnchor.constraint(equalTo: version.bottomAnchor, constant: 50).isActive = true
+        refresh.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        sign.topAnchor.constraint(equalTo: refresh.bottomAnchor, constant: 20).isActive = true
         sign.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         key.topAnchor.constraint(equalTo: sign.bottomAnchor, constant: 20).isActive = true
@@ -62,4 +69,9 @@ final class Settings: UIView {
     @objc private func sign() { Signature() }
     @objc private func key() { Credentials() }
     @objc private func help() { Credentials() }
+    
+    @objc private func refresh() {
+        app.refresh()
+        app.alert(.local("Alert.success"), message: .local("Settings.refreshed"))
+    }
 }

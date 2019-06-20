@@ -11,6 +11,7 @@ private(set) weak var app: App!
     private weak var _market: Market!
     private weak var _add: Add!
     private weak var _settings: Settings!
+    private weak var _history: History!
     private weak var tab: Tab!
     private(set) var repository: Repository? {
         didSet {
@@ -47,6 +48,9 @@ private(set) weak var app: App!
         let _add = Add()
         self._add = _add
         
+        let _history = History()
+        self._history = _history
+        
         let tab = Tab()
         view.addSubview(tab)
         self.tab = tab
@@ -60,7 +64,7 @@ private(set) weak var app: App!
             tab.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
-        [_settings, _market, _home, _add].forEach {
+        [_settings, _market, _home, _add, _history].forEach {
             $0.isHidden = true
             $0.clipsToBounds = true
             view.addSubview($0)
@@ -123,8 +127,6 @@ private(set) weak var app: App!
     @available(iOS 11.0, *) func documentBrowser(_: UIDocumentBrowserViewController, didPickDocumentsAt: [URL]) {
         let share = UIActivityViewController(activityItems: didPickDocumentsAt, applicationActivities: nil)
         share.popoverPresentationController?.sourceView = presentedViewController!.view
-        share.popoverPresentationController?.sourceRect = .zero
-        share.popoverPresentationController?.permittedArrowDirections = .any
         presentedViewController!.present(share, animated: true)
     }
     
@@ -146,9 +148,20 @@ private(set) weak var app: App!
         }
     }
     
+    func refresh() {
+        guard let repository = repository else { return }
+        _home.update(.loading)
+        repository.refresh()
+    }
+    
     func market() {
         show(_market)
         _market.start()
+    }
+    
+    func history() {
+        show(_history)
+        _history.refresh()
     }
     
     func load() {
@@ -169,7 +182,7 @@ private(set) weak var app: App!
     func settings() { show(_settings) }
     func home() { show(_home) }
     func add() { show(_add) }
-    private func show(_ view: UIView) { [_settings, _market, _home, _add].forEach { $0?.isHidden = $0 !== view } }
+    private func show(_ view: UIView) { [_settings, _market, _home, _add, _history].forEach { $0?.isHidden = $0 !== view } }
     @objc private func help() { /*order(Help.self)*/ }
     @objc private func back() { dismiss(animated: true) }
     
@@ -191,6 +204,7 @@ private(set) weak var app: App!
     @objc func browse() {
         if #available(iOS 11.0, *) {
             let browse = UIDocumentBrowserViewController()
+            browse.popoverPresentationController?.sourceView = view
             browse.browserUserInterfaceStyle = .dark
             browse.delegate = self
             browse.additionalLeadingNavigationBarButtonItems = [.init(barButtonSystemItem: .stop, target: self, action: #selector(back))]

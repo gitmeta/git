@@ -119,7 +119,6 @@
 		20FFDF792282C27900226033 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF782282C27900226033 /* Tools.swift */; };
 		20FFDF7D2282CD7C00226033 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7C2282CD7C00226033 /* List.swift */; };
 		20FFDF7F2282E04600226033 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF7E2282E04600226033 /* Log.swift */; };
-		20FFDF812282E05D00226033 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF802282E05D00226033 /* Commit.swift */; };
 		20FFDF832282EF0500226033 /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFDF822282EF0500226033 /* Signature.swift */; };
 		CE02C30C22A2B3180022DE9B /* config0 in Resources */ = {isa = PBXBuildFile; fileRef = CE02C30B22A2B3170022DE9B /* config0 */; };
 		CE02C30E22A2B3250022DE9B /* TestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02C30D22A2B3250022DE9B /* TestConfig.swift */; };
@@ -130,6 +129,7 @@
 		CE30748C22ABC4BF0010017C /* fetchPush0 in Resources */ = {isa = PBXBuildFile; fileRef = CE30748B22ABC4BF0010017C /* fetchPush0 */; };
 		CE31565D22BB8ECA00C3EC22 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31565C22BB8ECA00C3EC22 /* Credentials.swift */; };
 		CE31565F22BB941100C3EC22 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31565E22BB941100C3EC22 /* Settings.swift */; };
+		CE31566122BBA60900C3EC22 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31566022BBA60900C3EC22 /* History.swift */; };
 		CE32EFD1229FFF1400BC3901 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32EFCF229FFE2400BC3901 /* Cloud.swift */; };
 		CE4B5C7222A7AC5700355E81 /* fetch2 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7122A7AC5600355E81 /* fetch2 */; };
 		CE4B5C7422A7B7FE00355E81 /* fetch3 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7322A7B7FD00355E81 /* fetch3 */; };
@@ -286,7 +286,6 @@
 		20FFDF782282C27900226033 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		20FFDF7C2282CD7C00226033 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		20FFDF7E2282E04600226033 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		20FFDF802282E05D00226033 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
 		20FFDF822282EF0500226033 /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signature.swift; sourceTree = "<group>"; };
 		CE02C30B22A2B3170022DE9B /* config0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config0; sourceTree = "<group>"; };
 		CE02C30D22A2B3250022DE9B /* TestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConfig.swift; sourceTree = "<group>"; };
@@ -296,6 +295,7 @@
 		CE30748B22ABC4BF0010017C /* fetchPush0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetchPush0; sourceTree = "<group>"; };
 		CE31565C22BB8ECA00C3EC22 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		CE31565E22BB941100C3EC22 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		CE31566022BBA60900C3EC22 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CE32EFCF229FFE2400BC3901 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		CE4B5C7122A7AC5600355E81 /* fetch2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch2; sourceTree = "<group>"; };
 		CE4B5C7322A7B7FD00355E81 /* fetch3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch3; sourceTree = "<group>"; };
@@ -502,11 +502,11 @@
 				2048A126225C748900290E54 /* App.swift */,
 				CE728C8E22BA425500B2EA3E /* Button.swift */,
 				CE728C8C22BA1AD500B2EA3E /* Cloud.swift */,
-				20FFDF802282E05D00226033 /* Commit.swift */,
 				20E0989F22819D060061123C /* Create.swift */,
 				CE31565C22BB8ECA00C3EC22 /* Credentials.swift */,
 				20BB9F8322802A61002DDF7B /* Display.swift */,
 				20BB9F8722802DBD002DDF7B /* Extensions.swift */,
+				CE31566022BBA60900C3EC22 /* History.swift */,
 				CEB4964D22B65D5000F87342 /* Home.swift */,
 				20FFDF7C2282CD7C00226033 /* List.swift */,
 				20FFDF7E2282E04600226033 /* Log.swift */,
@@ -922,7 +922,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20FFDF812282E05D00226033 /* Commit.swift in Sources */,
 				CEC8AB3422B3C5AD00E2F244 /* Tab.swift in Sources */,
 				209ACF2D2282ABE4001F3523 /* Alert.swift in Sources */,
 				CE728C8B22BA109600B2EA3E /* Market.swift in Sources */,
@@ -940,6 +939,7 @@
 				CE31565D22BB8ECA00C3EC22 /* Credentials.swift in Sources */,
 				CE8982622290560000E9F41F /* Reset.swift in Sources */,
 				20FFDF7F2282E04600226033 /* Log.swift in Sources */,
+				CE31566122BBA60900C3EC22 /* History.swift in Sources */,
 				20FFDF832282EF0500226033 /* Signature.swift in Sources */,
 				20FFDF792282C27900226033 /* Tools.swift in Sources */,
 				20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */,
