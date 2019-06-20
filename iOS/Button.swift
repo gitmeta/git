@@ -28,8 +28,8 @@ class Button: UIButton {
         translatesAutoresizingMaskIntoConstraints = false
         titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
         setTitle(title, for: [])
-        widthAnchor.constraint(equalToConstant: 70).isActive = true
-        heightAnchor.constraint(equalToConstant: 28).isActive = true
+        widthAnchor.constraint(equalToConstant: 80).isActive = true
+        heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

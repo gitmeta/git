@@ -128,6 +128,8 @@
 		CE29D7BA229D4F9B00C257BF /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE29D7B9229D4F9B00C257BF /* History.swift */; };
 		CE30748A22ABBA000010017C /* TestPush.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30748922ABBA000010017C /* TestPush.swift */; };
 		CE30748C22ABC4BF0010017C /* fetchPush0 in Resources */ = {isa = PBXBuildFile; fileRef = CE30748B22ABC4BF0010017C /* fetchPush0 */; };
+		CE31565D22BB8ECA00C3EC22 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31565C22BB8ECA00C3EC22 /* Credentials.swift */; };
+		CE31565F22BB941100C3EC22 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31565E22BB941100C3EC22 /* Settings.swift */; };
 		CE32EFD1229FFF1400BC3901 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32EFCF229FFE2400BC3901 /* Cloud.swift */; };
 		CE4B5C7222A7AC5700355E81 /* fetch2 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7122A7AC5600355E81 /* fetch2 */; };
 		CE4B5C7422A7B7FE00355E81 /* fetch3 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7322A7B7FD00355E81 /* fetch3 */; };
@@ -292,6 +294,8 @@
 		CE29D7B9229D4F9B00C257BF /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CE30748922ABBA000010017C /* TestPush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPush.swift; sourceTree = "<group>"; };
 		CE30748B22ABC4BF0010017C /* fetchPush0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetchPush0; sourceTree = "<group>"; };
+		CE31565C22BB8ECA00C3EC22 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		CE31565E22BB941100C3EC22 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CE32EFCF229FFE2400BC3901 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		CE4B5C7122A7AC5600355E81 /* fetch2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch2; sourceTree = "<group>"; };
 		CE4B5C7322A7B7FD00355E81 /* fetch3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch3; sourceTree = "<group>"; };
@@ -500,6 +504,7 @@
 				CE728C8C22BA1AD500B2EA3E /* Cloud.swift */,
 				20FFDF802282E05D00226033 /* Commit.swift */,
 				20E0989F22819D060061123C /* Create.swift */,
+				CE31565C22BB8ECA00C3EC22 /* Credentials.swift */,
 				20BB9F8322802A61002DDF7B /* Display.swift */,
 				20BB9F8722802DBD002DDF7B /* Extensions.swift */,
 				CEB4964D22B65D5000F87342 /* Home.swift */,
@@ -508,6 +513,7 @@
 				CE728C8A22BA109600B2EA3E /* Market.swift */,
 				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
 				CE8982612290560000E9F41F /* Reset.swift */,
+				CE31565E22BB941100C3EC22 /* Settings.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
 				20FFDF822282EF0500226033 /* Signature.swift */,
 				CEC8AB3322B3C5AD00E2F244 /* Tab.swift */,
@@ -924,12 +930,14 @@
 				CE728C8D22BA1AD500B2EA3E /* Cloud.swift in Sources */,
 				CEB4964E22B65D5000F87342 /* Home.swift in Sources */,
 				CE728C8F22BA425500B2EA3E /* Button.swift in Sources */,
+				CE31565F22BB941100C3EC22 /* Settings.swift in Sources */,
 				20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */,
 				20FFDF7D2282CD7C00226033 /* List.swift in Sources */,
 				20CB671B226071CA0064C31C /* Shared.swift in Sources */,
 				20E098A022819D060061123C /* Create.swift in Sources */,
 				CE805F7722B8B4DE00423BC8 /* Add.swift in Sources */,
 				20BB9F8422802A61002DDF7B /* Display.swift in Sources */,
+				CE31565D22BB8ECA00C3EC22 /* Credentials.swift in Sources */,
 				CE8982622290560000E9F41F /* Reset.swift in Sources */,
 				20FFDF7F2282E04600226033 /* Log.swift in Sources */,
 				20FFDF832282EF0500226033 /* Signature.swift in Sources */,

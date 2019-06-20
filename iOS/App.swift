@@ -10,6 +10,7 @@ private(set) weak var app: App!
     private(set) weak var _home: Home!
     private weak var _market: Market!
     private weak var _add: Add!
+    private weak var _settings: Settings!
     private weak var tab: Tab!
     private(set) var repository: Repository? {
         didSet {
@@ -34,6 +35,9 @@ private(set) weak var app: App!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let _settings = Settings()
+        self._settings = _settings
+        
         let _market = Market()
         self._market = _market
         
@@ -56,8 +60,9 @@ private(set) weak var app: App!
             tab.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         
-        [_market, _home, _add].forEach {
+        [_settings, _market, _home, _add].forEach {
             $0.isHidden = true
+            $0.clipsToBounds = true
             view.addSubview($0)
             
             $0.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -161,9 +166,10 @@ private(set) weak var app: App!
         }
     }
     
+    func settings() { show(_settings) }
     func home() { show(_home) }
     func add() { show(_add) }
-    private func show(_ view: UIView) { [_market, _home, _add].forEach { $0?.isHidden = $0 !== view } }
+    private func show(_ view: UIView) { [_settings, _market, _home, _add].forEach { $0?.isHidden = $0 !== view } }
     @objc private func help() { /*order(Help.self)*/ }
     @objc private func back() { dismiss(animated: true) }
     

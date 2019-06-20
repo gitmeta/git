@@ -29,7 +29,7 @@ final class Tab: UIView {
         
         var left = leftAnchor
         
-        ([("settings", app.home), ("market", app.market), ("home", app.home), ("add", app.add), ("history", app.home)] as [(String, (() -> Void))]).forEach {
+        ([("settings", app.settings), ("market", app.market), ("home", app.home), ("add", app.add), ("history", app.home)] as [(String, (() -> Void))]).forEach {
             let button = Button(UIImage(named: $0.0)!)
             button.target = $0.1
             button.addTarget(self, action: #selector(choose(_:)), for: .touchUpInside)
