@@ -82,18 +82,7 @@ private(set) weak var app: App!
         self.window = window
         
         Hub.session.load {
-            if !Hub.session.bookmark.isEmpty {
-                self.help()
-                self._home.update(.first)
-            }
-            Hub.session.update(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data()) {
-                Hub.open(Hub.session.url, error: {
-                    Alert($0.localizedDescription)
-                    self.repository = nil
-                }) {
-                    self.repository = $0
-                }
-            }
+            self.load()
             self.rate()
         }
         
@@ -155,6 +144,21 @@ private(set) weak var app: App!
     func market() {
         show(_market)
         _market.start()
+    }
+    
+    func load() {
+        if !Hub.session.bookmark.isEmpty {
+            help()
+            _home.update(.first)
+        }
+        Hub.session.update(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data()) {
+            Hub.open(Hub.session.url, error: {
+                Alert($0.localizedDescription)
+                self.repository = nil
+            }) {
+                self.repository = $0
+            }
+        }
     }
     
     func home() { show(_home) }

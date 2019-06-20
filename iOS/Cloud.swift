@@ -107,8 +107,9 @@ final class Cloud: Sheet, UITextFieldDelegate {
             Hub.clone(field.text!, local: Hub.session.url, error: { [weak self] in
                 app.alert(.local("Alert.error"), message: $0.localizedDescription)
                 self?.ready()
-            }) { [weak self] _ in
+            }) { [weak self] in
                 app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
+                app.load()
                 self?.close()
             }
         } else {
