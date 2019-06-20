@@ -97,7 +97,6 @@
 		20BB9F8222802152002DDF7B /* iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20BB9F8122802152002DDF7B /* iOS.xcassets */; };
 		20BB9F8622802D8A002DDF7B /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8522802D8A002DDF7B /* Sheet.swift */; };
 		20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8722802DBD002DDF7B /* Extensions.swift */; };
-		20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB9F8922802EA5002DDF7B /* Onboard.swift */; };
 		20C21CCC2288113C0038466A /* Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C21CCB2288113C0038466A /* Fetch.swift */; };
 		20C21CCD2288113C0038466A /* Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C21CCB2288113C0038466A /* Fetch.swift */; };
 		20C21CCF228811780038466A /* fetchPull0 in Resources */ = {isa = PBXBuildFile; fileRef = 20C21CCE228811780038466A /* fetchPull0 */; };
@@ -125,6 +124,7 @@
 		CE31565D22BB8ECA00C3EC22 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31565C22BB8ECA00C3EC22 /* Credentials.swift */; };
 		CE31565F22BB941100C3EC22 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31565E22BB941100C3EC22 /* Settings.swift */; };
 		CE31566122BBA60900C3EC22 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31566022BBA60900C3EC22 /* History.swift */; };
+		CE31566322BBB3DD00C3EC22 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31566222BBB3DD00C3EC22 /* Help.swift */; };
 		CE32EFD1229FFF1400BC3901 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32EFCF229FFE2400BC3901 /* Cloud.swift */; };
 		CE4B5C7222A7AC5700355E81 /* fetch2 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7122A7AC5600355E81 /* fetch2 */; };
 		CE4B5C7422A7B7FE00355E81 /* fetch3 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7322A7B7FD00355E81 /* fetch3 */; };
@@ -262,7 +262,6 @@
 		20BB9F8122802152002DDF7B /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
 		20BB9F8522802D8A002DDF7B /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		20BB9F8722802DBD002DDF7B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		20BB9F8922802EA5002DDF7B /* Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
 		20C21CCB2288113C0038466A /* Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetch.swift; sourceTree = "<group>"; };
 		20C21CCE228811780038466A /* fetchPull0 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetchPull0; sourceTree = "<group>"; };
 		20C21CD02288119E0038466A /* TestFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFetch.swift; sourceTree = "<group>"; };
@@ -286,6 +285,7 @@
 		CE31565C22BB8ECA00C3EC22 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		CE31565E22BB941100C3EC22 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CE31566022BBA60900C3EC22 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		CE31566222BBB3DD00C3EC22 /* Help.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		CE32EFCF229FFE2400BC3901 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		CE4B5C7122A7AC5600355E81 /* fetch2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch2; sourceTree = "<group>"; };
 		CE4B5C7322A7B7FD00355E81 /* fetch3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch3; sourceTree = "<group>"; };
@@ -495,10 +495,10 @@
 				20E0989F22819D060061123C /* Create.swift */,
 				CE31565C22BB8ECA00C3EC22 /* Credentials.swift */,
 				20BB9F8722802DBD002DDF7B /* Extensions.swift */,
+				CE31566222BBB3DD00C3EC22 /* Help.swift */,
 				CE31566022BBA60900C3EC22 /* History.swift */,
 				CEB4964D22B65D5000F87342 /* Home.swift */,
 				CE728C8A22BA109600B2EA3E /* Market.swift */,
-				20BB9F8922802EA5002DDF7B /* Onboard.swift */,
 				CE8982612290560000E9F41F /* Reset.swift */,
 				CE31565E22BB941100C3EC22 /* Settings.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
@@ -913,6 +913,7 @@
 				CE728C8D22BA1AD500B2EA3E /* Cloud.swift in Sources */,
 				CEB4964E22B65D5000F87342 /* Home.swift in Sources */,
 				CE728C8F22BA425500B2EA3E /* Button.swift in Sources */,
+				CE31566322BBB3DD00C3EC22 /* Help.swift in Sources */,
 				CE31565F22BB941100C3EC22 /* Settings.swift in Sources */,
 				20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */,
 				20CB671B226071CA0064C31C /* Shared.swift in Sources */,
@@ -922,7 +923,6 @@
 				CE8982622290560000E9F41F /* Reset.swift in Sources */,
 				CE31566122BBA60900C3EC22 /* History.swift in Sources */,
 				20FFDF832282EF0500226033 /* Signature.swift in Sources */,
-				20BB9F8A22802EA5002DDF7B /* Onboard.swift in Sources */,
 				2048A129225C748900290E54 /* App.swift in Sources */,
 				20BB9F8622802D8A002DDF7B /* Sheet.swift in Sources */,
 			);
