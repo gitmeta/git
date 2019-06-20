@@ -60,16 +60,12 @@ public struct Failure: LocalizedError {
         public static let response = Failure("Invalid response from server.")
         public static let none = Failure("Couldn't find this resource or doesn't exists.")
     }
-    
-    public struct Clone {
-        public static let already = Failure("There is already a repository in this directory.")
-        public static let directory = Failure("A directory already exists with the name of the repository.")
-    }
-    
+
     public struct Remote {
         public static let none = Failure("No remote specified for this repository.")
         public static let push = Failure("Failed to sending changes to remote.")
         public static let empty = Failure("This repository is empty.")
+        public static let already = Failure("There is already a repository in this directory.")
     }
     
     public struct Config {

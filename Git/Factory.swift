@@ -11,11 +11,12 @@ final class Factory {
     }
     
     func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
-        if repository(local) { throw Failure.Clone.already }
+        if repository(local) { throw Failure.Remote.already }
         try rest.download(remote, error: error) {
             guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
-            guard !FileManager.default.fileExists(atPath: local.path) else { throw Failure.Clone.directory }
-            try FileManager.default.createDirectory(at: local, withIntermediateDirectories: false)
+            if !FileManager.default.fileExists(atPath: local.path) {
+                try FileManager.default.createDirectory(at: local, withIntermediateDirectories: true)
+            }
             try self.rest.pull(remote, want: reference, error: error) {
                 let repository = try self.create(local)
                 try $0.unpack(local)

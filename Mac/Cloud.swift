@@ -179,16 +179,16 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     
     @objc private func clone() {
         if let name = field.stringValue.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""),
-            !name.isEmpty {
+            !name.isEmpty,
+            !FileManager.default.fileExists(atPath: Hub.session.url.appendingPathComponent(name).path) {
             busy()
-            let local = Hub.session.url.appendingPathComponent(name)
-            Hub.clone(field.stringValue, local: local, error: { [weak self] in
+            Hub.clone(field.stringValue, local: Hub.session.url.appendingPathComponent(name), error: { [weak self] in
                 app.alert(.local("Alert.error"), message: $0.localizedDescription)
                 self?.ready()
             }) { [weak self] in
                 app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
                 self?.close()
-                app.browsed(local)
+                app.browsed(Hub.session.url.appendingPathComponent(name))
             }
         } else {
             app.alert(.local("Alert.error"), message: .local("Cloud.clone.name"))

@@ -53,19 +53,6 @@ class TestClone: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testFailIfDirectoryWithSameName() {
-        let expect = expectation(description: "")
-        try? FileManager.default.createDirectory(at: url.appendingPathComponent("monami"), withIntermediateDirectories: true)
-        let fetch = Fetch()
-        fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._fetch = fetch
-        rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("host.com/monami.git", local: url, error: { _ in
-            expect.fulfill()
-        })
-        waitForExpectations(timeout: 1)
-    }
-    
     func testSuccess() {
         let expect = expectation(description: "")
         let fetch = Fetch()
