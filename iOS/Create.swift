@@ -8,7 +8,7 @@ final class Create: UIView, UITextFieldDelegate {
         self.result = result
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .init(white: 0, alpha: 0.9)
+        backgroundColor = UIColor.shade.withAlphaComponent(0.9)
         alpha = 0
         
         let name = UITextField()

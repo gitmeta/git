@@ -10,23 +10,20 @@ final class Factory {
         throw Failure.Repository.invalid
     }
     
-    func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void), result: @escaping((URL) -> Void)) throws {
+    func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
         if repository(local) { throw Failure.Clone.already }
         try rest.download(remote, error: error) {
             guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
-            guard let name = remote.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""), !name.isEmpty
-                else { throw Failure.Clone.name }
-            let directory = local.appendingPathComponent(name)
-            guard !FileManager.default.fileExists(atPath: directory.path) else { throw Failure.Clone.directory }
-            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+            guard !FileManager.default.fileExists(atPath: local.path) else { throw Failure.Clone.directory }
+            try FileManager.default.createDirectory(at: local, withIntermediateDirectories: false)
             try self.rest.pull(remote, want: reference, error: error) {
-                let repository = try self.create(directory)
-                try $0.unpack(directory)
+                let repository = try self.create(local)
+                try $0.unpack(local)
                 try repository.check.check(reference)
-                try Hub.head.update(directory, id: reference)
-                try Hub.head.origin(directory, id: reference)
-                try Config(remote).save(directory)
-                DispatchQueue.main.async { result(directory) }
+                try Hub.head.update(local, id: reference)
+                try Hub.head.origin(local, id: reference)
+                try Config(remote).save(local)
+                DispatchQueue.main.async { done() }
             }
         }
     }

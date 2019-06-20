@@ -73,23 +73,10 @@ class TestClone: XCTestCase {
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         DispatchQueue.global(qos: .background).async {
-            Hub.clone("host.com/monami.git", local: self.url) { _ in
+            Hub.clone("host.com/monami.git", local: self.url.appendingPathComponent("monami")) {
                 XCTAssertEqual(.main, Thread.current)
                 expect.fulfill()
             }
-        }
-        waitForExpectations(timeout: 1)
-    }
-    
-    func testResult() {
-        let expect = expectation(description: "")
-        let fetch = Fetch()
-        fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
-        rest._fetch = fetch
-        rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("host.com/monami.git", local: url) {
-            XCTAssertEqual(self.url.appendingPathComponent("monami").path, $0.path)
-            expect.fulfill()
         }
         waitForExpectations(timeout: 1)
     }
@@ -100,9 +87,9 @@ class TestClone: XCTestCase {
         fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("host.com/monami.git", local: url) {
+        Hub.clone("host.com/monami.git", local: url.appendingPathComponent("monami")) {
             var d: ObjCBool = false
-            XCTAssertTrue(FileManager.default.fileExists(atPath: $0.path, isDirectory: &d))
+            XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent("monami").path, isDirectory: &d))
             XCTAssertTrue(d.boolValue)
             expect.fulfill()
         }
@@ -115,8 +102,8 @@ class TestClone: XCTestCase {
         fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("host.com/monami.git", local: url) {
-            Hub.repository($0) {
+        Hub.clone("host.com/monami.git", local: url.appendingPathComponent("monami")) {
+            Hub.repository(self.url.appendingPathComponent("monami")) {
                 XCTAssertTrue($0)
                 expect.fulfill()
             }
@@ -130,12 +117,12 @@ class TestClone: XCTestCase {
         fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("host.com/monami.git", local: url) {
-            XCTAssertTrue(FileManager.default.fileExists(atPath: $0.appendingPathComponent(".git/index").path))
-            XCTAssertEqual("54cac1e1086e2709a52d7d1727526b14efec3a77", try? Hub.head.id($0))
-            XCTAssertEqual("Initial commit", try? Hub.head.commit($0).message)
-            XCTAssertEqual("54f3a4bf0a60f29d7c4798b590f92ffd56dd6d21", try? Hub.head.tree($0).items.first?.id)
-            XCTAssertEqual("master", Hub.head.branch($0))
+        Hub.clone("host.com/monami.git", local: url.appendingPathComponent("monami")) {
+            XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent("monami").appendingPathComponent(".git/index").path))
+            XCTAssertEqual("54cac1e1086e2709a52d7d1727526b14efec3a77", try? Hub.head.id(self.url.appendingPathComponent("monami")))
+            XCTAssertEqual("Initial commit", try? Hub.head.commit(self.url.appendingPathComponent("monami")).message)
+            XCTAssertEqual("54f3a4bf0a60f29d7c4798b590f92ffd56dd6d21", try? Hub.head.tree(self.url.appendingPathComponent("monami")).items.first?.id)
+            XCTAssertEqual("master", Hub.head.branch(self.url.appendingPathComponent("monami")))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -151,7 +138,7 @@ class TestClone: XCTestCase {
             XCTAssertEqual("", have)
             expect.fulfill()
         }
-        Hub.clone("host.com/monami.git", local: url)
+        Hub.clone("host.com/monami.git", local: url.appendingPathComponent("monami"))
         waitForExpectations(timeout: 1)
     }
     
@@ -161,13 +148,13 @@ class TestClone: XCTestCase {
         fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("host.com/monami.git", local: url) {
-            XCTAssertTrue(FileManager.default.fileExists(atPath: $0.appendingPathComponent("README.md").path))
+        Hub.clone("host.com/monami.git", local: url.appendingPathComponent("monami")) {
+            XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent("monami").appendingPathComponent("README.md").path))
             XCTAssertEqual("""
 # test
 Test
 
-""", String(decoding: (try? Data(contentsOf: $0.appendingPathComponent("README.md"))) ?? Data(), as: UTF8.self))
+""", String(decoding: (try? Data(contentsOf: self.url.appendingPathComponent("monami").appendingPathComponent("README.md"))) ?? Data(), as: UTF8.self))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -179,9 +166,9 @@ Test
         fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("host.com/monami.git", local: url) {
+        Hub.clone("host.com/monami.git", local: url.appendingPathComponent("monami")) {
             XCTAssertEqual("54cac1e1086e2709a52d7d1727526b14efec3a77", String(decoding:
-                (try? Data(contentsOf: $0.appendingPathComponent(".git/refs/remotes/origin/master"))) ?? Data(), as: UTF8.self))
+                (try? Data(contentsOf: self.url.appendingPathComponent("monami").appendingPathComponent(".git/refs/remotes/origin/master"))) ?? Data(), as: UTF8.self))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -193,7 +180,7 @@ Test
         fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
-        Hub.clone("host.com/monami.git", local: url) {
+        Hub.clone("host.com/monami.git", local: url.appendingPathComponent("monami")) {
             XCTAssertEqual("""
 [remote "origin"]
     url = https://host.com/monami.git
@@ -202,7 +189,7 @@ Test
     remote = origin
     merge = refs/heads/master
 
-""", String(decoding: (try? Data(contentsOf: $0.appendingPathComponent(".git/config"))) ?? Data(), as: UTF8.self))
+""", String(decoding: (try? Data(contentsOf: self.url.appendingPathComponent("monami").appendingPathComponent(".git/config"))) ?? Data(), as: UTF8.self))
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)

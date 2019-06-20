@@ -25,7 +25,7 @@ public final class Hub {
         dispatch.background({ try factory.delete(repository) }, error: error, success: done)
     }
     
-    public class func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void) = { _ in }, result: @escaping((URL) -> Void) = { _ in }) {
-        dispatch.background({ try factory.clone(remote, local: local, error: error, result: result) }, error: error)
+    public class func clone(_ remote: String, local: URL, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
+        dispatch.background({ try factory.clone(remote, local: local, error: error, done: done) }, error: error)
     }
 }

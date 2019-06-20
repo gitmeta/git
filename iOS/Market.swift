@@ -164,6 +164,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         transactions.forEach {
             switch $0.transactionState {
             case .failed: SKPaymentQueue.default().finishTransaction($0)
+            case.restored: Hub.session.purchase($0.payment.productIdentifier)
             case .purchased:
                 Hub.session.purchase($0.payment.productIdentifier)
                 SKPaymentQueue.default().finishTransaction($0)

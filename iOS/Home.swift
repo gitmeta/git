@@ -75,7 +75,7 @@ final class Home: UIView {
             
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-            label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -20).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -10).isActive = true
             label.widthAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
             
             badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
@@ -91,8 +91,8 @@ final class Home: UIView {
             check.topAnchor.constraint(equalTo: topAnchor).isActive = true
             check.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             
-            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
-            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
@@ -118,13 +118,6 @@ final class Home: UIView {
         border.translatesAutoresizingMaskIntoConstraints = false
         border.backgroundColor = .halo
         addSubview(border)
-        
-        let title = UILabel()
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.font = .systemFont(ofSize: 12, weight: .bold)
-        title.textColor = .halo
-        title.text = .local("Home.title")
-        addSubview(title)
         
         let browse = Button.Yes(.local("Home.directory"))
         browse.addTarget(app, action: #selector(app.browse), for: .touchUpInside)
@@ -188,16 +181,13 @@ final class Home: UIView {
         addSubview(cloud)
         self.cloud = cloud
         
-        title.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-        title.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
-        
         border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.bottomAnchor.constraint(equalTo: topAnchor, constant: 55).isActive = true
         
         browse.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        browse.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
+        browse.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
         
         list.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -217,16 +207,16 @@ final class Home: UIView {
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
         count.rightAnchor.constraint(equalTo: browse.leftAnchor, constant: -15).isActive = true
-        count.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
+        count.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
         
         reset.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        reset.widthAnchor.constraint(equalToConstant: 55).isActive = true
-        reset.rightAnchor.constraint(equalTo: count.leftAnchor, constant: -5).isActive = true
+        reset.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        reset.leftAnchor.constraint(equalTo: cloud.rightAnchor, constant: -5).isActive = true
         reset.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
         
         cloud.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        cloud.widthAnchor.constraint(equalToConstant: 55).isActive = true
-        cloud.rightAnchor.constraint(equalTo: reset.leftAnchor).isActive = true
+        cloud.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        cloud.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
         cloud.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
     }
     
@@ -282,7 +272,7 @@ final class Home: UIView {
             } else {
                 image.isHidden = true
             }
-        case .create:
+        case .create, .first:
             image.isHidden = false
             image.image = UIImage(named: "error")
             button.isHidden = false
@@ -292,16 +282,7 @@ final class Home: UIView {
             label.text = .local("Home.label.create")
             count.isHidden = true
             reset.isHidden = true
-            cloud.isHidden = true
-        case .first:
-            image.isHidden = false
-            image.image = UIImage(named: "error")
-            button.isHidden = true
-            label.isHidden = false
-            label.text = .local("Home.label.first")
-            count.isHidden = true
-            reset.isHidden = true
-            cloud.isHidden = true
+            cloud.isHidden = false
         }
     }
     
@@ -324,7 +305,7 @@ final class Home: UIView {
     
     @objc private func clouding() {
         if Hub.session.purchase.contains(.cloud) {
-            
+            Cloud()
         } else {
             app.alert(.local("Alert.purchase"), message: .local("Cloud.purchase"))
         }
