@@ -36,7 +36,7 @@ class TestLog: XCTestCase {
                         XCTAssertEqual("Lorem ipsum\n", $0.first?.message)
                         XCTAssertEqual("84b5f2f96994db6b67f8a0ee508b1ebb8b633c15", $0.first?.tree)
                         XCTAssertNil($0.first?.parent.first)
-                        XCTAssertEqual(Thread.main, Thread.current)
+                        XCTAssertEqual(.main, Thread.current)
                         expect.fulfill()
                     }
                 }

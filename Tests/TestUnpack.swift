@@ -22,7 +22,7 @@ class TestUnpack: XCTestCase {
             repository = $0
             DispatchQueue.global(qos: .background).async {
                 repository.packed {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     XCTAssertFalse($0)
                     expect.fulfill()
                 }
@@ -68,7 +68,7 @@ class TestUnpack: XCTestCase {
             XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
             DispatchQueue.global(qos: .background).async {
                 repository.unpack {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     XCTAssertTrue(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/33/5a33ae387dc24f057852fdb92e5abc71bf6b85").path))
                     XCTAssertFalse(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git/objects/pack/pack-1.pack").path))
                     

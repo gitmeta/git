@@ -44,20 +44,21 @@ public final class Session: Codable {
     }
     
     public func load(_ result: @escaping(() -> Void) = { }) {
-        Hub.dispatch.background({ [weak self] in
+        Hub.dispatch.background({
             guard let data = UserDefaults.standard.data(forKey: "session"),
                 let decoded = try? JSONDecoder().decode(Session.self, from: data)
             else { return }
-            self?.name = decoded.name
-            self?.email = decoded.email
-            self?.url = decoded.url
-            self?.bookmark = decoded.bookmark
-            self?.user = decoded.user
+            self.name = decoded.name
+            self.email = decoded.email
+            self.url = decoded.url
+            self.bookmark = decoded.bookmark
+            self.user = decoded.user
+            self.purchase = decoded.purchase
         }, success: result)
     }
     
     public func update(_ name: String, email: String, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
-        Hub.dispatch.background({ [weak self] in
+        Hub.dispatch.background({
             guard !name.isEmpty else { throw Failure.User.name }
             
             try name.forEach {
@@ -79,25 +80,35 @@ public final class Session: Codable {
             guard at.count == 2, !at.first!.isEmpty, dot.count > 1, !dot.first!.isEmpty, !dot.last!.isEmpty
             else { throw Failure.User.email }
             
-            self?.name = name
-            self?.email = email
-            self?.save()
+            self.name = name
+            self.email = email
+            self.save()
         }, error: error, success: done)
     }
     
     public func update(_ user: String, password: String, done: @escaping(() -> Void) = { }) {
-        Hub.dispatch.background ({ [weak self] in
-            self?.user = user
-            self?.password = password
-            self?.save()
+        Hub.dispatch.background ({
+            self.user = user
+            self.password = password
+            self.save()
         }, success: done)
     }
     
     public func update(_ url: URL, bookmark: Data, done: @escaping(() -> Void) = { }) {
-        Hub.dispatch.background({ [weak self] in
-            self?.url = url
-            self?.bookmark = bookmark
-            self?.save()
+        Hub.dispatch.background({
+            self.url = url
+            self.bookmark = bookmark
+            self.save()
+        }, success: done)
+    }
+    
+    public func purchase(_ id: String, done: @escaping(() -> Void) = { }) {
+        Hub.dispatch.background ({
+            let item = Purchase(rawValue: id.components(separatedBy: ".").last!)!
+            if !self.purchase.contains(where: { $0 == item }) {
+                self.purchase.append(item)
+                self.save()
+            }
         }, success: done)
     }
     

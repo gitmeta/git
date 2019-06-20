@@ -31,7 +31,7 @@ class TestSession: XCTestCase {
             XCTAssertEqual("pablo@mousaka.com", Hub.session.user)
             XCTAssertEqual(data, Hub.session.bookmark)
             XCTAssertEqual(url.path, Hub.session.url.path)
-            XCTAssertEqual(Thread.main, Thread.current)
+            XCTAssertEqual(.main, Thread.current)
             expect.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -66,6 +66,36 @@ class TestSession: XCTestCase {
                 XCTAssertEqual(data, Hub.session.bookmark)
                 XCTAssertEqual(url.path, Hub.session.url.path)
                 expect.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testPurchase() {
+        let expect = expectation(description: "")
+        XCTAssertTrue(Hub.session.purchase.isEmpty)
+        DispatchQueue.global(qos: .background).async {
+            Hub.session.purchase("hello.cloud") {
+                XCTAssertEqual(.main, Thread.current)
+                Hub.session.purchase = []
+                Hub.session.load {
+                    XCTAssertEqual(.cloud, Hub.session.purchase.first)
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testPurchaseAgain() {
+        let expect = expectation(description: "")
+        XCTAssertTrue(Hub.session.purchase.isEmpty)
+        Hub.session.purchase("hello.cloud") {
+            Hub.session.purchase("hello.cloud") {
+                Hub.session.load {
+                    XCTAssertEqual(1, Hub.session.purchase.count)
+                    expect.fulfill()
+                }
             }
         }
         waitForExpectations(timeout: 1)

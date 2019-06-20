@@ -8,7 +8,7 @@ class Sheet: UIView {
         super.init(frame: .zero)
         guard !app.view.subviews.contains(where: { $0 is Signature }) else { return }
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.shade.withAlphaComponent(0.95)
+        backgroundColor = UIColor.shade.withAlphaComponent(0.9)
         alpha = 0
         app.view.addSubview(self)
         

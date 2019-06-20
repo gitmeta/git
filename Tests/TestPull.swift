@@ -35,7 +35,7 @@ class TestPull: XCTestCase {
                 self.rest._fetch = fetch
                 DispatchQueue.global(qos: .background).async {
                     repository.pull {
-                        XCTAssertEqual(Thread.main, Thread.current)
+                        XCTAssertEqual(.main, Thread.current)
                         expect.fulfill()
                     }
                 }
@@ -154,7 +154,7 @@ Test
             repository = $0
             DispatchQueue.global(qos: .background).async {
                 repository.remote("host.com/monami.git") {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     XCTAssertEqual("""
 [remote "origin"]
     url = https://host.com/monami.git

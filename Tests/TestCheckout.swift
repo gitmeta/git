@@ -36,7 +36,7 @@ class TestCheckout: XCTestCase {
                     XCTAssertEqual("lorem ipsum\n", String(decoding: try! Data(contentsOf: self.file), as: UTF8.self))
                     DispatchQueue.global(qos: .background).async {
                         repository.check(first) {
-                            XCTAssertEqual(Thread.main, Thread.current)
+                            XCTAssertEqual(.main, Thread.current)
                             XCTAssertEqual("hello world\n", String(decoding: try! Data(contentsOf: self.file), as: UTF8.self))
                             XCTAssertEqual(first, try! Hub.head.id(self.url))
                             expect.fulfill()

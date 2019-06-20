@@ -4,15 +4,15 @@ import StoreKit
 
 final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     private class Item: UIView {
-        let id: String
+        let product: SKProduct
         private(set) weak var button: Button.Yes!
         private(set) weak var label: UILabel!
         private(set) weak var purchased: UILabel!
         private(set) weak var price: UILabel!
         private(set) weak var image: UIImageView!
         
-        init(_ id: String) {
-            self.id = id
+        init(_ product: SKProduct) {
+            self.product = product
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
             
@@ -26,14 +26,14 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
             label.numberOfLines = 0
-            label.textColor = .halo
+            label.textColor = .white
             addSubview(label)
             self.label = label
             
             let price = UILabel()
             price.translatesAutoresizingMaskIntoConstraints = false
             price.textColor = .white
-            price.font = .systemFont(ofSize: 14, weight: .medium)
+            price.font = .systemFont(ofSize: 16, weight: .medium)
             addSubview(price)
             self.price = price
             
@@ -59,7 +59,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
             label.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
             
-            price.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
+            price.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 25).isActive = true
             price.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
             
             purchased.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
@@ -67,6 +67,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             
             button.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 10).isActive = true
             button.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
+            button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
         }
         
         required init?(coder: NSCoder) { return nil }
@@ -160,8 +161,15 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     func paymentQueue(_: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) { error(restoreCompletedTransactionsFailedWithError) }
     
     private func update(_ transactions: [SKPaymentTransaction]) {
-        transactions.filter({ $0.transactionState == .failed || $0.transactionState == .purchased })
-            .forEach { SKPaymentQueue.default().finishTransaction($0) }
+        transactions.forEach {
+            switch $0.transactionState {
+            case .failed: SKPaymentQueue.default().finishTransaction($0)
+            case .purchased:
+                Hub.session.purchase($0.payment.productIdentifier)
+                SKPaymentQueue.default().finishTransaction($0)
+            default: break
+            }
+        }
         refresh()
     }
     
@@ -172,12 +180,12 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         var bottom = list.topAnchor
         products.forEach { product in
             let name = product.productIdentifier.components(separatedBy: ".").last!
-            let item = Item(product.productIdentifier)
+            let item = Item(product)
             formatter.locale = product.priceLocale
             item.price.text = formatter.string(from: product.price)
             item.image.image = UIImage(named: name)
             item.label.attributedText = {
-                $0.append(NSAttributedString(string: product.localizedTitle, attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold)]))
+                $0.append(NSAttributedString(string: product.localizedTitle, attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)]))
                 $0.append(NSAttributedString(string: .local("Market.\(name)"), attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .light)]))
                 return $0
             } (NSMutableAttributedString())
@@ -214,6 +222,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     }
     
     @objc private func purchase(_ button: Button.Yes) {
-        
+        show("loading")
+        SKPaymentQueue.default().add(SKPayment(product: (button.superview as! Item).product))
     }
 }

@@ -34,7 +34,7 @@ class TestPush: XCTestCase {
                 self.rest._fetch = fetch
                 DispatchQueue.global(qos: .background).async {
                     repository.push {
-                        XCTAssertEqual(Thread.main, Thread.current)
+                        XCTAssertEqual(.main, Thread.current)
                         expect.fulfill()
                     }
                 }

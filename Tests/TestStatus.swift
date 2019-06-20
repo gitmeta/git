@@ -22,7 +22,7 @@ class TestStatus: XCTestCase {
             self.repository = $0
             self.repository.status = {
                 XCTAssertTrue($0.isEmpty)
-                XCTAssertEqual(Thread.main, Thread.current)
+                XCTAssertEqual(.main, Thread.current)
                 expect.fulfill()
             }
             self.repository.state.timer.schedule(deadline: .now())

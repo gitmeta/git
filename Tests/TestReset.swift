@@ -30,7 +30,7 @@ class TestReset: XCTestCase {
                 XCTAssertFalse(FileManager.default.fileExists(atPath: file.path))
                 DispatchQueue.global(qos: .background).async {
                     self.repository.reset {
-                        XCTAssertEqual(Thread.main, Thread.current)
+                        XCTAssertEqual(.main, Thread.current)
                         XCTAssertTrue(FileManager.default.fileExists(atPath: file.path))
                         XCTAssertEqual("hello world\n",
                                        String(decoding: (try? Data(contentsOf: file)) ?? Data(), as: UTF8.self))

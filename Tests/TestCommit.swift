@@ -162,7 +162,7 @@ Add project files.
         Hub.session.email = "my@email.com"
         DispatchQueue.global(qos: .background).async {
             repository.commit([], message: "hello world", error: { _ in
-                XCTAssertEqual(Thread.main, Thread.current)
+                XCTAssertEqual(.main, Thread.current)
                 expect.fulfill()
             })
         }
@@ -211,7 +211,7 @@ Add project files.
                 Hub.session.name = "hello"
                 Hub.session.email = "world"
                 repository.commit([self.file], message: "hello world\n") {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     let commit = try? Hub.head.commit(self.url)
                     XCTAssertNotNil(commit)
                     XCTAssertNotNil(try? Hub.head.id(self.url))

@@ -19,7 +19,7 @@ class TestHub: XCTestCase {
         let expect = expectation(description: "")
         DispatchQueue.global(qos: .background).async {
             Hub.repository(self.url) {
-                XCTAssertEqual(Thread.main, Thread.current)
+                XCTAssertEqual(.main, Thread.current)
                 XCTAssertFalse($0)
                 expect.fulfill()
             }
@@ -32,7 +32,7 @@ class TestHub: XCTestCase {
         Hub.create(url) { _ in
             DispatchQueue.global(qos: .background).async {
                 Hub.repository(self.url) {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     XCTAssertTrue($0)
                     expect.fulfill()
                 }
@@ -51,7 +51,7 @@ class TestHub: XCTestCase {
         
         DispatchQueue.global(qos: .background).async {
             Hub.create(self.url) { _ in
-                XCTAssertEqual(Thread.main, Thread.current)
+                XCTAssertEqual(.main, Thread.current)
                 
                 var directory: ObjCBool = false
                 XCTAssertTrue(FileManager.default.fileExists(atPath: root.path, isDirectory: &directory))
@@ -79,7 +79,7 @@ class TestHub: XCTestCase {
         Hub.create(url) { repository in
             DispatchQueue.global(qos: .background).async {
                 Hub.delete(repository) {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     XCTAssertFalse(FileManager.default.fileExists(atPath: self.url.appendingPathComponent(".git").path))
                     expect.fulfill()
                 }
@@ -93,7 +93,7 @@ class TestHub: XCTestCase {
         Hub.create(url) { _ in
             DispatchQueue.global(qos: .background).async {
                 Hub.create(self.url, error: {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     XCTAssertNotNil($0 as? Failure)
                     expect.fulfill()
                 })
@@ -106,7 +106,7 @@ class TestHub: XCTestCase {
         let expect = expectation(description: "")
         DispatchQueue.global(qos: .background).async {
             Hub.open(self.url, error: { _ in
-                XCTAssertEqual(Thread.main, Thread.current)
+                XCTAssertEqual(.main, Thread.current)
                 expect.fulfill()
             }) { _ in }
         }
@@ -118,7 +118,7 @@ class TestHub: XCTestCase {
         Hub.create(url) { _ in
             DispatchQueue.global(qos: .background).async {
                 Hub.open(self.url) { _ in
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     expect.fulfill()
                 }
             }

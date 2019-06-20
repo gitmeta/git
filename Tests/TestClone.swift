@@ -74,7 +74,7 @@ class TestClone: XCTestCase {
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestClone.self).url(forResource: "fetch0", withExtension: nil)!))
         DispatchQueue.global(qos: .background).async {
             Hub.clone("host.com/monami.git", local: self.url) { _ in
-                XCTAssertEqual(Thread.main, Thread.current)
+                XCTAssertEqual(.main, Thread.current)
                 expect.fulfill()
             }
         }

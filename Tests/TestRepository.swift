@@ -29,7 +29,7 @@ class TestRepository: XCTestCase {
             repository = $0
             DispatchQueue.global(qos: .background).async {
                 repository.branch {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     XCTAssertEqual("master", $0)
                     expect.fulfill()
                 }
@@ -45,7 +45,7 @@ class TestRepository: XCTestCase {
             repository = $0
             DispatchQueue.global(qos: .background).async {
                 repository.remote {
-                    XCTAssertEqual(Thread.main, Thread.current)
+                    XCTAssertEqual(.main, Thread.current)
                     XCTAssertEqual("", $0)
                     expect.fulfill()
                 }
@@ -61,7 +61,7 @@ class TestRepository: XCTestCase {
             repository = $0
             try? Config("hello world").save(self.url)
             repository.remote {
-                XCTAssertEqual(Thread.main, Thread.current)
+                XCTAssertEqual(.main, Thread.current)
                 XCTAssertEqual("""
 [remote "origin"]
     url = https://hello world
