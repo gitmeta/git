@@ -171,7 +171,9 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             default: break
             }
         }
-        refresh()
+        if !products.isEmpty {
+            refresh()
+        }
     }
     
     private func refresh() {

@@ -49,6 +49,9 @@ final class Reset: Sheet {
     @objc private func confirm() {
         app.repository?.reset({
             app.alert(.local("Alert.error"), message: $0.localizedDescription)
-        }) { app.alert(.local("Alert.success"), message: .local("Reset.success")) }
+        }) { [weak self] in
+            app.alert(.local("Alert.success"), message: .local("Reset.success"))
+            self?.close()
+        }
     }
 }

@@ -50,7 +50,7 @@ final class Credentials: UIView, UITextFieldDelegate {
             
             field.topAnchor.constraint(equalTo: topAnchor).isActive = true
             field.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-            field.leftAnchor.constraint(equalTo: leftAnchor, constant: 50).isActive = true
+            field.leftAnchor.constraint(equalTo: leftAnchor, constant: 70).isActive = true
             field.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         }
         
@@ -87,7 +87,7 @@ final class Credentials: UIView, UITextFieldDelegate {
         
         let user = Field()
         user.field.delegate = self
-        user.field.keyboardType = .alphabet
+        user.field.keyboardType = .emailAddress
         user.label.text = .local("Settings.keyUser")
         user.field.text = Hub.session.user
         base.addSubview(user)
@@ -95,7 +95,8 @@ final class Credentials: UIView, UITextFieldDelegate {
         
         let password = Field()
         password.field.delegate = self
-        password.field.keyboardType = .emailAddress
+        password.field.keyboardType = .alphabet
+        password.field.isSecureTextEntry = true
         password.label.text = .local("Settings.keyPassword")
         password.field.text = Hub.session.password
         base.addSubview(password)
