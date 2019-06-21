@@ -1,7 +1,7 @@
 import Git
 import UIKit
 
-final class Credentials: UIView, UITextFieldDelegate {
+final class Credentials: Sheet, UITextFieldDelegate {
     private final class Field: UIView {
         private(set) weak var field: UITextField!
         private(set) weak var label: UILabel!
@@ -59,25 +59,10 @@ final class Credentials: UIView, UITextFieldDelegate {
     
     private weak var user: Field!
     private weak var password: Field!
+    override var height: CGFloat { return 370 }
     
-    @discardableResult init() {
-        super.init(frame: .zero)
-        guard !app.view.subviews.contains(where: { $0 is Signature }) else { return }
-        translatesAutoresizingMaskIntoConstraints = false
-        alpha = 0
-        app.view.addSubview(self)
-        
-        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        blur.translatesAutoresizingMaskIntoConstraints = false
-        blur.isUserInteractionEnabled = false
-        blur.alpha = 0.85
-        addSubview(blur)
-        
-        let base = UIView()
-        base.translatesAutoresizingMaskIntoConstraints = false
-        base.backgroundColor = .black
-        addSubview(base)
-        
+    @discardableResult override init() {
+        super.init()
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = .local("Settings.labelKey")
@@ -110,23 +95,7 @@ final class Credentials: UIView, UITextFieldDelegate {
         close.addTarget(self, action: #selector(self.close), for: .touchUpInside)
         base.addSubview(close)
         
-        blur.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        blur.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        blur.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        blur.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        
-        base.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        base.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        base.heightAnchor.constraint(equalToConstant: 340).isActive = true
-        let top = base.topAnchor.constraint(equalTo: topAnchor, constant: -340)
-        top.isActive = true
-        
-        topAnchor.constraint(equalTo: app.view.topAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: app.view.bottomAnchor).isActive = true
-        leftAnchor.constraint(equalTo: app.view.leftAnchor).isActive = true
-        rightAnchor.constraint(equalTo: app.view.rightAnchor).isActive = true
-        
-        label.topAnchor.constraint(equalTo: base.topAnchor, constant: 40).isActive = true
+        label.topAnchor.constraint(equalTo: base.topAnchor, constant: 70).isActive = true
         label.leftAnchor.constraint(equalTo: base.centerXAnchor, constant: -150).isActive = true
         
         user.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true
@@ -142,14 +111,6 @@ final class Credentials: UIView, UITextFieldDelegate {
         
         close.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         close.topAnchor.constraint(equalTo: save.bottomAnchor, constant: 20).isActive = true
-        
-        app.view.layoutIfNeeded()
-        
-        top.constant = 0
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            self?.alpha = 1
-            self?.layoutIfNeeded()
-        }
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -169,12 +130,5 @@ final class Credentials: UIView, UITextFieldDelegate {
             app.alert(.local("Alert.success"), message: .local("Settings.keySuccess"))
             self?.close()
         }
-    }
-    
-    @objc private func close() {
-        app.window!.endEditing(true)
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.alpha = 0
-        }) { [weak self] _ in self?.removeFromSuperview() }
     }
 }
