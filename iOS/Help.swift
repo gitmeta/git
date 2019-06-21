@@ -18,9 +18,13 @@ final class Help: Sheet {
         base.addSubview(label)
         self.label = label
         
+        let close = Button.No(.local("Help.close"))
+        close.addTarget(self, action: #selector(self.close), for: .touchUpInside)
+        base.addSubview(close)
+        
         var rightImage: NSLayoutXAxisAnchor!
         var rightButton = base.leftAnchor
-        let steps = ["help.browse", "help.create", "help.files", "settings", "add", "help.commit", "reset", "history", "cloud", "help.url"]
+        let steps = ["help.container", "help.create", "help.home", "settings", "add", "help.commit", "reset", "history", "cloud", "help.git"]
         steps.enumerated().forEach {
             let image = UIImageView(image: UIImage(named: $0.1))
             image.translatesAutoresizingMaskIntoConstraints = false
@@ -44,11 +48,11 @@ final class Help: Sheet {
             image.widthAnchor.constraint(equalToConstant: 300).isActive = true
             
             button.heightAnchor.constraint(equalToConstant: 90).isActive = true
-            button.widthAnchor.constraint(equalTo: base.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -1).isActive = true
+            button.widthAnchor.constraint(equalTo: base.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -2).isActive = true
             button.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -70).isActive = true
             
             if $0.0 == 0 {
-                button.leftAnchor.constraint(equalTo: rightButton, constant: 6).isActive = true
+                button.leftAnchor.constraint(equalTo: rightButton, constant: 12).isActive = true
                 centerX = image.centerXAnchor.constraint(equalTo: base.centerXAnchor)
                 centerX.isActive = true
             } else {
@@ -63,25 +67,13 @@ final class Help: Sheet {
         label.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 290).isActive = true
         
+        close.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
+        close.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
+        
         DispatchQueue.main.async { [weak self] in self?.display(0) }
     }
     
     required init?(coder: NSCoder) { return nil }
-    /*
-    override func keyDown(with: NSEvent) {
-        switch with.keyCode {
-        case 13:
-            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
-                close()
-            } else {
-                super.keyDown(with: with)
-            }
-        case 36, 53: close()
-        case 123: display(index > 0 ? index - 1 : images.count - 1)
-        case 124: display(index < images.count - 1 ? index + 1 : 0)
-        default: super.keyDown(with: with)
-        }
-    }*/
     
     private func display(_ index: Int) {
         self.index = index
@@ -92,7 +84,7 @@ final class Help: Sheet {
                 $0.1.alpha = $0.0 == index ? 1 : 0
             }
             self?.base.layoutIfNeeded()
-        }) { [weak self] _ in self?.label.text = .local("Onboard.mac\(index)") }
+        }) { [weak self] _ in self?.label.text = .local("Onboard.ios\(index)") }
     }
     
     @objc private func show(_ button: Button) { display(buttons.firstIndex(of: button)!) }

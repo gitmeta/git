@@ -40,8 +40,8 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             let purchased = UILabel()
             purchased.text = .local("Market.purchased")
             purchased.translatesAutoresizingMaskIntoConstraints = false
-            purchased.textColor = .white
-            purchased.font = .systemFont(ofSize: 14, weight: .medium)
+            purchased.textColor = .halo
+            purchased.font = .systemFont(ofSize: 16, weight: .medium)
             purchased.isHidden = true
             addSubview(purchased)
             self.purchased = purchased

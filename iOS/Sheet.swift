@@ -8,8 +8,7 @@ class Sheet: UIView {
         super.init(frame: .zero)
         guard !app.view.subviews.contains(where: { $0 is Signature }) else { return }
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.shade.withAlphaComponent(0.8)
-        alpha = 0
+        backgroundColor = UIColor.shade.withAlphaComponent(0)
         app.view.addSubview(self)
         
         let base = UIView()
@@ -37,7 +36,7 @@ class Sheet: UIView {
         
         top.constant = -20
         UIView.animate(withDuration: 0.4) { [weak self] in
-            self?.alpha = 1
+            self?.backgroundColor = UIColor.shade.withAlphaComponent(0.8)
             self?.layoutIfNeeded()
         }
     }

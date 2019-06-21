@@ -39,7 +39,7 @@ final class Create: UIView, UITextFieldDelegate {
         cancel.addTarget(self, action: #selector(self.cancel), for: .touchUpInside)
         addSubview(cancel)
         
-        name.topAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
+        name.topAnchor.constraint(equalTo: topAnchor, constant: 60).isActive = true
         name.heightAnchor.constraint(equalToConstant: 50).isActive = true
         name.leftAnchor.constraint(equalTo: leftAnchor, constant: 30).isActive = true
         name.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
