@@ -140,6 +140,7 @@
 		CE7B8BF422917A1C00396AB1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF222917A1C00396AB1 /* Content.swift */; };
 		CE7B8BF622917ACA00396AB1 /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF522917ACA00396AB1 /* Head.swift */; };
 		CE7B8BF722917ACA00396AB1 /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B8BF522917ACA00396AB1 /* Head.swift */; };
+		CE7D67D922BCB53000951EB4 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7D67D822BCB53000951EB4 /* Delete.swift */; };
 		CE805F7722B8B4DE00423BC8 /* Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE805F7622B8B4DE00423BC8 /* Add.swift */; };
 		CE89826022904EB300E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE89825F22904EB300E9F41F /* Reset.swift */; };
 		CE8982622290560000E9F41F /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8982612290560000E9F41F /* Reset.swift */; };
@@ -298,6 +299,7 @@
 		CE7B8BEF2291431700396AB1 /* pack-1.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-1.idx"; sourceTree = "<group>"; };
 		CE7B8BF222917A1C00396AB1 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		CE7B8BF522917ACA00396AB1 /* Head.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Head.swift; sourceTree = "<group>"; };
+		CE7D67D822BCB53000951EB4 /* Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delete.swift; sourceTree = "<group>"; };
 		CE805F7622B8B4DE00423BC8 /* Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Add.swift; sourceTree = "<group>"; };
 		CE89825F22904EB300E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
 		CE8982612290560000E9F41F /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
@@ -494,6 +496,7 @@
 				CE728C8C22BA1AD500B2EA3E /* Cloud.swift */,
 				20E0989F22819D060061123C /* Create.swift */,
 				CE31565C22BB8ECA00C3EC22 /* Credentials.swift */,
+				CE7D67D822BCB53000951EB4 /* Delete.swift */,
 				20BB9F8722802DBD002DDF7B /* Extensions.swift */,
 				CE31566222BBB3DD00C3EC22 /* Help.swift */,
 				CE31566022BBA60900C3EC22 /* History.swift */,
@@ -924,6 +927,7 @@
 				CE31566122BBA60900C3EC22 /* History.swift in Sources */,
 				20FFDF832282EF0500226033 /* Signature.swift in Sources */,
 				2048A129225C748900290E54 /* App.swift in Sources */,
+				CE7D67D922BCB53000951EB4 /* Delete.swift in Sources */,
 				20BB9F8622802D8A002DDF7B /* Sheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

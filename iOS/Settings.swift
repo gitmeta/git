@@ -37,6 +37,11 @@ final class Settings: UIView {
         key.addTarget(self, action: #selector(self.key), for: .touchUpInside)
         addSubview(key)
         
+        let delete = Button.Yes(.local("Settings.buttonDelete"))
+        delete.addTarget(self, action: #selector(remove), for: .touchUpInside)
+        delete.backgroundColor = .init(red: 1, green: 0.4, blue: 0.3, alpha: 1)
+        addSubview(delete)
+        
         let help = Button.No(.local("Settings.help"))
         help.addTarget(self, action: #selector(self.help), for: .touchUpInside)
         addSubview(help)
@@ -61,7 +66,10 @@ final class Settings: UIView {
         key.topAnchor.constraint(equalTo: sign.bottomAnchor, constant: 20).isActive = true
         key.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
-        help.topAnchor.constraint(equalTo: key.bottomAnchor, constant: 40).isActive = true
+        delete.topAnchor.constraint(equalTo: key.bottomAnchor, constant: 20).isActive = true
+        delete.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        help.topAnchor.constraint(equalTo: delete.bottomAnchor, constant: 40).isActive = true
         help.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     }
     
@@ -74,4 +82,6 @@ final class Settings: UIView {
         app.refresh()
         app.alert(.local("Alert.success"), message: .local("Settings.refreshed"))
     }
+    
+    @objc private func remove() { Delete() }
 }

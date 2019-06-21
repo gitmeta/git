@@ -30,7 +30,7 @@ final class Add: UIView {
         }
     }
     
-    private final class Text: UITextView {
+    final class Text: UITextView {
         private weak var height: NSLayoutConstraint!
         
         init() {
@@ -66,7 +66,7 @@ final class Add: UIView {
         }
     }
     
-    private weak var text: Text!
+    private(set) weak var text: Text!
     private weak var bottom: NSLayoutConstraint!
     
     init() {

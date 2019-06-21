@@ -13,7 +13,7 @@ private(set) weak var app: App!
     private weak var _settings: Settings!
     private weak var _history: History!
     private weak var tab: Tab!
-    private(set) var repository: Repository? {
+    var repository: Repository? {
         didSet {
             if repository == nil {
                 _home.update(.create)
@@ -159,6 +159,11 @@ private(set) weak var app: App!
         _market.start()
     }
     
+    func add() {
+        show(_add)
+        _add.text.becomeFirstResponder()
+    }
+    
     func history() {
         show(_history)
         _history.refresh()
@@ -181,7 +186,6 @@ private(set) weak var app: App!
     
     func settings() { show(_settings) }
     func home() { show(_home) }
-    func add() { show(_add) }
     private func show(_ view: UIView) { [_settings, _market, _home, _add, _history].forEach { $0?.isHidden = $0 !== view } }
     @objc private func help() { /*order(Help.self)*/ }
     @objc private func back() { dismiss(animated: true) }
