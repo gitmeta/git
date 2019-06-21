@@ -68,7 +68,7 @@ final class Settings: UIView {
     required init?(coder: NSCoder) { return nil }
     @objc private func sign() { Signature() }
     @objc private func key() { Credentials() }
-    @objc private func help() { Credentials() }
+    @objc private func help() { Help() }
     
     @objc private func refresh() {
         app.refresh()
