@@ -27,24 +27,19 @@ final class Settings: UIView {
         
         let refresh = Button.Yes(.local("Settings.refresh"))
         refresh.addTarget(self, action: #selector(self.refresh), for: .touchUpInside)
-        addSubview(refresh)
         
         let sign = Button.Yes(.local("Settings.buttonSign"))
         sign.addTarget(self, action: #selector(self.sign), for: .touchUpInside)
-        addSubview(sign)
         
         let key = Button.Yes(.local("Settings.buttonKey"))
         key.addTarget(self, action: #selector(self.key), for: .touchUpInside)
-        addSubview(key)
         
         let delete = Button.Yes(.local("Settings.buttonDelete"))
         delete.addTarget(self, action: #selector(remove), for: .touchUpInside)
         delete.backgroundColor = .init(red: 1, green: 0.4, blue: 0.3, alpha: 1)
-        addSubview(delete)
         
         let help = Button.No(.local("Settings.help"))
         help.addTarget(self, action: #selector(self.help), for: .touchUpInside)
-        addSubview(help)
         
         image.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -57,20 +52,13 @@ final class Settings: UIView {
         version.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         version.topAnchor.constraint(equalTo: label.bottomAnchor).isActive = true
         
-        refresh.topAnchor.constraint(equalTo: version.bottomAnchor, constant: 50).isActive = true
-        refresh.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
-        sign.topAnchor.constraint(equalTo: refresh.bottomAnchor, constant: 20).isActive = true
-        sign.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
-        key.topAnchor.constraint(equalTo: sign.bottomAnchor, constant: 20).isActive = true
-        key.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
-        delete.topAnchor.constraint(equalTo: key.bottomAnchor, constant: 20).isActive = true
-        delete.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
-        help.topAnchor.constraint(equalTo: delete.bottomAnchor, constant: 40).isActive = true
-        help.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        var top = version.bottomAnchor
+        [refresh, sign, key, delete, help].forEach {
+            addSubview($0)
+            $0.topAnchor.constraint(equalTo: top, constant: 20).isActive = true
+            $0.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            top = $0.bottomAnchor
+        }
     }
     
     required init?(coder: NSCoder) { return nil }
