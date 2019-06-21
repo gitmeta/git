@@ -137,6 +137,7 @@ final class Home: UIView {
         self.image = image
         
         let button = Button.Yes("")
+        button.isHidden = true
         addSubview(button)
         self.button = button
         
