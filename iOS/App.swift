@@ -140,11 +140,15 @@ private(set) weak var app: App!
                         return UNNotificationRequest(identifier: UUID().uuidString, content: $0, trigger: nil)
                     } (UNMutableNotificationContent()))
                 } else {
-                    Alert(title + " " + message)
+                    DispatchQueue.main.async {
+                        Alert(title + "\n" + message)
+                    }
                 }
             }
         } else {
-            Alert(title + " " + message)
+            DispatchQueue.main.async {
+                Alert(title + "\n" + message)
+            }
         }
     }
     

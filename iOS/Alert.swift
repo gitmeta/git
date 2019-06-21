@@ -16,6 +16,7 @@ final class Alert: UIControl {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = message
+        label.numberOfLines = 0
         label.textColor = .white
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textAlignment = .center
