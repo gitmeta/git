@@ -74,7 +74,7 @@ final class Create: UIView, UITextFieldDelegate {
     
     @objc private func create() {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name.text!.isEmpty ? .local("Create.untitled") : name.text!)
-        FileManager.default.createFile(atPath: url.path, contents: nil)
+        FileManager.default.createFile(atPath: url.path, contents: Data("\n".utf8))
         finish(url)
     }
     
