@@ -4,7 +4,7 @@ import AppKit
 final class Cloud: NSWindow, NSTextFieldDelegate {
     private weak var field: NSTextField!
     private weak var loading: NSImageView!
-    private var buttons = [Button]()
+    private weak var button: Button!
     
     init() {
         super.init(contentRect: NSRect(
@@ -63,55 +63,15 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         contentView!.addSubview(loading)
         self.loading = loading
         
-        if app.repository == nil {
-            let button = Button.Text(self, action: #selector(clone))
-            button.label.font = .systemFont(ofSize: 11, weight: .medium)
-            button.label.textColor = .black
-            button.wantsLayer = true
-            button.layer!.cornerRadius = 4
-            button.layer!.backgroundColor = NSColor.halo.cgColor
-            button.label.stringValue = .local("Cloud.clone.button")
-            contentView!.addSubview(button)
-            buttons = [button]
-            
-            button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -20).isActive = true
-            button.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 62).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 22).isActive = true
-        } else {
-            field.refusesFirstResponder = true
-            
-            let pull = Button.Text(self, action: #selector(self.pull))
-            pull.label.font = .systemFont(ofSize: 11, weight: .medium)
-            pull.label.textColor = .black
-            pull.wantsLayer = true
-            pull.layer!.cornerRadius = 4
-            pull.layer!.backgroundColor = NSColor.halo.cgColor
-            pull.label.stringValue = .local("Cloud.pull.button")
-            contentView!.addSubview(pull)
-            
-            let push = Button.Text(self, action: #selector(self.push))
-            push.label.font = .systemFont(ofSize: 11, weight: .medium)
-            push.label.textColor = .black
-            push.wantsLayer = true
-            push.layer!.cornerRadius = 4
-            push.layer!.backgroundColor = NSColor.halo.cgColor
-            push.label.stringValue = .local("Cloud.push.button")
-            contentView!.addSubview(push)
-            buttons = [pull, push]
-            
-            pull.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -20).isActive = true
-            pull.rightAnchor.constraint(equalTo: contentView!.centerXAnchor, constant: -10).isActive = true
-            pull.widthAnchor.constraint(equalToConstant: 62).isActive = true
-            pull.heightAnchor.constraint(equalToConstant: 22).isActive = true
-            
-            push.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -20).isActive = true
-            push.leftAnchor.constraint(equalTo: contentView!.centerXAnchor, constant: 10).isActive = true
-            push.widthAnchor.constraint(equalToConstant: 62).isActive = true
-            push.heightAnchor.constraint(equalToConstant: 22).isActive = true
-            
-            app.repository?.remote { [weak self] in self?.field.stringValue = $0 }
-        }
+        let button = Button.Text(self, action: #selector(make))
+        button.label.font = .systemFont(ofSize: 11, weight: .medium)
+        button.label.textColor = .black
+        button.wantsLayer = true
+        button.layer!.cornerRadius = 4
+        button.layer!.backgroundColor = NSColor.halo.cgColor
+        button.label.stringValue = app.repository == nil ? .local("Cloud.clone.button") : .local("Cloud.synch.button")
+        contentView!.addSubview(button)
+        self.button = button
         
         title.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 18).isActive = true
         title.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -20).isActive = true
@@ -136,6 +96,14 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         
         loading.centerYAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -31).isActive = true
         loading.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
+        
+        button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -20).isActive = true
+        button.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 62).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        
+        field.refusesFirstResponder = app.repository != nil
+        app.repository?.remote { [weak self] in self?.field.stringValue = $0 }
     }
     
     override func keyDown(with: NSEvent) {
@@ -164,56 +132,46 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
     
     func controlTextDidEndEditing(_: Notification) { app.repository?.remote(field.stringValue) }
     
-    private func busy() {
-        makeFirstResponder(nil)
-        buttons.forEach { $0.isHidden = true }
-        loading.isHidden = false
-        field.isEditable = false
-    }
-    
     private func ready() {
-        buttons.forEach { $0.isHidden = false }
+        button.isHidden = false
         loading.isHidden = true
         field.isEditable = true
     }
     
-    @objc private func clone() {
-        if let name = field.stringValue.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""),
-            !name.isEmpty,
-            !FileManager.default.fileExists(atPath: Hub.session.url.appendingPathComponent(name).path) {
-            busy()
-            Hub.clone(field.stringValue, local: Hub.session.url.appendingPathComponent(name), error: { [weak self] in
+    @objc private func make() {
+        makeFirstResponder(nil)
+        button.isHidden = true
+        loading.isHidden = false
+        field.isEditable = false
+        if app.repository == nil {
+            if let name = field.stringValue.components(separatedBy: "/").last?.replacingOccurrences(of: ".git", with: ""),
+                !name.isEmpty,
+                !FileManager.default.fileExists(atPath: Hub.session.url.appendingPathComponent(name).path) {
+                Hub.clone(field.stringValue, local: Hub.session.url.appendingPathComponent(name), error: { [weak self] in
+                    app.alert(.local("Alert.error"), message: $0.localizedDescription)
+                    self?.ready()
+                }) { [weak self] in
+                    app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
+                    self?.close()
+                    app.browsed(Hub.session.url.appendingPathComponent(name))
+                }
+            } else {
+                app.alert(.local("Alert.error"), message: .local("Cloud.clone.name"))
+                ready()
+            }
+        } else {
+            app.repository!.pull({ [weak self] in
                 app.alert(.local("Alert.error"), message: $0.localizedDescription)
                 self?.ready()
             }) { [weak self] in
-                app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
-                self?.close()
-                app.browsed(Hub.session.url.appendingPathComponent(name))
+                app.repository!.push({ [weak self] in
+                    app.alert(.local("Alert.error"), message: $0.localizedDescription)
+                    self?.ready()
+                }) { [weak self] in
+                    app.alert(.local("Alert.success"), message: .local("Cloud.synch.success"))
+                    self?.ready()
+                }
             }
-        } else {
-            app.alert(.local("Alert.error"), message: .local("Cloud.clone.name"))
-        }
-    }
-    
-    @objc private func pull() {
-        busy()
-        app.repository!.pull({ [weak self] in
-            app.alert(.local("Alert.error"), message: $0.localizedDescription)
-            self?.ready()
-        }) { [weak self] in
-            app.alert(.local("Alert.success"), message: .local("Cloud.pull.success"))
-            self?.close()
-        }
-    }
-    
-    @objc private func push() {
-        busy()
-        app.repository!.push({ [weak self] in
-            app.alert(.local("Alert.error"), message: $0.localizedDescription)
-            self?.ready()
-        }) { [weak self] in
-            app.alert(.local("Alert.success"), message: .local("Cloud.push.success"))
-            self?.close()
         }
     }
 }
