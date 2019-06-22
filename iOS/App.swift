@@ -175,7 +175,7 @@ private(set) weak var app: App!
             tab.home.choose()
         } else {
             show(_history)
-            _history.refresh()
+            _history.load()
         }
     }
     

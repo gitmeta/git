@@ -20,6 +20,7 @@ Home.deleted="deleted";
 Home.untracked="new";
 Home.created="Repository created.";
 History.title="History";
+History.refresh="Refresh";
 Help.title="Help";
 Help.close="Close";
 About.label="Git";

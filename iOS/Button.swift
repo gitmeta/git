@@ -26,9 +26,9 @@ class Button: UIButton {
     init(_ title: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        titleLabel!.font = .systemFont(ofSize: 11, weight: .medium)
+        titleLabel!.font = .systemFont(ofSize: 12, weight: .medium)
         setTitle(title, for: [])
-        widthAnchor.constraint(equalToConstant: 80).isActive = true
+        widthAnchor.constraint(equalToConstant: 90).isActive = true
         heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     

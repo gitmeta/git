@@ -71,10 +71,11 @@ final class History: UIView {
         required init?(coder: NSCoder) { return nil }
     }
     
+    private weak var content: UIView?
     private weak var scroll: UIScrollView!
     private weak var loading: UIImageView!
     private weak var branch: UILabel!
-    private weak var bottom: NSLayoutConstraint? { didSet { oldValue?.isActive = false; bottom?.isActive = true } }
+    private weak var button: UIButton!
     
     init() {
         super.init(frame: .zero)
@@ -100,6 +101,12 @@ final class History: UIView {
         border.backgroundColor = .halo
         addSubview(border)
         
+        let button = Button.Yes(.local("History.refresh"))
+        button.isHidden = true
+        button.addTarget(self, action: #selector(refresh), for: .touchUpInside)
+        addSubview(button)
+        self.button = button
+        
         let branch = UILabel()
         branch.translatesAutoresizingMaskIntoConstraints = false
         branch.font = .systemFont(ofSize: 14, weight: .bold)
@@ -110,14 +117,18 @@ final class History: UIView {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         scroll.alwaysBounceVertical = true
+        scroll.indicatorStyle = .white
         addSubview(scroll)
         self.scroll = scroll
         
         title.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         title.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
         
-        branch.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        branch.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
+        button.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        button.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
+        
+        branch.rightAnchor.constraint(equalTo: button.leftAnchor, constant: -14).isActive = true
+        branch.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
         
         border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -136,29 +147,45 @@ final class History: UIView {
     }
     
     required init?(coder: NSCoder) { return nil }
+    func load() { if content == nil { refresh() } }
     
-    func refresh() {
-        loading.isHidden = false
-        branch.text = ""
-        scroll.subviews.forEach { $0.removeFromSuperview() }
+    private func update() {
+        content?.removeFromSuperview()
+        
+        let content = UIView()
+        content.translatesAutoresizingMaskIntoConstraints = false
+        scroll.addSubview(content)
+        self.content = content
         
         app.repository?.log { items in
             var top = self.scroll.topAnchor
             items.enumerated().forEach {
                 let item = Item(items.count - $0.0, commit: $0.1)
-                self.scroll.addSubview(item)
+                content.addSubview(item)
                 
                 item.topAnchor.constraint(equalTo: top, constant: 10).isActive = true
-                item.leftAnchor.constraint(equalTo: self.scroll.leftAnchor).isActive = true
-                item.widthAnchor.constraint(equalTo: self.scroll.widthAnchor).isActive = true
+                item.leftAnchor.constraint(equalTo: content.leftAnchor).isActive = true
+                item.widthAnchor.constraint(equalTo: content.widthAnchor).isActive = true
                 top = item.bottomAnchor
             }
-            self.bottom = self.scroll.bottomAnchor.constraint(greaterThanOrEqualTo: top)
+            content.topAnchor.constraint(equalTo: self.scroll.topAnchor).isActive = true
+            content.leftAnchor.constraint(equalTo: self.scroll.leftAnchor).isActive = true
+            content.widthAnchor.constraint(equalTo: self.scroll.widthAnchor).isActive = true
+            content.bottomAnchor.constraint(greaterThanOrEqualTo: top).isActive = true
+            self.scroll.bottomAnchor.constraint(greaterThanOrEqualTo: top).isActive = true
             
             app.repository?.branch {
                 self.branch.text = $0
                 self.loading.isHidden = true
+                self.button.isHidden = false
             }
         }
+    }
+    
+    @objc private func refresh() {
+        loading.isHidden = false
+        button.isHidden = true
+        branch.text = ""
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { self.update() }
     }
 }
