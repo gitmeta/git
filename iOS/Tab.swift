@@ -1,24 +1,57 @@
 import UIKit
 
 final class Tab: UIView {
-    final class Button: UIButton {
+    final class Button: UIControl {
         let target: (() -> Void)
         fileprivate weak var tab: Tab!
+        private weak var indicator: UIView!
+        private weak var image: UIImageView!
         
         init(_ image: String, target: @escaping(() -> Void)) {
             self.target = target
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
-            setImage(UIImage(named: image), for: .selected)
-            setImage(UIImage(named: image)!.withRenderingMode(.alwaysTemplate), for: .normal)
-            imageView!.clipsToBounds = true
-            imageView!.contentMode = .center
-            imageView!.tintColor = UIColor.halo.withAlphaComponent(0.4)
             addTarget(self, action: #selector(choose), for: .touchUpInside)
+            
+            let indicator = UIView()
+            indicator.translatesAutoresizingMaskIntoConstraints = false
+            indicator.isUserInteractionEnabled = false
+            indicator.backgroundColor = .halo
+            addSubview(indicator)
+            self.indicator = indicator
+            
+            let image = UIImageView(image: UIImage(named: image))
+            image.translatesAutoresizingMaskIntoConstraints = false
+            image.clipsToBounds = true
+            image.contentMode = .center
+            addSubview(image)
+            self.image = image
+            
+            image.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            image.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            image.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+            image.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+            
+            indicator.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            indicator.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            indicator.widthAnchor.constraint(equalToConstant: 30).isActive = true
+            indicator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         }
         
         required init?(coder: NSCoder) { return nil }
         @objc func choose() { tab.choose(self) }
+        override var isHighlighted: Bool { didSet { hover() } }
+        override var isSelected: Bool { didSet { hover() } }
+        
+        private func hover() {
+            if isSelected || isHighlighted {
+                image.alpha = 1
+                indicator.isHidden = false
+            } else {
+                image.alpha = 0.4
+                indicator.isHidden = true
+            }
+        }
     }
     
     private(set) weak var settings: Button!
