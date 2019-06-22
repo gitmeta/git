@@ -210,7 +210,7 @@ final class Home: UIView {
         list.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
         image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        image.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 20).isActive = true
         image.widthAnchor.constraint(equalToConstant: 38).isActive = true
         image.heightAnchor.constraint(equalToConstant: 38).isActive = true
         
