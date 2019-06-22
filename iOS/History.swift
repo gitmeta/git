@@ -87,6 +87,13 @@ final class History: UIView {
         addSubview(loading)
         self.loading = loading
         
+        let title = UILabel()
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.font = .systemFont(ofSize: 12, weight: .bold)
+        title.textColor = .halo
+        title.text = .local("History.title")
+        addSubview(title)
+        
         let border = UIView()
         border.isUserInteractionEnabled = true
         border.translatesAutoresizingMaskIntoConstraints = false
@@ -105,6 +112,9 @@ final class History: UIView {
         scroll.alwaysBounceVertical = true
         addSubview(scroll)
         self.scroll = scroll
+        
+        title.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+        title.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
         
         branch.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         branch.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true

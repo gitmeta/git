@@ -7,12 +7,12 @@ private(set) weak var app: App!
 
 @UIApplicationMain final class App: UIViewController, UIApplicationDelegate, UNUserNotificationCenterDelegate, UIDocumentBrowserViewControllerDelegate {
     var window: UIWindow?
+    private(set) weak var tab: Tab!
     private(set) weak var _home: Home!
     private weak var _market: Market!
     private weak var _add: Add!
     private weak var _settings: Settings!
     private weak var _history: History!
-    private weak var tab: Tab!
     var repository: Repository? {
         didSet {
             if repository == nil {
@@ -160,13 +160,23 @@ private(set) weak var app: App!
     }
     
     func add() {
-        show(_add)
-        _add.text.becomeFirstResponder()
+        if repository == nil {
+            Alert(message: .local("App.noRepository"))
+            tab.home.choose()
+        } else {
+            show(_add)
+            _add.text.becomeFirstResponder()
+        }
     }
     
     func history() {
-        show(_history)
-        _history.refresh()
+        if repository == nil {
+            Alert(message: .local("App.noRepository"))
+            tab.home.choose()
+        } else {
+            show(_history)
+            _history.refresh()
+        }
     }
     
     func load() {
@@ -236,6 +246,5 @@ private(set) weak var app: App!
     }
     
     private func show(_ view: UIView) { [_settings, _market, _home, _add, _history].forEach { $0?.isHidden = $0 !== view } }
-    
     @objc private func back() { dismiss(animated: true) }
 }

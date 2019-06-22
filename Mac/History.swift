@@ -172,11 +172,11 @@ final class History: NSWindow {
                 top = item.bottomAnchor
             }
             self?.bottom = scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: top)
-        }
-        
-        app.repository?.branch { [weak self] in
-            self?.branch.stringValue = $0
-            self?.loading.isHidden = true
+            
+            app.repository?.branch { [weak self] in
+                self?.branch.stringValue = $0
+                self?.loading.isHidden = true
+            }
         }
     }
 }

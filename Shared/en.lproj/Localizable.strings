@@ -18,6 +18,7 @@ Home.modified="modified";
 Home.deleted="deleted";
 Home.untracked="new";
 Home.created="Repository created.";
+History.title="History";
 Help.title="Help";
 Help.close="Close";
 About.label="Git";

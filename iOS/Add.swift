@@ -130,7 +130,8 @@ final class Add: UIView {
                 app._home.list.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.isSelected }).map { $0.url },
                 message: text.text, error: { app.alert(.local("Alert.error"), message: $0.localizedDescription)
             }) {
-                app.alert(.local("Alert.commit"), message: self.text.text ?? "")
+                app.alert(.local("Alert.commit"), message: self.text.text)
+                app.tab.home.choose()
                 self.text.text = ""
             }
         }
