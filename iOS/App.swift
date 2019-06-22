@@ -148,12 +148,6 @@ private(set) weak var app: App!
         }
     }
     
-    func refresh() {
-        guard let repository = repository else { return }
-        _home.update(.loading)
-        repository.refresh()
-    }
-    
     func market() {
         show(_market)
         _market.start()
@@ -209,6 +203,12 @@ private(set) weak var app: App!
         } else {
             alert(.local("Alert.error"), message: .local("App.ios.version"))
         }
+    }
+    
+    @objc func refresh() {
+        guard let repository = repository else { return }
+        _home.update(.loading)
+        repository.refresh()
     }
     
     @objc func create() {

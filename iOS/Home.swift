@@ -104,6 +104,8 @@ final class Home: UIView {
     private(set) weak var list: UIScrollView!
     private weak var image: UIImageView!
     private weak var button: UIButton!
+    private weak var browse: UIButton!
+    private weak var refresh: UIButton!
     private weak var reset: UIButton!
     private weak var cloud: UIButton!
     private weak var label: UILabel!
@@ -122,7 +124,15 @@ final class Home: UIView {
         
         let browse = Button.Yes(.local("Home.directory"))
         browse.addTarget(app, action: #selector(app.browse), for: .touchUpInside)
+        browse.isHidden = true
         addSubview(browse)
+        self.browse = browse
+        
+        let refresh = Button.Yes(.local("Home.refresh"))
+        refresh.addTarget(app, action: #selector(app.refresh), for: .touchUpInside)
+        refresh.isHidden = true
+        addSubview(refresh)
+        self.refresh = refresh
         
         let list = UIScrollView()
         list.translatesAutoresizingMaskIntoConstraints = false
@@ -184,12 +194,15 @@ final class Home: UIView {
         self.cloud = cloud
         
         border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        border.rightAnchor.constraint(equalTo: count.leftAnchor, constant: -10).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.bottomAnchor.constraint(equalTo: topAnchor, constant: 55).isActive = true
         
-        browse.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        browse.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         browse.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
+        
+        refresh.rightAnchor.constraint(equalTo: browse.leftAnchor, constant: -10).isActive = true
+        refresh.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
         
         list.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         list.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -208,8 +221,8 @@ final class Home: UIView {
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 260).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
-        count.rightAnchor.constraint(equalTo: browse.leftAnchor, constant: -15).isActive = true
-        count.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
+        count.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+        count.centerYAnchor.constraint(equalTo: border.centerYAnchor).isActive = true
         
         reset.heightAnchor.constraint(equalToConstant: 45).isActive = true
         reset.widthAnchor.constraint(equalToConstant: 60).isActive = true
@@ -246,6 +259,8 @@ final class Home: UIView {
             image.isHidden = false
             image.image = UIImage(named: "loading")
             button.isHidden = true
+            browse.isHidden = true
+            refresh.isHidden = true
             label.isHidden = true
             count.isHidden = true
             reset.isHidden = true
@@ -254,6 +269,8 @@ final class Home: UIView {
             image.isHidden = false
             image.image = UIImage(named: "error")
             button.isHidden = false
+            browse.isHidden = false
+            refresh.isHidden = false
             button.setTitle(.local("Home.button.packed"), for: [])
             button.addTarget(app, action: #selector(app.unpack), for: .touchUpInside)
             label.isHidden = false
@@ -263,6 +280,8 @@ final class Home: UIView {
             cloud.isHidden = true
         case .ready:
             button.isHidden = true
+            browse.isHidden = false
+            refresh.isHidden = false
             count.isHidden = false
             label.isHidden = true
             reset.isHidden = false
@@ -278,6 +297,8 @@ final class Home: UIView {
             image.isHidden = false
             image.image = UIImage(named: "error")
             button.isHidden = false
+            browse.isHidden = false
+            refresh.isHidden = false
             button.setTitle(.local("Home.button.create"), for: [])
             button.addTarget(app, action: #selector(app.create), for: .touchUpInside)
             label.isHidden = false

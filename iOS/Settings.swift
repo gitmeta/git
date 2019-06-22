@@ -15,18 +15,15 @@ final class Settings: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = .local("About.label")
         label.textColor = .halo
-        label.font = .bold(16)
+        label.font = .bold(18)
         addSubview(label)
         
         let version = UILabel()
         version.translatesAutoresizingMaskIntoConstraints = false
         version.text = (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)
         version.textColor = .halo
-        version.font = .light(16)
+        version.font = .light(18)
         addSubview(version)
-        
-        let refresh = Button.Yes(.local("Settings.refresh"))
-        refresh.addTarget(self, action: #selector(self.refresh), for: .touchUpInside)
         
         let sign = Button.Yes(.local("Settings.buttonSign"))
         sign.addTarget(self, action: #selector(self.sign), for: .touchUpInside)
@@ -53,9 +50,9 @@ final class Settings: UIView {
         version.topAnchor.constraint(equalTo: label.bottomAnchor).isActive = true
         
         var top = version.bottomAnchor
-        [refresh, sign, key, delete, help].forEach {
+        [sign, key, delete, help].forEach {
             addSubview($0)
-            $0.topAnchor.constraint(equalTo: top, constant: 20).isActive = true
+            $0.topAnchor.constraint(equalTo: top, constant: 30).isActive = true
             $0.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
             top = $0.bottomAnchor
         }
@@ -65,12 +62,6 @@ final class Settings: UIView {
     @objc private func sign() { Signature() }
     @objc private func key() { Credentials() }
     @objc private func help() { app.help() }
-    
-    @objc private func refresh() {
-        app.refresh()
-        app.alert(.local("Alert.success"), message: .local("Settings.refreshed"))
-        app.tab.home.choose()
-    }
     
     @objc private func remove() { Delete() }
 }
