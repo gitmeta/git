@@ -3,7 +3,7 @@ import UIKit
 import StoreKit
 
 final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
-    private class Item: UIView {
+    private final class Item: UIView {
         let product: SKProduct
         private(set) weak var button: Button.Yes!
         private(set) weak var label: UILabel!
@@ -78,7 +78,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     private weak var list: UIScrollView!
     private weak var restore: Button.Yes!
     private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
-    private var products = [SKProduct]() { didSet { refresh() } }
+    private var products = [SKProduct]() { didSet { DispatchQueue.main.async { self.refresh() } } }
     private let formatter = NumberFormatter()
     
     init() {
@@ -156,9 +156,9 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     func productsRequest(_: SKProductsRequest, didReceive: SKProductsResponse) { products = didReceive.products }
     func paymentQueue(_: SKPaymentQueue, updatedTransactions: [SKPaymentTransaction]) { update(updatedTransactions) }
     func paymentQueue(_: SKPaymentQueue, removedTransactions: [SKPaymentTransaction]) { update(removedTransactions) }
-    func paymentQueueRestoreCompletedTransactionsFinished(_: SKPaymentQueue) { refresh() }
-    func request(_: SKRequest, didFailWithError: Error) { error(didFailWithError) }
-    func paymentQueue(_: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) { error(restoreCompletedTransactionsFailedWithError) }
+    func paymentQueueRestoreCompletedTransactionsFinished(_: SKPaymentQueue) { DispatchQueue.main.async { self.refresh() } }
+    func request(_: SKRequest, didFailWithError: Error) { DispatchQueue.main.async { self.error(didFailWithError) } }
+    func paymentQueue(_: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) { DispatchQueue.main.async { self.error(restoreCompletedTransactionsFailedWithError) } }
     
     private func update(_ transactions: [SKPaymentTransaction]) {
         transactions.forEach {
@@ -172,7 +172,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             }
         }
         if !products.isEmpty {
-            refresh()
+            DispatchQueue.main.async { self.refresh() }
         }
     }
     

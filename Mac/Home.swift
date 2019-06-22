@@ -235,7 +235,7 @@ final class Home: NSWindow  {
         count.centerYAnchor.constraint(equalTo: directory.centerYAnchor).isActive = true
         
         var vertical = borderLeft.topAnchor
-        [("add", #selector(app.add)), ("reset", #selector(app.reset)), ("cloud", #selector(app.cloud)), ("history", #selector(app.history)), ("settings", #selector(app.settings))].forEach {
+        [("add", #selector(app.add)), ("reset", #selector(app.reset)), ("cloud", #selector(app.cloud)), ("history", #selector(app.history)), ("market", #selector(app.market)), ("settings", #selector(app.settings))].forEach {
             let button = Button.Image(app, action: $0.1)
             button.image.image = NSImage(named: $0.0)
             contentView!.addSubview(button)

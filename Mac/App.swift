@@ -243,10 +243,15 @@ private(set) weak var app: App!
         if Hub.session.bookmark.isEmpty {
             browse()
         } else {
-            order(Cloud.self)
+            if Hub.session.purchase.contains(.cloud) {
+                order(Cloud.self)
+            } else {
+                app.alert(.local("Alert.purchase"), message: .local("Cloud.purchase"))
+            }
         }
     }
     
+    @objc func market() { order(Market.self) }
     @objc func settings() { order(Settings.self) }
     @objc func add() { orderIfReady(Add.self) }
     @objc func history() { orderIfReady(History.self) }
