@@ -4,6 +4,7 @@ Alert.commit="Saved";
 Alert.purchase="This is an in-app purchase";
 App.noRepository="This is not a repository";
 App.unpacked="Repository unpacked";
+App.ios.version="Unfortunately browsing files is only supported on iOS 11 or higher.";
 Add.title="Add";
 Add.button="Commit";
 Home.directory="Browse";

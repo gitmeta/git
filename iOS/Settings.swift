@@ -69,6 +69,7 @@ final class Settings: UIView {
     @objc private func refresh() {
         app.refresh()
         app.alert(.local("Alert.success"), message: .local("Settings.refreshed"))
+        app.tab.home.choose()
     }
     
     @objc private func remove() { Delete() }

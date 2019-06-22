@@ -184,7 +184,7 @@ private(set) weak var app: App!
             help()
             _home.update(.first)
         }
-        Hub.session.update(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data()) {
+        Hub.session.update(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data(" ".utf8)) {
             Hub.open(Hub.session.url, error: {
                 Alert(message: $0.localizedDescription)
                 self.repository = nil
@@ -206,6 +206,8 @@ private(set) weak var app: App!
             browse.delegate = self
             browse.additionalLeadingNavigationBarButtonItems = [.init(barButtonSystemItem: .stop, target: self, action: #selector(back))]
             present(browse, animated: true)
+        } else {
+            alert(.local("Alert.error"), message: .local("App.ios.version"))
         }
     }
     

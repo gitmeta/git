@@ -48,11 +48,11 @@ final class Help: Sheet {
             image.widthAnchor.constraint(equalToConstant: 300).isActive = true
             
             button.heightAnchor.constraint(equalToConstant: 90).isActive = true
-            button.widthAnchor.constraint(equalTo: base.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -2).isActive = true
+            button.widthAnchor.constraint(equalTo: base.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -4).isActive = true
             button.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -70).isActive = true
             
             if $0.0 == 0 {
-                button.leftAnchor.constraint(equalTo: rightButton, constant: 12).isActive = true
+                button.leftAnchor.constraint(equalTo: rightButton, constant: 20).isActive = true
                 centerX = image.centerXAnchor.constraint(equalTo: base.centerXAnchor)
                 centerX.isActive = true
             } else {
