@@ -182,7 +182,7 @@ private(set) weak var app: App!
     }
     
     func alert(_ title: String, message: String) {
-        if #available(OSX 10.14, *) {
+        if #available(OSX 10.24, *) {
             UNUserNotificationCenter.current().getNotificationSettings {
                 if $0.authorizationStatus == .authorized {
                     UNUserNotificationCenter.current().add({
@@ -191,11 +191,11 @@ private(set) weak var app: App!
                         return UNNotificationRequest(identifier: UUID().uuidString, content: $0, trigger: nil)
                     } (UNMutableNotificationContent()))
                 } else {
-                    Alert(title + " " + message).makeKeyAndOrderFront(nil)
+                    DispatchQueue.main.async { Alert(title, message: message).makeKeyAndOrderFront(nil) }
                 }
             }
         } else {
-            Alert(title + " " + message).makeKeyAndOrderFront(nil)
+            DispatchQueue.main.async { Alert(title, message: message).makeKeyAndOrderFront(nil) }
         }
     }
     
@@ -269,7 +269,7 @@ private(set) weak var app: App!
             &stale))?.startAccessingSecurityScopedResource()
         home.directory.label.stringValue = Hub.session.url.lastPathComponent
         Hub.open(Hub.session.url, error: {
-            Alert($0.localizedDescription).makeKeyAndOrderFront(nil)
+            Alert(message: $0.localizedDescription).makeKeyAndOrderFront(nil)
             self.repository = nil
         }) { self.repository = $0 }
     }
@@ -294,7 +294,7 @@ private(set) weak var app: App!
             if Hub.session.bookmark.isEmpty {
                 browse()
             } else {
-                Alert(.local("App.noRepository")).makeKeyAndOrderFront(nil)
+                Alert(message: .local("App.noRepository")).makeKeyAndOrderFront(nil)
             }
             return nil
         }
