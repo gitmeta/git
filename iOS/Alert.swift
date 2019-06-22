@@ -1,56 +1,61 @@
 import UIKit
 
 final class Alert: UIControl {
-    private weak var top: NSLayoutConstraint!
+    private weak var bottom: NSLayoutConstraint!
     
-    @discardableResult init(_ message: String) {
+    @discardableResult init(_ title: String? = nil, message: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .shade
-        layer.cornerRadius = 8
-        layer.borderColor = UIColor.halo.cgColor
+        backgroundColor = UIColor.halo.withAlphaComponent(0.96)
+        layer.cornerRadius = 6
+        layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 1
         alpha = 0
         addTarget(self, action: #selector(dismiss), for: .touchUpInside)
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = message
+        label.attributedText = {
+            if let title = title {
+                $0.append(NSAttributedString(string: title + "\n", attributes: [.font: UIFont.systemFont(ofSize: 13, weight: .bold)]))
+            }
+            $0.append(NSAttributedString(string: message, attributes: [.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
+            return $0
+        } (NSMutableAttributedString())
         label.numberOfLines = 0
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textAlignment = .center
+        label.textColor = .black
         addSubview(label)
         
         app.view.addSubview(self)
         
-        heightAnchor.constraint(equalToConstant: 60).isActive = true
-        leftAnchor.constraint(equalTo: app.view.leftAnchor, constant: 4).isActive = true
-        rightAnchor.constraint(equalTo: app.view.rightAnchor, constant: -4).isActive = true
-        top = topAnchor.constraint(equalTo: app.view.topAnchor, constant: -60)
-        top.isActive = true
+        widthAnchor.constraint(equalToConstant: 316).isActive = true
+        centerXAnchor.constraint(equalTo: app.view.centerXAnchor).isActive = true
+        bottom = bottomAnchor.constraint(equalTo: app.view.topAnchor)
+        bottom.isActive = true
         
-        label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
+        label.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
+        label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
+        label.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        label.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
         app.view.layoutIfNeeded()
-        top.constant = 30
+        bottom.constant = 30 + bounds.height
         
-        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+        UIView.animate(withDuration: 0.35, animations: { [weak self] in
             self?.alpha = 1
             app.view.layoutIfNeeded()
         }) { _ in DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) { [weak self] in self?.dismiss() } }
     }
     
     required init?(coder: NSCoder) { return nil }
+    override var isHighlighted: Bool { didSet { hover() } }
+    override var isSelected: Bool { didSet { hover() } }
+    private func hover() { alpha = isSelected || isHighlighted ? 0.4 : 1 }
     
     @objc private func dismiss() {
-        top.constant = -90
-        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+        bottom.constant = 0
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.alpha = 0
             app.view.layoutIfNeeded()
-        }, completion: { [weak self] _ in
-            self?.removeFromSuperview()
-        })
+        }, completion: { [weak self] _ in self?.removeFromSuperview() })
     }
 }

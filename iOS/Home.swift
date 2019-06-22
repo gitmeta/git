@@ -144,7 +144,7 @@ final class Home: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 14, weight: .light)
-        label.textColor = .init(white: 1, alpha: 0.6)
+        label.textColor = .halo
         label.textAlignment = .center
         label.numberOfLines = 0
         addSubview(label)

@@ -140,15 +140,11 @@ private(set) weak var app: App!
                         return UNNotificationRequest(identifier: UUID().uuidString, content: $0, trigger: nil)
                     } (UNMutableNotificationContent()))
                 } else {
-                    DispatchQueue.main.async {
-                        Alert(title + "\n" + message)
-                    }
+                    DispatchQueue.main.async { Alert(title, message: message) }
                 }
             }
         } else {
-            DispatchQueue.main.async {
-                Alert(title + "\n" + message)
-            }
+            DispatchQueue.main.async { Alert(title, message: message) }
         }
     }
     
@@ -174,13 +170,13 @@ private(set) weak var app: App!
     }
     
     func load() {
-        if !Hub.session.bookmark.isEmpty {
+        if Hub.session.bookmark.isEmpty {
             help()
             _home.update(.first)
         }
         Hub.session.update(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0], bookmark: Data()) {
             Hub.open(Hub.session.url, error: {
-                Alert($0.localizedDescription)
+                Alert(message: $0.localizedDescription)
                 self.repository = nil
             }) {
                 self.repository = $0
@@ -190,24 +186,7 @@ private(set) weak var app: App!
     
     func settings() { show(_settings) }
     func home() { show(_home) }
-    private func show(_ view: UIView) { [_settings, _market, _home, _add, _history].forEach { $0?.isHidden = $0 !== view } }
-    @objc private func help() { /*order(Help.self)*/ }
-    @objc private func back() { dismiss(animated: true) }
-    
-    private func rate() {
-        if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {
-            if Date() >= expected {
-                var components = DateComponents()
-                components.month = 4
-                UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
-                if #available(iOS 10.3, *) { SKStoreReviewController.requestReview() }
-            }
-        } else {
-            var components = DateComponents()
-            components.day = 3
-            UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
-        }
-    }
+    func help() { Help() }
     
     @objc func browse() {
         if #available(iOS 11.0, *) {
@@ -240,4 +219,23 @@ private(set) weak var app: App!
             self.alert(.local("Alert.success"), message: .local("App.unpacked"))
         }
     }
+    
+    private func rate() {
+        if let expected = UserDefaults.standard.value(forKey: "rating") as? Date {
+            if Date() >= expected {
+                var components = DateComponents()
+                components.month = 4
+                UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+                if #available(iOS 10.3, *) { SKStoreReviewController.requestReview() }
+            }
+        } else {
+            var components = DateComponents()
+            components.day = 3
+            UserDefaults.standard.setValue(Calendar.current.date(byAdding: components, to: Date())!, forKey: "rating")
+        }
+    }
+    
+    private func show(_ view: UIView) { [_settings, _market, _home, _add, _history].forEach { $0?.isHidden = $0 !== view } }
+    
+    @objc private func back() { dismiss(animated: true) }
 }
