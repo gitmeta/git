@@ -154,7 +154,7 @@ final class Home: UIView {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.font = .systemFont(ofSize: 14, weight: .medium)
         label.textColor = .halo
         label.textAlignment = .center
         label.numberOfLines = 0

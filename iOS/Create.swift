@@ -8,7 +8,7 @@ final class Create: UIView, UITextFieldDelegate {
         self.result = result
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.shade.withAlphaComponent(0.9)
+        backgroundColor = UIColor.shade.withAlphaComponent(0.98)
         alpha = 0
         
         let name = UITextField()
@@ -44,10 +44,10 @@ final class Create: UIView, UITextFieldDelegate {
         name.leftAnchor.constraint(equalTo: leftAnchor, constant: 30).isActive = true
         name.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
         
-        create.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 30).isActive = true
+        create.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 40).isActive = true
         create.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
-        cancel.topAnchor.constraint(equalTo: create.bottomAnchor, constant: 30).isActive = true
+        cancel.topAnchor.constraint(equalTo: create.bottomAnchor, constant: 40).isActive = true
         cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         UIView.animate(withDuration: 0.3, animations: { [weak self] in

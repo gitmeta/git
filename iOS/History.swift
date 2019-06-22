@@ -124,7 +124,7 @@ final class History: UIView {
         title.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         title.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
         
-        button.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        button.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         button.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
         
         branch.rightAnchor.constraint(equalTo: button.leftAnchor, constant: -14).isActive = true

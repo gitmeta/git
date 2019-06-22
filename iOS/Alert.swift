@@ -28,7 +28,7 @@ final class Alert: UIControl {
         
         app.view.addSubview(self)
         
-        widthAnchor.constraint(equalToConstant: 316).isActive = true
+        widthAnchor.constraint(equalToConstant: 340).isActive = true
         centerXAnchor.constraint(equalTo: app.view.centerXAnchor).isActive = true
         bottom = bottomAnchor.constraint(equalTo: app.view.topAnchor)
         bottom.isActive = true
@@ -38,7 +38,7 @@ final class Alert: UIControl {
         label.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         label.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
         app.view.layoutIfNeeded()
-        bottom.constant = 30 + bounds.height
+        bottom.constant = 50 + bounds.height
         
         UIView.animate(withDuration: 0.35, animations: { [weak self] in
             self?.alpha = 1

@@ -65,7 +65,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             purchased.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
             purchased.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
             
-            button.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 10).isActive = true
+            button.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 16).isActive = true
             button.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
         }
@@ -136,7 +136,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         image.heightAnchor.constraint(equalToConstant: 38).isActive = true
         
         restore.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
-        restore.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        restore.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

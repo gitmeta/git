@@ -102,7 +102,7 @@ final class Add: UIView {
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.bottomAnchor.constraint(equalTo: topAnchor, constant: 55).isActive = true
         
-        button.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        button.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         button.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
         
         text.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
