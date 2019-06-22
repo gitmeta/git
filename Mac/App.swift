@@ -182,7 +182,7 @@ private(set) weak var app: App!
     }
     
     func alert(_ title: String, message: String) {
-        if #available(OSX 10.24, *) {
+        if #available(OSX 10.14, *) {
             UNUserNotificationCenter.current().getNotificationSettings {
                 if $0.authorizationStatus == .authorized {
                     UNUserNotificationCenter.current().add({
