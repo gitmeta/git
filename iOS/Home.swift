@@ -15,13 +15,14 @@ final class Home: UIView {
             
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
+            label.numberOfLines = 2
             label.attributedText = {
                 let path = url.deletingLastPathComponent().path.dropFirst(Hub.session.url.path.count + 1)
                 if !path.isEmpty {
-                    $0.append(NSAttributedString(string: "\(path) ", attributes: [.font: UIFont.light(12), .foregroundColor:
-                        UIColor.halo.withAlphaComponent(0.9)]))
+                    $0.append(NSAttributedString(string: "\(path) ", attributes: [.font: UIFont.light(14), .foregroundColor:
+                        UIColor.halo]))
                 }
-                $0.append(NSAttributedString(string: url.lastPathComponent, attributes: [.font: UIFont.bold(12), .foregroundColor: UIColor.halo]))
+                $0.append(NSAttributedString(string: url.lastPathComponent, attributes: [.font: UIFont.bold(14), .foregroundColor: UIColor.halo]))
                 return $0
             } (NSMutableAttributedString())
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -53,7 +54,7 @@ final class Home: UIView {
             let border = UIView()
             border.isUserInteractionEnabled = false
             border.translatesAutoresizingMaskIntoConstraints = false
-            border.backgroundColor = UIColor.halo.withAlphaComponent(0.3)
+            border.backgroundColor = UIColor.halo.withAlphaComponent(0.4)
             addSubview(border)
             
             switch status {
@@ -71,28 +72,28 @@ final class Home: UIView {
                 hashtag.text = .local("Home.untracked")
             }
             
-            heightAnchor.constraint(equalToConstant: 60).isActive = true
+            heightAnchor.constraint(equalToConstant: 66).isActive = true
             
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
             label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -10).isActive = true
             label.widthAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
             
             badge.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-            badge.rightAnchor.constraint(equalTo: check.leftAnchor, constant: -4).isActive = true
+            badge.rightAnchor.constraint(equalTo: check.leftAnchor, constant: 10).isActive = true
             badge.heightAnchor.constraint(equalToConstant: 20).isActive = true
             badge.leftAnchor.constraint(equalTo: hashtag.leftAnchor, constant: -9).isActive = true
             
             hashtag.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             hashtag.rightAnchor.constraint(equalTo: badge.rightAnchor, constant: -9).isActive = true
             
-            check.widthAnchor.constraint(equalToConstant: 32).isActive = true
-            check.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
+            check.widthAnchor.constraint(equalToConstant: 55).isActive = true
+            check.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             check.topAnchor.constraint(equalTo: topAnchor).isActive = true
             check.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             
-            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }

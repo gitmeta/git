@@ -25,7 +25,7 @@ final class History: UIView {
             let border = UIView()
             border.translatesAutoresizingMaskIntoConstraints = false
             border.isUserInteractionEnabled = false
-            border.backgroundColor = UIColor.halo.withAlphaComponent(0.3)
+            border.backgroundColor = UIColor.halo.withAlphaComponent(0.4)
             addSubview(border)
             
             let date = UILabel()
@@ -48,23 +48,23 @@ final class History: UIView {
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             addSubview(label)
             
-            number.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+            number.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
             number.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
             
             author.bottomAnchor.constraint(equalTo: number.bottomAnchor).isActive = true
             author.leftAnchor.constraint(equalTo: number.rightAnchor, constant: 6).isActive = true
             
-            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -2).isActive = true
-            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 2).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             
-            date.leftAnchor.constraint(equalTo: number.leftAnchor, constant: 3).isActive = true
+            date.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
             date.topAnchor.constraint(equalTo: number.bottomAnchor, constant: 5).isActive = true
             
             label.topAnchor.constraint(equalTo: date.bottomAnchor, constant: 16).isActive = true
-            label.leftAnchor.constraint(equalTo: number.leftAnchor, constant: 3).isActive = true
-            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -10).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -16).isActive = true
             label.bottomAnchor.constraint(equalTo: border.topAnchor, constant: -20).isActive = true
         }
         
