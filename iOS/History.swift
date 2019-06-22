@@ -71,7 +71,7 @@ final class History: UIView {
         required init?(coder: NSCoder) { return nil }
     }
     
-    private weak var content: UIView?
+    private(set) weak var content: UIView?
     private weak var scroll: UIScrollView!
     private weak var loading: UIImageView!
     private weak var branch: UILabel!
@@ -147,7 +147,7 @@ final class History: UIView {
     }
     
     required init?(coder: NSCoder) { return nil }
-    func load() { if content == nil { refresh() } }
+    func load(_ force: Bool) { if force || content == nil { refresh() } }
     
     private func update() {
         content?.removeFromSuperview()

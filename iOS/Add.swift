@@ -131,8 +131,11 @@ final class Add: UIView {
                 message: text.text, error: { app.alert(.local("Alert.error"), message: $0.localizedDescription)
             }) {
                 app.alert(.local("Alert.commit"), message: self.text.text)
-                app.tab.home.choose()
                 self.text.text = ""
+                app.tab.history.choose()
+                if app._history.content != nil {
+                    app._history.load(true)
+                }
             }
         }
     }

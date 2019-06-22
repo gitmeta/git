@@ -9,10 +9,10 @@ private(set) weak var app: App!
     var window: UIWindow?
     private(set) weak var tab: Tab!
     private(set) weak var _home: Home!
+    private(set) weak var _history: History!
     private weak var _market: Market!
     private weak var _add: Add!
     private weak var _settings: Settings!
-    private weak var _history: History!
     var repository: Repository? {
         didSet {
             if repository == nil {
@@ -169,7 +169,7 @@ private(set) weak var app: App!
             tab.home.choose()
         } else {
             show(_history)
-            _history.load()
+            _history.load(false)
         }
     }
     
