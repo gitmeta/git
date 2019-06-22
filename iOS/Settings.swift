@@ -15,14 +15,14 @@ final class Settings: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = .local("About.label")
         label.textColor = .halo
-        label.font = .bold(18)
+        label.font = .bold(20)
         addSubview(label)
         
         let version = UILabel()
         version.translatesAutoresizingMaskIntoConstraints = false
         version.text = (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)
         version.textColor = .halo
-        version.font = .light(18)
+        version.font = .light(13)
         addSubview(version)
         
         let sign = Button.Yes(.local("Settings.buttonSign"))

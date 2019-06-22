@@ -154,7 +154,7 @@ final class Home: UIView {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 14, weight: .light)
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         label.textColor = .halo
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -225,12 +225,12 @@ final class Home: UIView {
         count.centerYAnchor.constraint(equalTo: border.centerYAnchor).isActive = true
         
         reset.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        reset.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        reset.widthAnchor.constraint(equalToConstant: 70).isActive = true
         reset.leftAnchor.constraint(equalTo: cloud.rightAnchor, constant: -5).isActive = true
         reset.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
         
         cloud.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        cloud.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        cloud.widthAnchor.constraint(equalToConstant: 70).isActive = true
         cloud.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
         cloud.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
     }
@@ -297,8 +297,8 @@ final class Home: UIView {
             image.isHidden = false
             image.image = UIImage(named: "error")
             button.isHidden = false
-            browse.isHidden = false
-            refresh.isHidden = false
+            browse.isHidden = true
+            refresh.isHidden = true
             button.setTitle(.local("Home.button.create"), for: [])
             button.addTarget(app, action: #selector(app.create), for: .touchUpInside)
             label.isHidden = false
