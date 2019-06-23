@@ -18,12 +18,12 @@ final class About: NSWindow {
         
         let label = Label(.local("About.label"))
         label.textColor = .halo
-        label.font = .bold(16)
+        label.font = .bold(20)
         contentView!.addSubview(label)
         
         let version = Label((Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String) ?? "")
         version.textColor = .halo
-        version.font = .light(16)
+        version.font = .light(12)
         contentView!.addSubview(version)
         
         image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -25).isActive = true

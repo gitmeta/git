@@ -184,8 +184,8 @@ final class Home: NSWindow  {
         self.button = button
         
         let label = Label()
-        label.font = .systemFont(ofSize: 13, weight: .light)
-        label.textColor = .init(white: 1, alpha: 0.6)
+        label.font = .systemFont(ofSize: 13, weight: .medium)
+        label.textColor = .halo
         label.alignment = .center
         contentView!.addSubview(label)
         self.label = label

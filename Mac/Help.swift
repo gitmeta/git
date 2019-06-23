@@ -9,7 +9,7 @@ final class Help: NSWindow {
     
     init() {
         super.init(contentRect: NSRect(
-            x: (NSScreen.main!.frame.width - 500) / 2, y: (NSScreen.main!.frame.height - 500) / 2, width: 500, height: 500),
+            x: (NSScreen.main!.frame.width - 540) / 2, y: (NSScreen.main!.frame.height - 500) / 2, width: 540, height: 500),
                    styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
@@ -82,7 +82,7 @@ final class Help: NSWindow {
         
         label.topAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 50).isActive = true
         label.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 420).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 480).isActive = true
         
         DispatchQueue.main.async { [weak self] in self?.display(0) }
     }

@@ -1,9 +1,10 @@
 import AppKit
 
 final class Alert: NSWindow {
+    private weak var back: NSView!
+    
     init(_ title: String? = nil, message: String) {
-        super.init(contentRect: NSRect(
-            x: (NSScreen.main!.frame.width - 400) / 2, y: (NSScreen.main!.frame.height - 90) / 2, width: 400, height: 90),
+        super.init(contentRect: NSRect(x: app.home.frame.midX - 200, y: app.home.frame.midY - 75, width: 400, height: 150),
                    styleMask: [.fullSizeContentView], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
@@ -13,15 +14,16 @@ final class Alert: NSWindow {
         let back = NSView()
         back.translatesAutoresizingMaskIntoConstraints = false
         back.wantsLayer = true
-        back.layer!.backgroundColor = NSColor(white: 0, alpha: 0.9).cgColor
+        back.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.96).cgColor
         back.layer!.cornerRadius = 6
         back.layer!.borderWidth = 1
-        back.layer!.borderColor = NSColor.shade.cgColor
+        back.layer!.borderColor = NSColor.black.cgColor
         back.alphaValue = 0
         contentView!.addSubview(back)
+        self.back = back
         
         let label = Label()
-        label.textColor = .white
+        label.textColor = .black
         label.alignment = .center
         label.attributedStringValue = {
             if let title = title {
@@ -32,14 +34,14 @@ final class Alert: NSWindow {
         } (NSMutableAttributedString())
         back.addSubview(label)
         
-        back.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        back.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
+        back.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor).isActive = true
         back.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
         back.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         
-        label.centerYAnchor.constraint(equalTo: back.centerYAnchor).isActive = true
-        label.centerXAnchor.constraint(equalTo: back.centerXAnchor).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 350).isActive = true
+        label.leftAnchor.constraint(equalTo: back.leftAnchor, constant: 20).isActive = true
+        label.rightAnchor.constraint(equalTo: back.rightAnchor, constant: -20).isActive = true
+        label.topAnchor.constraint(equalTo: back.topAnchor, constant: 20).isActive = true
+        label.bottomAnchor.constraint(equalTo: back.bottomAnchor, constant: -20).isActive = true
         
         NSAnimationContext.runAnimationGroup({
             $0.duration = 0.5
@@ -47,15 +49,17 @@ final class Alert: NSWindow {
             back.alphaValue = 1
             app.home.contentView!.layoutSubtreeIfNeeded()
         }) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) { [weak self] in
-                NSAnimationContext.runAnimationGroup({
-                    $0.duration = 0.5
-                    $0.allowsImplicitAnimation = true
-                    back.alphaValue = 0
-                }) { [weak self] in
-                    self?.close()
-                }
-            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) { [weak self] in self?.dismiss() }
         }
+    }
+    
+    override func mouseDown(with: NSEvent) { dismiss() }
+    
+    private func dismiss() {
+        NSAnimationContext.runAnimationGroup({
+            $0.duration = 0.5
+            $0.allowsImplicitAnimation = true
+            back.alphaValue = 0
+        }) { [weak self] in self?.close() }
     }
 }
