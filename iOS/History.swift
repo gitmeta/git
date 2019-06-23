@@ -9,6 +9,7 @@ final class History: UIView {
             isUserInteractionEnabled = false
             
             let label = UILabel()
+            label.translatesAutoresizingMaskIntoConstraints = false
             label.numberOfLines = 0
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             label.attributedText = {

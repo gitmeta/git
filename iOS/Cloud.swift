@@ -6,10 +6,9 @@ final class Cloud: Sheet, UITextFieldDelegate {
     private weak var loading: UIImageView!
     private weak var button: Button.Yes!
     private weak var cancel: Button.No!
-    override var height: CGFloat { return 220 }
     
-    @discardableResult override init() {
-        super.init()
+    @discardableResult init() {
+        super.init(200)
         let border = UIView()
         border.isUserInteractionEnabled = true
         border.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +59,7 @@ final class Cloud: Sheet, UITextFieldDelegate {
         label.leftAnchor.constraint(equalTo: base.leftAnchor, constant: 20).isActive = true
         label.heightAnchor.constraint(equalTo: field.heightAnchor).isActive = true
         
-        field.topAnchor.constraint(equalTo: base.topAnchor, constant: 50).isActive = true
+        field.topAnchor.constraint(equalTo: base.topAnchor, constant: 30).isActive = true
         field.heightAnchor.constraint(equalToConstant: 50).isActive = true
         field.leftAnchor.constraint(equalTo: base.leftAnchor, constant: 70).isActive = true
         field.rightAnchor.constraint(equalTo: base.rightAnchor, constant: -20).isActive = true

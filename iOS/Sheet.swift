@@ -1,15 +1,14 @@
 import UIKit
 
 class Sheet: UIView {
-    var height = CGFloat(300)
     private(set) weak var base: UIView!
     
-    init() {
+    init(_ height: CGFloat) {
         super.init(frame: .zero)
-        guard !app.view.subviews.contains(where: { $0 is Signature }) else { return }
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = UIColor.halo.withAlphaComponent(0)
-        app.view.addSubview(self)
+        let parent = app.presentedViewController?.view ?? app.view!
+        parent.addSubview(self)
         
         let base = UIView()
         base.translatesAutoresizingMaskIntoConstraints = false
@@ -19,10 +18,10 @@ class Sheet: UIView {
         addSubview(base)
         self.base = base
         
-        topAnchor.constraint(equalTo: app.view.topAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: app.view.bottomAnchor).isActive = true
-        leftAnchor.constraint(equalTo: app.view.leftAnchor).isActive = true
-        rightAnchor.constraint(equalTo: app.view.rightAnchor).isActive = true
+        topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: parent.bottomAnchor).isActive = true
+        leftAnchor.constraint(equalTo: parent.leftAnchor).isActive = true
+        rightAnchor.constraint(equalTo: parent.rightAnchor).isActive = true
         
         base.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         base.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
@@ -30,11 +29,11 @@ class Sheet: UIView {
         let top = base.topAnchor.constraint(equalTo: topAnchor, constant: -height)
         top.isActive = true
         
-        app.view.layoutIfNeeded()
+        parent.layoutIfNeeded()
         
         top.constant = 40
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            self?.backgroundColor = UIColor.halo.withAlphaComponent(0.8)
+        UIView.animate(withDuration: 0.45) { [weak self] in
+            self?.backgroundColor = UIColor.halo.withAlphaComponent(0.85)
             self?.layoutIfNeeded()
         }
     }
@@ -43,7 +42,7 @@ class Sheet: UIView {
     
     @objc final func close() {
         app.window!.endEditing(true)
-        UIView.animate(withDuration: 0.4, animations: { [weak self] in
+        UIView.animate(withDuration: 0.35, animations: { [weak self] in
             self?.alpha = 0
         }) { [weak self] _ in self?.removeFromSuperview() }
     }

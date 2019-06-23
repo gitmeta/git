@@ -13,9 +13,10 @@ final class Reset: Window {
         contentView!.addSubview(image)
         
         let label = Label()
+        label.textColor = .white
         label.attributedStringValue = {
-            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .bold), .foregroundColor: NSColor.white]))
-            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: NSFont.systemFont(ofSize: 12, weight: .light), .foregroundColor: NSColor.white]))
+            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .bold)]))
+            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: NSFont.systemFont(ofSize: 12, weight: .light)]))
             return $0
         } (NSMutableAttributedString())
         contentView!.addSubview(label)

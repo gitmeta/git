@@ -6,10 +6,9 @@ final class Help: Sheet {
     private var buttons = [UIButton]()
     private var images = [UIImageView]()
     private var index = 0
-    override var height: CGFloat { return 500 }
-    
-    @discardableResult override init() {
-        super.init()
+
+    @discardableResult init() {
+        super.init(480)
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
@@ -43,13 +42,13 @@ final class Help: Sheet {
             base.addSubview(button)
             buttons.append(button)
             
-            image.topAnchor.constraint(equalTo: base.topAnchor, constant: 40).isActive = true
+            image.topAnchor.constraint(equalTo: base.topAnchor, constant: 20).isActive = true
             image.heightAnchor.constraint(equalToConstant: 200).isActive = true
             image.widthAnchor.constraint(equalToConstant: 300).isActive = true
             
             button.heightAnchor.constraint(equalToConstant: 90).isActive = true
             button.widthAnchor.constraint(equalTo: base.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -4).isActive = true
-            button.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -70).isActive = true
+            button.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -60).isActive = true
             
             if $0.0 == 0 {
                 button.leftAnchor.constraint(equalTo: rightButton, constant: 20).isActive = true
@@ -63,7 +62,7 @@ final class Help: Sheet {
             rightButton = button.rightAnchor
         }
         
-        label.topAnchor.constraint(equalTo: base.topAnchor, constant: 240).isActive = true
+        label.topAnchor.constraint(equalTo: base.topAnchor, constant: 230).isActive = true
         label.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 290).isActive = true
         

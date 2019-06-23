@@ -59,10 +59,9 @@ final class Credentials: Sheet, UITextFieldDelegate {
     
     private weak var user: Field!
     private weak var password: Field!
-    override var height: CGFloat { return 370 }
     
-    @discardableResult override init() {
-        super.init()
+    @discardableResult init() {
+        super.init(350)
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = .local("Settings.labelKey")
@@ -95,7 +94,7 @@ final class Credentials: Sheet, UITextFieldDelegate {
         close.addTarget(self, action: #selector(self.close), for: .touchUpInside)
         base.addSubview(close)
         
-        label.topAnchor.constraint(equalTo: base.topAnchor, constant: 70).isActive = true
+        label.topAnchor.constraint(equalTo: base.topAnchor, constant: 50).isActive = true
         label.leftAnchor.constraint(equalTo: base.centerXAnchor, constant: -150).isActive = true
         
         user.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true

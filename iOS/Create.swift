@@ -1,24 +1,16 @@
 import UIKit
 
-final class Create: UIView, UITextFieldDelegate {
+final class Create: Sheet, UITextFieldDelegate {
     private let result: ((URL?) -> Void)
     private weak var name: UITextField!
     
     init(_ result: @escaping((URL?) -> Void)) {
         self.result = result
-        super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.shade.withAlphaComponent(0.98)
-        alpha = 0
-        
+        super.init(200)
         let name = UITextField()
         name.translatesAutoresizingMaskIntoConstraints = false
         name.tintColor = .halo
         name.textColor = .white
-        name.backgroundColor = .black
-        name.layer.cornerRadius = 6
-        name.layer.borderColor = UIColor.halo.cgColor
-        name.layer.borderWidth = 1
         name.delegate = self
         name.font = .systemFont(ofSize: 18, weight: .medium)
         name.autocorrectionType = .no
@@ -28,31 +20,40 @@ final class Create: UIView, UITextFieldDelegate {
         name.keyboardAppearance = .dark
         name.keyboardType = .alphabet
         name.textAlignment = .center
-        addSubview(name)
+        base.addSubview(name)
         self.name = name
+        
+        let border = UIView()
+        border.isUserInteractionEnabled = true
+        border.translatesAutoresizingMaskIntoConstraints = false
+        border.backgroundColor = .halo
+        base.addSubview(border)
         
         let create = Button.Yes(.local("Create.save"))
         create.addTarget(self, action: #selector(self.create), for: .touchUpInside)
-        addSubview(create)
+        base.addSubview(create)
         
         let cancel = Button.No(.local("Create.cancel"))
         cancel.addTarget(self, action: #selector(self.cancel), for: .touchUpInside)
-        addSubview(cancel)
+        base.addSubview(cancel)
         
-        name.topAnchor.constraint(equalTo: topAnchor, constant: 60).isActive = true
+        name.topAnchor.constraint(equalTo: base.topAnchor, constant: 20).isActive = true
         name.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        name.leftAnchor.constraint(equalTo: leftAnchor, constant: 30).isActive = true
-        name.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
+        name.leftAnchor.constraint(equalTo: base.leftAnchor, constant: 20).isActive = true
+        name.rightAnchor.constraint(equalTo: base.rightAnchor, constant: -20).isActive = true
         
-        create.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 40).isActive = true
-        create.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        border.topAnchor.constraint(equalTo: name.bottomAnchor).isActive = true
+        border.leftAnchor.constraint(equalTo: base.leftAnchor, constant: 20).isActive = true
+        border.rightAnchor.constraint(equalTo: base.rightAnchor, constant: -20).isActive = true
+        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        cancel.topAnchor.constraint(equalTo: create.bottomAnchor, constant: 40).isActive = true
-        cancel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        create.topAnchor.constraint(equalTo: border.bottomAnchor, constant: 20).isActive = true
+        create.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.alpha = 1
-        }) { [weak name] _ in name?.becomeFirstResponder() }
+        cancel.topAnchor.constraint(equalTo: create.bottomAnchor, constant: 20).isActive = true
+        cancel.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
+        
+        name.becomeFirstResponder()
     }
     
     required init?(coder: NSCoder) { return nil }
@@ -62,21 +63,15 @@ final class Create: UIView, UITextFieldDelegate {
         return true
     }
     
-    private func finish(_ url: URL?) {
-        app.window!.endEditing(true)
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.alpha = 0
-        }) { [weak self] _ in
-            self?.result(url)
-            self?.removeFromSuperview()
-        }
-    }
-    
     @objc private func create() {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name.text!.isEmpty ? .local("Create.untitled") : name.text!)
         FileManager.default.createFile(atPath: url.path, contents: Data("\n".utf8))
-        finish(url)
+        result(url)
+        close()
     }
     
-    @objc private func cancel() { finish(nil) }
+    @objc private func cancel() {
+        result(nil)
+        close()
+    }
 }
