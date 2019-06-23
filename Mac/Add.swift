@@ -1,7 +1,7 @@
 import Git
 import AppKit
 
-final class Add: NSWindow {
+final class Add: Window {
     private final class Layout: NSLayoutManager, NSLayoutManagerDelegate {
         private let padding = CGFloat(6)
         
@@ -43,7 +43,7 @@ final class Add: NSWindow {
             isContinuousSpellCheckingEnabled = true
             font = .light(18)
             textColor = .white
-            textContainerInset = NSSize(width: 10, height: 10)
+            textContainerInset = NSSize(width: 20, height: 20)
             height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
             height.isActive = true
             if #available(OSX 10.12.2, *) {
@@ -97,45 +97,18 @@ final class Add: NSWindow {
     private weak var text: Text!
     
     init() {
-        super.init(contentRect: NSRect(
-            x: app.home.frame.minX + 50, y: app.home.frame.maxY - 450, width: 400, height: 400),
-                   styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable, .titled, .unifiedTitleAndToolbar],
-                   backing: .buffered, defer: false)
-        titlebarAppearsTransparent = true
-        titleVisibility = .hidden
-        backgroundColor = .shade
-        collectionBehavior = .fullScreenNone
-        minSize = NSSize(width: 100, height: 100)
-        isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
+        super.init(400, 400, style: .resizable)
+        name.stringValue = .local("Add.title")
         
         let text = Text()
         self.text = text
         
-        let border = NSView()
-        border.translatesAutoresizingMaskIntoConstraints = false
-        border.wantsLayer = true
-        border.layer!.backgroundColor = .black
-        contentView!.addSubview(border)
-        
-        let scroll = NSScrollView()
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.drawsBackground = false
+        let scroll = Scroll()
         scroll.documentView = text
-        scroll.hasVerticalScroller = true
-        scroll.verticalScroller!.controlSize = .mini
-        scroll.horizontalScrollElasticity = .none
-        scroll.verticalScrollElasticity = .allowed
         contentView!.addSubview(scroll)
         
-        let button = Button.Text(self, action: #selector(commit))
+        let button = Button.Yes(self, action: #selector(commit))
         button.label.stringValue = .local("Add.button")
-        button.label.font = .systemFont(ofSize: 11, weight: .medium)
-        button.label.textColor = .black
-        button.wantsLayer = true
-        button.layer!.cornerRadius = 4
-        button.layer!.backgroundColor = NSColor.halo.cgColor
         contentView!.addSubview(button)
         
         scroll.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
@@ -146,28 +119,8 @@ final class Add: NSWindow {
         text.widthAnchor.constraint(equalTo: scroll.widthAnchor).isActive = true
         text.heightAnchor.constraint(greaterThanOrEqualTo: scroll.heightAnchor).isActive = true
         
-        border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
-        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
-        border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
-        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
         button.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -10).isActive = true
         button.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 20).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 62).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 22).isActive = true
-    }
-    
-    override func keyDown(with: NSEvent) {
-        switch with.keyCode {
-        case 13:
-            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
-                close()
-            } else {
-                super.keyDown(with: with)
-            }
-        case 53: close()
-        default: super.keyDown(with: with)
-        }
     }
     
     @objc private func commit() {

@@ -21,24 +21,6 @@ class Button: NSView {
         required init?(coder: NSCoder) { return nil }
     }
     
-    final class Text: Button {
-        private(set) weak var label: Label!
-        
-        override init(_ target: AnyObject?, action: Selector?) {
-            super.init(target, action: action)
-            let label = Label()
-            label.alignment = .center
-            self.label = label
-            addSubview(label)
-            
-            label.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-            label.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-            label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        }
-        
-        required init?(coder: NSCoder) { return nil }
-    }
-    
     final class Check: Button {
         var checked = false { didSet {
             if checked {
@@ -71,6 +53,43 @@ class Button: NSView {
             checked.toggle()
             super.click()
         }
+    }
+    
+    final class Yes: Text {
+        private(set) weak var width: NSLayoutConstraint!
+        
+        override init(_ target: AnyObject?, action: Selector?) {
+            super.init(target, action: action)
+            wantsLayer = true
+            layer!.cornerRadius = 3
+            layer!.backgroundColor = NSColor.halo.cgColor
+            label.alignment = .center
+            label.font = .systemFont(ofSize: 11, weight: .medium)
+            label.textColor = .black
+            
+            heightAnchor.constraint(equalToConstant: 20).isActive = true
+            width = widthAnchor.constraint(equalToConstant: 62)
+            width.isActive = true
+        }
+        
+        required init?(coder: NSCoder) { return nil }
+    }
+    
+    class Text: Button {
+        private(set) weak var label: Label!
+        
+        override init(_ target: AnyObject?, action: Selector?) {
+            super.init(target, action: action)
+            let label = Label()
+            self.label = label
+            addSubview(label)
+            
+            label.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+            label.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+            label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        }
+        
+        required init?(coder: NSCoder) { return nil }
     }
     
     final weak var target: AnyObject?

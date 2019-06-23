@@ -15,7 +15,7 @@ final class Reset: Sheet {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.attributedText = {
             $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold), .foregroundColor: UIColor.white]))
-            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light), .foregroundColor: UIColor(white: 1, alpha: 0.7)]))
+            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light), .foregroundColor: UIColor.white]))
             return $0
         } (NSMutableAttributedString())
         base.addSubview(label)

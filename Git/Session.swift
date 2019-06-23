@@ -44,7 +44,6 @@ public final class Session: Codable {
     }
     
     public func load(_ result: @escaping(() -> Void) = { }) {
-        UserDefaults.standard.removeObject(forKey: "session")
         Hub.dispatch.background({
             guard let data = UserDefaults.standard.data(forKey: "session"),
                 let decoded = try? JSONDecoder().decode(Session.self, from: data)

@@ -2,10 +2,10 @@ import Git
 import AppKit
 import StoreKit
 
-final class Market: NSWindow, SKRequestDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     private final class Item: NSView {
         let product: SKProduct
-        private(set) weak var button: Button.Text!
+        private(set) weak var button: Button.Yes!
         private(set) weak var label: Label!
         private(set) weak var purchased: Label!
         private(set) weak var price: Label!
@@ -40,13 +40,8 @@ final class Market: NSWindow, SKRequestDelegate, SKProductsRequestDelegate, SKPa
             addSubview(purchased)
             self.purchased = purchased
             
-            let button = Button.Text(nil, action: nil)
+            let button = Button.Yes(nil, action: nil)
             button.label.stringValue = .local("Market.purchase")
-            button.label.font = .systemFont(ofSize: 11, weight: .medium)
-            button.label.textColor = .black
-            button.wantsLayer = true
-            button.layer!.cornerRadius = 4
-            button.layer!.backgroundColor = NSColor.halo.cgColor
             addSubview(button)
             self.button = button
             
@@ -63,13 +58,12 @@ final class Market: NSWindow, SKRequestDelegate, SKProductsRequestDelegate, SKPa
             price.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
             
             purchased.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
-            purchased.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
+            purchased.topAnchor.constraint(equalTo: price.bottomAnchor).isActive = true
             
             button.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 10).isActive = true
             button.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 90).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 22).isActive = true
+            button.width.constant = 90
         }
         
         required init?(coder: NSCoder) { return nil }
@@ -78,60 +72,23 @@ final class Market: NSWindow, SKRequestDelegate, SKProductsRequestDelegate, SKPa
     private weak var request: SKProductsRequest?
     private weak var image: NSImageView!
     private weak var list: NSScrollView!
-    private weak var restore: Button.Text!
+    private weak var restore: Button.Yes!
     private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
     private var products = [SKProduct]() { didSet { DispatchQueue.main.async { [weak self] in self?.refresh() } } }
     private let formatter = NumberFormatter()
     
     init() {
-        super.init(contentRect: NSRect(
-            x: app.home.frame.minX + 50, y: app.home.frame.maxY - 450, width: 400, height: 400),
-                   styleMask: [.closable, .fullSizeContentView, .miniaturizable, .titled, .unifiedTitleAndToolbar],
-                   backing: .buffered, defer: false)
-        titlebarAppearsTransparent = true
-        titleVisibility = .hidden
-        backgroundColor = .shade
-        collectionBehavior = .fullScreenNone
-        isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
-        
+        super.init(400, 400)
+        name.stringValue = .local("Market.title")
         formatter.numberStyle = .currencyISOCode
         
-        let title = Label(.local("Market.title"))
-        title.font = .systemFont(ofSize: 12, weight: .bold)
-        title.textColor = .halo
-        contentView!.addSubview(title)
-        
-        let border = NSView()
-        border.translatesAutoresizingMaskIntoConstraints = false
-        border.wantsLayer = true
-        border.layer!.backgroundColor = .black
-        contentView!.addSubview(border)
-        
-        let list = NSScrollView()
-        list.translatesAutoresizingMaskIntoConstraints = false
-        list.drawsBackground = false
-        list.hasVerticalScroller = true
-        list.verticalScroller!.controlSize = .mini
-        list.horizontalScrollElasticity = .none
-        list.verticalScrollElasticity = .allowed
-        list.documentView = Flipped()
-        list.documentView!.translatesAutoresizingMaskIntoConstraints = false
-        list.documentView!.topAnchor.constraint(equalTo: list.topAnchor).isActive = true
-        list.documentView!.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
-        list.documentView!.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
-        list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: list.bottomAnchor).isActive = true
+        let list = Scroll()
+        list.flip()
         contentView!.addSubview(list)
         self.list = list
         
-        let restore = Button.Text(self, action: #selector(restoring))
+        let restore = Button.Yes(self, action: #selector(restoring))
         restore.label.stringValue = .local("Market.restore")
-        restore.label.font = .systemFont(ofSize: 11, weight: .medium)
-        restore.label.textColor = .black
-        restore.wantsLayer = true
-        restore.layer!.cornerRadius = 4
-        restore.layer!.backgroundColor = NSColor.halo.cgColor
         contentView!.addSubview(restore)
         self.restore = restore
         
@@ -141,14 +98,6 @@ final class Market: NSWindow, SKRequestDelegate, SKProductsRequestDelegate, SKPa
         image.imageScaling = .scaleNone
         contentView!.addSubview(image)
         self.image = image
-        
-        title.centerYAnchor.constraint(equalTo: restore.centerYAnchor).isActive = true
-        title.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 80).isActive = true
-        
-        border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
-        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
-        border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
-        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         list.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
@@ -162,8 +111,7 @@ final class Market: NSWindow, SKRequestDelegate, SKProductsRequestDelegate, SKPa
         
         restore.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -10).isActive = true
         restore.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 20).isActive = true
-        restore.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        restore.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        restore.width.constant = 90
         
         show("loading")
         SKPaymentQueue.default().add(self)
@@ -177,19 +125,6 @@ final class Market: NSWindow, SKRequestDelegate, SKProductsRequestDelegate, SKPa
     override func close() {
         SKPaymentQueue.default().remove(self)
         super.close()
-    }
-    
-    override func keyDown(with: NSEvent) {
-        switch with.keyCode {
-        case 13:
-            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
-                close()
-            } else {
-                super.keyDown(with: with)
-            }
-        case 53: close()
-        default: super.keyDown(with: with)
-        }
     }
     
     func productsRequest(_: SKProductsRequest, didReceive: SKProductsResponse) { products = didReceive.products }
@@ -264,7 +199,7 @@ final class Market: NSWindow, SKRequestDelegate, SKProductsRequestDelegate, SKPa
         show("loading")
     }
     
-    @objc private func purchase(_ button: Button.Text) {
+    @objc private func purchase(_ button: Button.Yes) {
         show("loading")
         SKPaymentQueue.default().add(SKPayment(product: (button.superview as! Item).product))
     }

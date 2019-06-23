@@ -1,7 +1,7 @@
 import Git
 import AppKit
 
-final class Settings: NSWindow, NSTextFieldDelegate {
+final class Settings: Window, NSTextFieldDelegate {
     private final class Field: NSView {
         private(set) weak var field: NSTextField!
         private(set) weak var label: Label!
@@ -19,7 +19,7 @@ final class Settings: NSWindow, NSTextFieldDelegate {
             let border = NSView()
             border.translatesAutoresizingMaskIntoConstraints = false
             border.wantsLayer = true
-            border.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
+            border.layer!.backgroundColor = NSColor.halo.cgColor
             addSubview(border)
             
             let field = type.init()
@@ -57,8 +57,8 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         required init?(coder: NSCoder) { return nil }
     }
     
-    private weak var buttonKey: Button.Text!
-    private weak var buttonSign: Button.Text!
+    private weak var buttonKey: Button.Yes!
+    private weak var buttonSign: Button.Yes!
     private weak var signName: Field!
     private weak var signEmail: Field!
     private weak var keyUser: Field!
@@ -66,35 +66,14 @@ final class Settings: NSWindow, NSTextFieldDelegate {
     private weak var left: NSLayoutConstraint!
     
     init() {
-        super.init(contentRect: NSRect(
-            x: app.home.frame.minX + 50, y: app.home.frame.maxY - 400, width: 320, height: 350),
-                   styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
-        titlebarAppearsTransparent = true
-        titleVisibility = .hidden
-        backgroundColor = .shade
-        isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
-        
-        let border = NSView()
-        border.translatesAutoresizingMaskIntoConstraints = false
-        border.wantsLayer = true
-        border.layer!.backgroundColor = .black
-        contentView!.addSubview(border)
-        
-        let buttonSign = Button.Text(self, action: #selector(sign))
+        super.init(320, 300)
+        let buttonSign = Button.Yes(self, action: #selector(sign))
         buttonSign.label.stringValue = .local("Settings.buttonSign")
-        buttonSign.label.font = .systemFont(ofSize: 11, weight: .medium)
-        buttonSign.wantsLayer = true
-        buttonSign.layer!.cornerRadius = 4
         contentView!.addSubview(buttonSign)
         self.buttonSign = buttonSign
         
-        let buttonKey = Button.Text(self, action: #selector(key))
+        let buttonKey = Button.Yes(self, action: #selector(key))
         buttonKey.label.stringValue = .local("Settings.buttonKey")
-        buttonKey.label.font = .systemFont(ofSize: 11, weight: .medium)
-        buttonKey.wantsLayer = true
-        buttonKey.layer!.cornerRadius = 4
         contentView!.addSubview(buttonKey)
         self.buttonKey = buttonKey
         
@@ -108,13 +87,14 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         
         let labelSign = Label(.local("Settings.labelSign"))
         labelSign.font = .systemFont(ofSize: 14, weight: .light)
-        labelSign.textColor = .init(white: 1, alpha: 0.6)
+        labelSign.textColor = .halo
         sign.addSubview(labelSign)
         
         let signName = Field()
         signName.field.delegate = self
         signName.label.stringValue = .local("Settings.signName")
         signName.field.stringValue = Hub.session.name
+        (fieldEditor(true, for: signName.field) as? NSTextView)?.insertionPointColor = .halo
         sign.addSubview(signName)
         self.signName = signName
         
@@ -122,27 +102,24 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         signEmail.field.delegate = self
         signEmail.label.stringValue = .local("Settings.signEmail")
         signEmail.field.stringValue = Hub.session.email
+        (fieldEditor(true, for: signEmail.field) as? NSTextView)?.insertionPointColor = .halo
         sign.addSubview(signEmail)
         self.signEmail = signEmail
         
-        let signSave = Button.Text(self, action: #selector(self.signSave))
+        let signSave = Button.Yes(self, action: #selector(self.signSave))
         signSave.label.stringValue = .local("Settings.signSave")
-        signSave.label.font = .systemFont(ofSize: 11, weight: .medium)
-        signSave.label.textColor = .black
-        signSave.wantsLayer = true
-        signSave.layer!.cornerRadius = 4
-        signSave.layer!.backgroundColor = NSColor.halo.cgColor
         sign.addSubview(signSave)
         
         let labelKey = Label(.local("Settings.labelKey"))
         labelKey.font = .systemFont(ofSize: 14, weight: .light)
-        labelKey.textColor = .init(white: 1, alpha: 0.6)
+        labelKey.textColor = .halo
         key.addSubview(labelKey)
         
         let keyUser = Field()
         keyUser.field.delegate = self
         keyUser.label.stringValue = .local("Settings.keyUser")
         keyUser.field.stringValue = Hub.session.user
+        (fieldEditor(true, for: keyUser.field) as? NSTextView)?.insertionPointColor = .halo
         key.addSubview(keyUser)
         self.keyUser = keyUser
         
@@ -150,32 +127,21 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         keyPassword.field.delegate = self
         keyPassword.label.stringValue = .local("Settings.keyPassword")
         keyPassword.field.stringValue = Hub.session.password
+        (fieldEditor(true, for: keyPassword.field) as? NSTextView)?.insertionPointColor = .halo
         key.addSubview(keyPassword)
         self.keyPassword = keyPassword
         
-        let keySave = Button.Text(self, action: #selector(self.keySave))
+        let keySave = Button.Yes(self, action: #selector(self.keySave))
         keySave.label.stringValue = .local("Settings.keySave")
-        keySave.label.font = .systemFont(ofSize: 11, weight: .medium)
-        keySave.label.textColor = .black
-        keySave.wantsLayer = true
-        keySave.layer!.cornerRadius = 4
-        keySave.layer!.backgroundColor = NSColor.halo.cgColor
         key.addSubview(keySave)
-        
-        border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
-        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
-        border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
-        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         buttonKey.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -10).isActive = true
         buttonKey.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 20).isActive = true
-        buttonKey.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        buttonKey.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        buttonKey.width.constant = 100
         
         buttonSign.rightAnchor.constraint(equalTo: buttonKey.leftAnchor, constant: -5).isActive = true
         buttonSign.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 20).isActive = true
-        buttonSign.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        buttonSign.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        buttonSign.width.constant = 100
         
         sign.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         sign.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
@@ -199,8 +165,6 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         
         signSave.bottomAnchor.constraint(equalTo: sign.bottomAnchor, constant: -20).isActive = true
         signSave.centerXAnchor.constraint(equalTo: sign.centerXAnchor).isActive = true
-        signSave.widthAnchor.constraint(equalToConstant: 62).isActive = true
-        signSave.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         labelKey.topAnchor.constraint(equalTo: key.topAnchor, constant: 20).isActive = true
         labelKey.leftAnchor.constraint(equalTo: key.leftAnchor, constant: 18).isActive = true
@@ -213,8 +177,6 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         
         keySave.bottomAnchor.constraint(equalTo: key.bottomAnchor, constant: -20).isActive = true
         keySave.centerXAnchor.constraint(equalTo: key.centerXAnchor).isActive = true
-        keySave.widthAnchor.constraint(equalToConstant: 62).isActive = true
-        keySave.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         DispatchQueue.main.async { [weak self] in self?.sign()  }
     }
@@ -249,19 +211,6 @@ final class Settings: NSWindow, NSTextFieldDelegate {
         return false
     }
     
-    override func keyDown(with: NSEvent) {
-        switch with.keyCode {
-        case 13:
-            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
-                close()
-            } else {
-                super.keyDown(with: with)
-            }
-        case 53: close()
-        default: super.keyDown(with: with)
-        }
-    }
-    
     @objc func sign() {
         makeFirstResponder(nil)
         left.constant = 0
@@ -269,10 +218,10 @@ final class Settings: NSWindow, NSTextFieldDelegate {
             $0.duration = 0.6
             $0.allowsImplicitAnimation = true
             contentView!.layoutSubtreeIfNeeded()
-            buttonSign.layer!.backgroundColor = NSColor(white: 1, alpha: 0.6).cgColor
+            buttonSign.layer!.backgroundColor = NSColor.halo.cgColor
             buttonKey.layer!.backgroundColor = .clear
             buttonSign.label.textColor = .black
-            buttonKey.label.textColor = .init(white: 1, alpha: 0.5)
+            buttonKey.label.textColor = .halo
         }) { }
     }
     
@@ -284,8 +233,8 @@ final class Settings: NSWindow, NSTextFieldDelegate {
             $0.allowsImplicitAnimation = true
             contentView!.layoutSubtreeIfNeeded()
             buttonSign.layer!.backgroundColor = .clear
-            buttonKey.layer!.backgroundColor = NSColor(white: 1, alpha: 0.6).cgColor
-            buttonSign.label.textColor = .init(white: 1, alpha: 0.5)
+            buttonKey.layer!.backgroundColor = NSColor.halo.cgColor
+            buttonSign.label.textColor = .halo
             buttonKey.label.textColor = .black
         }) { }
     }

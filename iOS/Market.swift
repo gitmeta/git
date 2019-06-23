@@ -63,7 +63,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             price.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
             
             purchased.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
-            purchased.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
+            purchased.topAnchor.constraint(equalTo: price.bottomAnchor).isActive = true
             
             button.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 16).isActive = true
             button.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true

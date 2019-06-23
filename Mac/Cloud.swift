@@ -1,43 +1,25 @@
 import Git
 import AppKit
 
-final class Cloud: NSWindow, NSTextFieldDelegate {
+final class Cloud: Window, NSTextFieldDelegate {
     private weak var field: NSTextField!
     private weak var loading: NSImageView!
-    private weak var button: Button!
+    private weak var button: Button.Yes!
     
     init() {
-        super.init(contentRect: NSRect(
-            x: app.home.frame.minX + 50, y: app.home.frame.maxY - 220, width: 500, height: 170),
-                   styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
-        titlebarAppearsTransparent = true
-        titleVisibility = .hidden
-        backgroundColor = .shade
-        isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
-        
-        let title = Label(.local("Cloud.title"))
-        title.textColor = .halo
-        title.font = .systemFont(ofSize: 14, weight: .bold)
-        contentView!.addSubview(title)
-        
-        let border = NSView()
-        border.translatesAutoresizingMaskIntoConstraints = false
-        border.wantsLayer = true
-        border.layer!.backgroundColor = .black
-        contentView!.addSubview(border)
+        super.init(500, 170)
+        name.stringValue = .local("Cloud.title")
         
         let label = Label(.local("Cloud.field"))
         label.font = .systemFont(ofSize: 15, weight: .medium)
         label.textColor = .halo
         contentView!.addSubview(label)
         
-        let textBorder = NSView()
-        textBorder.translatesAutoresizingMaskIntoConstraints = false
-        textBorder.wantsLayer = true
-        textBorder.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
-        contentView!.addSubview(textBorder)
+        let border = NSView()
+        border.translatesAutoresizingMaskIntoConstraints = false
+        border.wantsLayer = true
+        border.layer!.backgroundColor = NSColor.halo.cgColor
+        contentView!.addSubview(border)
         
         let field = NSTextField()
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -49,6 +31,7 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         field.maximumNumberOfLines = 1
         field.lineBreakMode = .byTruncatingHead
         field.delegate = self
+        (fieldEditor(true, for: field) as? NSTextView)?.insertionPointColor = .halo
         if #available(OSX 10.12.2, *) {
             field.isAutomaticTextCompletionEnabled = false
         }
@@ -63,60 +46,32 @@ final class Cloud: NSWindow, NSTextFieldDelegate {
         contentView!.addSubview(loading)
         self.loading = loading
         
-        let button = Button.Text(self, action: #selector(make))
-        button.label.font = .systemFont(ofSize: 11, weight: .medium)
-        button.label.textColor = .black
-        button.wantsLayer = true
-        button.layer!.cornerRadius = 4
-        button.layer!.backgroundColor = NSColor.halo.cgColor
+        let button = Button.Yes(self, action: #selector(make))
         button.label.stringValue = app.repository == nil ? .local("Cloud.clone.button") : .local("Cloud.synch.button")
         contentView!.addSubview(button)
         self.button = button
         
-        title.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 18).isActive = true
-        title.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -20).isActive = true
-        
-        label.topAnchor.constraint(equalTo: border.bottomAnchor, constant: 24).isActive = true
+        label.topAnchor.constraint(equalTo: self.border.bottomAnchor, constant: 24).isActive = true
         label.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 20).isActive = true
         
-        textBorder.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        textBorder.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 2).isActive = true
-        textBorder.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 20).isActive = true
-        textBorder.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -20).isActive = true
+        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        border.topAnchor.constraint(equalTo: field.bottomAnchor, constant: 2).isActive = true
+        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 20).isActive = true
+        border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -20).isActive = true
         
-        field.topAnchor.constraint(equalTo: border.bottomAnchor, constant: 25).isActive = true
+        field.topAnchor.constraint(equalTo: self.border.bottomAnchor, constant: 25).isActive = true
         field.heightAnchor.constraint(equalToConstant: 30).isActive = true
         field.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 80).isActive = true
         field.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -34).isActive = true
-        
-        border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
-        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
-        border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
-        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         loading.centerYAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -31).isActive = true
         loading.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         
         button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -20).isActive = true
         button.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 62).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         field.refusesFirstResponder = app.repository != nil
         app.repository?.remote { [weak self] in self?.field.stringValue = $0 }
-    }
-    
-    override func keyDown(with: NSEvent) {
-        switch with.keyCode {
-        case 13:
-            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
-                close()
-            } else {
-                super.keyDown(with: with)
-            }
-        case 53: close()
-        default: super.keyDown(with: with)
-        }
     }
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {

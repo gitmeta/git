@@ -9,6 +9,8 @@ final class Help: Window {
     
     init() {
         super.init(540, 500)
+        border.isHidden = true
+        
         let label = Label()
         label.textColor = .white
         label.font = .systemFont(ofSize: 14, weight: .regular)

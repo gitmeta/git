@@ -3,10 +3,7 @@ import AppKit
 final class About: Window {
     init() {
         super.init(200, 200)
-        titlebarAppearsTransparent = true
-        titleVisibility = .hidden
-        backgroundColor = .black
-        isReleasedWhenClosed = false
+        border.isHidden = true
         
         let image = NSImageView()
         image.translatesAutoresizingMaskIntoConstraints = false

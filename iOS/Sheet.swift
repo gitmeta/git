@@ -1,7 +1,7 @@
 import UIKit
 
 class Sheet: UIView {
-    var height: CGFloat { return 310 }
+    var height = CGFloat(300)
     private(set) weak var base: UIView!
     
     init() {

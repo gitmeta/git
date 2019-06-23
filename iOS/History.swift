@@ -3,24 +3,22 @@ import UIKit
 
 final class History: UIView {
     private final class Item: UIView {
-        init(_ index: Int, commit: Commit) {
+        init(_ index: Int, commit: Commit, date: String) {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
             isUserInteractionEnabled = false
             
-            let number = UILabel()
-            number.text = String(index)
-            number.translatesAutoresizingMaskIntoConstraints = false
-            number.font = .systemFont(ofSize: 16, weight: .bold)
-            number.textColor = .halo
-            addSubview(number)
-            
-            let author = UILabel()
-            author.translatesAutoresizingMaskIntoConstraints = false
-            author.text = commit.author.name
-            author.textColor = .halo
-            author.font = .systemFont(ofSize: 16, weight: .medium)
-            addSubview(author)
+            let label = UILabel()
+            label.numberOfLines = 0
+            label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            label.attributedText = {
+                $0.append(NSAttributedString(string: "\(index) ", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .bold), .foregroundColor: UIColor.halo]))
+                $0.append(NSAttributedString(string: commit.author.name + " ", attributes: [.font: UIFont.light(18), .foregroundColor: UIColor.halo]))
+                $0.append(NSAttributedString(string: date + "\n", attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light), .foregroundColor: UIColor.halo]))
+                $0.append(NSAttributedString(string: commit.message, attributes: [.font: UIFont.light(14), .foregroundColor: UIColor.white]))
+                return $0
+            } (NSMutableAttributedString())
+            addSubview(label)
             
             let border = UIView()
             border.translatesAutoresizingMaskIntoConstraints = false
@@ -28,44 +26,15 @@ final class History: UIView {
             border.backgroundColor = UIColor.halo.withAlphaComponent(0.5)
             addSubview(border)
             
-            let date = UILabel()
-            date.translatesAutoresizingMaskIntoConstraints = false
-            date.text = {
-                $0.timeStyle = .short
-                $0.dateStyle = Calendar.current.dateComponents([.hour], from: $1, to: Date()).hour! > 12 ? .medium : .none
-                return $0.string(from: $1)
-            } (DateFormatter(), commit.author.date)
-            date.textColor = .halo
-            date.font = .systemFont(ofSize: 12, weight: .light)
-            addSubview(date)
-            
-            let label = UILabel()
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.text = commit.message
-            label.textColor = .white
-            label.font = .light(14)
-            label.numberOfLines = 0
-            label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-            addSubview(label)
-            
-            number.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-            number.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
-            
-            author.bottomAnchor.constraint(equalTo: number.bottomAnchor).isActive = true
-            author.leftAnchor.constraint(equalTo: number.rightAnchor, constant: 6).isActive = true
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 14).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -16).isActive = true
+            label.bottomAnchor.constraint(equalTo: border.topAnchor, constant: -14).isActive = true
             
             border.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
             border.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
-            
-            date.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-            date.topAnchor.constraint(equalTo: number.bottomAnchor, constant: 5).isActive = true
-            
-            label.topAnchor.constraint(equalTo: date.bottomAnchor, constant: 16).isActive = true
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -16).isActive = true
-            label.bottomAnchor.constraint(equalTo: border.topAnchor, constant: -20).isActive = true
         }
         
         required init?(coder: NSCoder) { return nil }
@@ -76,10 +45,13 @@ final class History: UIView {
     private weak var loading: UIImageView!
     private weak var branch: UILabel!
     private weak var button: UIButton!
+    private let formatter = DateFormatter()
     
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        formatter.timeStyle = .short
+        formatter.dateStyle = .medium
         
         let loading = UIImageView(image: UIImage(named: "loading"))
         loading.translatesAutoresizingMaskIntoConstraints = false
@@ -160,10 +132,10 @@ final class History: UIView {
         app.repository?.log { items in
             var top = self.scroll.topAnchor
             items.enumerated().forEach {
-                let item = Item(items.count - $0.0, commit: $0.1)
+                let item = Item(items.count - $0.0, commit: $0.1, date: self.formatter.string(from: $0.1.author.date))
                 content.addSubview(item)
                 
-                item.topAnchor.constraint(equalTo: top, constant: 10).isActive = true
+                item.topAnchor.constraint(equalTo: top).isActive = true
                 item.leftAnchor.constraint(equalTo: content.leftAnchor).isActive = true
                 item.widthAnchor.constraint(equalTo: content.widthAnchor).isActive = true
                 top = item.bottomAnchor

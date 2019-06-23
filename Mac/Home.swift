@@ -1,7 +1,7 @@
 import Git
 import AppKit
 
-final class Home: NSWindow  {
+final class Home: Window  {
     final class Item: NSView {
         let url: URL
         private(set) weak var check: Button.Check!
@@ -52,7 +52,7 @@ final class Home: NSWindow  {
             let border = NSView()
             border.translatesAutoresizingMaskIntoConstraints = false
             border.wantsLayer = true
-            border.layer!.backgroundColor = .black
+            border.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
             addSubview(border)
             
             switch status {
@@ -73,7 +73,7 @@ final class Home: NSWindow  {
             heightAnchor.constraint(equalToConstant: 46).isActive = true
             
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 21).isActive = true
             label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -20).isActive = true
             label.widthAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
             
@@ -90,7 +90,7 @@ final class Home: NSWindow  {
             check.topAnchor.constraint(equalTo: topAnchor).isActive = true
             check.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             
-            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 21).isActive = true
             border.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -113,35 +113,19 @@ final class Home: NSWindow  {
     private(set) weak var list: NSScrollView!
     private weak var count: Label!
     private weak var image: NSImageView!
-    private weak var button: Button.Text!
+    private weak var button: Button.Yes!
     private weak var label: Label!
     private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
     
     init() {
-        super.init(contentRect: NSRect(
-            x: (NSScreen.main!.frame.width - 600) / 2, y: (NSScreen.main!.frame.height - 600) / 2, width: 600, height: 600),
-                   styleMask: [.closable, .fullSizeContentView, .miniaturizable, .resizable, .titled, .unifiedTitleAndToolbar],
-                   backing: .buffered, defer: false)
-        titlebarAppearsTransparent = true
-        titleVisibility = .hidden
-        backgroundColor = .shade
-        collectionBehavior = .fullScreenNone
-        minSize = NSSize(width: 100, height: 100)
-        isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
+        super.init(600, 600, style: .resizable)
+        closabe = false
         
-        let borderLeft = NSView()
-        borderLeft.translatesAutoresizingMaskIntoConstraints = false
-        borderLeft.wantsLayer = true
-        borderLeft.layer!.backgroundColor = .black
-        contentView!.addSubview(borderLeft)
-        
-        let borderTop = NSView()
-        borderTop.translatesAutoresizingMaskIntoConstraints = false
-        borderTop.wantsLayer = true
-        borderTop.layer!.backgroundColor = .black
-        contentView!.addSubview(borderTop)
+        let border = NSView()
+        border.translatesAutoresizingMaskIntoConstraints = false
+        border.wantsLayer = true
+        border.layer!.backgroundColor = .black
+        contentView!.addSubview(border)
         
         let directory = Button.Text(app, action: #selector(app.browse))
         directory.label.stringValue = .local("Home.directory")
@@ -151,18 +135,8 @@ final class Home: NSWindow  {
         contentView!.addSubview(directory)
         self.directory = directory
         
-        let list = NSScrollView()
-        list.translatesAutoresizingMaskIntoConstraints = false
-        list.drawsBackground = false
-        list.hasVerticalScroller = true
-        list.verticalScroller!.controlSize = .mini
-        list.verticalScrollElasticity = .allowed
-        list.documentView = Flipped()
-        list.documentView!.translatesAutoresizingMaskIntoConstraints = false
-        list.documentView!.topAnchor.constraint(equalTo: list.topAnchor).isActive = true
-        list.documentView!.leftAnchor.constraint(equalTo: list.leftAnchor).isActive = true
-        list.documentView!.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
-        list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: list.bottomAnchor).isActive = true
+        let list = Scroll()
+        list.flip()
         contentView!.addSubview(list)
         self.list = list
         
@@ -173,13 +147,8 @@ final class Home: NSWindow  {
         contentView!.addSubview(image)
         self.image = image
         
-        let button = Button.Text(app, action: nil)
+        let button = Button.Yes(app, action: nil)
         button.isHidden = true
-        button.label.font = .systemFont(ofSize: 11, weight: .medium)
-        button.label.textColor = .black
-        button.wantsLayer = true
-        button.layer!.cornerRadius = 4
-        button.layer!.backgroundColor = NSColor.halo.cgColor
         contentView!.addSubview(button)
         self.button = button
         
@@ -191,29 +160,24 @@ final class Home: NSWindow  {
         self.label = label
         
         let count = Label()
-        count.font = .systemFont(ofSize: 11, weight: .regular)
+        count.font = .systemFont(ofSize: 12, weight: .regular)
         count.alignment = .right
         count.textColor = .halo
         contentView!.addSubview(count)
         self.count = count
         
-        borderLeft.topAnchor.constraint(equalTo: borderTop.bottomAnchor, constant: 2).isActive = true
-        borderLeft.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
-        borderLeft.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 62).isActive = true
-        borderLeft.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        borderTop.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
-        borderTop.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
-        borderTop.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 40).isActive = true
-        borderTop.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        border.topAnchor.constraint(equalTo: self.border.bottomAnchor, constant: 2).isActive = true
+        border.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
+        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 62).isActive = true
+        border.widthAnchor.constraint(equalToConstant: 1).isActive = true
         
         directory.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        directory.bottomAnchor.constraint(equalTo: borderTop.topAnchor, constant: -3).isActive = true
+        directory.bottomAnchor.constraint(equalTo: self.border.topAnchor, constant: -3).isActive = true
         directory.widthAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
-        directory.leftAnchor.constraint(equalTo: borderTop.leftAnchor, constant: 82).isActive = true
+        directory.leftAnchor.constraint(equalTo: self.border.leftAnchor, constant: 82).isActive = true
         
-        list.topAnchor.constraint(equalTo: borderTop.bottomAnchor).isActive = true
-        list.leftAnchor.constraint(equalTo: borderLeft.rightAnchor).isActive = true
+        list.topAnchor.constraint(equalTo: self.border.bottomAnchor).isActive = true
+        list.leftAnchor.constraint(equalTo: border.rightAnchor).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
         
@@ -224,26 +188,24 @@ final class Home: NSWindow  {
         
         button.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
         button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 15).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 62).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         label.centerXAnchor.constraint(equalTo: list.centerXAnchor).isActive = true
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
-        count.rightAnchor.constraint(equalTo: borderTop.rightAnchor, constant: -12).isActive = true
+        count.rightAnchor.constraint(equalTo: self.border.rightAnchor, constant: -16).isActive = true
         count.centerYAnchor.constraint(equalTo: directory.centerYAnchor).isActive = true
         
-        var vertical = borderLeft.topAnchor
+        var vertical = border.topAnchor
         [("add", #selector(app.add)), ("reset", #selector(app.reset)), ("cloud", #selector(app.cloud)), ("history", #selector(app.history)), ("market", #selector(app.market)), ("settings", #selector(app.settings))].forEach {
             let button = Button.Image(app, action: $0.1)
             button.image.image = NSImage(named: $0.0)
             contentView!.addSubview(button)
             
             button.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-            button.rightAnchor.constraint(equalTo: borderLeft.leftAnchor).isActive = true
+            button.rightAnchor.constraint(equalTo: border.leftAnchor).isActive = true
             button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-            button.topAnchor.constraint(equalTo: vertical, constant: vertical == borderLeft.topAnchor ? 5 : 0).isActive = true
+            button.topAnchor.constraint(equalTo: vertical, constant: vertical == border.topAnchor ? 5 : 0).isActive = true
             vertical = button.bottomAnchor
         }
     }
