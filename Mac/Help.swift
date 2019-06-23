@@ -13,25 +13,14 @@ final class Help: NSWindow {
                    styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
-        backgroundColor = .shade
+        backgroundColor = .black
         isReleasedWhenClosed = false
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false
         
-        let border = NSView()
-        border.translatesAutoresizingMaskIntoConstraints = false
-        border.wantsLayer = true
-        border.layer!.backgroundColor = .black
-        contentView!.addSubview(border)
-        
-        let title = Label(.local("Help.title"))
-        title.textColor = .halo
-        title.font = .systemFont(ofSize: 14, weight: .bold)
-        contentView!.addSubview(title)
-        
         let label = Label()
-        label.textColor = .init(white: 1, alpha: 0.8)
-        label.font = .systemFont(ofSize: 16, weight: .light)
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         contentView!.addSubview(label)
         self.label = label
         
@@ -52,7 +41,7 @@ final class Help: NSWindow {
             contentView!.addSubview(button)
             buttons.append(button)
             
-            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -100).isActive = true
+            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -120).isActive = true
             image.heightAnchor.constraint(equalToConstant: 200).isActive = true
             image.widthAnchor.constraint(equalToConstant: 400).isActive = true
             
@@ -72,17 +61,9 @@ final class Help: NSWindow {
             rightButton = button.rightAnchor
         }
         
-        title.centerYAnchor.constraint(equalTo: contentView!.topAnchor, constant: 18).isActive = true
-        title.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -20).isActive = true
-        
-        border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
-        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
-        border.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
-        border.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        label.topAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 50).isActive = true
+        label.topAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 10).isActive = true
         label.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 480).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 460).isActive = true
         
         DispatchQueue.main.async { [weak self] in self?.display(0) }
     }
@@ -105,7 +86,7 @@ final class Help: NSWindow {
     private func display(_ index: Int) {
         self.index = index
         buttons.enumerated().forEach {
-            $0.1.alphaValue = $0.0 == index ? 1 : 0.12
+            $0.1.alphaValue = $0.0 == index ? 1 : 0.3
         }
         label.stringValue = .local("Onboard.mac\(index)")
         centerX.constant = CGFloat(-500 * index)
