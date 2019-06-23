@@ -53,7 +53,7 @@ final class Add: UIView {
             spellCheckingType = .yes
             autocapitalizationType = .sentences
             contentInset = .zero
-            textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 20, right: 16)
+            textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
             indicatorStyle = .white
         }
         
@@ -90,9 +90,19 @@ final class Add: UIView {
         title.text = .local("Add.title")
         addSubview(title)
         
+        let control = UIControl()
+        control.translatesAutoresizingMaskIntoConstraints = false
+        control.addTarget(text, action: #selector(text.resignFirstResponder), for: .touchUpInside)
+        addSubview(control)
+        
         let text = Text()
         addSubview(text)
         self.text = text
+        
+        control.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        control.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        control.bottomAnchor.constraint(equalTo: border.topAnchor).isActive = true
+        control.rightAnchor.constraint(equalTo: button.leftAnchor).isActive = true
         
         title.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         title.centerYAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
