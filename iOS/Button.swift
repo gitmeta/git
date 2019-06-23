@@ -16,8 +16,8 @@ class Button: UIButton {
     final class No: Button {
         override init(_ title: String) {
             super.init(title)
-            setTitleColor(.init(white: 1, alpha: 0.7), for: .normal)
-            setTitleColor(.init(white: 1, alpha: 0.2), for: .highlighted)
+            setTitleColor(.halo, for: .normal)
+            setTitleColor(UIColor.halo.withAlphaComponent(0.2), for: .highlighted)
         }
         
         required init?(coder: NSCoder) { return nil }

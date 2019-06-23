@@ -48,9 +48,7 @@ final class Alert: NSWindow {
             $0.allowsImplicitAnimation = true
             back.alphaValue = 1
             app.home.contentView!.layoutSubtreeIfNeeded()
-        }) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4) { [weak self] in self?.dismiss() }
-        }
+        }) { DispatchQueue.main.asyncAfter(deadline: .now() + 4) { [weak self] in self?.dismiss() } }
     }
     
     override func mouseDown(with: NSEvent) { dismiss() }

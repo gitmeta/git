@@ -1,6 +1,6 @@
 import AppKit
 
-final class Help: NSWindow {
+final class Help: Window {
     private weak var label: Label!
     private weak var centerX: NSLayoutConstraint!
     private var buttons = [Button]()
@@ -8,16 +8,7 @@ final class Help: NSWindow {
     private var index = 0
     
     init() {
-        super.init(contentRect: NSRect(
-            x: (NSScreen.main!.frame.width - 540) / 2, y: (NSScreen.main!.frame.height - 500) / 2, width: 540, height: 500),
-                   styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar], backing: .buffered, defer: false)
-        titlebarAppearsTransparent = true
-        titleVisibility = .hidden
-        backgroundColor = .black
-        isReleasedWhenClosed = false
-        toolbar = NSToolbar(identifier: "")
-        toolbar!.showsBaselineSeparator = false
-        
+        super.init(540, 500)
         let label = Label()
         label.textColor = .white
         label.font = .systemFont(ofSize: 14, weight: .regular)
@@ -70,13 +61,7 @@ final class Help: NSWindow {
     
     override func keyDown(with: NSEvent) {
         switch with.keyCode {
-        case 13:
-            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
-                close()
-            } else {
-                super.keyDown(with: with)
-            }
-        case 36, 53: close()
+        case 36: close()
         case 123: display(index > 0 ? index - 1 : images.count - 1)
         case 124: display(index < images.count - 1 ? index + 1 : 0)
         default: super.keyDown(with: with)

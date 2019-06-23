@@ -8,7 +8,7 @@ class Sheet: UIView {
         super.init(frame: .zero)
         guard !app.view.subviews.contains(where: { $0 is Signature }) else { return }
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.shade.withAlphaComponent(0)
+        backgroundColor = UIColor.halo.withAlphaComponent(0)
         app.view.addSubview(self)
         
         let base = UIView()
@@ -16,8 +16,6 @@ class Sheet: UIView {
         base.backgroundColor = .black
         base.layer.cornerRadius = 6
         base.clipsToBounds = true
-        base.layer.borderColor = UIColor.halo.cgColor
-        base.layer.borderWidth = 1
         addSubview(base)
         self.base = base
         
@@ -26,17 +24,17 @@ class Sheet: UIView {
         leftAnchor.constraint(equalTo: app.view.leftAnchor).isActive = true
         rightAnchor.constraint(equalTo: app.view.rightAnchor).isActive = true
         
-        base.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
-        base.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
+        base.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+        base.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         base.heightAnchor.constraint(equalToConstant: height).isActive = true
         let top = base.topAnchor.constraint(equalTo: topAnchor, constant: -height)
         top.isActive = true
         
         app.view.layoutIfNeeded()
         
-        top.constant = -20
-        UIView.animate(withDuration: 0.4) { [weak self] in
-            self?.backgroundColor = UIColor.shade.withAlphaComponent(0.8)
+        top.constant = 40
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.backgroundColor = UIColor.halo.withAlphaComponent(0.8)
             self?.layoutIfNeeded()
         }
     }
@@ -45,7 +43,7 @@ class Sheet: UIView {
     
     @objc final func close() {
         app.window!.endEditing(true)
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+        UIView.animate(withDuration: 0.4, animations: { [weak self] in
             self?.alpha = 0
         }) { [weak self] _ in self?.removeFromSuperview() }
     }

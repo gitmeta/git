@@ -25,7 +25,7 @@ final class History: UIView {
             let border = UIView()
             border.translatesAutoresizingMaskIntoConstraints = false
             border.isUserInteractionEnabled = false
-            border.backgroundColor = UIColor.halo.withAlphaComponent(0.4)
+            border.backgroundColor = UIColor.halo.withAlphaComponent(0.5)
             addSubview(border)
             
             let date = UILabel()

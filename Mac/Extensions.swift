@@ -31,3 +31,32 @@ final class Label: NSTextField {
     
     required init?(coder: NSCoder) { return nil }
 }
+
+class Window: NSWindow {
+    override init(contentRect: NSRect, styleMask: NSWindow.StyleMask, backing: NSWindow.BackingStoreType, defer d: Bool) {
+        super.init(contentRect: contentRect, styleMask: styleMask, backing: backing, defer: d)
+    }
+    
+    init(_ width: CGFloat, _ height: CGFloat, style: NSWindow.StyleMask = []) {
+        super.init(contentRect: NSRect(x: (NSScreen.main!.frame.width - width) / 2, y: (NSScreen.main!.frame.height - height) / 2, width: width, height: height), styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar, .miniaturizable, style], backing: .buffered, defer: false)
+        titlebarAppearsTransparent = true
+        titleVisibility = .hidden
+        backgroundColor = .black
+        isReleasedWhenClosed = false
+        toolbar = NSToolbar(identifier: "")
+        toolbar!.showsBaselineSeparator = false
+    }
+    
+    override func keyDown(with: NSEvent) {
+        switch with.keyCode {
+        case 13:
+            if with.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
+                close()
+            } else {
+                super.keyDown(with: with)
+            }
+        case 53: close()
+        default: super.keyDown(with: with)
+        }
+    }
+}

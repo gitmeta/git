@@ -54,7 +54,7 @@ final class Home: UIView {
             let border = UIView()
             border.isUserInteractionEnabled = false
             border.translatesAutoresizingMaskIntoConstraints = false
-            border.backgroundColor = UIColor.halo.withAlphaComponent(0.4)
+            border.backgroundColor = UIColor.halo.withAlphaComponent(0.5)
             addSubview(border)
             
             switch status {

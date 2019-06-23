@@ -69,22 +69,23 @@ final class Help: Sheet {
         
         close.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         close.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
-        
-        DispatchQueue.main.async { [weak self] in self?.display(0) }
+        display(0)
     }
     
     required init?(coder: NSCoder) { return nil }
     
     private func display(_ index: Int) {
+        label.text = .local("Onboard.ios\(index)")
+        base.layoutIfNeeded()
         self.index = index
         buttons.enumerated().forEach { $0.1.alpha = $0.0 == index ? 1 : 0.3 }
         centerX.constant = CGFloat(-400 * index)
-        UIView.animate(withDuration: 0.4, animations: { [weak self] in
+        UIView.animate(withDuration: 0.4) { [weak self] in
             self?.images.enumerated().forEach {
                 $0.1.alpha = $0.0 == index ? 1 : 0
             }
             self?.base.layoutIfNeeded()
-        }) { [weak self] _ in self?.label.text = .local("Onboard.ios\(index)") }
+        }
     }
     
     @objc private func show(_ button: Button) { display(buttons.firstIndex(of: button)!) }
