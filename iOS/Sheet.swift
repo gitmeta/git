@@ -40,7 +40,7 @@ class Sheet: UIView {
     
     required init?(coder: NSCoder) { return nil }
     
-    @objc final func close() {
+    @objc func close() {
         app.window!.endEditing(true)
         UIView.animate(withDuration: 0.35, animations: { [weak self] in
             self?.alpha = 0

@@ -10,9 +10,9 @@ private(set) weak var app: App!
     private(set) weak var tab: Tab!
     private(set) weak var _home: Home!
     private(set) weak var _history: History!
+    private(set) weak var _settings: Settings!
     private weak var _market: Market!
     private weak var _add: Add!
-    private weak var _settings: Settings!
     var repository: Repository? {
         didSet {
             if repository == nil {

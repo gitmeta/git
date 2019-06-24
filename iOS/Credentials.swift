@@ -1,8 +1,7 @@
-import Git
 import UIKit
 
 final class Credentials: Sheet, UITextFieldDelegate {
-    private final class Field: UIView {
+    final class Field: UIView {
         private(set) weak var field: UITextField!
         private(set) weak var label: UILabel!
         
@@ -57,34 +56,29 @@ final class Credentials: Sheet, UITextFieldDelegate {
         required init?(coder: NSCoder) { return nil }
     }
     
-    private weak var user: Field!
-    private weak var password: Field!
+    var done: ((String, String) -> Void)!
+    private(set) weak var title: UILabel!
+    private(set) weak var first: Field!
+    private(set) weak var second: Field!
     
     @discardableResult override init() {
         super.init()
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = .local("Settings.labelKey")
-        label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .halo
-        base.addSubview(label)
+        let title = UILabel()
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.font = .systemFont(ofSize: 14, weight: .regular)
+        title.textColor = .halo
+        base.addSubview(title)
+        self.title = title
         
-        let user = Field()
-        user.field.delegate = self
-        user.field.keyboardType = .emailAddress
-        user.label.text = .local("Settings.keyUser")
-        user.field.text = Hub.session.user
-        base.addSubview(user)
-        self.user = user
+        let first = Field()
+        first.field.delegate = self
+        base.addSubview(first)
+        self.first = first
         
-        let password = Field()
-        password.field.delegate = self
-        password.field.keyboardType = .alphabet
-        password.field.isSecureTextEntry = true
-        password.label.text = .local("Settings.keyPassword")
-        password.field.text = Hub.session.password
-        base.addSubview(password)
-        self.password = password
+        let second = Field()
+        second.field.delegate = self
+        base.addSubview(second)
+        self.second = second
         
         let save = Button.Yes(.local("Settings.keySave"))
         save.addTarget(self, action: #selector(self.save), for: .touchUpInside)
@@ -94,40 +88,43 @@ final class Credentials: Sheet, UITextFieldDelegate {
         close.addTarget(self, action: #selector(self.close), for: .touchUpInside)
         base.addSubview(close)
         
-        label.topAnchor.constraint(equalTo: base.topAnchor, constant: 50).isActive = true
-        label.leftAnchor.constraint(equalTo: base.centerXAnchor, constant: -150).isActive = true
+        title.topAnchor.constraint(equalTo: base.topAnchor, constant: 50).isActive = true
+        title.leftAnchor.constraint(equalTo: base.centerXAnchor, constant: -150).isActive = true
         
-        user.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true
-        user.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        user.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
+        first.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20).isActive = true
+        first.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        first.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         
-        password.topAnchor.constraint(equalTo: user.bottomAnchor, constant: 20).isActive = true
-        password.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        password.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
+        second.topAnchor.constraint(equalTo: first.bottomAnchor, constant: 20).isActive = true
+        second.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        second.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         
         save.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
-        save.topAnchor.constraint(equalTo: password.bottomAnchor, constant: 40).isActive = true
+        save.topAnchor.constraint(equalTo: second.bottomAnchor, constant: 40).isActive = true
         
         close.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         close.topAnchor.constraint(equalTo: save.bottomAnchor, constant: 20).isActive = true
+        close.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }
     
     func textFieldShouldReturn(_ field: UITextField) -> Bool {
-        if field == user.field {
-            password.field.becomeFirstResponder()
+        if field == first.field {
+            second.field.becomeFirstResponder()
         } else {
             field.resignFirstResponder()
         }
         return true
     }
     
+    override func close() {
+        super.close()
+        done = nil
+    }
+    
     @objc private func save() {
         app.window!.endEditing(true)
-        Hub.session.update(user.field.text!, password: password.field.text!) { [weak self] in
-            app.alert(.local("Alert.success"), message: .local("Settings.keySuccess"))
-            self?.close()
-        }
+        done(first.field.text!, second.field.text!)
     }
 }

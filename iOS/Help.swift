@@ -66,6 +66,7 @@ final class Help: Sheet {
         label.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 290).isActive = true
         
+        close.topAnchor.constraint(equalTo: base.topAnchor, constant: 430).isActive = true
         close.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         close.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
         display(0)

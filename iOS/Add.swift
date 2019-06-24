@@ -134,7 +134,7 @@ final class Add: UIView {
     @objc private func commit() {
         text.resignFirstResponder()
         if Hub.session.name.isEmpty || Hub.session.email.isEmpty {
-            Signature()
+            app._settings.sign()
         } else {
             app.repository?.commit(
                 app._home.list.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.isSelected }).map { $0.url },

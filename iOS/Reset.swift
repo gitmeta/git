@@ -43,6 +43,7 @@ final class Reset: Sheet {
         
         cancel.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
         cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 20).isActive = true
+        cancel.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
     }
     
     required init?(coder: NSCoder) { return nil }

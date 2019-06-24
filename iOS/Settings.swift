@@ -1,3 +1,4 @@
+import Git
 import UIKit
 
 final class Settings: UIView {
@@ -59,9 +60,43 @@ final class Settings: UIView {
     }
     
     required init?(coder: NSCoder) { return nil }
-    @objc private func sign() { Signature() }
-    @objc private func key() { Credentials() }
     @objc private func help() { app.help() }
-    
     @objc private func remove() { Delete() }
+    
+    @objc func sign() {
+        let credentials = Credentials()
+        credentials.title.text = .local("Settings.labelSign")
+        credentials.first.label.text = .local("Settings.signName")
+        credentials.first.field.keyboardType = .alphabet
+        credentials.first.field.text = Hub.session.name
+        credentials.second.label.text = .local("Settings.signEmail")
+        credentials.second.field.keyboardType = .emailAddress
+        credentials.second.field.text = Hub.session.email
+        credentials.done = {
+            Hub.session.update($0, email: $1, error: {
+                app.alert(.local("Alert.error"), message: $0.localizedDescription)
+            }) { [weak credentials] in
+                app.alert(.local("Alert.success"), message: .local("Settings.signSuccess"))
+                credentials?.close()
+            }
+        }
+    }
+    
+    @objc private func key() {
+        let credentials = Credentials()
+        credentials.title.text = .local("Settings.labelKey")
+        credentials.first.label.text = .local("Settings.keyUser")
+        credentials.first.field.keyboardType = .emailAddress
+        credentials.first.field.text = Hub.session.user
+        credentials.second.label.text = .local("Settings.keyPassword")
+        credentials.second.field.isSecureTextEntry = true
+        credentials.second.field.keyboardType = .alphabet
+        credentials.second.field.text = Hub.session.password
+        credentials.done = {
+            Hub.session.update($0, password: $1) { [weak credentials] in
+                app.alert(.local("Alert.success"), message: .local("Settings.keySuccess"))
+                credentials?.close()
+            }
+        }
+    }
 }
