@@ -7,8 +7,8 @@ final class Help: Sheet {
     private var images = [UIImageView]()
     private var index = 0
 
-    @discardableResult init() {
-        super.init(480)
+    @discardableResult override init() {
+        super.init()
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white

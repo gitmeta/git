@@ -3,7 +3,7 @@ import UIKit
 class Sheet: UIView {
     private(set) weak var base: UIView!
     
-    init(_ height: CGFloat) {
+    init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = UIColor.halo.withAlphaComponent(0)
@@ -25,16 +25,16 @@ class Sheet: UIView {
         
         base.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         base.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        base.heightAnchor.constraint(equalToConstant: height).isActive = true
-        let top = base.topAnchor.constraint(equalTo: topAnchor, constant: -height)
-        top.isActive = true
+        let bottom = base.bottomAnchor.constraint(equalTo: topAnchor)
+        bottom.isActive = true
         
-        parent.layoutIfNeeded()
-        
-        top.constant = 40
-        UIView.animate(withDuration: 0.45) { [weak self] in
-            self?.backgroundColor = UIColor.halo.withAlphaComponent(0.85)
-            self?.layoutIfNeeded()
+        DispatchQueue.main.async {
+            parent.layoutIfNeeded()
+            bottom.constant = 40 + base.frame.height
+            UIView.animate(withDuration: 0.45) { [weak self] in
+                self?.backgroundColor = UIColor.halo.withAlphaComponent(0.85)
+                self?.layoutIfNeeded()
+            }
         }
     }
     

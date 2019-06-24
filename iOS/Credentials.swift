@@ -60,8 +60,8 @@ final class Credentials: Sheet, UITextFieldDelegate {
     private weak var user: Field!
     private weak var password: Field!
     
-    @discardableResult init() {
-        super.init(350)
+    @discardableResult override init() {
+        super.init()
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = .local("Settings.labelKey")

@@ -7,8 +7,8 @@ final class Cloud: Sheet, UITextFieldDelegate {
     private weak var button: Button.Yes!
     private weak var cancel: Button.No!
     
-    @discardableResult init() {
-        super.init(200)
+    @discardableResult override init() {
+        super.init()
         let border = UIView()
         border.isUserInteractionEnabled = true
         border.translatesAutoresizingMaskIntoConstraints = false
@@ -79,6 +79,7 @@ final class Cloud: Sheet, UITextFieldDelegate {
         
         cancel.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20).isActive = true
         cancel.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
+        cancel.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
         
         app.repository?.remote { [weak self] in self?.field.text = $0 }
     }

@@ -6,7 +6,7 @@ final class Create: Sheet, UITextFieldDelegate {
     
     init(_ result: @escaping((URL?) -> Void)) {
         self.result = result
-        super.init(200)
+        super.init()
         let name = UITextField()
         name.translatesAutoresizingMaskIntoConstraints = false
         name.tintColor = .halo
@@ -52,6 +52,7 @@ final class Create: Sheet, UITextFieldDelegate {
         
         cancel.topAnchor.constraint(equalTo: create.bottomAnchor, constant: 20).isActive = true
         cancel.centerXAnchor.constraint(equalTo: base.centerXAnchor).isActive = true
+        cancel.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
         
         name.becomeFirstResponder()
     }

@@ -2,8 +2,8 @@ import Git
 import UIKit
 
 final class Reset: Sheet {
-    @discardableResult init() {
-        super.init(280)
+    @discardableResult override init() {
+        super.init()
         let image = UIImageView(image: UIImage(named: "error"))
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .center
