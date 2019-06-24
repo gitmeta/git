@@ -2,7 +2,7 @@ import UIKit
 
 final class Tab: UIView {
     final class Button: UIControl {
-        let target: (() -> Void)
+        fileprivate let target: (() -> Void)
         fileprivate weak var tab: Tab!
         private weak var indicator: UIView!
         private weak var image: UIImageView!
