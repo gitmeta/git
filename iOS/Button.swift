@@ -23,7 +23,7 @@ class Button: UIButton {
         required init?(coder: NSCoder) { return nil }
     }
     
-    init(_ title: String) {
+    fileprivate init(_ title: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         titleLabel!.font = .systemFont(ofSize: 12, weight: .medium)

@@ -175,7 +175,9 @@ private(set) weak var app: App!
             UNUserNotificationCenter.current().delegate = self
             UNUserNotificationCenter.current().getNotificationSettings {
                 if $0.authorizationStatus != .authorized {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
+                    DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 15) {
+                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
+                    }
                 }
             }
         }
