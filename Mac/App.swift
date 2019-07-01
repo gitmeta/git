@@ -56,19 +56,16 @@ private(set) weak var app: App!
         let item = NSCustomTouchBarItem(identifier: makeItemForIdentifier)
         let button = NSButton(title: "", target: nil, action: nil)
         item.view = button
+        button.target = self
+        button.title = .local("Home.\(makeItemForIdentifier.rawValue)")
         switch makeItemForIdentifier.rawValue {
         case "directory":
-            button.title = .local("Home.directory")
             button.image = NSImage(named: "logotouch")
             button.imagePosition = .imageLeft
             button.imageScaling = .scaleNone
             button.bezelColor = .black
-            button.target = self
             button.action = #selector(browse)
-        case "refresh":
-            button.title = .local("Home.refresh")
-            button.target = self
-            button.action = #selector(refresh)
+        case "refresh": button.action = #selector(refresh)
         default: break
         }
         return item
