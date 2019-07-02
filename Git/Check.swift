@@ -62,10 +62,7 @@ final class Check {
                 }
                 try extract(Tree($0.id, url: url, trail: $0.url).items, index: index)
             default:
-                let data = try Hub.content.get($0.id, url: url)
-                let parse = Parse(data)
-                _ = try parse.ascii("\u{0000}")
-                try parse.data.subdata(in: parse.index ..< parse.data.count).write(to: $0.url, options: .atomic)
+                try Hub.content.blob($0.id, url: url).write(to: $0.url, options: .atomic)
                 index.entry($0.id, url: $0.url)
             }
         }

@@ -77,6 +77,10 @@ public struct Failure: LocalizedError {
         public static let unknown = Failure("Remote repository is different than local, try Pull before Push.")
     }
     
+    public struct Diff {
+        public static let unknown = Failure("Couldn't find the requested file.")
+    }
+    
     public var errorDescription: String? { return string }
     private let string: String
     private init(_ string: String) { self.string = string }

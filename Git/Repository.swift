@@ -8,6 +8,7 @@ public final class Repository {
     let check = Check()
     let merger = Merger()
     let packer = Packer()
+    let differ = Differ()
     
     init(_ url: URL) {
         self.url = url
@@ -16,6 +17,7 @@ public final class Repository {
         check.repository = self
         merger.repository = self
         packer.repository = self
+        differ.repository = self
     }
     
     public func commit(_ files: [URL], message: String, error: @escaping((Error) -> Void) = { _ in }, done: @escaping(() -> Void) = { }) {
@@ -102,6 +104,12 @@ public final class Repository {
             guard let url = self?.url else { return }
             try? Config(remote).save(url)
         }, success: result)
+    }
+    
+    public func diff(_ url: URL, error: @escaping((Error) -> Void), result: @escaping(([(Date, String)]) -> Void)) {
+        Hub.dispatch.background({ [weak self] in
+            return try self?.differ.diff(url) ?? []
+        }, error: error, success: result)
     }
     
     public func refresh() { state.refresh() }

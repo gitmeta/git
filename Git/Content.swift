@@ -29,6 +29,12 @@ final class Content {
         } (Hub.hash.blob(blob))
     }
     
+    func blob(_ id: String, url: URL) throws -> Data {
+        let parse = Parse(try Hub.content.get(id, url: url))
+        _ = try parse.ascii("\u{0000}")
+        return parse.data.subdata(in: parse.index ..< parse.data.count)
+    }
+    
     func get(_ id: String, url: URL) throws -> Data {
         return Hub.press.decompress(try Data(contentsOf: url.appendingPathComponent(".git/objects/\(id.prefix(2))/\(id.dropFirst(2))")))
     }
