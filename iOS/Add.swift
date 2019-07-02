@@ -79,7 +79,7 @@ final class Add: UIView {
         border.backgroundColor = .halo
         addSubview(border)
         
-        let button = Button.Yes(.local("Add.button"))
+        let button = Button.Yes(.key("Add.button"))
         button.addTarget(self, action: #selector(commit), for: .touchUpInside)
         addSubview(button)
         
@@ -87,7 +87,7 @@ final class Add: UIView {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .systemFont(ofSize: 12, weight: .bold)
         title.textColor = .halo
-        title.text = .local("Add.title")
+        title.text = .key("Add.title")
         addSubview(title)
         
         let control = UIControl()
@@ -138,9 +138,9 @@ final class Add: UIView {
         } else {
             app.repository?.commit(
                 app._home.list.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.isSelected }).map { $0.url },
-                message: text.text, error: { app.alert(.local("Alert.error"), message: $0.localizedDescription)
+                message: text.text, error: { app.alert(.key("Alert.error"), message: $0.localizedDescription)
             }) {
-                app.alert(.local("Alert.commit"), message: self.text.text)
+                app.alert(.key("Alert.commit"), message: self.text.text)
                 self.text.text = ""
                 app.tab.history.choose()
                 if app._history.content != nil {

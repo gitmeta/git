@@ -80,11 +80,11 @@ final class Credentials: Sheet, UITextFieldDelegate {
         base.addSubview(second)
         self.second = second
         
-        let save = Button.Yes(.local("Settings.keySave"))
+        let save = Button.Yes(.key("Settings.keySave"))
         save.addTarget(self, action: #selector(self.save), for: .touchUpInside)
         base.addSubview(save)
         
-        let close = Button.No(.local("Settings.close"))
+        let close = Button.No(.key("Settings.close"))
         close.addTarget(self, action: #selector(self.close), for: .touchUpInside)
         base.addSubview(close)
         

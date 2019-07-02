@@ -14,7 +14,7 @@ final class Settings: UIView {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = .local("About.label")
+        label.text = .key("About.label")
         label.textColor = .halo
         label.font = .bold(20)
         addSubview(label)
@@ -26,17 +26,17 @@ final class Settings: UIView {
         version.font = .light(13)
         addSubview(version)
         
-        let sign = Button.Yes(.local("Settings.buttonSign"))
+        let sign = Button.Yes(.key("Settings.buttonSign"))
         sign.addTarget(self, action: #selector(self.sign), for: .touchUpInside)
         
-        let key = Button.Yes(.local("Settings.buttonKey"))
+        let key = Button.Yes(.key("Settings.buttonKey"))
         key.addTarget(self, action: #selector(self.key), for: .touchUpInside)
         
-        let delete = Button.Yes(.local("Settings.buttonDelete"))
+        let delete = Button.Yes(.key("Settings.buttonDelete"))
         delete.addTarget(self, action: #selector(remove), for: .touchUpInside)
         delete.backgroundColor = .init(red: 1, green: 0.4, blue: 0.3, alpha: 1)
         
-        let help = Button.No(.local("Settings.help"))
+        let help = Button.No(.key("Settings.help"))
         help.addTarget(self, action: #selector(self.help), for: .touchUpInside)
         
         image.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
@@ -65,18 +65,18 @@ final class Settings: UIView {
     
     @objc func sign() {
         let credentials = Credentials()
-        credentials.title.text = .local("Settings.labelSign")
-        credentials.first.label.text = .local("Settings.signName")
+        credentials.title.text = .key("Settings.labelSign")
+        credentials.first.label.text = .key("Settings.signName")
         credentials.first.field.keyboardType = .alphabet
         credentials.first.field.text = Hub.session.name
-        credentials.second.label.text = .local("Settings.signEmail")
+        credentials.second.label.text = .key("Settings.signEmail")
         credentials.second.field.keyboardType = .emailAddress
         credentials.second.field.text = Hub.session.email
         credentials.done = {
             Hub.session.update($0, email: $1, error: {
-                app.alert(.local("Alert.error"), message: $0.localizedDescription)
+                app.alert(.key("Alert.error"), message: $0.localizedDescription)
             }) { [weak credentials] in
-                app.alert(.local("Alert.success"), message: .local("Settings.signSuccess"))
+                app.alert(.key("Alert.success"), message: .key("Settings.signSuccess"))
                 credentials?.close()
             }
         }
@@ -84,17 +84,17 @@ final class Settings: UIView {
     
     @objc private func key() {
         let credentials = Credentials()
-        credentials.title.text = .local("Settings.labelKey")
-        credentials.first.label.text = .local("Settings.keyUser")
+        credentials.title.text = .key("Settings.labelKey")
+        credentials.first.label.text = .key("Settings.keyUser")
         credentials.first.field.keyboardType = .emailAddress
         credentials.first.field.text = Hub.session.user
-        credentials.second.label.text = .local("Settings.keyPassword")
+        credentials.second.label.text = .key("Settings.keyPassword")
         credentials.second.field.isSecureTextEntry = true
         credentials.second.field.keyboardType = .alphabet
         credentials.second.field.text = Hub.session.password
         credentials.done = {
             Hub.session.update($0, password: $1) { [weak credentials] in
-                app.alert(.local("Alert.success"), message: .local("Settings.keySuccess"))
+                app.alert(.key("Alert.success"), message: .key("Settings.keySuccess"))
                 credentials?.close()
             }
         }

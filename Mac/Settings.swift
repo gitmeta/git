@@ -68,12 +68,12 @@ final class Settings: Window, NSTextFieldDelegate {
     init() {
         super.init(320, 300)
         let buttonSign = Button.Yes(self, action: #selector(sign))
-        buttonSign.label.stringValue = .local("Settings.buttonSign")
+        buttonSign.label.stringValue = .key("Settings.buttonSign")
         contentView!.addSubview(buttonSign)
         self.buttonSign = buttonSign
         
         let buttonKey = Button.Yes(self, action: #selector(key))
-        buttonKey.label.stringValue = .local("Settings.buttonKey")
+        buttonKey.label.stringValue = .key("Settings.buttonKey")
         contentView!.addSubview(buttonKey)
         self.buttonKey = buttonKey
         
@@ -85,14 +85,14 @@ final class Settings: Window, NSTextFieldDelegate {
         key.translatesAutoresizingMaskIntoConstraints = false
         contentView!.addSubview(key)
         
-        let labelSign = Label(.local("Settings.labelSign"))
+        let labelSign = Label(.key("Settings.labelSign"))
         labelSign.font = .systemFont(ofSize: 14, weight: .light)
         labelSign.textColor = .halo
         sign.addSubview(labelSign)
         
         let signName = Field()
         signName.field.delegate = self
-        signName.label.stringValue = .local("Settings.signName")
+        signName.label.stringValue = .key("Settings.signName")
         signName.field.stringValue = Hub.session.name
         (fieldEditor(true, for: signName.field) as? NSTextView)?.insertionPointColor = .halo
         sign.addSubview(signName)
@@ -100,24 +100,24 @@ final class Settings: Window, NSTextFieldDelegate {
         
         let signEmail = Field()
         signEmail.field.delegate = self
-        signEmail.label.stringValue = .local("Settings.signEmail")
+        signEmail.label.stringValue = .key("Settings.signEmail")
         signEmail.field.stringValue = Hub.session.email
         (fieldEditor(true, for: signEmail.field) as? NSTextView)?.insertionPointColor = .halo
         sign.addSubview(signEmail)
         self.signEmail = signEmail
         
         let signSave = Button.Yes(self, action: #selector(self.signSave))
-        signSave.label.stringValue = .local("Settings.signSave")
+        signSave.label.stringValue = .key("Settings.signSave")
         sign.addSubview(signSave)
         
-        let labelKey = Label(.local("Settings.labelKey"))
+        let labelKey = Label(.key("Settings.labelKey"))
         labelKey.font = .systemFont(ofSize: 14, weight: .light)
         labelKey.textColor = .halo
         key.addSubview(labelKey)
         
         let keyUser = Field()
         keyUser.field.delegate = self
-        keyUser.label.stringValue = .local("Settings.keyUser")
+        keyUser.label.stringValue = .key("Settings.keyUser")
         keyUser.field.stringValue = Hub.session.user
         (fieldEditor(true, for: keyUser.field) as? NSTextView)?.insertionPointColor = .halo
         key.addSubview(keyUser)
@@ -125,14 +125,14 @@ final class Settings: Window, NSTextFieldDelegate {
         
         let keyPassword = Field(NSSecureTextField.self)
         keyPassword.field.delegate = self
-        keyPassword.label.stringValue = .local("Settings.keyPassword")
+        keyPassword.label.stringValue = .key("Settings.keyPassword")
         keyPassword.field.stringValue = Hub.session.password
         (fieldEditor(true, for: keyPassword.field) as? NSTextView)?.insertionPointColor = .halo
         key.addSubview(keyPassword)
         self.keyPassword = keyPassword
         
         let keySave = Button.Yes(self, action: #selector(self.keySave))
-        keySave.label.stringValue = .local("Settings.keySave")
+        keySave.label.stringValue = .key("Settings.keySave")
         key.addSubview(keySave)
         
         buttonKey.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -10).isActive = true
@@ -242,14 +242,14 @@ final class Settings: Window, NSTextFieldDelegate {
     @objc private func signSave() {
         makeFirstResponder(nil)
         Hub.session.update(signName.field.stringValue, email: signEmail.field.stringValue, error: {
-            app.alert(.local("Alert.error"), message: $0.localizedDescription)
-        }) { app.alert(.local("Alert.success"), message: .local("Settings.signSuccess")) }
+            app.alert(.key("Alert.error"), message: $0.localizedDescription)
+        }) { app.alert(.key("Alert.success"), message: .key("Settings.signSuccess")) }
     }
     
     @objc private func keySave() {
         makeFirstResponder(nil)
         Hub.session.update(keyUser.field.stringValue, password: keyPassword.field.stringValue) {
-            app.alert(.local("Alert.success"), message: .local("Settings.keySuccess"))
+            app.alert(.key("Alert.success"), message: .key("Settings.keySuccess"))
         }
     }
 }

@@ -17,7 +17,7 @@ final class Help: Sheet {
         base.addSubview(label)
         self.label = label
         
-        let close = Button.No(.local("Help.close"))
+        let close = Button.No(.key("Help.close"))
         close.addTarget(self, action: #selector(self.close), for: .touchUpInside)
         base.addSubview(close)
         
@@ -75,7 +75,7 @@ final class Help: Sheet {
     required init?(coder: NSCoder) { return nil }
     
     private func display(_ index: Int) {
-        label.text = .local("Onboard.ios\(index)")
+        label.text = .key("Onboard.ios\(index)")
         base.layoutIfNeeded()
         self.index = index
         buttons.enumerated().forEach { $0.1.alpha = $0.0 == index ? 1 : 0.3 }

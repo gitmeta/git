@@ -57,7 +57,7 @@ private(set) weak var app: App!
         let button = NSButton(title: "", target: nil, action: nil)
         item.view = button
         button.target = self
-        button.title = .local("Home.\(makeItemForIdentifier.rawValue)")
+        button.title = .key("Home.\(makeItemForIdentifier.rawValue)")
         switch makeItemForIdentifier.rawValue {
         case "directory":
             button.image = NSImage(named: "logotouch")
@@ -78,86 +78,86 @@ private(set) weak var app: App!
         
         let menu = NSMenu()
         menu.addItem({
-            $0.submenu = NSMenu(title: .local("Menu.git"))
+            $0.submenu = NSMenu(title: .key("Menu.git"))
             $0.submenu!.items = [
-                NSMenuItem(title: .local("Menu.about"), action: #selector(about), keyEquivalent: ""),
+                NSMenuItem(title: .key("Menu.about"), action: #selector(about), keyEquivalent: ""),
                 NSMenuItem.separator(),
-                NSMenuItem(title: .local("Menu.preferences"), action: #selector(settings), keyEquivalent: ","),
+                NSMenuItem(title: .key("Menu.preferences"), action: #selector(settings), keyEquivalent: ","),
                 NSMenuItem.separator(),
-                NSMenuItem(title: .local("Menu.hide"), action: #selector(hide(_:)), keyEquivalent: "h"),
+                NSMenuItem(title: .key("Menu.hide"), action: #selector(hide(_:)), keyEquivalent: "h"),
                 { $0.keyEquivalentModifierMask = [.option, .command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.hideOthers"), action: #selector(hideOtherApplications(_:)), keyEquivalent: "h")),
-                NSMenuItem(title: .local("Menu.showAll"), action: #selector(unhideAllApplications(_:)), keyEquivalent: ","),
+                } (NSMenuItem(title: .key("Menu.hideOthers"), action: #selector(hideOtherApplications(_:)), keyEquivalent: "h")),
+                NSMenuItem(title: .key("Menu.showAll"), action: #selector(unhideAllApplications(_:)), keyEquivalent: ","),
                 NSMenuItem.separator(),
-                NSMenuItem(title: .local("Menu.quit"), action: #selector(terminate(_:)), keyEquivalent: "q")]
+                NSMenuItem(title: .key("Menu.quit"), action: #selector(terminate(_:)), keyEquivalent: "q")]
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
         menu.addItem({
-            $0.submenu = NSMenu(title: .local("Menu.project"))
+            $0.submenu = NSMenu(title: .key("Menu.project"))
             $0.submenu!.items = [
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.directory"), action: #selector(browse), keyEquivalent: "o")),
+                } (NSMenuItem(title: .key("Menu.directory"), action: #selector(browse), keyEquivalent: "o")),
                 NSMenuItem.separator(),
-                NSMenuItem(title: .local("Menu.cloud"), action: #selector(cloud), keyEquivalent: ""),
+                NSMenuItem(title: .key("Menu.cloud"), action: #selector(cloud), keyEquivalent: ""),
                 NSMenuItem.separator(),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.refresh"), action: #selector(refresh), keyEquivalent: "r")),
+                } (NSMenuItem(title: .key("Menu.refresh"), action: #selector(refresh), keyEquivalent: "r")),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.log"), action: #selector(history), keyEquivalent: "y")),
+                } (NSMenuItem(title: .key("Menu.log"), action: #selector(history), keyEquivalent: "y")),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.commit"), action: #selector(add), keyEquivalent: "\r")),
+                } (NSMenuItem(title: .key("Menu.commit"), action: #selector(add), keyEquivalent: "\r")),
                 { $0.keyEquivalentModifierMask = [.command, .control, .shift]
                     return $0
-                } (NSMenuItem(title: .local("Menu.reset"), action: #selector(reset), keyEquivalent: "r"))]
+                } (NSMenuItem(title: .key("Menu.reset"), action: #selector(reset), keyEquivalent: "r"))]
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
         menu.addItem({
-            $0.submenu = NSMenu(title: .local("Menu.edit"))
+            $0.submenu = NSMenu(title: .key("Menu.edit"))
             $0.submenu!.items = [
                 { $0.keyEquivalentModifierMask = [.option, .command]
                     $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.undo"), action: Selector(("undo:")), keyEquivalent: "z")),
+                } (NSMenuItem(title: .key("Menu.undo"), action: Selector(("undo:")), keyEquivalent: "z")),
                 { $0.keyEquivalentModifierMask = [.command, .shift]
                     return $0
-                } (NSMenuItem(title: .local("Menu.redo"), action: Selector(("redo:")), keyEquivalent: "z")),
+                } (NSMenuItem(title: .key("Menu.redo"), action: Selector(("redo:")), keyEquivalent: "z")),
                 NSMenuItem.separator(),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.cut"), action: #selector(NSText.cut(_:)), keyEquivalent: "x")),
+                } (NSMenuItem(title: .key("Menu.cut"), action: #selector(NSText.cut(_:)), keyEquivalent: "x")),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.copy"), action: #selector(NSText.copy(_:)), keyEquivalent: "c")),
+                } (NSMenuItem(title: .key("Menu.copy"), action: #selector(NSText.copy(_:)), keyEquivalent: "c")),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.paste"), action: #selector(NSText.paste(_:)), keyEquivalent: "v")),
-                NSMenuItem(title: .local("Menu.delete"), action: #selector(NSText.delete(_:)), keyEquivalent: ""),
+                } (NSMenuItem(title: .key("Menu.paste"), action: #selector(NSText.paste(_:)), keyEquivalent: "v")),
+                NSMenuItem(title: .key("Menu.delete"), action: #selector(NSText.delete(_:)), keyEquivalent: ""),
                 { $0.keyEquivalentModifierMask = [.command]
                     return $0
-                } (NSMenuItem(title: .local("Menu.selectAll"), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a"))]
+                } (NSMenuItem(title: .key("Menu.selectAll"), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a"))]
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
         menu.addItem({
-            $0.submenu = NSMenu(title: .local("Menu.window"))
+            $0.submenu = NSMenu(title: .key("Menu.window"))
             $0.submenu!.items = [
-                NSMenuItem(title: .local("Menu.minimize"), action: #selector(Home.performMiniaturize(_:)), keyEquivalent: "m"),
-                NSMenuItem(title: .local("Menu.zoom"), action: #selector(Home.performZoom(_:)), keyEquivalent: "p"),
+                NSMenuItem(title: .key("Menu.minimize"), action: #selector(Home.performMiniaturize(_:)), keyEquivalent: "m"),
+                NSMenuItem(title: .key("Menu.zoom"), action: #selector(Home.performZoom(_:)), keyEquivalent: "p"),
                 NSMenuItem.separator(),
-                NSMenuItem(title: .local("Menu.bringAllToFront"), action: #selector(arrangeInFront(_:)), keyEquivalent: "")]
+                NSMenuItem(title: .key("Menu.bringAllToFront"), action: #selector(arrangeInFront(_:)), keyEquivalent: "")]
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
         menu.addItem({
-            $0.submenu = NSMenu(title: .local("Menu.help"))
-            $0.submenu!.items = [NSMenuItem(title: .local("Menu.showHelp"), action: #selector(help), keyEquivalent: "/")]
+            $0.submenu = NSMenu(title: .key("Menu.help"))
+            $0.submenu!.items = [NSMenuItem(title: .key("Menu.showHelp"), action: #selector(help), keyEquivalent: "/")]
             return $0
         } (NSMenuItem(title: "", action: nil, keyEquivalent: "")))
         
@@ -202,11 +202,11 @@ private(set) weak var app: App!
         home.update(.loading)
         restore()
         Hub.create(Hub.session.url, error: {
-            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.alert(.key("Alert.error"), message: $0.localizedDescription)
             self.repository = nil
         }) {
             self.repository = $0
-            self.alert(.local("Alert.success"), message: .local("Home.created"))
+            self.alert(.key("Alert.success"), message: .key("Home.created"))
         }
     }
     
@@ -214,10 +214,10 @@ private(set) weak var app: App!
         home.update(.loading)
         restore()
         repository?.unpack({
-            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.alert(.key("Alert.error"), message: $0.localizedDescription)
             self.repository = nil
         }) {
-            self.alert(.local("Alert.success"), message: .local("App.unpacked"))
+            self.alert(.key("Alert.success"), message: .key("App.unpacked"))
         }
     }
     
@@ -245,7 +245,7 @@ private(set) weak var app: App!
             if Hub.session.purchase.contains(.cloud) {
                 order(Cloud.self)
             } else {
-                app.alert(.local("Alert.purchase"), message: .local("Cloud.purchase"))
+                app.alert(.key("Alert.purchase"), message: .key("Cloud.purchase"))
             }
         }
     }
@@ -293,7 +293,7 @@ private(set) weak var app: App!
             if Hub.session.bookmark.isEmpty {
                 browse()
             } else {
-                Alert(message: .local("App.noRepository")).makeKeyAndOrderFront(nil)
+                Alert(message: .key("App.noRepository")).makeKeyAndOrderFront(nil)
             }
             return nil
         }

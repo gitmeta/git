@@ -11,7 +11,7 @@ final class About: Window {
         image.image = NSImage(named: "logo")
         contentView!.addSubview(image)
         
-        let label = Label(.local("About.label"))
+        let label = Label(.key("About.label"))
         label.textColor = .halo
         label.font = .bold(20)
         contentView!.addSubview(label)

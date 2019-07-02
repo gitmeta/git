@@ -38,7 +38,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             self.price = price
             
             let purchased = UILabel()
-            purchased.text = .local("Market.purchased")
+            purchased.text = .key("Market.purchased")
             purchased.translatesAutoresizingMaskIntoConstraints = false
             purchased.textColor = .halo
             purchased.font = .systemFont(ofSize: 16, weight: .medium)
@@ -46,7 +46,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             addSubview(purchased)
             self.purchased = purchased
             
-            let button = Button.Yes(.local("Market.purchase"))
+            let button = Button.Yes(.key("Market.purchase"))
             addSubview(button)
             self.button = button
             
@@ -96,10 +96,10 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .systemFont(ofSize: 12, weight: .bold)
         title.textColor = .halo
-        title.text = .local("Market.title")
+        title.text = .key("Market.title")
         addSubview(title)
         
-        let restore = Button.Yes(.local("Market.restore"))
+        let restore = Button.Yes(.key("Market.restore"))
         restore.addTarget(self, action: #selector(restoring), for: .touchUpInside)
         addSubview(restore)
         self.restore = restore
@@ -189,7 +189,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             item.image.image = UIImage(named: name)
             item.label.attributedText = {
                 $0.append(NSAttributedString(string: product.localizedTitle, attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold)]))
-                $0.append(NSAttributedString(string: .local("Market.\(name)"), attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .light)]))
+                $0.append(NSAttributedString(string: .key("Market.\(name)"), attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .light)]))
                 return $0
             } (NSMutableAttributedString())
             item.button.addTarget(self, action: #selector(purchase(_:)), for: .touchUpInside)
@@ -208,7 +208,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     }
     
     private func error(_ error: Error) {
-        app.alert(.local("Alert.error"), message: error.localizedDescription)
+        app.alert(.key("Alert.error"), message: error.localizedDescription)
         show("error")
     }
     

@@ -8,9 +8,9 @@ final class Cloud: Window, NSTextFieldDelegate {
     
     init() {
         super.init(500, 170)
-        name.stringValue = .local("Cloud.title")
+        name.stringValue = .key("Cloud.title")
         
-        let label = Label(.local("Cloud.field"))
+        let label = Label(.key("Cloud.field"))
         label.font = .systemFont(ofSize: 15, weight: .medium)
         label.textColor = .halo
         contentView!.addSubview(label)
@@ -47,7 +47,7 @@ final class Cloud: Window, NSTextFieldDelegate {
         self.loading = loading
         
         let button = Button.Yes(self, action: #selector(make))
-        button.label.stringValue = app.repository == nil ? .local("Cloud.clone.button") : .local("Cloud.synch.button")
+        button.label.stringValue = app.repository == nil ? .key("Cloud.clone.button") : .key("Cloud.synch.button")
         contentView!.addSubview(button)
         self.button = button
         
@@ -103,27 +103,27 @@ final class Cloud: Window, NSTextFieldDelegate {
                 !name.isEmpty,
                 !FileManager.default.fileExists(atPath: Hub.session.url.appendingPathComponent(name).path) {
                 Hub.clone(field.stringValue, local: Hub.session.url.appendingPathComponent(name), error: { [weak self] in
-                    app.alert(.local("Alert.error"), message: $0.localizedDescription)
+                    app.alert(.key("Alert.error"), message: $0.localizedDescription)
                     self?.ready()
                 }) { [weak self] in
-                    app.alert(.local("Alert.success"), message: .local("Cloud.clone.success"))
+                    app.alert(.key("Alert.success"), message: .key("Cloud.clone.success"))
                     self?.close()
                     app.browsed(Hub.session.url.appendingPathComponent(name))
                 }
             } else {
-                app.alert(.local("Alert.error"), message: .local("Cloud.clone.name"))
+                app.alert(.key("Alert.error"), message: .key("Cloud.clone.name"))
                 ready()
             }
         } else {
             app.repository!.pull({ [weak self] in
-                app.alert(.local("Alert.error"), message: $0.localizedDescription)
+                app.alert(.key("Alert.error"), message: $0.localizedDescription)
                 self?.ready()
             }) { [weak self] in
                 app.repository!.push({ [weak self] in
-                    app.alert(.local("Alert.error"), message: $0.localizedDescription)
+                    app.alert(.key("Alert.error"), message: $0.localizedDescription)
                     self?.ready()
                 }) { [weak self] in
-                    app.alert(.local("Alert.success"), message: .local("Cloud.synch.success"))
+                    app.alert(.key("Alert.success"), message: .key("Cloud.synch.success"))
                     self?.ready()
                 }
             }

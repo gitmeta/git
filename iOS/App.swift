@@ -157,7 +157,7 @@ private(set) weak var app: App!
     
     func add() {
         if repository == nil {
-            Alert(message: .local("App.noRepository"))
+            Alert(message: .key("App.noRepository"))
             tab.home.choose()
         } else {
             show(_add)
@@ -167,7 +167,7 @@ private(set) weak var app: App!
     
     func history() {
         if repository == nil {
-            Alert(message: .local("App.noRepository"))
+            Alert(message: .key("App.noRepository"))
             tab.home.choose()
         } else {
             show(_history)
@@ -203,7 +203,7 @@ private(set) weak var app: App!
             browse.additionalLeadingNavigationBarButtonItems = [.init(barButtonSystemItem: .stop, target: self, action: #selector(back))]
             present(browse, animated: true)
         } else {
-            alert(.local("Alert.error"), message: .local("App.ios.version"))
+            alert(.key("Alert.error"), message: .key("App.ios.version"))
         }
     }
     
@@ -216,21 +216,21 @@ private(set) weak var app: App!
     @objc func create() {
         _home.update(.loading)
         Hub.create(Hub.session.url, error: {
-            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.alert(.key("Alert.error"), message: $0.localizedDescription)
             self.repository = nil
         }) {
             self.repository = $0
-            self.alert(.local("Alert.success"), message: .local("Home.created"))
+            self.alert(.key("Alert.success"), message: .key("Home.created"))
         }
     }
     
     @objc func unpack() {
         _home.update(.loading)
         repository?.unpack({
-            self.alert(.local("Alert.error"), message: $0.localizedDescription)
+            self.alert(.key("Alert.error"), message: $0.localizedDescription)
             self.repository = nil
         }) {
-            self.alert(.local("Alert.success"), message: .local("App.unpacked"))
+            self.alert(.key("Alert.success"), message: .key("App.unpacked"))
         }
     }
     

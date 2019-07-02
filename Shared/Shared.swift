@@ -1,7 +1,7 @@
 import Foundation
 
 extension String {
-    static func local(_ key: String) -> String { return NSLocalizedString(key, comment: "") }
+    static func key(_ key: String) -> String { return NSLocalizedString(key, comment: "") }
 }
 
 enum State {

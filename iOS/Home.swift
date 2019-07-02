@@ -60,16 +60,16 @@ final class Home: UIView {
             switch status {
             case .deleted:
                 badge.backgroundColor = .deleted
-                hashtag.text = .local("Home.deleted")
+                hashtag.text = .key("Home.deleted")
             case .added:
                 badge.backgroundColor = .added
-                hashtag.text = .local("Home.added")
+                hashtag.text = .key("Home.added")
             case .modified:
                 badge.backgroundColor = .modified
-                hashtag.text = .local("Home.modified")
+                hashtag.text = .key("Home.modified")
             case .untracked:
                 badge.backgroundColor = .untracked
-                hashtag.text = .local("Home.untracked")
+                hashtag.text = .key("Home.untracked")
             }
             
             heightAnchor.constraint(equalToConstant: 66).isActive = true
@@ -122,13 +122,13 @@ final class Home: UIView {
         border.backgroundColor = .halo
         addSubview(border)
         
-        let browse = Button.Yes(.local("Home.directory"))
+        let browse = Button.Yes(.key("Home.directory"))
         browse.addTarget(app, action: #selector(app.browse), for: .touchUpInside)
         browse.isHidden = true
         addSubview(browse)
         self.browse = browse
         
-        let refresh = Button.Yes(.local("Home.refresh"))
+        let refresh = Button.Yes(.key("Home.refresh"))
         refresh.addTarget(app, action: #selector(app.refresh), for: .touchUpInside)
         refresh.isHidden = true
         addSubview(refresh)
@@ -271,10 +271,10 @@ final class Home: UIView {
             button.isHidden = false
             browse.isHidden = false
             refresh.isHidden = false
-            button.setTitle(.local("Home.button.packed"), for: [])
+            button.setTitle(.key("Home.button.packed"), for: [])
             button.addTarget(app, action: #selector(app.unpack), for: .touchUpInside)
             label.isHidden = false
-            label.text = .local("Home.label.packed")
+            label.text = .key("Home.label.packed")
             count.isHidden = true
             reset.isHidden = true
             cloud.isHidden = true
@@ -299,10 +299,10 @@ final class Home: UIView {
             button.isHidden = false
             browse.isHidden = true
             refresh.isHidden = true
-            button.setTitle(.local("Home.button.create"), for: [])
+            button.setTitle(.key("Home.button.create"), for: [])
             button.addTarget(app, action: #selector(app.create), for: .touchUpInside)
             label.isHidden = false
-            label.text = .local("Home.label.create")
+            label.text = .key("Home.label.create")
             count.isHidden = true
             reset.isHidden = true
             cloud.isHidden = false
@@ -330,7 +330,7 @@ final class Home: UIView {
         if Hub.session.purchase.contains(.cloud) {
             Cloud()
         } else {
-            app.alert(.local("Alert.purchase"), message: .local("Cloud.purchase"))
+            app.alert(.key("Alert.purchase"), message: .key("Cloud.purchase"))
         }
     }
 }

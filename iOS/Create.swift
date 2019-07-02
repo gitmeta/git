@@ -29,11 +29,11 @@ final class Create: Sheet, UITextFieldDelegate {
         border.backgroundColor = .halo
         base.addSubview(border)
         
-        let create = Button.Yes(.local("Create.save"))
+        let create = Button.Yes(.key("Create.save"))
         create.addTarget(self, action: #selector(self.create), for: .touchUpInside)
         base.addSubview(create)
         
-        let cancel = Button.No(.local("Create.cancel"))
+        let cancel = Button.No(.key("Create.cancel"))
         cancel.addTarget(self, action: #selector(self.cancel), for: .touchUpInside)
         base.addSubview(cancel)
         
@@ -65,7 +65,7 @@ final class Create: Sheet, UITextFieldDelegate {
     }
     
     @objc private func create() {
-        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name.text!.isEmpty ? .local("Create.untitled") : name.text!)
+        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name.text!.isEmpty ? .key("Create.untitled") : name.text!)
         FileManager.default.createFile(atPath: url.path, contents: Data("\n".utf8))
         result(url)
         close()

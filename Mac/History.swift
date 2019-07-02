@@ -49,7 +49,7 @@ final class History: Window {
     
     init() {
         super.init(400, 500, style: .resizable)
-        name.stringValue = .local("History.title")
+        name.stringValue = .key("History.title")
         formatter.timeStyle = .short
         formatter.dateStyle = .medium
         

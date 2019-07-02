@@ -98,7 +98,7 @@ final class Add: Window {
     
     init() {
         super.init(400, 400, style: .resizable)
-        name.stringValue = .local("Add.title")
+        name.stringValue = .key("Add.title")
         
         let text = Text()
         self.text = text
@@ -108,7 +108,7 @@ final class Add: Window {
         contentView!.addSubview(scroll)
         
         let button = Button.Yes(self, action: #selector(commit))
-        button.label.stringValue = .local("Add.button")
+        button.label.stringValue = .key("Add.button")
         contentView!.addSubview(button)
         
         scroll.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
@@ -134,10 +134,10 @@ final class Add: Window {
             app.repository?.commit(
                 app.home.list.documentView!.subviews.compactMap({ $0 as? Home.Item }).filter({ $0.check.checked }).map { $0.url },
                 message: text.string, error: {
-                    app.alert(.local("Alert.error"), message: $0.localizedDescription)
+                    app.alert(.key("Alert.error"), message: $0.localizedDescription)
             }) { [weak self] in
                 app.home.update(.loading)
-                app.alert(.local("Alert.commit"), message: self?.text.string ?? "")
+                app.alert(.key("Alert.commit"), message: self?.text.string ?? "")
                 self?.close()
                 app.windows.compactMap({ $0 as? History }).first?.refresh()
             }

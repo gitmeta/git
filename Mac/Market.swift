@@ -33,7 +33,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             addSubview(price)
             self.price = price
             
-            let purchased = Label(.local("Market.purchased"))
+            let purchased = Label(.key("Market.purchased"))
             purchased.textColor = .halo
             purchased.font = .systemFont(ofSize: 16, weight: .medium)
             purchased.isHidden = true
@@ -41,7 +41,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             self.purchased = purchased
             
             let button = Button.Yes(nil, action: nil)
-            button.label.stringValue = .local("Market.purchase")
+            button.label.stringValue = .key("Market.purchase")
             addSubview(button)
             self.button = button
             
@@ -79,7 +79,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     
     init() {
         super.init(400, 400)
-        name.stringValue = .local("Market.title")
+        name.stringValue = .key("Market.title")
         formatter.numberStyle = .currencyISOCode
         
         let list = Scroll()
@@ -88,7 +88,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         self.list = list
         
         let restore = Button.Yes(self, action: #selector(restoring))
-        restore.label.stringValue = .local("Market.restore")
+        restore.label.stringValue = .key("Market.restore")
         contentView!.addSubview(restore)
         self.restore = restore
         
@@ -163,7 +163,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             item.image.image = NSImage(named: name)
             item.label.attributedStringValue = {
                 $0.append(NSAttributedString(string: product.localizedTitle, attributes: [.font: NSFont.systemFont(ofSize: 18, weight: .bold)]))
-                $0.append(NSAttributedString(string: .local("Market.\(name)"), attributes: [.font: NSFont.systemFont(ofSize: 16, weight: .light)]))
+                $0.append(NSAttributedString(string: .key("Market.\(name)"), attributes: [.font: NSFont.systemFont(ofSize: 16, weight: .light)]))
                 return $0
             } (NSMutableAttributedString())
             item.button.target = self
@@ -183,7 +183,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     }
     
     private func error(_ error: Error) {
-        app.alert(.local("Alert.error"), message: error.localizedDescription)
+        app.alert(.key("Alert.error"), message: error.localizedDescription)
         show("error")
     }
     

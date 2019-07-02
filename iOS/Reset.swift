@@ -15,17 +15,17 @@ final class Reset: Sheet {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.attributedText = {
-            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold)]))
-            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light)]))
+            $0.append(NSAttributedString(string: .key("Reset.title"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold)]))
+            $0.append(NSAttributedString(string: .key("Reset.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light)]))
             return $0
         } (NSMutableAttributedString())
         base.addSubview(label)
         
-        let confirm = Button.Yes(.local("Reset.confirm"))
+        let confirm = Button.Yes(.key("Reset.confirm"))
         confirm.addTarget(self, action: #selector(self.confirm), for: .touchUpInside)
         base.addSubview(confirm)
         
-        let cancel = Button.No(.local("Reset.cancel"))
+        let cancel = Button.No(.key("Reset.cancel"))
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
         base.addSubview(cancel)
         
@@ -50,9 +50,9 @@ final class Reset: Sheet {
     
     @objc private func confirm() {
         app.repository?.reset({
-            app.alert(.local("Alert.error"), message: $0.localizedDescription)
+            app.alert(.key("Alert.error"), message: $0.localizedDescription)
         }) { [weak self] in
-            app.alert(.local("Alert.success"), message: .local("Reset.success"))
+            app.alert(.key("Alert.success"), message: .key("Reset.success"))
             self?.close()
         }
     }

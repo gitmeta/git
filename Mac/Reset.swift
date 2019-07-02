@@ -15,14 +15,14 @@ final class Reset: Window {
         let label = Label()
         label.textColor = .white
         label.attributedStringValue = {
-            $0.append(NSAttributedString(string: .local("Reset.title"), attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .bold)]))
-            $0.append(NSAttributedString(string: .local("Reset.subtitle"), attributes: [.font: NSFont.systemFont(ofSize: 12, weight: .light)]))
+            $0.append(NSAttributedString(string: .key("Reset.title"), attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .bold)]))
+            $0.append(NSAttributedString(string: .key("Reset.subtitle"), attributes: [.font: NSFont.systemFont(ofSize: 12, weight: .light)]))
             return $0
         } (NSMutableAttributedString())
         contentView!.addSubview(label)
         
         let confirm = Button.Yes(self, action: #selector(self.confirm))
-        confirm.label.stringValue = .local("Reset.confirm")
+        confirm.label.stringValue = .key("Reset.confirm")
         contentView!.addSubview(confirm)
         
         image.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 40).isActive = true
@@ -42,9 +42,9 @@ final class Reset: Window {
         app.home.update(.loading)
         app.repository?.reset({
             app.refresh()
-            app.alert(.local("Alert.error"), message: $0.localizedDescription)
+            app.alert(.key("Alert.error"), message: $0.localizedDescription)
         }) { [weak self] in
-            app.alert(.local("Alert.success"), message: .local("Reset.success"))
+            app.alert(.key("Alert.success"), message: .key("Reset.success"))
             self?.close()
         }
     }

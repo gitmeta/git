@@ -15,17 +15,17 @@ final class Delete: Sheet {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.attributedText = {
-            $0.append(NSAttributedString(string: .local("Delete.title"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold)]))
-            $0.append(NSAttributedString(string: .local("Delete.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light)]))
+            $0.append(NSAttributedString(string: .key("Delete.title"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold)]))
+            $0.append(NSAttributedString(string: .key("Delete.subtitle"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light)]))
             return $0
         } (NSMutableAttributedString())
         base.addSubview(label)
         
-        let confirm = Button.Yes(.local("Delete.confirm"))
+        let confirm = Button.Yes(.key("Delete.confirm"))
         confirm.addTarget(self, action: #selector(self.confirm), for: .touchUpInside)
         base.addSubview(confirm)
         
-        let cancel = Button.No(.local("Delete.cancel"))
+        let cancel = Button.No(.key("Delete.cancel"))
         cancel.addTarget(self, action: #selector(close), for: .touchUpInside)
         base.addSubview(cancel)
         
@@ -53,7 +53,7 @@ final class Delete: Sheet {
             try? FileManager.default.removeItem(at: $0)
         }
         app.repository = nil
-        app.alert(.local("Alert.success"), message: .local("Delete.success"))
+        app.alert(.key("Alert.success"), message: .key("Delete.success"))
         close()
     }
 }

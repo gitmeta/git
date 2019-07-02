@@ -75,7 +75,7 @@ final class Help: Window {
         buttons.enumerated().forEach {
             $0.1.alphaValue = $0.0 == index ? 1 : 0.3
         }
-        label.stringValue = .local("Onboard.mac\(index)")
+        label.stringValue = .key("Onboard.mac\(index)")
         centerX.constant = CGFloat(-500 * index)
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 1

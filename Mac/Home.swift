@@ -58,16 +58,16 @@ final class Home: Window  {
             switch status {
             case .deleted:
                 badge.layer!.backgroundColor = NSColor.deleted.cgColor
-                hashtag.stringValue = .local("Home.deleted")
+                hashtag.stringValue = .key("Home.deleted")
             case .added:
                 badge.layer!.backgroundColor = NSColor.added.cgColor
-                hashtag.stringValue = .local("Home.added")
+                hashtag.stringValue = .key("Home.added")
             case .modified:
                 badge.layer!.backgroundColor = NSColor.modified.cgColor
-                hashtag.stringValue = .local("Home.modified")
+                hashtag.stringValue = .key("Home.modified")
             case .untracked:
                 badge.layer!.backgroundColor = NSColor.untracked.cgColor
-                hashtag.stringValue = .local("Home.untracked")
+                hashtag.stringValue = .key("Home.untracked")
             }
             
             heightAnchor.constraint(equalToConstant: 46).isActive = true
@@ -128,7 +128,7 @@ final class Home: Window  {
         contentView!.addSubview(border)
         
         let directory = Button.Text(app, action: #selector(app.browse))
-        directory.label.stringValue = .local("Home.directory")
+        directory.label.stringValue = .key("Home.directory")
         directory.label.font = .systemFont(ofSize: 12, weight: .bold)
         directory.label.textColor = .halo
         directory.label.alignment = .left
@@ -236,10 +236,10 @@ final class Home: Window  {
             image.isHidden = false
             image.image = NSImage(named: "error")
             button.isHidden = false
-            button.label.stringValue = .local("Home.button.packed")
+            button.label.stringValue = .key("Home.button.packed")
             button.action = #selector(app.unpack)
             label.isHidden = false
-            label.stringValue = .local("Home.label.packed")
+            label.stringValue = .key("Home.label.packed")
             count.isHidden = true
         case .ready:
             button.isHidden = true
@@ -256,17 +256,17 @@ final class Home: Window  {
             image.isHidden = false
             image.image = NSImage(named: "error")
             button.isHidden = false
-            button.label.stringValue = .local("Home.button.create")
+            button.label.stringValue = .key("Home.button.create")
             button.action = #selector(app.create)
             label.isHidden = false
-            label.stringValue = .local("Home.label.create")
+            label.stringValue = .key("Home.label.create")
             count.isHidden = true
         case .first:
             image.isHidden = false
             image.image = NSImage(named: "error")
             button.isHidden = true
             label.isHidden = false
-            label.stringValue = .local("Home.label.first")
+            label.stringValue = .key("Home.label.first")
             count.isHidden = true
         }
     }

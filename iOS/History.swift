@@ -65,7 +65,7 @@ final class History: UIView {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .systemFont(ofSize: 12, weight: .bold)
         title.textColor = .halo
-        title.text = .local("History.title")
+        title.text = .key("History.title")
         addSubview(title)
         
         let border = UIView()
@@ -74,7 +74,7 @@ final class History: UIView {
         border.backgroundColor = .halo
         addSubview(border)
         
-        let button = Button.Yes(.local("History.refresh"))
+        let button = Button.Yes(.key("History.refresh"))
         button.isHidden = true
         button.addTarget(self, action: #selector(refresh), for: .touchUpInside)
         addSubview(button)
