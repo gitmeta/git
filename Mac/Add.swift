@@ -26,6 +26,7 @@ final class Add: Window {
     private final class Text: NSTextView {
         private weak var height: NSLayoutConstraint!
         
+        required init?(coder: NSCoder) { return nil }
         init() {
             let storage = NSTextStorage()
             super.init(frame: .zero, textContainer: {
@@ -50,8 +51,6 @@ final class Add: Window {
                 isAutomaticTextCompletionEnabled = false
             }
         }
-        
-        required init?(coder: NSCoder) { return nil }
         
         override func resize(withOldSuperviewSize: NSSize) {
             super.resize(withOldSuperviewSize: withOldSuperviewSize)

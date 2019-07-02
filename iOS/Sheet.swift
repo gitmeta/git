@@ -3,6 +3,7 @@ import UIKit
 class Sheet: UIView {
     private(set) weak var base: UIView!
     
+    required init?(coder: NSCoder) { return nil }
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -37,8 +38,6 @@ class Sheet: UIView {
             }
         }
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     @objc func close() {
         app.window!.endEditing(true)

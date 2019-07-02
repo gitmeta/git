@@ -4,6 +4,7 @@ class Button: NSView {
     final class Image: Button {
         private(set) weak var image: NSImageView!
         
+        required init?(coder: NSCoder) { return nil }
         override init(_ target: AnyObject?, action: Selector?) {
             super.init(target, action: action)
             let image = NSImageView()
@@ -17,8 +18,6 @@ class Button: NSView {
             image.topAnchor.constraint(equalTo: topAnchor).isActive = true
             image.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     final class Check: Button {
@@ -33,6 +32,7 @@ class Button: NSView {
         var on: NSImage?
         private weak var image: NSImageView!
         
+        required init?(coder: NSCoder) { return nil }
         override init(_ target: AnyObject?, action: Selector?) {
             super.init(target, action: action)
             let image = NSImageView()
@@ -47,8 +47,6 @@ class Button: NSView {
             image.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
         
-        required init?(coder: NSCoder) { return nil }
-        
         override func click() {
             checked.toggle()
             super.click()
@@ -58,6 +56,7 @@ class Button: NSView {
     final class Yes: Text {
         private(set) weak var width: NSLayoutConstraint!
         
+        required init?(coder: NSCoder) { return nil }
         override init(_ target: AnyObject?, action: Selector?) {
             super.init(target, action: action)
             wantsLayer = true
@@ -71,13 +70,12 @@ class Button: NSView {
             width = widthAnchor.constraint(equalToConstant: 62)
             width.isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     class Text: Button {
         private(set) weak var label: Label!
         
+        required init?(coder: NSCoder) { return nil }
         override init(_ target: AnyObject?, action: Selector?) {
             super.init(target, action: action)
             let label = Label()
@@ -88,8 +86,6 @@ class Button: NSView {
             label.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     final weak var target: AnyObject?
@@ -100,15 +96,15 @@ class Button: NSView {
             alphaValue = selected ? 0.4 : 1
         }
     }
-    
+
+    required init?(coder: NSCoder) { return nil }
     init(_ target: AnyObject?, action: Selector?) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         self.target = target
         self.action = action
     }
-    
-    required init?(coder: NSCoder) { return nil }
+
     override func resetCursorRects() { addCursorRect(bounds, cursor: .pointingHand) }
     override func mouseDown(with: NSEvent) { selected = true }
     

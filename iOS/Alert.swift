@@ -3,6 +3,7 @@ import UIKit
 final class Alert: UIControl {
     private weak var bottom: NSLayoutConstraint!
     
+    required init?(coder: NSCoder) { return nil }
     @discardableResult init(_ title: String? = nil, message: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +47,6 @@ final class Alert: UIControl {
         }) { _ in DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) { [weak self] in self?.dismiss() } }
     }
     
-    required init?(coder: NSCoder) { return nil }
     override var isHighlighted: Bool { didSet { hover() } }
     override var isSelected: Bool { didSet { hover() } }
     private func hover() { alpha = isSelected || isHighlighted ? 0.4 : 1 }

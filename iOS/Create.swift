@@ -4,6 +4,7 @@ final class Create: Sheet, UITextFieldDelegate {
     private let result: ((URL?) -> Void)
     private weak var name: UITextField!
     
+    required init?(coder: NSCoder) { return nil }
     init(_ result: @escaping((URL?) -> Void)) {
         self.result = result
         super.init()
@@ -56,8 +57,6 @@ final class Create: Sheet, UITextFieldDelegate {
         
         name.becomeFirstResponder()
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     func textFieldShouldReturn(_: UITextField) -> Bool {
         name.resignFirstResponder()

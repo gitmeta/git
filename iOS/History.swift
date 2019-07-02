@@ -48,6 +48,7 @@ final class History: UIView {
     private weak var button: UIButton!
     private let formatter = DateFormatter()
     
+    required init?(coder: NSCoder) { return nil }
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -119,7 +120,6 @@ final class History: UIView {
         scroll.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
     
-    required init?(coder: NSCoder) { return nil }
     func load(_ force: Bool) { if force || content == nil { refresh() } }
     
     private func update() {

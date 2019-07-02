@@ -5,6 +5,7 @@ final class Credentials: Sheet, UITextFieldDelegate {
         private(set) weak var field: UITextField!
         private(set) weak var label: UILabel!
         
+        required init?(coder: NSCoder) { return nil }
         init() {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
@@ -52,8 +53,6 @@ final class Credentials: Sheet, UITextFieldDelegate {
             field.leftAnchor.constraint(equalTo: leftAnchor, constant: 70).isActive = true
             field.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     var done: ((String, String) -> Void)!
@@ -61,6 +60,7 @@ final class Credentials: Sheet, UITextFieldDelegate {
     private(set) weak var first: Field!
     private(set) weak var second: Field!
     
+    required init?(coder: NSCoder) { return nil }
     @discardableResult override init() {
         super.init()
         let title = UILabel()
@@ -106,8 +106,6 @@ final class Credentials: Sheet, UITextFieldDelegate {
         close.topAnchor.constraint(equalTo: save.bottomAnchor, constant: 20).isActive = true
         close.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     func textFieldShouldReturn(_ field: UITextField) -> Bool {
         if field == first.field {

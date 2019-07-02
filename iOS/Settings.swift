@@ -2,6 +2,7 @@ import Git
 import UIKit
 
 final class Settings: UIView {
+    required init?(coder: NSCoder) { return nil }
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -58,8 +59,7 @@ final class Settings: UIView {
             top = $0.bottomAnchor
         }
     }
-    
-    required init?(coder: NSCoder) { return nil }
+
     @objc private func help() { app.help() }
     @objc private func remove() { Delete() }
     

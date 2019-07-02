@@ -11,6 +11,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         private(set) weak var price: Label!
         private(set) weak var image: NSImageView!
         
+        required init?(coder: NSCoder) { return nil }
         init(_ product: SKProduct) {
             self.product = product
             super.init(frame: .zero)
@@ -65,8 +66,6 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
             button.width.constant = 90
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     private weak var request: SKProductsRequest?

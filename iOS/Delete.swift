@@ -2,6 +2,7 @@ import Git
 import UIKit
 
 final class Delete: Sheet {
+    required init?(coder: NSCoder) { return nil }
     @discardableResult override init() {
         super.init()
         let image = UIImageView(image: UIImage(named: "error"))
@@ -45,8 +46,6 @@ final class Delete: Sheet {
         cancel.topAnchor.constraint(equalTo: confirm.bottomAnchor, constant: 20).isActive = true
         cancel.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     @objc private func confirm() {
         try? FileManager.default.contentsOfDirectory(at: Hub.session.url, includingPropertiesForKeys: nil).forEach {

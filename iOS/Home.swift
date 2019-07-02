@@ -8,6 +8,7 @@ final class Home: UIView {
         private(set) weak var badge: UIView!
         private(set) weak var label: UILabel!
         
+        required init?(coder: NSCoder) { return nil }
         fileprivate init(_ url: URL, status: Status) {
             self.url = url
             super.init(frame: .zero)
@@ -97,8 +98,6 @@ final class Home: UIView {
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     private(set) weak var list: UIScrollView!
@@ -112,6 +111,7 @@ final class Home: UIView {
     private weak var count: UILabel!
     private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
     
+    required init?(coder: NSCoder) { return nil }
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -234,8 +234,6 @@ final class Home: UIView {
         cloud.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
         cloud.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     func update(_ state: State, items: [(URL, Status)] = []) {
         list.subviews.forEach { $0.removeFromSuperview() }

@@ -11,6 +11,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         private(set) weak var price: UILabel!
         private(set) weak var image: UIImageView!
         
+        required init?(coder: NSCoder) { return nil }
         init(_ product: SKProduct) {
             self.product = product
             super.init(frame: .zero)
@@ -69,8 +70,6 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             button.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     private weak var request: SKProductsRequest?
@@ -81,6 +80,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     private var products = [SKProduct]() { didSet { DispatchQueue.main.async { self.refresh() } } }
     private let formatter = NumberFormatter()
     
+    required init?(coder: NSCoder) { return nil }
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -138,8 +138,6 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         restore.centerYAnchor.constraint(equalTo: title.centerYAnchor).isActive = true
         restore.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     func start() {
         show("loading")

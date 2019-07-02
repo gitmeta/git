@@ -10,6 +10,7 @@ final class Home: Window  {
         override var isOpaque: Bool { return true }
         override var wantsDefaultClipping: Bool { return false }
         
+        required init?(coder: NSCoder) { return nil }
         fileprivate init(_ url: URL, status: Status) {
             self.url = url
             super.init(frame: .zero)
@@ -95,8 +96,6 @@ final class Home: Window  {
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
         
         @objc private func change() {
             app.home.recount()

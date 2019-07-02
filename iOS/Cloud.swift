@@ -7,6 +7,7 @@ final class Cloud: Sheet, UITextFieldDelegate {
     private weak var button: Button.Yes!
     private weak var cancel: Button.No!
     
+    required init?(coder: NSCoder) { return nil }
     @discardableResult override init() {
         super.init()
         let border = UIView()
@@ -84,7 +85,6 @@ final class Cloud: Sheet, UITextFieldDelegate {
         app.repository?.remote { [weak self] in self?.field.text = $0 }
     }
     
-    required init?(coder: NSCoder) { return nil }
     func textFieldDidEndEditing(_: UITextField) { app.repository?.remote(field.text!) }
 
     func textFieldShouldReturn(_: UITextField) -> Bool {

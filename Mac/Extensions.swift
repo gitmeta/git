@@ -90,6 +90,7 @@ class Window: NSWindow {
 }
 
 final class Scroll: NSScrollView {
+    required init?(coder: NSCoder) { return nil }
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -108,8 +109,6 @@ final class Scroll: NSScrollView {
         documentView!.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor).isActive = true
     }
-    
-    required init?(coder: NSCoder) { return nil }
 }
 
 private final class Flipped: NSView { override var isFlipped: Bool { return true } }

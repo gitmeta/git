@@ -6,6 +6,7 @@ final class History: Window {
         override var isOpaque: Bool { return true }
         override var wantsDefaultClipping: Bool { return false }
         
+        required init?(coder: NSCoder) { return nil }
         init(_ index: Int, commit: Commit, date: String) {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
@@ -37,8 +38,6 @@ final class History: Window {
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     private weak var scroll: NSScrollView!

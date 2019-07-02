@@ -6,6 +6,7 @@ final class Settings: Window, NSTextFieldDelegate {
         private(set) weak var field: NSTextField!
         private(set) weak var label: Label!
         
+        required init?(coder: NSCoder) { return nil }
         init(_ type: NSTextField.Type = NSTextField.self) {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
@@ -53,8 +54,6 @@ final class Settings: Window, NSTextFieldDelegate {
             field.leftAnchor.constraint(equalTo: leftAnchor, constant: 80).isActive = true
             field.rightAnchor.constraint(equalTo: rightAnchor, constant: -14).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
     }
     
     private weak var buttonKey: Button.Yes!

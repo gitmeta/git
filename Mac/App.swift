@@ -26,6 +26,7 @@ private(set) weak var app: App!
         }
     }
     
+    required init?(coder: NSCoder) { return nil }
     override init() {
         super.init()
         app = self
@@ -33,7 +34,6 @@ private(set) weak var app: App!
         UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
     }
     
-    required init?(coder: NSCoder) { return nil }
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
     func browsed(_ url: URL) { Hub.session.update(url, bookmark: (try! url.bookmarkData(options: .withSecurityScope))) { self.load() } }
     

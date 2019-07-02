@@ -7,6 +7,7 @@ final class Tab: UIView {
         private weak var indicator: UIView!
         private weak var image: UIImageView!
         
+        required init?(coder: NSCoder) { return nil }
         init(_ image: String, target: @escaping(() -> Void)) {
             self.target = target
             super.init(frame: .zero)
@@ -37,8 +38,7 @@ final class Tab: UIView {
             indicator.widthAnchor.constraint(equalToConstant: 30).isActive = true
             indicator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         }
-        
-        required init?(coder: NSCoder) { return nil }
+
         @objc func choose() { tab.choose(self) }
         override var isHighlighted: Bool { didSet { hover() } }
         override var isSelected: Bool { didSet { hover() } }
@@ -60,6 +60,7 @@ final class Tab: UIView {
     private(set) weak var add: Button!
     private(set) weak var history: Button!
     
+    required init?(coder: NSCoder) { return nil }
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -105,8 +106,6 @@ final class Tab: UIView {
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.topAnchor.constraint(equalTo: topAnchor).isActive = true
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     private func choose(_ button: Button) {
         guard !button.isSelected else { return }

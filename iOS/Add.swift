@@ -5,12 +5,11 @@ final class Add: UIView {
     private final class Layout: NSLayoutManager, NSLayoutManagerDelegate {
         private let padding = CGFloat(6)
         
+        required init?(coder: NSCoder) { return nil }
         override init() {
             super.init()
             delegate = self
         }
-        
-        required init?(coder: NSCoder) { return nil }
         
         func layoutManager(_: NSLayoutManager, shouldSetLineFragmentRect: UnsafeMutablePointer<CGRect>,
                            lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>,
@@ -33,6 +32,7 @@ final class Add: UIView {
     final class Text: UITextView {
         private weak var height: NSLayoutConstraint!
         
+        required init?(coder: NSCoder) { return nil }
         init() {
             let storage = NSTextStorage()
             super.init(frame: .zero, textContainer: {
@@ -57,8 +57,6 @@ final class Add: UIView {
             indicatorStyle = .white
         }
         
-        required init?(coder: NSCoder) { return nil }
-        
         override func caretRect(for position: UITextPosition) -> CGRect {
             var rect = super.caretRect(for: position)
             rect.size.width += 5
@@ -69,6 +67,7 @@ final class Add: UIView {
     private(set) weak var text: Text!
     private weak var bottom: NSLayoutConstraint!
     
+    required init?(coder: NSCoder) { return nil }
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -128,8 +127,6 @@ final class Add: UIView {
             UIView.animate(withDuration: ($0.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue) { self.layoutIfNeeded() }
         }
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     @objc private func commit() {
         text.resignFirstResponder()

@@ -7,6 +7,7 @@ final class Help: Sheet {
     private var images = [UIImageView]()
     private var index = 0
 
+    required init?(coder: NSCoder) { return nil }
     @discardableResult override init() {
         super.init()
         let label = UILabel()
@@ -71,8 +72,6 @@ final class Help: Sheet {
         close.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -20).isActive = true
         display(0)
     }
-    
-    required init?(coder: NSCoder) { return nil }
     
     private func display(_ index: Int) {
         label.text = .key("Onboard.ios\(index)")
