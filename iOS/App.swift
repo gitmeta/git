@@ -83,6 +83,7 @@ private(set) weak var app: App!
         show(_home)
     }
     
+    func application(_: UIApplication, open: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool { return false }
     func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         app = self
         let window = UIWindow()
