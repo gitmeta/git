@@ -18,7 +18,7 @@ final class Display: Window {
         let slider = NSView()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.wantsLayer = true
-        slider.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.3).cgColor
+        slider.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.4).cgColor
         slider.isHidden = true
         contentView!.addSubview(slider)
         self.slider = slider
@@ -34,7 +34,7 @@ final class Display: Window {
         slider.leftAnchor.constraint(greaterThanOrEqualTo: contentView!.leftAnchor, constant: 50).isActive = true
         slider.rightAnchor.constraint(lessThanOrEqualTo: contentView!.rightAnchor, constant: -50).isActive = true
         slider.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
-        slider.widthAnchor.constraint(equalToConstant: 4).isActive = true
+        slider.widthAnchor.constraint(equalToConstant: 5).isActive = true
         middle = slider.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor)
         middle.priority = .init(300)
         middle.isActive = true
@@ -52,8 +52,13 @@ final class Display: Window {
         }
     }
     
+    override func mouseDragged(with: NSEvent) {
+        if with.locationInWindow.y < frame.height - 50 {
+            middle.constant += with.deltaX
+        }
+    }
+    
     private func content(_ url: URL, current: Data, previous: (Date, Data)?) {
-//        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(pan(_:))))
         loading.isHidden = true
         slider.isHidden = false
         
@@ -88,11 +93,13 @@ final class Display: Window {
         
         before.translatesAutoresizingMaskIntoConstraints = false
         before.setContentCompressionResistancePriority(.init(1), for: .horizontal)
+        before.setContentCompressionResistancePriority(.init(1), for: .vertical)
         before.setContentHuggingPriority(.defaultLow, for: .vertical)
         contentView!.addSubview(before)
         
         actual.translatesAutoresizingMaskIntoConstraints = false
         actual.setContentCompressionResistancePriority(.init(1), for: .horizontal)
+        actual.setContentCompressionResistancePriority(.init(1), for: .vertical)
         actual.setContentHuggingPriority(.defaultLow, for: .vertical)
         contentView!.addSubview(actual)
         
@@ -142,7 +149,7 @@ final class Display: Window {
         text.isRichText = false
         text.font = .light(16)
         text.textColor = .white
-        text.textContainerInset = NSSize(width: 20, height: 20)
+        text.textContainerInset = NSSize(width: 12, height: 20)
         text.isEditable = false
         text.string = string
         text.isVerticallyResizable = true
@@ -167,11 +174,4 @@ final class Display: Window {
         pdf.document = PDFDocument(data: data)
         return pdf
     }
-    /*
-    @objc private func pan(_ pan: UIPanGestureRecognizer) {
-        if pan.state == .began {
-            delta = middle.constant
-        }
-        middle.constant = delta + pan.translation(in: self).x
-    }*/
 }
