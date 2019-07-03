@@ -93,8 +93,8 @@ final class Home: UIView {
             check.topAnchor.constraint(equalTo: topAnchor).isActive = true
             check.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             
-            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -14).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
