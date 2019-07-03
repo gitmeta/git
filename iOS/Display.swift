@@ -201,7 +201,7 @@ final class Display: UIView {
         label.heightAnchor.constraint(equalToConstant: 24).isActive = true
         label.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
         label.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: 14).isActive = true
-        label.rightAnchor.constraint(greaterThanOrEqualTo: rightAnchor, constant: -14).isActive = true
+        label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -14).isActive = true
         return label
     }
     

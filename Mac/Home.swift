@@ -15,6 +15,7 @@ final class Home: Window  {
             self.url = url
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
+            wantsLayer = true
             
             let label = Label()
             label.attributedStringValue = {
@@ -95,6 +96,23 @@ final class Home: Window  {
             border.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        }
+        
+        override func mouseUp(with: NSEvent) {
+            if with.clickCount == 1 {
+                NSAnimationContext.runAnimationGroup({ context in
+                    context.duration = 0.2
+                    context.allowsImplicitAnimation = true
+                    layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.4).cgColor
+                }) { [weak self] in
+                    NSAnimationContext.runAnimationGroup({ context in
+                        context.duration = 0.15
+                        context.allowsImplicitAnimation = true
+                        self?.layer!.backgroundColor = .clear
+                    }) { }
+                }
+                Display(url).makeKeyAndOrderFront(nil)
+            }
         }
         
         @objc private func change() {
