@@ -29,9 +29,9 @@ final class Content {
         } (Hub.hash.blob(blob))
     }
     
-    func blob(_ id: String, url: URL) throws -> Data {
+    func file(_ id: String, url: URL) throws -> Data {
         let parse = Parse(try Hub.content.get(id, url: url))
-        _ = try parse.ascii("\u{0000}")
+        _ = try parse.variable()
         return parse.data.subdata(in: parse.index ..< parse.data.count)
     }
     

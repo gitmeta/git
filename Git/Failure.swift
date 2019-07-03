@@ -78,7 +78,7 @@ public struct Failure: LocalizedError {
     }
     
     public struct Diff {
-        public static let unknown = Failure("Couldn't find the requested file.")
+        public static let unchanged = Failure("Couldn't find the requested file.")
     }
     
     public var errorDescription: String? { return string }

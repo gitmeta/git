@@ -106,9 +106,9 @@ public final class Repository {
         }, success: result)
     }
     
-    public func diff(_ url: URL, error: @escaping((Error) -> Void), result: @escaping(([(Date, String)]) -> Void)) {
+    public func previous(_ url: URL, error: @escaping((Error) -> Void), result: @escaping(((Date, Data)?) -> Void)) {
         Hub.dispatch.background({ [weak self] in
-            return try self?.differ.diff(url) ?? []
+            return try self?.differ.previous(url)
         }, error: error, success: result)
     }
     

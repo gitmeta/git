@@ -62,7 +62,7 @@ final class Check {
                 }
                 try extract(Tree($0.id, url: url, trail: $0.url).items, index: index)
             default:
-                try Hub.content.blob($0.id, url: url).write(to: $0.url, options: .atomic)
+                try Hub.content.file($0.id, url: url).write(to: $0.url, options: .atomic)
                 index.entry($0.id, url: $0.url)
             }
         }
