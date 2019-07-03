@@ -170,6 +170,10 @@ final class Home: UIView {
         count.font = .systemFont(ofSize: 12, weight: .regular)
         count.textAlignment = .right
         count.textColor = .halo
+        count.backgroundColor = .black
+        count.clipsToBounds = true
+        count.layer.cornerRadius = 9
+        count.textAlignment = .center
         addSubview(count)
         self.count = count
         
@@ -198,7 +202,7 @@ final class Home: UIView {
         self.cloud = cloud
         
         border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        border.rightAnchor.constraint(equalTo: count.leftAnchor, constant: -10).isActive = true
+        border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         border.bottomAnchor.constraint(equalTo: topAnchor, constant: 55).isActive = true
         
@@ -225,8 +229,10 @@ final class Home: UIView {
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 260).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
-        count.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+        count.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         count.centerYAnchor.constraint(equalTo: border.centerYAnchor).isActive = true
+        count.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        count.widthAnchor.constraint(equalToConstant: 54).isActive = true
         
         reset.heightAnchor.constraint(equalToConstant: 45).isActive = true
         reset.widthAnchor.constraint(equalToConstant: 70).isActive = true
