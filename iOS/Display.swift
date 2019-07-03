@@ -1,5 +1,6 @@
 import Git
 import UIKit
+import PDFKit
 
 final class Display: UIView {
     private weak var slider: UIView!
@@ -17,6 +18,7 @@ final class Display: UIView {
         backgroundColor = .black
         formatter.timeStyle = .short
         formatter.dateStyle = .medium
+        if app.view.subviews.first(where: { $0 is Display }) != nil { return }
         app.view.addSubview(self)
         
         let border = UIView()
@@ -91,7 +93,7 @@ final class Display: UIView {
         slider.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         slider.widthAnchor.constraint(equalToConstant: 4).isActive = true
         middle = slider.centerXAnchor.constraint(equalTo: centerXAnchor)
-        middle.priority = .defaultLow
+        middle.priority = .init(300)
         middle.isActive = true
         
         loading.widthAnchor.constraint(equalToConstant: 100).isActive = true
@@ -130,8 +132,15 @@ final class Display: UIView {
         
         switch url.pathExtension.lowercased() {
         case "png", "jpg", "jpeg", "gif", "bmp":
-            before = UIImageView()
-            actual = UIImageView()
+            if let previous = previous {
+                before = image(previous.1)
+            }
+            actual = image(current)
+        case "pdf":
+            if let previous = previous {
+                before = pdf(previous.1)
+            }
+            actual = pdf(current)
         default:
             if let previous = previous {
                 before = text(String(decoding: previous.1, as: UTF8.self))
@@ -148,11 +157,11 @@ final class Display: UIView {
         }
         
         before.translatesAutoresizingMaskIntoConstraints = false
-        before.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        before.setContentCompressionResistancePriority(.init(0), for: .horizontal)
         addSubview(before)
         
         actual.translatesAutoresizingMaskIntoConstraints = false
-        actual.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        actual.setContentCompressionResistancePriority(.init(0), for: .horizontal)
         addSubview(actual)
 
         before.topAnchor.constraint(equalTo: separator.bottomAnchor).isActive = true
@@ -175,17 +184,7 @@ final class Display: UIView {
             dateActual.centerXAnchor.constraint(equalTo: actual.centerXAnchor).isActive = true
             dateActual.leftAnchor.constraint(greaterThanOrEqualTo: slider.rightAnchor, constant: 5).isActive = true
         }
-        
-        /*
-         switch $0.pathExtension.lowercased() {
-         case "md": return Md($0)
-         case "pdf": return Pdf($0)
-         case "png", "jpg", "jpeg", "gif", "bmp": return Image($0)
-         default: return Editable($0)
-         }
- */
     }
-    
     
     private func date(_ string: String) -> UILabel {
         let label = UILabel()
@@ -199,8 +198,10 @@ final class Display: UIView {
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         addSubview(label)
         
-        label.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
         label.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        label.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
+        label.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: 14).isActive = true
+        label.rightAnchor.constraint(greaterThanOrEqualTo: rightAnchor, constant: -14).isActive = true
         return label
     }
     
@@ -217,6 +218,24 @@ final class Display: UIView {
         return text
     }
     
+    private func image(_ data: Data) -> UIImageView {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFit
+        image.clipsToBounds = true
+        image.image = UIImage(data: data)
+        return image
+    }
+    
+    private func pdf(_ data: Data) -> UIView {
+        if #available(iOS 11.0, *) {
+            let pdf = PDFView()
+            pdf.backgroundColor = .clear
+            pdf.document = PDFDocument(data: data)
+            return pdf
+        }
+        return UIView()
+    }
+    
     @objc private func pan(_ pan: UIPanGestureRecognizer) {
         if pan.state == .began {
             delta = middle.constant
@@ -230,6 +249,6 @@ final class Display: UIView {
             app.view.layoutIfNeeded()
         }) { [weak self] _ in
             self?.removeFromSuperview()
-        }
+        } 
     }
 }

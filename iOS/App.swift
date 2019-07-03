@@ -83,7 +83,13 @@ private(set) weak var app: App!
         show(_home)
     }
     
-    func application(_: UIApplication, open: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool { return false }
+    func application(_: UIApplication, open: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        _ = open.startAccessingSecurityScopedResource()
+        try? Data(contentsOf: open).write(to: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(open.lastPathComponent), options: .atomic)
+        open.stopAccessingSecurityScopedResource()
+        return true
+    }
+    
     func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         app = self
         let window = UIWindow()
