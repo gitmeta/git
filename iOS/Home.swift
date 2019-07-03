@@ -2,7 +2,7 @@ import Git
 import UIKit
 
 final class Home: UIView {
-    final class Item: UIView {
+    final class Item: UIControl {
         let url: URL
         private(set) weak var check: UIButton!
         private(set) weak var badge: UIView!
@@ -98,6 +98,10 @@ final class Home: UIView {
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
+        
+        override var isSelected: Bool { didSet { hover() } }
+        override var isHighlighted: Bool { didSet { hover() } }
+        private func hover() { backgroundColor = isSelected || isHighlighted ? UIColor.halo.withAlphaComponent(0.3) : .clear }
     }
     
     private(set) weak var list: UIScrollView!
@@ -241,6 +245,7 @@ final class Home: UIView {
         var bottom = list.topAnchor
         items.forEach {
             let item = Item($0.0, status: $0.1)
+            item.addTarget(self, action: #selector(show(_:)), for: .touchUpInside)
             item.check.addTarget(self, action: #selector(change(_:)), for: .touchUpInside)
             list.addSubview(item)
             
@@ -312,6 +317,8 @@ final class Home: UIView {
             "\($0.filter({ $0.check.isSelected }).count)/\($0.count)"
         } (list.subviews.compactMap({ $0 as? Item }))
     }
+    
+    @objc private func show(_ item: Item) { Display(item.url) }
     
     @objc private func change(_ button: UIButton) {
         button.isSelected.toggle()
