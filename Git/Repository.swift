@@ -112,5 +112,11 @@ public final class Repository {
         }, error: error, success: result)
     }
     
+    public func timeline(_ url: URL, error: @escaping((Error) -> Void), result: @escaping(([(Date, Data)]) -> Void)) {
+        Hub.dispatch.background({ [weak self] in
+            return try self?.differ.timeline(url) ?? []
+        }, error: error, success: result)
+    }
+    
     public func refresh() { state.refresh() }
 }

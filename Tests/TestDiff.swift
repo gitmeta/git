@@ -75,4 +75,30 @@ class TestDiff: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testTimeline() {
+        let expect = expectation(description: "")
+        Hub.create(url) {
+            self.repository = $0
+            let file = self.url.appendingPathComponent("myfile.txt")
+            try! Data("hello world\n".utf8).write(to: file)
+            self.repository.commit([file], message: "My first commit\n") {
+                try! Data("Lorem ipsum\n".utf8).write(to: file)
+                self.repository.commit([file], message: "My second commit\n") {
+                    try! Data("Lorem ipsum\nWith some updates".utf8).write(to: file)
+                    DispatchQueue.global(qos: .background).async {
+                        self.repository.timeline(file, error: { _ in }) {
+                            XCTAssertEqual(.main, Thread.current)
+                            XCTAssertEqual(3, $0.count)
+                            XCTAssertEqual("Lorem ipsum\nWith some updates", String(decoding: $0[0].1, as: UTF8.self))
+                            XCTAssertEqual("Lorem ipsum\n", String(decoding: $0[1].1, as: UTF8.self))
+                            XCTAssertEqual("hello world\n", String(decoding: $0[2].1, as: UTF8.self))
+                            expect.fulfill()
+                        }
+                    }
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }
