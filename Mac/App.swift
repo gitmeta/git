@@ -263,6 +263,9 @@ private(set) weak var app: App!
             home.update(.first)
             return
         }
+        if Hub.session.purchase.contains(.cloud) {
+            home._cloud.image.alphaValue = 1
+        }
         var stale = false
         _ = (try? URL(resolvingBookmarkData: Hub.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:
             &stale))?.startAccessingSecurityScopedResource()

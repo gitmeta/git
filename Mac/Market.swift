@@ -137,9 +137,9 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         transactions.forEach {
             switch $0.transactionState {
             case .failed: SKPaymentQueue.default().finishTransaction($0)
-            case.restored: Hub.session.purchase($0.payment.productIdentifier)
+            case.restored: active($0.payment.productIdentifier)
             case .purchased:
-                Hub.session.purchase($0.payment.productIdentifier)
+                active($0.payment.productIdentifier)
                 SKPaymentQueue.default().finishTransaction($0)
             default: break
             }
@@ -191,6 +191,14 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         self.image.isHidden = false
         restore.isHidden = true
         list.documentView!.subviews.forEach { $0.removeFromSuperview() }
+    }
+    
+    private func active(_ id: String) {
+        Hub.session.purchase(id) {
+            if id.contains("cloud") {
+                app.home._cloud.image.alphaValue = 1
+            }
+        }
     }
     
     @objc private func restoring() {
