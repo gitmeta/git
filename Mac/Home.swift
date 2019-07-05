@@ -128,7 +128,6 @@ final class Home: Window  {
     
     private(set) weak var directory: Button.Text!
     private(set) weak var list: NSScrollView!
-    private(set) weak var _cloud: Button.Image!
     private weak var count: Label!
     private weak var image: NSImageView!
     private weak var button: Button.Yes!
@@ -219,11 +218,6 @@ final class Home: Window  {
             let button = Button.Image(app, action: $0.1)
             button.image.image = NSImage(named: $0.0)
             contentView!.addSubview(button)
-            
-            if $0.0 == "cloud" {
-                _cloud = button
-                _cloud.image.alphaValue = 0.35
-            }
             
             button.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
             button.rightAnchor.constraint(equalTo: border.leftAnchor).isActive = true
