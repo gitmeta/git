@@ -2,52 +2,24 @@ import Git
 import UIKit
 import PDFKit
 
-final class Display: UIView {
+final class File: Pop {
     private weak var slider: UIView!
-    private weak var loading: UIImageView!
-    private weak var separator: UIView!
-    private weak var top: NSLayoutConstraint!
     private weak var middle: NSLayoutConstraint!
-    private let formatter = DateFormatter()
     private var delta = CGFloat(0)
+    private let url: URL
+    private let formatter = DateFormatter()
     
     required init?(coder: NSCoder) { return nil }
     @discardableResult init(_ url: URL) {
-        super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .black
+        self.url = url
+        super.init()
+        name.text = url.lastPathComponent
         formatter.timeStyle = .short
         formatter.dateStyle = .medium
-        if app.view.subviews.first(where: { $0 is Display }) != nil { return }
-        app.view.addSubview(self)
         
-        let border = UIView()
-        border.isUserInteractionEnabled = false
-        border.translatesAutoresizingMaskIntoConstraints = false
-        border.backgroundColor = .halo
-        addSubview(border)
-        
-        let separator = UIView()
-        separator.isUserInteractionEnabled = false
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        separator.backgroundColor = .halo
-        addSubview(separator)
-        self.separator = separator
-        
-        let close = UIButton()
-        close.addTarget(self, action: #selector(self.close), for: .touchUpInside)
-        close.translatesAutoresizingMaskIntoConstraints = false
-        close.setImage(UIImage(named: "close"), for: .normal)
-        close.imageView!.contentMode = .center
-        close.imageView!.clipsToBounds = true
-        addSubview(close)
-        
-        let name = UILabel()
-        name.translatesAutoresizingMaskIntoConstraints = false
-        name.textColor = .halo
-        name.font = .bold(14)
-        name.text = url.lastPathComponent
-        addSubview(name)
+        let button = Button.Yes(.key("File.timeline"))
+        button.addTarget(self, action: #selector(timeline), for: .touchUpInside)
+        addSubview(button)
         
         let slider = UIView()
         slider.translatesAutoresizingMaskIntoConstraints = false
@@ -57,35 +29,8 @@ final class Display: UIView {
         addSubview(slider)
         self.slider = slider
         
-        let loading = UIImageView(image: UIImage(named: "loading"))
-        loading.translatesAutoresizingMaskIntoConstraints = false
-        loading.clipsToBounds = true
-        loading.contentMode = .center
-        addSubview(loading)
-        self.loading = loading
-        
-        leftAnchor.constraint(equalTo: app.view.leftAnchor).isActive = true
-        widthAnchor.constraint(equalTo: app.view.widthAnchor).isActive = true
-        heightAnchor.constraint(equalTo: app.view.heightAnchor, constant: 3).isActive = true
-        top = topAnchor.constraint(equalTo: app.view.topAnchor, constant: app.view.bounds.height)
-        top.isActive = true
-        
-        border.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        border.heightAnchor.constraint(equalToConstant: 3).isActive = true
-        
-        separator.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        separator.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        close.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        close.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
-        close.bottomAnchor.constraint(equalTo: separator.topAnchor).isActive = true
-        close.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        name.bottomAnchor.constraint(equalTo: separator.topAnchor, constant: -16).isActive = true
-        name.leftAnchor.constraint(equalTo: close.rightAnchor, constant: -8).isActive = true
+        button.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+        button.centerYAnchor.constraint(equalTo: close.centerYAnchor).isActive = true
         
         slider.topAnchor.constraint(equalTo: separator.bottomAnchor).isActive = true
         slider.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: 50).isActive = true
@@ -95,30 +40,17 @@ final class Display: UIView {
         middle = slider.centerXAnchor.constraint(equalTo: centerXAnchor)
         middle.priority = .init(300)
         middle.isActive = true
-        
-        loading.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        loading.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        loading.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        loading.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
-        if #available(iOS 11.0, *) {
-            separator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 53).isActive = true
-        } else {
-            separator.topAnchor.constraint(equalTo: topAnchor, constant: 53).isActive = true
-        }
-        
-        app.view.layoutIfNeeded()
-        top.constant = -3
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            app.view.layoutIfNeeded()
-        }) { _ in
-            do {
-                let current = try Data(contentsOf: url)
-                app.repository?.previous(url, error: { app.alert(.key("Alert.error"), message: $0.localizedDescription) }) { [weak self] in self?.content(url, current: current, previous: $0) }
-            } catch {
-                app.alert(.key("Alert.error"), message: error.localizedDescription)
-            }
+    }
+    
+    override func ready() {
+        super.ready()
+        do {
+            let current = try Data(contentsOf: url)
+            app.repository?.previous(url, error: { app.alert(.key("Alert.error"), message: $0.localizedDescription) }) { [weak self] in
+                guard let url = self?.url else { return }
+                self?.content(url, current: current, previous: $0) }
+        } catch {
+            app.alert(.key("Alert.error"), message: error.localizedDescription)
         }
     }
     
@@ -150,7 +82,7 @@ final class Display: UIView {
         
         if previous == nil {
             before = UILabel()
-            (before as! UILabel).text = .key("Display.new")
+            (before as! UILabel).text = .key("File.new")
             (before as! UILabel).textAlignment = .center
             (before as! UILabel).font = .systemFont(ofSize: 14, weight: .medium)
             (before as! UILabel).textColor = .halo
@@ -176,7 +108,7 @@ final class Display: UIView {
         
         if previous != nil {
             let dateBefore = date(formatter.string(from: previous!.0))
-            let dateActual = date(.key("Display.now"))
+            let dateActual = date(.key("File.now"))
             
             dateBefore.centerXAnchor.constraint(equalTo: before.centerXAnchor).isActive = true
             dateBefore.rightAnchor.constraint(lessThanOrEqualTo: slider.leftAnchor, constant: -5).isActive = true
@@ -243,12 +175,11 @@ final class Display: UIView {
         middle.constant = delta + pan.translation(in: self).x
     }
     
-    @objc private func close() {
-        top.constant = bounds.height
-        UIView.animate(withDuration: 0.35, animations: {
-            app.view.layoutIfNeeded()
-        }) { [weak self] _ in
-            self?.removeFromSuperview()
-        } 
+    @objc private func timeline() {
+        if true || Hub.session.purchase.contains(.timeline) {
+            Timeline(url)
+        } else {
+            app.alert(.key("Alert.purchase"), message: .key("Timeline.purchase"))
+        }
     }
 }

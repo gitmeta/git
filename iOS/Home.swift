@@ -251,7 +251,7 @@ final class Home: UIView {
         var bottom = list.topAnchor
         items.forEach {
             let item = Item($0.0, status: $0.1)
-            item.addTarget(self, action: #selector(show(_:)), for: .touchUpInside)
+            item.addTarget(self, action: #selector(file(_:)), for: .touchUpInside)
             item.check.addTarget(self, action: #selector(change(_:)), for: .touchUpInside)
             list.addSubview(item)
             
@@ -324,7 +324,7 @@ final class Home: UIView {
         } (list.subviews.compactMap({ $0 as? Item }))
     }
     
-    @objc private func show(_ item: Item) { Display(item.url) }
+    @objc private func file(_ item: Item) { File(item.url) }
     
     @objc private func change(_ button: UIButton) {
         button.isSelected.toggle()

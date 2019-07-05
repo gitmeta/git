@@ -85,7 +85,7 @@ final class Display: Window {
         
         if previous == nil {
             before = Label()
-            (before as! Label).stringValue = .key("Display.new")
+            (before as! Label).stringValue = .key("File.new")
             (before as! Label).alignment = .center
             (before as! Label).font = .systemFont(ofSize: 14, weight: .medium)
             (before as! Label).textColor = .halo
@@ -115,7 +115,7 @@ final class Display: Window {
         
         if previous != nil {
             let dateBefore = date(formatter.string(from: previous!.0))
-            let dateActual = date(.key("Display.now"))
+            let dateActual = date(.key("File.now"))
             
             dateBefore.centerXAnchor.constraint(equalTo: before.centerXAnchor).isActive = true
             dateBefore.rightAnchor.constraint(lessThanOrEqualTo: slider.leftAnchor, constant: -5).isActive = true

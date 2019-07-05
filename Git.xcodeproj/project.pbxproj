@@ -120,7 +120,7 @@
 		CE0378A322CB7165002587E5 /* TestDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0378A222CB7165002587E5 /* TestDiff.swift */; };
 		CE0378A522CB7946002587E5 /* Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0378A422CB7946002587E5 /* Differ.swift */; };
 		CE0378A622CB7946002587E5 /* Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0378A422CB7946002587E5 /* Differ.swift */; };
-		CE05DCE722CC77CE001322A6 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE05DCE622CC77CE001322A6 /* Display.swift */; };
+		CE05DCE722CC77CE001322A6 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE05DCE622CC77CE001322A6 /* File.swift */; };
 		CE05DCE922CCBE76001322A6 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE05DCE822CCBE76001322A6 /* Display.swift */; };
 		CE29D7BA229D4F9B00C257BF /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE29D7B9229D4F9B00C257BF /* History.swift */; };
 		CE30748A22ABBA000010017C /* TestPush.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30748922ABBA000010017C /* TestPush.swift */; };
@@ -153,6 +153,8 @@
 		CE9AA0FD2299269C00CAFA91 /* pack-2.idx in Resources */ = {isa = PBXBuildFile; fileRef = CE9AA0FB2299269C00CAFA91 /* pack-2.idx */; };
 		CE9F575D22A50BB300CC89CE /* TestPull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9F575C22A50BB300CC89CE /* TestPull.swift */; };
 		CE9F575F22A5361300CC89CE /* TestCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9F575E22A5361300CC89CE /* TestCheckout.swift */; };
+		CEA1CB8A22CF23EA00ACBF89 /* Timline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1CB8922CF23EA00ACBF89 /* Timline.swift */; };
+		CEA1CB8C22CF258500ACBF89 /* Pop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1CB8B22CF258500ACBF89 /* Pop.swift */; };
 		CEA4C582229BF29A0057CEFE /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C581229BF29A0057CEFE /* About.swift */; };
 		CEA4C584229BF98F0057CEFE /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C583229BF98F0057CEFE /* Help.swift */; };
 		CEAE6CBF22A26BFE001E1AE1 /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAE6CBE22A26BFE001E1AE1 /* Factory.swift */; };
@@ -286,7 +288,7 @@
 		CE02C30F22A2B3C90022DE9B /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		CE0378A222CB7165002587E5 /* TestDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDiff.swift; sourceTree = "<group>"; };
 		CE0378A422CB7946002587E5 /* Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Differ.swift; sourceTree = "<group>"; };
-		CE05DCE622CC77CE001322A6 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
+		CE05DCE622CC77CE001322A6 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		CE05DCE822CCBE76001322A6 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		CE29D7B9229D4F9B00C257BF /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CE30748922ABBA000010017C /* TestPush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPush.swift; sourceTree = "<group>"; };
@@ -316,6 +318,8 @@
 		CE9AA0FB2299269C00CAFA91 /* pack-2.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-2.idx"; sourceTree = "<group>"; };
 		CE9F575C22A50BB300CC89CE /* TestPull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPull.swift; sourceTree = "<group>"; };
 		CE9F575E22A5361300CC89CE /* TestCheckout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCheckout.swift; sourceTree = "<group>"; };
+		CEA1CB8922CF23EA00ACBF89 /* Timline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timline.swift; sourceTree = "<group>"; };
+		CEA1CB8B22CF258500ACBF89 /* Pop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pop.swift; sourceTree = "<group>"; };
 		CEA4C581229BF29A0057CEFE /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		CEA4C583229BF98F0057CEFE /* Help.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		CEAE6CBE22A26BFE001E1AE1 /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
@@ -508,16 +512,18 @@
 				20E0989F22819D060061123C /* Create.swift */,
 				CE31565C22BB8ECA00C3EC22 /* Credentials.swift */,
 				CE7D67D822BCB53000951EB4 /* Delete.swift */,
-				CE05DCE622CC77CE001322A6 /* Display.swift */,
 				20BB9F8722802DBD002DDF7B /* Extensions.swift */,
+				CE05DCE622CC77CE001322A6 /* File.swift */,
 				CE31566222BBB3DD00C3EC22 /* Help.swift */,
 				CE31566022BBA60900C3EC22 /* History.swift */,
 				CEB4964D22B65D5000F87342 /* Home.swift */,
 				CE728C8A22BA109600B2EA3E /* Market.swift */,
+				CEA1CB8B22CF258500ACBF89 /* Pop.swift */,
 				CE8982612290560000E9F41F /* Reset.swift */,
 				CE31565E22BB941100C3EC22 /* Settings.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
 				CEC8AB3322B3C5AD00E2F244 /* Tab.swift */,
+				CEA1CB8922CF23EA00ACBF89 /* Timline.swift */,
 				20BB9F8122802152002DDF7B /* iOS.xcassets */,
 			);
 			path = iOS;
@@ -934,16 +940,18 @@
 				CE728C8D22BA1AD500B2EA3E /* Cloud.swift in Sources */,
 				CEB4964E22B65D5000F87342 /* Home.swift in Sources */,
 				CE728C8F22BA425500B2EA3E /* Button.swift in Sources */,
+				CEA1CB8C22CF258500ACBF89 /* Pop.swift in Sources */,
 				CE31566322BBB3DD00C3EC22 /* Help.swift in Sources */,
 				CE31565F22BB941100C3EC22 /* Settings.swift in Sources */,
 				20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */,
 				20CB671B226071CA0064C31C /* Shared.swift in Sources */,
+				CEA1CB8A22CF23EA00ACBF89 /* Timline.swift in Sources */,
 				20E098A022819D060061123C /* Create.swift in Sources */,
 				CE805F7722B8B4DE00423BC8 /* Add.swift in Sources */,
 				CE31565D22BB8ECA00C3EC22 /* Credentials.swift in Sources */,
 				CE8982622290560000E9F41F /* Reset.swift in Sources */,
 				CE31566122BBA60900C3EC22 /* History.swift in Sources */,
-				CE05DCE722CC77CE001322A6 /* Display.swift in Sources */,
+				CE05DCE722CC77CE001322A6 /* File.swift in Sources */,
 				2048A129225C748900290E54 /* App.swift in Sources */,
 				CE7D67D922BCB53000951EB4 /* Delete.swift in Sources */,
 				20BB9F8622802D8A002DDF7B /* Sheet.swift in Sources */,

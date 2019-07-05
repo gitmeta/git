@@ -3,6 +3,7 @@ import Foundation
 public final class Session: Codable {
     public enum Purchase: String, Codable, CaseIterable {
         case cloud
+        case timeline
     }
     
     public internal(set) var url = URL(fileURLWithPath: "")

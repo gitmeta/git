@@ -29,7 +29,7 @@ final class Help: Window {
             contentView!.addSubview(image)
             images.append(image)
             
-            let button = Button.Image(self, action: #selector(show(_:)))
+            let button = Button.Image(self, action: #selector(file(_:)))
             button.image.image = NSImage(named: "dot")
             contentView!.addSubview(button)
             buttons.append(button)
