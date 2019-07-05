@@ -21,6 +21,6 @@ final class Differ {
                 $0[id] == nil
             else { return }
             $0[id] = try ($1.author.date, Hub.content.file(id, url: repository.url))
-        }).values.sorted(by: { $0.0 > $1.0 })
+        }).values.sorted(by: { $0.0 < $1.0 })
     }
 }

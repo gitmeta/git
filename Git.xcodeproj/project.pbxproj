@@ -153,7 +153,7 @@
 		CE9AA0FD2299269C00CAFA91 /* pack-2.idx in Resources */ = {isa = PBXBuildFile; fileRef = CE9AA0FB2299269C00CAFA91 /* pack-2.idx */; };
 		CE9F575D22A50BB300CC89CE /* TestPull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9F575C22A50BB300CC89CE /* TestPull.swift */; };
 		CE9F575F22A5361300CC89CE /* TestCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9F575E22A5361300CC89CE /* TestCheckout.swift */; };
-		CEA1CB8A22CF23EA00ACBF89 /* Timline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1CB8922CF23EA00ACBF89 /* Timline.swift */; };
+		CEA1CB8A22CF23EA00ACBF89 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1CB8922CF23EA00ACBF89 /* Timeline.swift */; };
 		CEA1CB8C22CF258500ACBF89 /* Pop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA1CB8B22CF258500ACBF89 /* Pop.swift */; };
 		CEA4C582229BF29A0057CEFE /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C581229BF29A0057CEFE /* About.swift */; };
 		CEA4C584229BF98F0057CEFE /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA4C583229BF98F0057CEFE /* Help.swift */; };
@@ -318,7 +318,7 @@
 		CE9AA0FB2299269C00CAFA91 /* pack-2.idx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pack-2.idx"; sourceTree = "<group>"; };
 		CE9F575C22A50BB300CC89CE /* TestPull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPull.swift; sourceTree = "<group>"; };
 		CE9F575E22A5361300CC89CE /* TestCheckout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCheckout.swift; sourceTree = "<group>"; };
-		CEA1CB8922CF23EA00ACBF89 /* Timline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timline.swift; sourceTree = "<group>"; };
+		CEA1CB8922CF23EA00ACBF89 /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		CEA1CB8B22CF258500ACBF89 /* Pop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pop.swift; sourceTree = "<group>"; };
 		CEA4C581229BF29A0057CEFE /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		CEA4C583229BF98F0057CEFE /* Help.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
@@ -523,7 +523,7 @@
 				CE31565E22BB941100C3EC22 /* Settings.swift */,
 				20BB9F8522802D8A002DDF7B /* Sheet.swift */,
 				CEC8AB3322B3C5AD00E2F244 /* Tab.swift */,
-				CEA1CB8922CF23EA00ACBF89 /* Timline.swift */,
+				CEA1CB8922CF23EA00ACBF89 /* Timeline.swift */,
 				20BB9F8122802152002DDF7B /* iOS.xcassets */,
 			);
 			path = iOS;
@@ -945,7 +945,7 @@
 				CE31565F22BB941100C3EC22 /* Settings.swift in Sources */,
 				20BB9F8822802DBD002DDF7B /* Extensions.swift in Sources */,
 				20CB671B226071CA0064C31C /* Shared.swift in Sources */,
-				CEA1CB8A22CF23EA00ACBF89 /* Timline.swift in Sources */,
+				CEA1CB8A22CF23EA00ACBF89 /* Timeline.swift in Sources */,
 				20E098A022819D060061123C /* Create.swift in Sources */,
 				CE805F7722B8B4DE00423BC8 /* Add.swift in Sources */,
 				CE31565D22BB8ECA00C3EC22 /* Credentials.swift in Sources */,

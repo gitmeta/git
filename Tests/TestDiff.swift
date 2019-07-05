@@ -91,9 +91,9 @@ class TestDiff: XCTestCase {
                             self.repository.timeline(file, error: { _ in }) {
                                 XCTAssertEqual(.main, Thread.current)
                                 XCTAssertEqual(3, $0.count)
-                                XCTAssertEqual("Lorem ipsum\nWith some updates", String(decoding: $0[0].1, as: UTF8.self))
+                                XCTAssertEqual("Lorem ipsum\nWith some updates", String(decoding: $0[2].1, as: UTF8.self))
                                 XCTAssertEqual("Lorem ipsum\n", String(decoding: $0[1].1, as: UTF8.self))
-                                XCTAssertEqual("hello world\n", String(decoding: $0[2].1, as: UTF8.self))
+                                XCTAssertEqual("hello world\n", String(decoding: $0[0].1, as: UTF8.self))
                                 expect.fulfill()
                             }
                         }
