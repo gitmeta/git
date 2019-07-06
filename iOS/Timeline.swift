@@ -3,14 +3,12 @@ import UIKit
 
 final class Timeline: Pop {
     private final class Node: UIControl {
-        let data: Data
-        let date: String
         private weak var circle: UIView!
+        private weak var width: NSLayoutConstraint!
+        private weak var height: NSLayoutConstraint!
         
         required init?(coder: NSCoder) { return nil }
-        init(_ tag: Int, data: Data, date: String) {
-            self.data = data
-            self.date = date
+        init(_ tag: Int) {
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
             self.tag = tag
@@ -26,10 +24,12 @@ final class Timeline: Pop {
             widthAnchor.constraint(equalToConstant: 50).isActive = true
             heightAnchor.constraint(equalToConstant: 50).isActive = true
             
-            circle.widthAnchor.constraint(equalToConstant: 16).isActive = true
-            circle.heightAnchor.constraint(equalToConstant: 16).isActive = true
             circle.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
             circle.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+            width = circle.widthAnchor.constraint(equalToConstant: 0)
+            height = circle.heightAnchor.constraint(equalToConstant: 0)
+            width.isActive = true
+            height.isActive = true
             
             hover()
         }
@@ -41,9 +41,15 @@ final class Timeline: Pop {
             if isSelected || isHighlighted {
                 circle.backgroundColor = .halo
                 circle.layer.borderColor = UIColor.black.cgColor
+                circle.layer.cornerRadius = 12
+                width.constant = 24
+                height.constant = 24
             } else {
                 circle.backgroundColor = .black
                 circle.layer.borderColor = UIColor.halo.cgColor
+                circle.layer.cornerRadius = 6
+                width.constant = 12
+                height.constant = 12
             }
         }
     }
@@ -52,16 +58,16 @@ final class Timeline: Pop {
     private weak var scroll: UIScrollView!
     private weak var date: UILabel!
     private weak var track: UIView!
+    private weak var left: NSLayoutConstraint!
+    private weak var right: NSLayoutConstraint!
+    private var items = [(String, Data)]()
     private let url: URL
-    private let formatter = DateFormatter()
     
     required init?(coder: NSCoder) { return nil }
     @discardableResult init(_ url: URL) {
         self.url = url
         super.init()
         name.text = .key("Timeline.title")
-        formatter.timeStyle = .short
-        formatter.dateStyle = .medium
         
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -92,7 +98,7 @@ final class Timeline: Pop {
         let track = UIView()
         track.translatesAutoresizingMaskIntoConstraints = false
         track.isUserInteractionEnabled = false
-        track.backgroundColor = UIColor.halo.withAlphaComponent(0.3)
+        track.backgroundColor = .halo
         content.addSubview(track)
         self.track = track
         
@@ -118,34 +124,34 @@ final class Timeline: Pop {
         
         track.heightAnchor.constraint(equalToConstant: 2).isActive = true
         track.topAnchor.constraint(equalTo: content.topAnchor, constant: 55).isActive = true
-        track.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -min(bounds.width, bounds.height) / 2).isActive = true
-        track.leftAnchor.constraint(equalTo: content.leftAnchor, constant: min(bounds.width, bounds.height) / 2).isActive = true
+        right = track.rightAnchor.constraint(equalTo: content.rightAnchor)
+        left = track.leftAnchor.constraint(equalTo: content.leftAnchor)
+        right.isActive = true
+        left.isActive = true
         
         if #available(iOS 11.0, *) {
             scroll.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
         } else {
             scroll.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
+    
+    deinit { NotificationCenter.default.removeObserver(self) }
     
     override func ready() {
         super.ready()
-        app.repository?.timeline(url, error: { app.alert(.key("Alert.error"), message: $0.localizedDescription) }) { [weak self] items in
-            guard let self = self else { return }
-            items.enumerated().forEach {
-                let button = Node($0.0, data: $0.1.1, date: $0.0 == items.count - 1 ? .key("Timeline.now") : self.formatter.string(from: $0.1.0))
-                button.addTarget(self, action: #selector(self.choose(_:)), for: .touchUpInside)
-                self.scroll.subviews.first!.addSubview(button)
-                
-                button.centerYAnchor.constraint(equalTo: self.track.centerYAnchor).isActive = true
-                button.centerXAnchor.constraint(equalTo: self.scroll.subviews.first!.leftAnchor, constant: CGFloat($0.0 * 70) + (min(self.bounds.width, self.bounds.height) / 2)).isActive = true
-                self.track.rightAnchor.constraint(greaterThanOrEqualTo: button.centerXAnchor).isActive = true
+        app.repository?.timeline(url, error: { app.alert(.key("Alert.error"), message: $0.localizedDescription) }) { [weak self] in
+            let format = DateFormatter()
+            format.timeStyle = .short
+            format.dateStyle = .medium
+            self?.items = $0.map { (format.string(from: $0.0), $0.1) }
+            if let last = self?.items.popLast() {
+                self?.items.append((.key("Timeline.now"), last.1))
             }
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.loading.isHidden = true
-                self.choose(self.scroll.subviews.first!.subviews.last as! Node)
-            }
+            self?.render()
+            self?.loading.isHidden = true
         }
     }
     
@@ -163,11 +169,43 @@ final class Timeline: Pop {
         content.bottomAnchor.constraint(equalTo: date.centerYAnchor).isActive = true
     }
     
+    private func render() {
+        var selected = items.count - 1
+        scroll.subviews.first!.subviews.compactMap({ $0 as? Node }).forEach {
+            if $0.isSelected {
+                selected = $0.tag
+            }
+            $0.removeFromSuperview()
+        }
+        right.constant = -bounds.midX
+        left.constant = bounds.midX
+        var choose: Node!
+        items.enumerated().forEach {
+            let button = Node($0.0)
+            button.addTarget(self, action: #selector(choose(_:)), for: .touchUpInside)
+            scroll.subviews.first!.addSubview(button)
+            
+            button.centerYAnchor.constraint(equalTo: track.centerYAnchor).isActive = true
+            button.centerXAnchor.constraint(equalTo: scroll.subviews.first!.leftAnchor, constant: CGFloat($0.0 * 70) + bounds.midX).isActive = true
+            
+            if $0.0 == selected {
+                choose = button
+            }
+            
+            if $0.0 == items.count - 1 {
+                track.rightAnchor.constraint(greaterThanOrEqualTo: button.centerXAnchor).isActive = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in self?.choose(choose) }
+    }
+    
+    @objc private func rotate() { if left.constant != bounds.midX { render() } }
+    
     @objc private func choose(_ button: Node) {
         scroll.subviews.first!.subviews.compactMap({ $0 as? Node }).forEach { $0.isSelected = false }
         button.isSelected = true
-        date.text = "    " + button.date + "    "
-        content(button.data)
-        scroll.scrollRectToVisible(.init(x: CGFloat(button.tag * 70) - bounds.midX + (min(bounds.width, bounds.height) / 2), y: 0, width: bounds.width, height: 1), animated: true)
+        date.text = "    " + items[button.tag].0 + "    "
+        content(items[button.tag].1)
+        scroll.scrollRectToVisible(.init(x: CGFloat(button.tag * 70), y: 0, width: bounds.width, height: 1), animated: true)
     }
 }
