@@ -235,13 +235,13 @@ final class Home: UIView {
         count.widthAnchor.constraint(equalToConstant: 54).isActive = true
         
         reset.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        reset.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        reset.leftAnchor.constraint(equalTo: cloud.rightAnchor, constant: -5).isActive = true
+        reset.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        reset.leftAnchor.constraint(equalTo: cloud.rightAnchor).isActive = true
         reset.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
         
         cloud.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        cloud.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        cloud.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+        cloud.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        cloud.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         cloud.centerYAnchor.constraint(equalTo: browse.centerYAnchor).isActive = true
     }
     

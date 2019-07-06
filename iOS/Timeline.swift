@@ -67,7 +67,11 @@ final class Timeline: Pop, UIScrollViewDelegate {
     @discardableResult init(_ url: URL) {
         self.url = url
         super.init()
-        name.text = .key("Timeline.title")
+        name.attributedText = {
+            $0.append(NSAttributedString(string: url.lastPathComponent, attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .bold)]))
+            $0.append(NSAttributedString(string: .key("Timeline.title"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light)]))
+            return $0
+        } (NSMutableAttributedString())
         
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false

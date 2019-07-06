@@ -40,7 +40,7 @@ class Pop: UIView {
         let name = UILabel()
         name.translatesAutoresizingMaskIntoConstraints = false
         name.textColor = .halo
-        name.font = .bold(14)
+        name.font = .systemFont(ofSize: 12, weight: .bold)
         addSubview(name)
         self.name = name
         
@@ -67,12 +67,12 @@ class Pop: UIView {
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         close.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        close.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         close.bottomAnchor.constraint(equalTo: separator.topAnchor).isActive = true
-        close.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        close.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        close.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
-        name.centerYAnchor.constraint(equalTo: close.centerYAnchor).isActive = true
-        name.leftAnchor.constraint(equalTo: close.rightAnchor, constant: -8).isActive = true
+        name.centerYAnchor.constraint(equalTo: close.centerYAnchor, constant: 1).isActive = true
+        name.leftAnchor.constraint(equalTo: close.rightAnchor).isActive = true
         
         loading.widthAnchor.constraint(equalToConstant: 100).isActive = true
         loading.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -80,9 +80,9 @@ class Pop: UIView {
         loading.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         if #available(iOS 11.0, *) {
-            separator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
+            separator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 58).isActive = true
         } else {
-            separator.topAnchor.constraint(equalTo: topAnchor, constant: 59).isActive = true
+            separator.topAnchor.constraint(equalTo: topAnchor, constant: 58).isActive = true
         }
         
         app.view.layoutIfNeeded()

@@ -17,7 +17,11 @@ final class File: Pop {
         formatter.timeStyle = .short
         formatter.dateStyle = .medium
         
-        let button = Button.Yes(.key("File.timeline"))
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "timeline"), for: .normal)
+        button.imageView!.contentMode = .center
+        button.imageView!.clipsToBounds = true
         button.addTarget(self, action: #selector(timeline), for: .touchUpInside)
         addSubview(button)
         
@@ -29,8 +33,10 @@ final class File: Pop {
         addSubview(slider)
         self.slider = slider
         
-        button.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        button.centerYAnchor.constraint(equalTo: close.centerYAnchor).isActive = true
+        button.bottomAnchor.constraint(equalTo: separator.topAnchor).isActive = true
+        button.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 55).isActive = true
         
         slider.topAnchor.constraint(equalTo: separator.bottomAnchor).isActive = true
         slider.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: 50).isActive = true

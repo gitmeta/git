@@ -35,7 +35,7 @@ final class Settings: UIView {
         
         let delete = Button.Yes(.key("Settings.buttonDelete"))
         delete.addTarget(self, action: #selector(remove), for: .touchUpInside)
-        delete.backgroundColor = .init(red: 1, green: 0.4, blue: 0.3, alpha: 1)
+        delete.backgroundColor = .init(red: 1, green: 0.2, blue: 0.2, alpha: 1)
         
         let help = Button.No(.key("Settings.help"))
         help.addTarget(self, action: #selector(self.help), for: .touchUpInside)
