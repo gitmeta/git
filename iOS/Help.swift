@@ -24,7 +24,7 @@ final class Help: Sheet {
         
         var rightImage: NSLayoutXAxisAnchor!
         var rightButton = base.leftAnchor
-        let steps = ["help.container", "help.create", "help.home", "settings", "add", "help.commit", "reset", "history", "cloud", "help.git"]
+        let steps = ["logo", "checkOn", "add", "reset", "cloud"]
         steps.enumerated().forEach {
             let image = UIImageView(image: UIImage(named: $0.1))
             image.translatesAutoresizingMaskIntoConstraints = false
@@ -48,11 +48,11 @@ final class Help: Sheet {
             image.widthAnchor.constraint(equalToConstant: 300).isActive = true
             
             button.heightAnchor.constraint(equalToConstant: 90).isActive = true
-            button.widthAnchor.constraint(equalTo: base.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -4).isActive = true
+            button.widthAnchor.constraint(equalTo: base.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -16).isActive = true
             button.bottomAnchor.constraint(equalTo: base.bottomAnchor, constant: -60).isActive = true
             
             if $0.0 == 0 {
-                button.leftAnchor.constraint(equalTo: rightButton, constant: 20).isActive = true
+                button.leftAnchor.constraint(equalTo: rightButton, constant: 40).isActive = true
                 centerX = image.centerXAnchor.constraint(equalTo: base.centerXAnchor)
                 centerX.isActive = true
             } else {
@@ -77,7 +77,7 @@ final class Help: Sheet {
         label.text = .key("Onboard.ios\(index)")
         base.layoutIfNeeded()
         self.index = index
-        buttons.enumerated().forEach { $0.1.alpha = $0.0 == index ? 1 : 0.3 }
+        buttons.enumerated().forEach { $0.1.alpha = $0.0 == index ? 1 : 0.4 }
         centerX.constant = CGFloat(-400 * index)
         UIView.animate(withDuration: 0.4) { [weak self] in
             self?.images.enumerated().forEach {

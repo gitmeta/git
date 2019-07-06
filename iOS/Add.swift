@@ -3,7 +3,7 @@ import UIKit
 
 final class Add: UIView {
     private final class Layout: NSLayoutManager, NSLayoutManagerDelegate {
-        private let padding = CGFloat(6)
+        private let padding = CGFloat(7)
         
         required init?(coder: NSCoder) { return nil }
         override init() {
@@ -53,7 +53,7 @@ final class Add: UIView {
             spellCheckingType = .yes
             autocapitalizationType = .sentences
             contentInset = .zero
-            textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            textContainerInset = UIEdgeInsets(top: 14, left: 12, bottom: 20, right: 12)
             indicatorStyle = .white
         }
         
@@ -84,7 +84,7 @@ final class Add: UIView {
         
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.font = .systemFont(ofSize: 12, weight: .bold)
+        title.font = .systemFont(ofSize: 14, weight: .bold)
         title.textColor = .halo
         title.text = .key("Add.title")
         addSubview(title)

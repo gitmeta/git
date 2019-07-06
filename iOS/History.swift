@@ -13,9 +13,9 @@ final class History: UIView {
             label.numberOfLines = 0
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             label.attributedText = {
-                $0.append(NSAttributedString(string: "\(index) ", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .bold), .foregroundColor: UIColor.halo]))
-                $0.append(NSAttributedString(string: commit.author.name + " ", attributes: [.font: UIFont.light(18), .foregroundColor: UIColor.halo]))
-                $0.append(NSAttributedString(string: date + "\n", attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light), .foregroundColor: UIColor.halo]))
+                $0.append(NSAttributedString(string: "\(index). ", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .bold), .foregroundColor: UIColor.halo]))
+                $0.append(NSAttributedString(string: commit.author.name, attributes: [.font: UIFont.bold(14), .foregroundColor: UIColor.halo]))
+                $0.append(NSAttributedString(string: ": " + date + "\n\n", attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .light), .foregroundColor: UIColor.halo]))
                 $0.append(NSAttributedString(string: commit.message, attributes: [.font: UIFont.light(14), .foregroundColor: UIColor.white]))
                 return $0
             } (NSMutableAttributedString())
@@ -28,8 +28,8 @@ final class History: UIView {
             addSubview(border)
             
             label.topAnchor.constraint(equalTo: topAnchor, constant: 14).isActive = true
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -16).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 17).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -17).isActive = true
             label.bottomAnchor.constraint(equalTo: border.topAnchor, constant: -14).isActive = true
             
             border.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
@@ -64,7 +64,7 @@ final class History: UIView {
         
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.font = .systemFont(ofSize: 12, weight: .bold)
+        title.font = .systemFont(ofSize: 14, weight: .bold)
         title.textColor = .halo
         title.text = .key("History.title")
         addSubview(title)

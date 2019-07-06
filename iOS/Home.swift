@@ -13,6 +13,7 @@ final class Home: UIView {
             self.url = url
             super.init(frame: .zero)
             translatesAutoresizingMaskIntoConstraints = false
+            addTarget(self, action: #selector(choose), for: .touchUpInside)
             
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +77,7 @@ final class Home: UIView {
             heightAnchor.constraint(equalToConstant: 66).isActive = true
             
             label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 17).isActive = true
             label.rightAnchor.constraint(lessThanOrEqualTo: badge.leftAnchor, constant: -10).isActive = true
             label.widthAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
             
@@ -93,8 +94,8 @@ final class Home: UIView {
             check.topAnchor.constraint(equalTo: topAnchor).isActive = true
             check.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             
-            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
-            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -14).isActive = true
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
@@ -102,6 +103,13 @@ final class Home: UIView {
         override var isSelected: Bool { didSet { hover() } }
         override var isHighlighted: Bool { didSet { hover() } }
         private func hover() { backgroundColor = isSelected || isHighlighted ? UIColor.halo.withAlphaComponent(0.3) : .clear }
+        
+        @objc private func choose() {
+            isSelected = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { [weak self] in
+                self?.isSelected = false
+            }
+        }
     }
     
     private(set) weak var list: UIScrollView!
@@ -169,10 +177,10 @@ final class Home: UIView {
         count.translatesAutoresizingMaskIntoConstraints = false
         count.font = .systemFont(ofSize: 12, weight: .regular)
         count.textAlignment = .right
-        count.textColor = .halo
-        count.backgroundColor = .black
+        count.textColor = .black
+        count.backgroundColor = .halo
         count.clipsToBounds = true
-        count.layer.cornerRadius = 9
+        count.layer.cornerRadius = 12
         count.textAlignment = .center
         addSubview(count)
         self.count = count
@@ -229,10 +237,10 @@ final class Home: UIView {
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 260).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
-        count.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        count.centerYAnchor.constraint(equalTo: border.centerYAnchor).isActive = true
-        count.heightAnchor.constraint(equalToConstant: 18).isActive = true
-        count.widthAnchor.constraint(equalToConstant: 54).isActive = true
+        count.rightAnchor.constraint(equalTo: rightAnchor, constant: -14).isActive = true
+        count.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        count.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        count.widthAnchor.constraint(equalToConstant: 66).isActive = true
         
         reset.heightAnchor.constraint(equalToConstant: 45).isActive = true
         reset.widthAnchor.constraint(equalToConstant: 60).isActive = true
@@ -260,7 +268,7 @@ final class Home: UIView {
             item.topAnchor.constraint(equalTo: bottom).isActive = true
             bottom = item.bottomAnchor
         }
-        self.bottom = list.bottomAnchor.constraint(greaterThanOrEqualTo: bottom)
+        self.bottom = list.bottomAnchor.constraint(greaterThanOrEqualTo: bottom, constant: 30)
         button.removeTarget(self, action: nil, for: .allEvents)
         
         switch state {

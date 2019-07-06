@@ -43,9 +43,9 @@ class Sheet: UIView {
         DispatchQueue.main.async {
             parent.layoutIfNeeded()
             bottom.constant = 40 + base.frame.height
-            UIView.animate(withDuration: 0.45) { [weak self] in
-                self?.backgroundColor = .init(white: 0, alpha: 0.85)
-                background.backgroundColor = UIColor.halo.withAlphaComponent(0.4)
+            UIView.animate(withDuration: 0.35) { [weak self] in
+                self?.backgroundColor = .init(white: 0, alpha: 0.9)
+                background.backgroundColor = UIColor.halo.withAlphaComponent(0.3)
                 self?.layoutIfNeeded()
             }
         }
@@ -53,7 +53,7 @@ class Sheet: UIView {
     
     @objc func close() {
         app.window!.endEditing(true)
-        UIView.animate(withDuration: 0.35, animations: { [weak self] in
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.alpha = 0
         }) { [weak self] _ in self?.removeFromSuperview() }
     }

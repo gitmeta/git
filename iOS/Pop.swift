@@ -40,7 +40,7 @@ class Pop: UIView {
         let name = UILabel()
         name.translatesAutoresizingMaskIntoConstraints = false
         name.textColor = .halo
-        name.font = .systemFont(ofSize: 12, weight: .bold)
+        name.font = .systemFont(ofSize: 14, weight: .bold)
         addSubview(name)
         self.name = name
         
@@ -88,7 +88,7 @@ class Pop: UIView {
         app.view.layoutIfNeeded()
         top.constant = -3
         
-        UIView.animate(withDuration: 0.45, animations: {
+        UIView.animate(withDuration: 0.4, animations: {
             app.view.layoutIfNeeded()
         }) { [weak self] _ in self?.ready() }
     }
@@ -97,7 +97,7 @@ class Pop: UIView {
     
     @objc private func closing() {
         top.constant = bounds.height
-        UIView.animate(withDuration: 0.35, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             app.view.layoutIfNeeded()
         }) { [weak self] _ in
             self?.removeFromSuperview()

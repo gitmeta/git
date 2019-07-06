@@ -105,7 +105,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
         
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.font = .systemFont(ofSize: 12, weight: .bold)
+        title.font = .systemFont(ofSize: 14, weight: .bold)
         title.textColor = .halo
         title.text = .key("Market.title")
         addSubview(title)

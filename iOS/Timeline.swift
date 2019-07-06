@@ -68,8 +68,8 @@ final class Timeline: Pop, UIScrollViewDelegate {
         self.url = url
         super.init()
         name.attributedText = {
-            $0.append(NSAttributedString(string: url.lastPathComponent, attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .bold)]))
-            $0.append(NSAttributedString(string: .key("Timeline.title"), attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .light)]))
+            $0.append(NSAttributedString(string: url.lastPathComponent, attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .bold)]))
+            $0.append(NSAttributedString(string: .key("Timeline.title"), attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .light)]))
             return $0
         } (NSMutableAttributedString())
         
