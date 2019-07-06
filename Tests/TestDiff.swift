@@ -103,4 +103,21 @@ class TestDiff: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    func testTimelineDeletedFile() {
+        let expect = expectation(description: "")
+        Hub.create(url) {
+            self.repository = $0
+            let file = self.url.appendingPathComponent("myfile.txt")
+            try! Data("hello world\n".utf8).write(to: file)
+            self.repository.commit([file], message: "My first commit\n") {
+                try! FileManager.default.removeItem(at: file)
+                self.repository.timeline(file, error: { _ in }) {
+                    XCTAssertEqual(2, $0.count)
+                    expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }

@@ -172,8 +172,7 @@ final class Timeline: Pop, UIScrollViewDelegate {
     private func content(_ data: Data) {
         self.content?.removeFromSuperview()
         
-        let content = UIView()
-        content.translatesAutoresizingMaskIntoConstraints = false
+        let content = Display.make(url, data: data)
         insertSubview(content, at: 0)
         self.content = content
         
