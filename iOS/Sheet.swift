@@ -7,9 +7,15 @@ class Sheet: UIView {
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.halo.withAlphaComponent(0)
+        backgroundColor = .init(white: 0, alpha: 0)
         let parent = app.presentedViewController?.view ?? app.view!
         parent.addSubview(self)
+        
+        let background = UIView()
+        background.translatesAutoresizingMaskIntoConstraints = false
+        background.backgroundColor = UIColor.halo.withAlphaComponent(0)
+        background.isUserInteractionEnabled = false
+        addSubview(background)
         
         let base = UIView()
         base.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +30,11 @@ class Sheet: UIView {
         leftAnchor.constraint(equalTo: parent.leftAnchor).isActive = true
         rightAnchor.constraint(equalTo: parent.rightAnchor).isActive = true
         
+        background.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        background.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        background.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        background.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        
         base.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         base.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         let bottom = base.bottomAnchor.constraint(equalTo: topAnchor)
@@ -33,7 +44,8 @@ class Sheet: UIView {
             parent.layoutIfNeeded()
             bottom.constant = 40 + base.frame.height
             UIView.animate(withDuration: 0.45) { [weak self] in
-                self?.backgroundColor = UIColor.halo.withAlphaComponent(0.85)
+                self?.backgroundColor = .init(white: 0, alpha: 0.85)
+                background.backgroundColor = UIColor.halo.withAlphaComponent(0.4)
                 self?.layoutIfNeeded()
             }
         }

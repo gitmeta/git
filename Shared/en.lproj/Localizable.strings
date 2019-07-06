@@ -27,6 +27,7 @@ Market.title="Purchases";
 Market.purchase="Purchase";
 Market.purchased="Purchased";
 Market.cloud="\n- Edit remotes configuration.\n- Clone a new repository.\n- Synch your repository (Pull and Push).";
+Market.timeline="\nView the evolution of a file through time and compare differences.";
 Market.restore="Restore";
 Settings.buttonSign="Signature";
 Settings.buttonKey="Credentials";

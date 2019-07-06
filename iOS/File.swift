@@ -135,7 +135,7 @@ final class File: Pop {
     }
     
     @objc private func timeline() {
-        if true || Hub.session.purchase.contains(.timeline) {
+        if Hub.session.purchase.contains(.timeline) {
             Timeline(url)
         } else {
             app.alert(.key("Alert.purchase"), message: .key("Timeline.purchase"))

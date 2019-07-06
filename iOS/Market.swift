@@ -51,6 +51,12 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             addSubview(button)
             self.button = button
             
+            let border = UIView()
+            border.translatesAutoresizingMaskIntoConstraints = false
+            border.isUserInteractionEnabled = false
+            border.backgroundColor = UIColor.halo.withAlphaComponent(0.5)
+            addSubview(border)
+            
             image.topAnchor.constraint(equalTo: topAnchor).isActive = true
             image.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             image.widthAnchor.constraint(equalToConstant: 60).isActive = true
@@ -69,6 +75,11 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             button.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 16).isActive = true
             button.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
+            
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
+            border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         }
     }
     
@@ -159,6 +170,7 @@ final class Market: UIView, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     func paymentQueue(_: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) { DispatchQueue.main.async { self.error(restoreCompletedTransactionsFailedWithError) } }
     
     private func update(_ transactions: [SKPaymentTransaction]) {
+        guard transactions.first(where: { $0.transactionState == .purchasing }) == nil else { return }
         transactions.forEach {
             switch $0.transactionState {
             case .failed: SKPaymentQueue.default().finishTransaction($0)
