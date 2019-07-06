@@ -1,7 +1,7 @@
 import Git
 import UIKit
 
-final class Timeline: Pop {
+final class Timeline: Pop, UIScrollViewDelegate {
     private final class Node: UIControl {
         private weak var circle: UIView!
         private weak var width: NSLayoutConstraint!
@@ -72,6 +72,7 @@ final class Timeline: Pop {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         scroll.alwaysBounceHorizontal = true
+        scroll.delegate = self
         addSubview(scroll)
         self.scroll = scroll
         
@@ -140,6 +141,15 @@ final class Timeline: Pop {
     
     deinit { NotificationCenter.default.removeObserver(self) }
     
+    func scrollViewDidScroll(_: UIScrollView) {
+        if scroll.isDragging {
+            let center = scroll.contentOffset.x + bounds.midX
+            if let closer = scroll.subviews.first!.subviews.compactMap({ $0 as? Node }).sorted(by: { abs($0.center.x - center) < abs($1.center.x - center) }).first {
+                choose(closer, stop: true)
+            }
+        }
+    }
+    
     override func ready() {
         super.ready()
         app.repository?.timeline(url, error: { app.alert(.key("Alert.error"), message: $0.localizedDescription) }) { [weak self] in
@@ -169,7 +179,7 @@ final class Timeline: Pop {
         content.bottomAnchor.constraint(equalTo: date.centerYAnchor).isActive = true
     }
     
-    private func render() {
+    private func render(_ stop: Bool = false) {
         var selected = items.count - 1
         scroll.subviews.first!.subviews.compactMap({ $0 as? Node }).forEach {
             if $0.isSelected {
@@ -181,31 +191,34 @@ final class Timeline: Pop {
         left.constant = bounds.midX
         var choose: Node!
         items.enumerated().forEach {
-            let button = Node($0.0)
-            button.addTarget(self, action: #selector(choose(_:)), for: .touchUpInside)
-            scroll.subviews.first!.addSubview(button)
+            let node = Node($0.0)
+            node.addTarget(self, action: #selector(choose(_:stop:)), for: .touchUpInside)
+            scroll.subviews.first!.addSubview(node)
             
-            button.centerYAnchor.constraint(equalTo: track.centerYAnchor).isActive = true
-            button.centerXAnchor.constraint(equalTo: scroll.subviews.first!.leftAnchor, constant: CGFloat($0.0 * 70) + bounds.midX).isActive = true
+            node.centerYAnchor.constraint(equalTo: track.centerYAnchor).isActive = true
+            node.centerXAnchor.constraint(equalTo: scroll.subviews.first!.leftAnchor, constant: CGFloat($0.0 * 70) + bounds.midX).isActive = true
             
             if $0.0 == selected {
-                choose = button
+                choose = node
             }
             
             if $0.0 == items.count - 1 {
-                track.rightAnchor.constraint(greaterThanOrEqualTo: button.centerXAnchor).isActive = true
+                track.rightAnchor.constraint(greaterThanOrEqualTo: node.centerXAnchor).isActive = true
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in self?.choose(choose) }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in self?.choose(choose, stop: stop) }
     }
     
     @objc private func rotate() { if left.constant != bounds.midX { render() } }
     
-    @objc private func choose(_ button: Node) {
+    @objc private func choose(_ button: Node, stop: Bool = false) {
+        guard !button.isSelected else { return }
         scroll.subviews.first!.subviews.compactMap({ $0 as? Node }).forEach { $0.isSelected = false }
         button.isSelected = true
         date.text = "    " + items[button.tag].0 + "    "
         content(items[button.tag].1)
-        scroll.scrollRectToVisible(.init(x: CGFloat(button.tag * 70), y: 0, width: bounds.width, height: 1), animated: true)
+        if !stop {
+            scroll.scrollRectToVisible(.init(x: CGFloat(button.tag * 70), y: 0, width: bounds.width, height: 1), animated: true)
+        }
     }
 }
