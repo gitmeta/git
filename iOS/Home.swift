@@ -49,6 +49,7 @@ final class Home: UIView {
             check.translatesAutoresizingMaskIntoConstraints = false
             check.setImage(UIImage(named: "checkOff"), for: .normal)
             check.setImage(UIImage(named: "checkOn"), for: .selected)
+            check.isUserInteractionEnabled = status == .deleted ? false : true
             check.isSelected = true
             addSubview(check)
             self.check = check

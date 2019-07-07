@@ -5,7 +5,7 @@ final class File: Window {
     private weak var slider: NSView!
     private weak var loading: NSImageView!
     private weak var middle: NSLayoutConstraint!
-    private let url: URL
+    let url: URL
     
     init(_ url: URL) {
         self.url = url

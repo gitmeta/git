@@ -99,28 +99,34 @@ final class Home: Window  {
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
         
-        override func mouseUp(with: NSEvent) {
+        override func mouseDown(with: NSEvent) {
             if with.clickCount == 1 {
-                NSAnimationContext.runAnimationGroup({ context in
-                    context.duration = 0.2
-                    context.allowsImplicitAnimation = true
-                    layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.4).cgColor
-                }) { [weak self] in
-                    NSAnimationContext.runAnimationGroup({ context in
-                        context.duration = 0.15
-                        context.allowsImplicitAnimation = true
+                NSAnimationContext.runAnimationGroup({
+                    $0.duration = 0.2
+                    $0.allowsImplicitAnimation = true
+                    layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.6).cgColor
+                }) { }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                    guard let url = self?.url else { return }
+                    if let file = app.windows.compactMap({ $0 as? File }).first(where: { $0.url == url }) {
+                        file.orderFront(nil)
+                    } else {
+                        File(url).makeKeyAndOrderFront(nil)
+                    }
+                    NSAnimationContext.runAnimationGroup({
+                        $0.duration = 1
+                        $0.allowsImplicitAnimation = true
                         self?.layer!.backgroundColor = .clear
                     }) { }
                 }
-                File(url).makeKeyAndOrderFront(nil)
             }
         }
         
         @objc private func change() {
             app.home.recount()
-            NSAnimationContext.runAnimationGroup({ context in
-                context.duration = 0.3
-                context.allowsImplicitAnimation = true
+            NSAnimationContext.runAnimationGroup({
+                $0.duration = 0.3
+                $0.allowsImplicitAnimation = true
                 label.alphaValue = check.checked ? 1 : 0.4
                 badge.alphaValue = check.checked ? 1 : 0.3
             }) { }

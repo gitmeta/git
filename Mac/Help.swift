@@ -77,9 +77,9 @@ final class Help: Window {
         }
         label.stringValue = .key("Onboard.mac\(index)")
         centerX.constant = CGFloat(-500 * index)
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 1
-            context.allowsImplicitAnimation = true
+        NSAnimationContext.runAnimationGroup({
+            $0.duration = 1
+            $0.allowsImplicitAnimation = true
             images.enumerated().forEach {
                 $0.1.alphaValue = $0.0 == index ? 1 : 0
             }
