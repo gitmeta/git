@@ -13,6 +13,10 @@ final class File: Window {
         minSize = CGSize(width: 250, height: 250)
         name.stringValue = url.path
         
+        let button = Button.Image(self, action: #selector(timeline))
+        button.image.image = NSImage(named: "timeline")
+        contentView!.addSubview(button)
+        
         let slider = NSView()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.wantsLayer = true
@@ -27,6 +31,13 @@ final class File: Window {
         loading.imageScaling = .scaleNone
         contentView!.addSubview(loading)
         self.loading = loading
+        
+        name.rightAnchor.constraint(lessThanOrEqualTo: button.leftAnchor).isActive = true
+        
+        button.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 54).isActive = true
+        button.centerYAnchor.constraint(equalTo: name.centerYAnchor).isActive = true
         
         slider.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         slider.leftAnchor.constraint(greaterThanOrEqualTo: contentView!.leftAnchor, constant: 50).isActive = true
@@ -115,6 +126,7 @@ final class File: Window {
         label.textColor = .black
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         label.maximumNumberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         view.addSubview(label)
         
         view.heightAnchor.constraint(equalToConstant: 24).isActive = true
@@ -127,5 +139,17 @@ final class File: Window {
         label.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
         return view
+    }
+    
+    @objc private func timeline() {
+        if true || Hub.session.purchase.contains(.timeline) {
+            if let timeline = app.windows.compactMap({ $0 as? Timeline }).first(where: { $0.url == url }) {
+                timeline.orderFront(nil)
+            } else {
+                Timeline(url).makeKeyAndOrderFront(nil)
+            }
+        } else {
+            app.alert(.key("Alert.purchase"), message: .key("Timeline.purchase"))
+        }
     }
 }

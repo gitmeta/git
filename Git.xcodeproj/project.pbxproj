@@ -131,6 +131,7 @@
 		CE31566322BBB3DD00C3EC22 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31566222BBB3DD00C3EC22 /* Help.swift */; };
 		CE32EFD1229FFF1400BC3901 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE32EFCF229FFE2400BC3901 /* Cloud.swift */; };
 		CE3DBA6522D1D34E004FBCDD /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DBA6422D1D34E004FBCDD /* Display.swift */; };
+		CE3DBA6722D212C7004FBCDD /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DBA6622D212C7004FBCDD /* Timeline.swift */; };
 		CE44047C22BE7B41009D200D /* Market.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE44047B22BE7B41009D200D /* Market.swift */; };
 		CE4B5C7222A7AC5700355E81 /* fetch2 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7122A7AC5600355E81 /* fetch2 */; };
 		CE4B5C7422A7B7FE00355E81 /* fetch3 in Resources */ = {isa = PBXBuildFile; fileRef = CE4B5C7322A7B7FD00355E81 /* fetch3 */; };
@@ -301,6 +302,7 @@
 		CE31566222BBB3DD00C3EC22 /* Help.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		CE32EFCF229FFE2400BC3901 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		CE3DBA6422D1D34E004FBCDD /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
+		CE3DBA6622D212C7004FBCDD /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		CE44047B22BE7B41009D200D /* Market.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Market.swift; sourceTree = "<group>"; };
 		CE4B5C7122A7AC5600355E81 /* fetch2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch2; sourceTree = "<group>"; };
 		CE4B5C7322A7B7FD00355E81 /* fetch3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fetch3; sourceTree = "<group>"; };
@@ -554,6 +556,7 @@
 				CE44047B22BE7B41009D200D /* Market.swift */,
 				CE89825F22904EB300E9F41F /* Reset.swift */,
 				CEC67673229D26F700B6AFEF /* Settings.swift */,
+				CE3DBA6622D212C7004FBCDD /* Timeline.swift */,
 				20B8328222709EA700773058 /* Mac.xcassets */,
 			);
 			path = Mac;
@@ -928,6 +931,7 @@
 				2048A136225C749200290E54 /* App.swift in Sources */,
 				CED7E396229E9BB1003B8721 /* Alert.swift in Sources */,
 				CE44047C22BE7B41009D200D /* Market.swift in Sources */,
+				CE3DBA6722D212C7004FBCDD /* Timeline.swift in Sources */,
 				CE05DCE922CCBE76001322A6 /* File.swift in Sources */,
 				CE89826022904EB300E9F41F /* Reset.swift in Sources */,
 				CEC67674229D26F700B6AFEF /* Settings.swift in Sources */,

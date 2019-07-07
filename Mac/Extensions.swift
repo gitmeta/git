@@ -52,6 +52,9 @@ class Window: NSWindow {
         let name = Label()
         name.textColor = .halo
         name.font = .systemFont(ofSize: 12, weight: .bold)
+        name.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        name.maximumNumberOfLines = 1
+        name.lineBreakMode = .byTruncatingTail
         contentView!.addSubview(name)
         self.name = name
         
@@ -64,6 +67,7 @@ class Window: NSWindow {
         
         name.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 11).isActive = true
         name.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 80).isActive = true
+        name.rightAnchor.constraint(lessThanOrEqualTo: contentView!.rightAnchor, constant: -2).isActive = true
         
         border.topAnchor.constraint(equalTo: contentView!.topAnchor, constant: 39).isActive = true
         border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
