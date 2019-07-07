@@ -44,7 +44,7 @@ final class Add: Window {
             isContinuousSpellCheckingEnabled = true
             font = .light(18)
             textColor = .white
-            textContainerInset = NSSize(width: 20, height: 20)
+            textContainerInset = NSSize(width: 10, height: 10)
             height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
             height.isActive = true
             if #available(OSX 10.12.2, *) {
@@ -70,13 +70,13 @@ final class Add: Window {
         
         override func viewDidEndLiveResize() {
             super.viewDidEndLiveResize()
-            DispatchQueue.main.async { [weak self] in self?.adjust() }
+            adjust()
         }
         
         private func adjust() {
             textContainer!.size.width = superview!.superview!.frame.width - (textContainerInset.width * 2)
             layoutManager!.ensureLayout(for: textContainer!)
-            height.constant = layoutManager!.usedRect(for: textContainer!).size.height + (textContainerInset.height * 2)
+            height.constant = layoutManager!.usedRect(for: textContainer!).size.height + (textContainerInset.height * 2) + 20
         }
         
         override func keyDown(with: NSEvent) {

@@ -24,7 +24,7 @@ final class File: Pop {
         let slider = UIView()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.isUserInteractionEnabled = false
-        slider.backgroundColor = UIColor.halo.withAlphaComponent(0.3)
+        slider.backgroundColor = UIColor.halo.withAlphaComponent(0.2)
         slider.isHidden = true
         addSubview(slider)
         self.slider = slider
@@ -38,7 +38,7 @@ final class File: Pop {
         slider.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: 50).isActive = true
         slider.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -50).isActive = true
         slider.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        slider.widthAnchor.constraint(equalToConstant: 4).isActive = true
+        slider.widthAnchor.constraint(equalToConstant: 10).isActive = true
         middle = slider.centerXAnchor.constraint(equalTo: centerXAnchor)
         middle.priority = .init(300)
         middle.isActive = true
@@ -54,12 +54,12 @@ final class File: Pop {
         loading.isHidden = true
         slider.isHidden = false
         
-        let before = previous == nil ? message(.key("File.new")) : Display.make(url, data: previous!.1)
+        let before = previous == nil ? none() : Display.make(url, data: previous!.1)
         before.setContentCompressionResistancePriority(.init(0), for: .horizontal)
         addSubview(before)
         
         let content = try? Data(contentsOf: url)
-        let actual = content == nil ? message(.key("File.deleted")) : Display.make(url, data: content!)
+        let actual = content == nil ? none() : Display.make(url, data: content!)
         actual.setContentCompressionResistancePriority(.init(0), for: .horizontal)
         addSubview(actual)
 
@@ -94,21 +94,19 @@ final class File: Pop {
         }
     }
     
-    private func message(_ string: String) -> UILabel {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = string
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 14, weight: .bold)
-        label.textColor = .halo
-        return label
+    private func none() -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = false
+        view.backgroundColor = UIColor.halo.withAlphaComponent(0.2)
+        return view
     }
     
     private func date(_ string: String) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "    \(string)    "
-        label.font = .systemFont(ofSize: 12, weight: .light)
+        label.text = "     \(string)     "
+        label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .black
         label.backgroundColor = .halo
         label.layer.cornerRadius = 12

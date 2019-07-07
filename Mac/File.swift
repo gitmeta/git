@@ -9,14 +9,14 @@ final class File: Window {
     
     init(_ url: URL) {
         self.url = url
-        super.init(600, 400, style: .resizable)
-        minSize = CGSize(width: 200, height: 200)
+        super.init(700, 500, style: .resizable)
+        minSize = CGSize(width: 250, height: 250)
         name.stringValue = url.path
         
         let slider = NSView()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.wantsLayer = true
-        slider.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.4).cgColor
+        slider.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.25).cgColor
         slider.isHidden = true
         contentView!.addSubview(slider)
         self.slider = slider
@@ -32,7 +32,7 @@ final class File: Window {
         slider.leftAnchor.constraint(greaterThanOrEqualTo: contentView!.leftAnchor, constant: 50).isActive = true
         slider.rightAnchor.constraint(lessThanOrEqualTo: contentView!.rightAnchor, constant: -50).isActive = true
         slider.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
-        slider.widthAnchor.constraint(equalToConstant: 5).isActive = true
+        slider.widthAnchor.constraint(equalToConstant: 18).isActive = true
         middle = slider.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor)
         middle.priority = .init(300)
         middle.isActive = true
@@ -54,25 +54,25 @@ final class File: Window {
         loading.isHidden = true
         slider.isHidden = false
         
-        let before = previous == nil ? message(.key("File.new")) : Display.make(url, data: previous!.1)
+        let before = previous == nil ? none() : Display.make(url, data: previous!.1)
         before.setContentCompressionResistancePriority(.init(1), for: .horizontal)
         before.setContentCompressionResistancePriority(.init(1), for: .vertical)
         before.setContentHuggingPriority(.defaultLow, for: .vertical)
         contentView!.addSubview(before)
         
         let content = try? Data(contentsOf: url)
-        let actual = content == nil ? message(.key("File.deleted")) : Display.make(url, data: content!)
+        let actual = content == nil ? none() : Display.make(url, data: content!)
         actual.setContentCompressionResistancePriority(.init(1), for: .horizontal)
         actual.setContentCompressionResistancePriority(.init(1), for: .vertical)
         actual.setContentHuggingPriority(.defaultLow, for: .vertical)
         contentView!.addSubview(actual)
         
-        before.topAnchor.constraint(equalTo: border.bottomAnchor, constant: 20).isActive = true
+        before.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         before.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
         before.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 2).isActive = true
         before.rightAnchor.constraint(equalTo: slider.leftAnchor).isActive = true
         
-        actual.topAnchor.constraint(equalTo: border.bottomAnchor, constant: 20).isActive = true
+        actual.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         actual.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
         actual.leftAnchor.constraint(equalTo: slider.rightAnchor).isActive = true
         actual.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
@@ -92,30 +92,40 @@ final class File: Window {
         }
     }
     
-    private func message(_ string: String) -> Label {
-        let label = Label()
-        label.stringValue = string
-        label.alignment = .center
-        label.font = .systemFont(ofSize: 14, weight: .bold)
-        label.textColor = .halo
-        return label
+    private func none() -> NSView {
+        let view = NSView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.wantsLayer = true
+        view.layer!.backgroundColor = NSColor.halo.withAlphaComponent(0.25).cgColor
+        return view
     }
     
-    private func date(_ string: String) -> Label {
-        let label = Label()
-        label.wantsLayer = true
-        label.stringValue = "    \(string)    "
-        label.font = .systemFont(ofSize: 12, weight: .light)
-        label.textColor = .black
-        label.layer!.backgroundColor = NSColor.halo.cgColor
-        label.layer!.cornerRadius = 12
-        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        contentView!.addSubview(label)
+    private func date(_ string: String) -> NSView {
+        let view = NSView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.wantsLayer = true
+        view.layer!.backgroundColor = NSColor.halo.cgColor
+        view.layer!.cornerRadius = 12
+        view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        contentView!.addSubview(view)
         
-        label.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        label.leftAnchor.constraint(greaterThanOrEqualTo: contentView!.leftAnchor, constant: 14).isActive = true
-        label.rightAnchor.constraint(lessThanOrEqualTo: contentView!.rightAnchor, constant: -14).isActive = true
-        label.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -10).isActive = true
-        return label
+        let label = Label()
+        label.stringValue = string
+        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.textColor = .black
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.maximumNumberOfLines = 1
+        view.addSubview(label)
+        
+        view.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        view.leftAnchor.constraint(greaterThanOrEqualTo: contentView!.leftAnchor, constant: 14).isActive = true
+        view.rightAnchor.constraint(lessThanOrEqualTo: contentView!.rightAnchor, constant: -14).isActive = true
+        view.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -10).isActive = true
+        view.leftAnchor.constraint(equalTo: label.leftAnchor, constant: -14).isActive = true
+        view.rightAnchor.constraint(equalTo: label.rightAnchor, constant: 14).isActive = true
+        
+        label.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        return view
     }
 }

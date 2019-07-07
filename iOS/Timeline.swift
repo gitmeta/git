@@ -96,7 +96,7 @@ final class Timeline: Pop, UIScrollViewDelegate {
         date.layer.cornerRadius = 12
         date.clipsToBounds = true
         date.textColor = .black
-        date.font = .systemFont(ofSize: 12, weight: .regular)
+        date.font = .systemFont(ofSize: 12, weight: .medium)
         addSubview(date)
         self.date = date
         
