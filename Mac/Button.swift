@@ -90,6 +90,7 @@ class Button: NSView {
     
     final weak var target: AnyObject?
     final var action: Selector?
+    final var enabled = true
     private var drag = CGFloat(0)
     final fileprivate var selected = false {
         didSet {
@@ -105,21 +106,34 @@ class Button: NSView {
         self.action = action
     }
 
-    override func resetCursorRects() { addCursorRect(bounds, cursor: .pointingHand) }
-    override func mouseDown(with: NSEvent) { selected = true }
+    override func resetCursorRects() {
+        if enabled {
+            addCursorRect(bounds, cursor: .pointingHand)
+        }
+    }
+    
+    override func mouseDown(with: NSEvent) {
+        if enabled {
+            selected = true
+        }
+    }
     
     override func mouseDragged(with: NSEvent) {
-        drag += abs(with.deltaX) + abs(with.deltaY)
-        if drag > 20 {
-            selected = false
+        if enabled {
+            drag += abs(with.deltaX) + abs(with.deltaY)
+            if drag > 20 {
+                selected = false
+            }
         }
     }
     
     override func mouseUp(with: NSEvent) {
-        if selected {
-            click()
+        if enabled {
+            if selected {
+                click()
+            }
+            selected = false
         }
-        selected = false
     }
     
     fileprivate func click() {

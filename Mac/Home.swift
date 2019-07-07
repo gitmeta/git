@@ -48,6 +48,7 @@ final class Home: Window  {
             check.off = NSImage(named: "checkOff")
             check.on = NSImage(named: "checkOn")
             check.checked = true
+            check.enabled = status == .deleted ? false : true
             addSubview(check)
             self.check = check
             
