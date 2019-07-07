@@ -111,7 +111,7 @@ final class Home: Window  {
                         self?.layer!.backgroundColor = .clear
                     }) { }
                 }
-                Display(url).makeKeyAndOrderFront(nil)
+                File(url).makeKeyAndOrderFront(nil)
             }
         }
         

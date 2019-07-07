@@ -6,15 +6,12 @@ final class File: Pop {
     private weak var middle: NSLayoutConstraint!
     private var delta = CGFloat(0)
     private let url: URL
-    private let formatter = DateFormatter()
     
     required init?(coder: NSCoder) { return nil }
     @discardableResult init(_ url: URL) {
         self.url = url
         super.init()
         name.text = url.lastPathComponent
-        formatter.timeStyle = .short
-        formatter.dateStyle = .medium
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -75,6 +72,9 @@ final class File: Pop {
         actual.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         
         if previous != nil && content != nil {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            formatter.dateStyle = .medium
             let dateBefore = date(formatter.string(from: previous!.0))
             let dateActual = date(.key("File.now"))
             

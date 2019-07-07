@@ -6,7 +6,7 @@ final class Differ {
     func previous(_ url: URL) throws -> (Date, Data)? {
         guard
             let repository = self.repository,
-            let id = try Hub.head.tree(repository.url).items.first(where: { $0.url.path == url.path })?.id
+            let id = try Hub.head.tree(repository.url).list(repository.url).first(where: { $0.url.path == url.path })?.id
         else { return nil }
         if let current = try? Hub.hash.blob(Data(contentsOf: url)).1 {
             if current == id { throw Failure.Diff.unchanged }
