@@ -216,8 +216,7 @@ final class Timeline: Pop, UIScrollViewDelegate {
     
     @objc private func choose(_ button: Node, stop: Bool = false) {
         guard !button.isSelected else { return }
-        scroll.subviews.first!.subviews.compactMap({ $0 as? Node }).forEach { $0.isSelected = false }
-        button.isSelected = true
+        scroll.subviews.first!.subviews.compactMap({ $0 as? Node }).forEach { $0.isSelected = $0 === button }
         date.text = "    " + items[button.tag].0 + "    "
         content(items[button.tag].1)
         if !stop {
