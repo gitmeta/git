@@ -142,7 +142,7 @@ final class File: Window {
     }
     
     @objc private func timeline() {
-        if true || Hub.session.purchase.contains(.timeline) {
+        if Hub.session.purchase.contains(.timeline) {
             if let timeline = app.windows.compactMap({ $0 as? Timeline }).first(where: { $0.url == url }) {
                 timeline.orderFront(nil)
             } else {

@@ -46,6 +46,12 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             addSubview(button)
             self.button = button
             
+            let border = NSView()
+            border.translatesAutoresizingMaskIntoConstraints = false
+            border.wantsLayer = true
+            border.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
+            addSubview(border)
+            
             image.topAnchor.constraint(equalTo: topAnchor).isActive = true
             image.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             image.widthAnchor.constraint(equalToConstant: 60).isActive = true
@@ -65,6 +71,11 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             button.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
             button.width.constant = 90
+            
+            border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+            border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         }
     }
     
@@ -134,6 +145,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     func paymentQueue(_: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) { DispatchQueue.main.async { [weak self] in self?.error(restoreCompletedTransactionsFailedWithError) } }
     
     private func update(_ transactions: [SKPaymentTransaction]) {
+        guard transactions.first(where: { $0.transactionState == .purchasing }) == nil else { return }
         transactions.forEach {
             switch $0.transactionState {
             case .failed: SKPaymentQueue.default().finishTransaction($0)
@@ -178,7 +190,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             item.rightAnchor.constraint(equalTo: list.rightAnchor).isActive = true
             bottom = item.bottomAnchor
         }
-        self.bottom = list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom)
+        self.bottom = list.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: bottom, constant: 20)
     }
     
     private func error(_ error: Error) {
