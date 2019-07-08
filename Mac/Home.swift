@@ -139,6 +139,7 @@ final class Home: Window  {
     private weak var image: NSImageView!
     private weak var button: Button.Yes!
     private weak var label: Label!
+    private weak var base: NSView!
     private weak var bottom: NSLayoutConstraint! { didSet { oldValue?.isActive = false; bottom.isActive = true } }
     
     init() {
@@ -183,11 +184,19 @@ final class Home: Window  {
         contentView!.addSubview(label)
         self.label = label
         
+        let base = NSView()
+        base.translatesAutoresizingMaskIntoConstraints = false
+        base.wantsLayer = true
+        base.layer!.backgroundColor = NSColor.halo.cgColor
+        base.layer!.cornerRadius = 10
+        base.isHidden = true
+        contentView!.addSubview(base)
+        self.base = base
+        
         let count = Label()
-        count.font = .systemFont(ofSize: 12, weight: .regular)
-        count.alignment = .right
-        count.textColor = .halo
-        contentView!.addSubview(count)
+        count.font = .systemFont(ofSize: 11, weight: .regular)
+        count.textColor = .black
+        base.addSubview(count)
         self.count = count
         
         border.topAnchor.constraint(equalTo: self.border.bottomAnchor, constant: 2).isActive = true
@@ -217,8 +226,13 @@ final class Home: Window  {
         label.widthAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
         label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 5).isActive = true
         
-        count.rightAnchor.constraint(equalTo: self.border.rightAnchor, constant: -16).isActive = true
-        count.centerYAnchor.constraint(equalTo: directory.centerYAnchor).isActive = true
+        base.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -10).isActive = true
+        base.centerYAnchor.constraint(equalTo: directory.centerYAnchor, constant: 1).isActive = true
+        base.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        base.leftAnchor.constraint(equalTo: count.leftAnchor, constant: -12).isActive = true
+        base.rightAnchor.constraint(equalTo: count.rightAnchor, constant: 12).isActive = true
+        
+        count.centerYAnchor.constraint(equalTo: base.centerYAnchor).isActive = true
         
         var vertical = border.topAnchor
         [("add", #selector(app.add)), ("reset", #selector(app.reset)), ("cloud", #selector(app.cloud)), ("history", #selector(app.history)), ("market", #selector(app.market)), ("settings", #selector(app.settings))].forEach {
@@ -255,7 +269,7 @@ final class Home: Window  {
             image.image = NSImage(named: "loading")
             button.isHidden = true
             label.isHidden = true
-            count.isHidden = true
+            base.isHidden = true
         case .packed:
             image.isHidden = false
             image.image = NSImage(named: "error")
@@ -264,10 +278,10 @@ final class Home: Window  {
             button.action = #selector(app.unpack)
             label.isHidden = false
             label.stringValue = .key("Home.label.packed")
-            count.isHidden = true
+            base.isHidden = true
         case .ready:
             button.isHidden = true
-            count.isHidden = false
+            base.isHidden = false
             label.isHidden = true
             recount()
             if items.isEmpty {
@@ -284,14 +298,14 @@ final class Home: Window  {
             button.action = #selector(app.create)
             label.isHidden = false
             label.stringValue = .key("Home.label.create")
-            count.isHidden = true
+            base.isHidden = true
         case .first:
             image.isHidden = false
             image.image = NSImage(named: "error")
             button.isHidden = true
             label.isHidden = false
             label.stringValue = .key("Home.label.first")
-            count.isHidden = true
+            base.isHidden = true
         }
     }
     
