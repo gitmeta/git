@@ -8,7 +8,7 @@ final class Help: Window {
     private var index = 0
     
     init() {
-        super.init(540, 500)
+        super.init(350, 420)
         border.isHidden = true
         
         let label = Label()
@@ -19,7 +19,7 @@ final class Help: Window {
         
         var rightImage: NSLayoutXAxisAnchor!
         var rightButton = contentView!.leftAnchor
-        let steps = ["help.browse", "help.create", "help.files", "settings", "add", "help.commit", "reset", "history", "cloud", "help.url"]
+        let steps = ["logo", "checkOn", "add", "reset", "cloud"]
         steps.enumerated().forEach {
             let image = NSImageView()
             image.translatesAutoresizingMaskIntoConstraints = false
@@ -34,16 +34,16 @@ final class Help: Window {
             contentView!.addSubview(button)
             buttons.append(button)
             
-            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -120).isActive = true
+            image.centerYAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -90).isActive = true
             image.heightAnchor.constraint(equalToConstant: 200).isActive = true
             image.widthAnchor.constraint(equalToConstant: 400).isActive = true
             
             button.heightAnchor.constraint(equalToConstant: 80).isActive = true
-            button.widthAnchor.constraint(equalTo: contentView!.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -7).isActive = true
+            button.widthAnchor.constraint(equalTo: contentView!.widthAnchor, multiplier: 1 / CGFloat(steps.count), constant: -16).isActive = true
             button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor).isActive = true
             
             if $0.0 == 0 {
-                button.leftAnchor.constraint(equalTo: rightButton, constant: 30).isActive = true
+                button.leftAnchor.constraint(equalTo: rightButton, constant: 40).isActive = true
                 centerX = image.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor)
                 centerX.isActive = true
             } else {
@@ -54,9 +54,9 @@ final class Help: Window {
             rightButton = button.rightAnchor
         }
         
-        label.topAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: 10).isActive = true
+        label.topAnchor.constraint(equalTo: contentView!.centerYAnchor, constant: -10).isActive = true
         label.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        label.widthAnchor.constraint(lessThanOrEqualToConstant: 460).isActive = true
+        label.widthAnchor.constraint(lessThanOrEqualToConstant: 280).isActive = true
         
         DispatchQueue.main.async { [weak self] in self?.display(0) }
     }
