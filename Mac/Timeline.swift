@@ -52,10 +52,9 @@ final class Timeline: Window {
     }
     
     let url: URL
+    private weak var view: NSView?
     private weak var scroll: Scroll!
     private weak var date: Label!
-    private weak var base: NSView!
-    private weak var y: NSLayoutConstraint? { willSet { y?.isActive = false } didSet { y!.isActive = true } }
     private var items = [(String, Data)]()
     
     init(_ url: URL) {
@@ -86,8 +85,7 @@ final class Timeline: Window {
         base.layer!.backgroundColor = NSColor.halo.cgColor
         base.layer!.cornerRadius = 12
         base.isHidden = true
-        scroll.documentView!.addSubview(base)
-        self.base = base
+        contentView!.addSubview(base)
         
         let date = Label()
         date.font = .systemFont(ofSize: 12, weight: .medium)
@@ -98,13 +96,15 @@ final class Timeline: Window {
         scroll.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
         scroll.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
         scroll.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-        scroll.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
+        scroll.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         base.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        base.centerYAnchor.constraint(equalTo: date.centerYAnchor).isActive = true
-        base.leftAnchor.constraint(equalTo: scroll.leftAnchor, constant: 44).isActive = true
         base.leftAnchor.constraint(equalTo: date.leftAnchor, constant: -12).isActive = true
         base.rightAnchor.constraint(equalTo: date.rightAnchor, constant: 12).isActive = true
+        base.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
+        base.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -10).isActive = true
+        
+        date.centerYAnchor.constraint(equalTo: base.centerYAnchor).isActive = true
         
         loading.widthAnchor.constraint(equalToConstant: 100).isActive = true
         loading.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -137,7 +137,7 @@ final class Timeline: Window {
             let node = Node($0.0, target: self, action: #selector(choose(_:)))
             scroll.documentView!.addSubview(node)
             
-            node.centerXAnchor.constraint(equalTo: scroll.leftAnchor, constant: 25).isActive = true
+            node.centerXAnchor.constraint(equalTo: scroll.centerXAnchor).isActive = true
             
             if $0.0 == 0 {
                 node.centerYAnchor.constraint(equalTo: track.topAnchor).isActive = true
@@ -149,7 +149,7 @@ final class Timeline: Window {
         }
         
         track.widthAnchor.constraint(equalToConstant: 2).isActive = true
-        track.centerXAnchor.constraint(equalTo: scroll.leftAnchor, constant: 25).isActive = true
+        track.centerXAnchor.constraint(equalTo: scroll.centerXAnchor).isActive = true
         track.topAnchor.constraint(equalTo: scroll.documentView!.topAnchor, constant: 50).isActive = true
         track.bottomAnchor.constraint(equalTo: last!.centerYAnchor).isActive = true
         
@@ -158,26 +158,30 @@ final class Timeline: Window {
     }
     
     private func content(_ index: Int) {
+        view?.removeFromSuperview()
         date.stringValue = items[index].0
+        
+        let view = Display.make(url, data: items[index].1)
+        view.setContentCompressionResistancePriority(.init(1), for: .horizontal)
+        view.setContentCompressionResistancePriority(.init(1), for: .vertical)
+        view.setContentHuggingPriority(.defaultLow, for: .vertical)
+        contentView!.addSubview(view, positioned: .below, relativeTo: nil)
+        self.view = view
+        
+        view.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
+        view.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
+        view.leftAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
     }
     
     @objc private func choose(_ node: Node) {
         scroll.documentView!.subviews.compactMap({ $0 as? Node }).forEach { $0.selected = $0 === node }
         content(node.index)
-        y = base.centerYAnchor.constraint(equalTo: node.centerYAnchor)
         NSAnimationContext.runAnimationGroup({
             $0.duration = 0.5
             $0.allowsImplicitAnimation = true
-            base.alphaValue = 1
             scroll.documentView!.layoutSubtreeIfNeeded()
             scroll.contentView.scrollToVisible(CGRect(x: 0, y: node.frame.midY - scroll.bounds.midY, width: 1, height: scroll.bounds.height))
         }) { }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            NSAnimationContext.runAnimationGroup({
-                $0.duration = 5
-                $0.allowsImplicitAnimation = true
-                self?.base.alphaValue = 0
-            }) { }
-        }
     }
 }

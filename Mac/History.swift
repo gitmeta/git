@@ -14,9 +14,9 @@ final class History: Window {
             let label = Label()
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             label.attributedStringValue = {
-                $0.append(NSAttributedString(string: "\(index) ", attributes: [.font: NSFont.systemFont(ofSize: 20, weight: .bold), .foregroundColor: NSColor.halo]))
-                $0.append(NSAttributedString(string: commit.author.name + " ", attributes: [.font: NSFont.light(18), .foregroundColor: NSColor.halo]))
-                $0.append(NSAttributedString(string: date + "\n", attributes: [.font: NSFont.systemFont(ofSize: 12, weight: .light), .foregroundColor: NSColor.halo]))
+                $0.append(NSAttributedString(string: "\(index). ", attributes: [.font: NSFont.systemFont(ofSize: 18, weight: .bold), .foregroundColor: NSColor.halo]))
+                $0.append(NSAttributedString(string: commit.author.name, attributes: [.font: NSFont.bold(14), .foregroundColor: NSColor.halo]))
+                $0.append(NSAttributedString(string: ": " + date + "\n\n", attributes: [.font: NSFont.systemFont(ofSize: 14, weight: .light), .foregroundColor: NSColor.halo]))
                 $0.append(NSAttributedString(string: commit.message, attributes: [.font: NSFont.light(14), .foregroundColor: NSColor.white]))
                 return $0
             } (NSMutableAttributedString())
@@ -103,7 +103,7 @@ final class History: Window {
                 item.rightAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
                 top = item.bottomAnchor
             }
-            self?.bottom = scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: top)
+            self?.bottom = scroll.documentView!.bottomAnchor.constraint(greaterThanOrEqualTo: top, constant: 20)
             
             app.repository?.branch { [weak self] in
                 self?.branch.stringValue = $0
