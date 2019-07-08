@@ -25,6 +25,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             
             let label = Label()
             label.textColor = .white
+            label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             addSubview(label)
             self.label = label
             
@@ -49,7 +50,7 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             let border = NSView()
             border.translatesAutoresizingMaskIntoConstraints = false
             border.wantsLayer = true
-            border.layer!.backgroundColor = NSColor(white: 1, alpha: 0.2).cgColor
+            border.layer!.backgroundColor = NSColor(white: 1, alpha: 0.25).cgColor
             addSubview(border)
             
             image.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -69,11 +70,11 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
             
             button.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 10).isActive = true
             button.rightAnchor.constraint(equalTo: price.rightAnchor).isActive = true
-            button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
+            button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30).isActive = true
             button.width.constant = 90
             
-            border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-            border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+            border.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
             border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             border.heightAnchor.constraint(equalToConstant: 1).isActive = true
         }

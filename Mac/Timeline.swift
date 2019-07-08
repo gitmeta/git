@@ -125,6 +125,14 @@ final class Timeline: Window {
         }
     }
     
+    override func keyDown(with: NSEvent) {
+        switch with.keyCode {
+        case 125: synth(1)
+        case 126: synth(-1)
+        default: super.keyDown(with: with)
+        }
+    }
+    
     private func render() {
         let track = NSView()
         track.translatesAutoresizingMaskIntoConstraints = false
@@ -172,6 +180,16 @@ final class Timeline: Window {
         view.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
         view.rightAnchor.constraint(equalTo: contentView!.rightAnchor, constant: -2).isActive = true
         view.leftAnchor.constraint(equalTo: scroll.rightAnchor).isActive = true
+    }
+    
+    private func synth(_ delta: Int) {
+        var index = scroll.documentView!.subviews.compactMap({ $0 as? Node }).first(where: { $0.selected })!.index + delta
+        if index < 0 {
+            index = 0
+        } else if index >= items.count {
+            index = items.count - 1
+        }
+        choose(scroll.documentView!.subviews.compactMap({ $0 as? Node }).first(where: { $0.index == index })!)
     }
     
     @objc private func choose(_ node: Node) {
