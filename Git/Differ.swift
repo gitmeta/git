@@ -18,7 +18,7 @@ final class Differ {
         guard let repository = self.repository else { return [] }
         return try History(repository.url).result.reduce(into: { [Hub.hash.blob($0).1: (Date(), $0)] } ((try? Data(contentsOf: url)) ?? Data()), {
             guard
-                let id = try Tree($1.tree, url: repository.url).items.first(where: { $0.url.path == url.path })?.id,
+                let id = try Tree($1.tree, url: repository.url).list(repository.url).first(where: { $0.url.path == url.path })?.id,
                 $0[id] == nil
             else { return }
             $0[id] = try ($1.author.date, Hub.content.file(id, url: repository.url))

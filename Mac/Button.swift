@@ -92,7 +92,7 @@ class Button: NSView {
     final var action: Selector?
     final var enabled = true
     private var drag = CGFloat(0)
-    final fileprivate var selected = false {
+    final fileprivate(set) var selected = false {
         didSet {
             alphaValue = selected ? 0.4 : 1
         }

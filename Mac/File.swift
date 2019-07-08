@@ -2,10 +2,10 @@ import Git
 import AppKit
 
 final class File: Window {
+    let url: URL
     private weak var slider: NSView!
     private weak var loading: NSImageView!
     private weak var middle: NSLayoutConstraint!
-    let url: URL
     
     init(_ url: URL) {
         self.url = url
