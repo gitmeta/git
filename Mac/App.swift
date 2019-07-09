@@ -242,11 +242,7 @@ private(set) weak var app: App!
         if Hub.session.bookmark.isEmpty {
             browse()
         } else {
-            if Hub.session.purchase.contains(.cloud) {
-                order(Cloud.self)
-            } else {
-                app.alert(.key("Alert.purchase"), message: .key("Cloud.purchase"))
-            }
+            order(Cloud.self)
         }
     }
     
