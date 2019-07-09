@@ -12,7 +12,6 @@ final class Alert: UIControl {
         layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 1
         alpha = 0
-        addTarget(self, action: #selector(dismiss), for: .touchUpInside)
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -41,10 +40,12 @@ final class Alert: UIControl {
         app.view.layoutIfNeeded()
         bottom.constant = 50 + bounds.height
         
-        UIView.animate(withDuration: 0.35, animations: { [weak self] in
+        UIView.animate(withDuration: 0.35) { [weak self] in
             self?.alpha = 1
             app.view.layoutIfNeeded()
-        }) { _ in DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) { [weak self] in self?.dismiss() } }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) { [weak self] in self?.dismiss() }
+        addTarget(self, action: #selector(dismiss), for: .touchUpInside)
     }
     
     override var isHighlighted: Bool { didSet { hover() } }
