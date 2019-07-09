@@ -3,7 +3,6 @@ import XCTest
 
 class TestPull: XCTestCase {
     private var url: URL!
-    private var file: URL!
     private var rest: MockRest!
     
     override func setUp() {
@@ -14,8 +13,6 @@ class TestPull: XCTestCase {
         Hub.factory.rest = rest
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
-        file = url.appendingPathComponent("myfile.txt")
-        try! Data("hello world\n".utf8).write(to: file)
     }
     
     override func tearDown() {
@@ -25,10 +22,12 @@ class TestPull: XCTestCase {
     func testSuccessUpToDate() {
         let expect = expectation(description: "")
         var repository: Repository!
+        let file = url.appendingPathComponent("myfile.txt")
+        try! Data("hello world\n".utf8).write(to: file)
         Hub.create(url) {
             repository = $0
             try? Config("lorem ipsum").save(self.url)
-            repository.commit([self.file], message: "hello world\n") {
+            repository.commit([file], message: "hello world\n") {
                 try? Hub.head.origin(self.url, id: try Hub.head.id(self.url))
                 let fetch = Fetch()
                 fetch.branch.append((try? Hub.head.id(self.url)) ?? "")
@@ -178,10 +177,12 @@ Test
         fetch.branch.append("54cac1e1086e2709a52d7d1727526b14efec3a77")
         rest._fetch = fetch
         rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch0", withExtension: nil)!))
+        let file = url.appendingPathComponent("myfile.txt")
+        try! Data("hello world\n".utf8).write(to: file)
         Hub.create(url) {
             repository = $0
             try? Config("lorem ipsum").save(self.url)
-            repository.commit([self.file], message: "This is a commit that should not be in the history.\n") {
+            repository.commit([file], message: "This is a commit that should not be in the history.\n") {
                 repository.pull({ _ in
                     expect.fulfill()
                 })
@@ -204,8 +205,9 @@ Test
                 XCTAssertEqual(4, try! FileManager.default.contentsOfDirectory(atPath: self.url.path).count)
                 self.rest._fetch!.branch = ["4ec6903ca199e0e92c6cd3abb5b95f3b7f3d7e4d"]
                 self.rest._pull = try! Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch3", withExtension: nil)!))
-                try! Data("hello world\n".utf8).write(to: self.file)
-                repository.commit([self.file], message: "Add file not tracked in the list.") {
+                let file = self.url.appendingPathComponent("myfile.txt")
+                try! Data("hello world\n".utf8).write(to: file)
+                repository.commit([file], message: "Add file not tracked in the list.") {
                     let external = try! Hub.head.id(self.url)
                     XCTAssertTrue(try! FileManager.default.contentsOfDirectory(atPath: self.url.path).contains("myfile.txt"))
                     repository.pull {
@@ -224,6 +226,24 @@ Test
                     }
                 }
             }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testFailsIfChanges() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        let fetch = Fetch()
+        fetch.branch.append("hello world")
+        rest._fetch = fetch
+        Hub.create(url) {
+            repository = $0
+            try? Config("host.com/monami.git").save(self.url)
+            let file = self.url.appendingPathComponent("myfile.txt")
+            try! Data("hello world\n".utf8).write(to: file)
+            repository.pull({ _ in
+                expect.fulfill()
+            })
         }
         waitForExpectations(timeout: 1)
     }

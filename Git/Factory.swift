@@ -30,6 +30,7 @@ final class Factory {
     }
     
     func pull(_ repository: Repository, error: @escaping((Error) -> Void), done: @escaping(() -> Void)) throws {
+        if !repository.state.list.isEmpty { throw Failure.Remote.changes }
         try rest.download(Hub.head.remote(repository.url), error: error) {
             guard let reference = $0.branch.first else { throw Failure.Fetch.empty }
             if reference == Hub.head.origin(repository.url) {
