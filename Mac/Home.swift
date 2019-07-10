@@ -135,6 +135,7 @@ final class Home: Window  {
     
     private(set) weak var directory: Button.Text!
     private(set) weak var list: NSScrollView!
+    private(set) weak var _cloud: Button.Image!
     private weak var count: Label!
     private weak var image: NSImageView!
     private weak var button: Button.Yes!
@@ -145,12 +146,6 @@ final class Home: Window  {
     init() {
         super.init(600, 600, style: .resizable)
         closabe = false
-        
-        let border = NSView()
-        border.translatesAutoresizingMaskIntoConstraints = false
-        border.wantsLayer = true
-        border.layer!.backgroundColor = .black
-        contentView!.addSubview(border)
         
         let directory = Button.Text(app, action: #selector(app.browse))
         directory.label.stringValue = .key("Home.directory")
@@ -199,11 +194,6 @@ final class Home: Window  {
         base.addSubview(count)
         self.count = count
         
-        border.topAnchor.constraint(equalTo: self.border.bottomAnchor, constant: 2).isActive = true
-        border.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -2).isActive = true
-        border.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 62).isActive = true
-        border.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        
         directory.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
         directory.bottomAnchor.constraint(equalTo: self.border.topAnchor, constant: -3).isActive = true
         directory.widthAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
@@ -234,17 +224,11 @@ final class Home: Window  {
         
         count.centerYAnchor.constraint(equalTo: base.centerYAnchor).isActive = true
         
+        _cloud = make("cloud", action: #selector(app.cloud))
         var vertical = border.topAnchor
-        [("add", #selector(app.add)), ("reset", #selector(app.reset)), ("cloud", #selector(app.cloud)), ("history", #selector(app.history)), ("market", #selector(app.market)), ("settings", #selector(app.settings))].forEach {
-            let button = Button.Image(app, action: $0.1)
-            button.image.image = NSImage(named: $0.0)
-            contentView!.addSubview(button)
-            
-            button.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
-            button.rightAnchor.constraint(equalTo: border.leftAnchor).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-            button.topAnchor.constraint(equalTo: vertical, constant: vertical == border.topAnchor ? 5 : 0).isActive = true
-            vertical = button.bottomAnchor
+        [make("add", action: #selector(app.add)), make("reset", action: #selector(app.reset)), _cloud!, make("history", action: #selector(app.history)), make("market", action: #selector(app.market)), make("settings", action: #selector(app.settings))].forEach {
+            $0.topAnchor.constraint(equalTo: vertical, constant: vertical == border.topAnchor ? 5 : 0).isActive = true
+            vertical = $0.bottomAnchor
         }
     }
     
@@ -318,5 +302,16 @@ final class Home: Window  {
         count.stringValue = {
             "\($0.filter({ $0.check.checked }).count)/\($0.count)"
         } (list.documentView!.subviews.compactMap({ $0 as? Item }))
+    }
+    
+    private func make(_ image: String, action: Selector) -> Button.Image {
+        let button = Button.Image(app, action: action)
+        button.image.image = NSImage(named: image)
+        contentView!.addSubview(button)
+        
+        button.leftAnchor.constraint(equalTo: contentView!.leftAnchor).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 62).isActive = true
+        return button
     }
 }

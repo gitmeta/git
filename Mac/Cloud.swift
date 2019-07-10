@@ -46,6 +46,11 @@ final class Cloud: Window, NSTextFieldDelegate {
         contentView!.addSubview(loading)
         self.loading = loading
         
+        let button = Button.Yes(self, action: #selector(make))
+        button.label.stringValue = app.repository == nil ? .key("Cloud.clone.button") : .key("Cloud.synch.button")
+        contentView!.addSubview(button)
+        self.button = button
+        
         label.topAnchor.constraint(equalTo: self.border.bottomAnchor, constant: 24).isActive = true
         label.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 20).isActive = true
         
@@ -62,32 +67,11 @@ final class Cloud: Window, NSTextFieldDelegate {
         loading.centerYAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -31).isActive = true
         loading.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
         
-        if Hub.session.purchase.contains(.cloud) {
-            let button = Button.Yes(self, action: #selector(make))
-            button.label.stringValue = app.repository == nil ? .key("Cloud.clone.button") : .key("Cloud.synch.button")
-            contentView!.addSubview(button)
-            self.button = button
-            
-            button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -20).isActive = true
-            button.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-            
-            field.refusesFirstResponder = app.repository != nil
-            app.repository?.remote { [weak self] in self?.field.stringValue = $0 }
-        } else {
-            field.isEditable = false
-            
-            let warning = Label()
-            warning.attributedStringValue = {
-                $0.append(NSAttributedString(string: .key("Alert.purchase"), attributes: [.font: NSFont.systemFont(ofSize: 15, weight: .bold), .foregroundColor: NSColor.halo]))
-                $0.append(NSAttributedString(string: "\n" + .key("Cloud.purchase"), attributes: [.font: NSFont.systemFont(ofSize: 15, weight: .regular), .foregroundColor: NSColor.white]))
-                return $0
-            } (NSMutableAttributedString())
-            warning.alignment = .left
-            contentView!.addSubview(warning)
-            
-            warning.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -15).isActive = true
-            warning.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
-        }
+        button.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -20).isActive = true
+        button.centerXAnchor.constraint(equalTo: contentView!.centerXAnchor).isActive = true
+        
+        field.refusesFirstResponder = app.repository != nil
+        app.repository?.remote { [weak self] in self?.field.stringValue = $0 }
     }
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy: Selector) -> Bool {
