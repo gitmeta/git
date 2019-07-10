@@ -39,7 +39,11 @@ class Window: NSWindow {
     }
     
     init(_ width: CGFloat, _ height: CGFloat, style: NSWindow.StyleMask = []) {
-        super.init(contentRect: NSRect(x: (NSScreen.main!.frame.width - width) / 2, y: (NSScreen.main!.frame.height - height) / 2, width: width, height: height), styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar, .miniaturizable, style], backing: .buffered, defer: false)
+        super.init(contentRect: NSRect(origin: {
+            app.windows.isEmpty ? CGPoint(x: NSScreen.main!.frame.midX - (width / 2), y: NSScreen.main!.frame.midY - (height / 2)) : {
+                CGPoint(x: $0.minX + 60, y: $0.maxY - (60 + height))
+                } (app.windows.max(by: { $0.frame.minX < $1.frame.minX })!.frame)
+        } (), size: CGSize(width: width, height: height)), styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar, .miniaturizable, style], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
         backgroundColor = .black
