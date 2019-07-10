@@ -3,10 +3,13 @@ import XCTest
 
 class TestMerge: XCTestCase {
     private var url: URL!
+    private var rest: MockRest!
     
     override func setUp() {
+        rest = MockRest()
         Hub.session = Session()
         Hub.factory.rest = MockRest()
+        Hub.factory.rest = rest
         url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
         try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         Hub.session.name = "hello"
@@ -37,6 +40,32 @@ class TestMerge: XCTestCase {
                     XCTAssertEqual("Merge.\n", merged.message)
                     XCTAssertEqual(3, try? History(self.url).result.count)
                     expect.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testSynch() {
+        let expect = expectation(description: "")
+        var repository: Repository!
+        let fetch = Fetch()
+        fetch.branch.append("335a33ae387dc24f057852fdb92e5abc71bf6b85")
+        rest._fetch = fetch
+        rest._pull = try? Pack(Data(contentsOf: Bundle(for: TestPull.self).url(forResource: "fetch2", withExtension: nil)!))
+        Hub.create(url) {
+            repository = $0
+            try? Config("lorem ipsum").save(self.url)
+            repository.pull {
+                let file = self.url.appendingPathComponent("control.txt")
+                try! Data("hello world\n".utf8).write(to: file)
+                repository.commit([file], message: "First commit") {
+                    repository.pull {
+                        repository.push {
+                            XCTAssertEqual(Hub.head.origin(self.url)!, try? Hub.head.id(self.url))
+                            expect.fulfill()
+                        }
+                    }
                 }
             }
         }

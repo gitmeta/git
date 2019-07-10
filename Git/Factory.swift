@@ -60,7 +60,7 @@ final class Factory {
             try repository.merger.known(reference)
             try self.rest.push(Hub.head.remote(repository.url), old: reference, new: current, pack: Pack.Maker(repository.url, from: current, to: reference).data, error: error) {
                 if $0.hasPrefix("000eunpack ok") {
-                    try Hub.head.origin(repository.url, id: reference)
+                    try Hub.head.origin(repository.url, id: current)
                     done()
                 } else {
                     throw Failure.Remote.push
