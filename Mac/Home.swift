@@ -195,12 +195,12 @@ final class Home: Window  {
         self.count = count
         
         directory.topAnchor.constraint(equalTo: contentView!.topAnchor).isActive = true
-        directory.bottomAnchor.constraint(equalTo: self.border.topAnchor, constant: -3).isActive = true
+        directory.bottomAnchor.constraint(equalTo: border.topAnchor, constant: -3).isActive = true
         directory.widthAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
-        directory.leftAnchor.constraint(equalTo: self.border.leftAnchor, constant: 82).isActive = true
+        directory.leftAnchor.constraint(equalTo: border.leftAnchor, constant: 82).isActive = true
         
-        list.topAnchor.constraint(equalTo: self.border.bottomAnchor).isActive = true
-        list.leftAnchor.constraint(equalTo: border.rightAnchor).isActive = true
+        list.topAnchor.constraint(equalTo: border.bottomAnchor).isActive = true
+        list.leftAnchor.constraint(equalTo: contentView!.leftAnchor, constant: 62).isActive = true
         list.rightAnchor.constraint(equalTo: contentView!.rightAnchor).isActive = true
         list.bottomAnchor.constraint(equalTo: contentView!.bottomAnchor, constant: -1).isActive = true
         
@@ -225,9 +225,10 @@ final class Home: Window  {
         count.centerYAnchor.constraint(equalTo: base.centerYAnchor).isActive = true
         
         _cloud = make("cloud", action: #selector(app.cloud))
-        var vertical = border.topAnchor
+        _cloud.image.alphaValue = 0.35
+        var vertical = border.bottomAnchor
         [make("add", action: #selector(app.add)), make("reset", action: #selector(app.reset)), _cloud!, make("history", action: #selector(app.history)), make("market", action: #selector(app.market)), make("settings", action: #selector(app.settings))].forEach {
-            $0.topAnchor.constraint(equalTo: vertical, constant: vertical == border.topAnchor ? 5 : 0).isActive = true
+            $0.topAnchor.constraint(equalTo: vertical, constant: vertical == border.bottomAnchor ? 5 : 0).isActive = true
             vertical = $0.bottomAnchor
         }
     }

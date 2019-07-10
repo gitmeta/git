@@ -242,7 +242,11 @@ private(set) weak var app: App!
         if Hub.session.bookmark.isEmpty {
             browse()
         } else {
-            order(Cloud.self)
+            if Hub.session.purchase.contains(.cloud) {
+                order(Cloud.self)
+            } else {
+                app.alert(.key("Alert.purchase"), message: .key("Cloud.purchase"))
+            }
         }
     }
     
@@ -258,6 +262,9 @@ private(set) weak var app: App!
             help()
             home.update(.first)
             return
+        }
+        if Hub.session.purchase.contains(.cloud) {
+            home._cloud.image.alphaValue = 1
         }
         var stale = false
         _ = (try? URL(resolvingBookmarkData: Hub.session.bookmark, options: .withSecurityScope, bookmarkDataIsStale:

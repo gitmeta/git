@@ -209,7 +209,9 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     private func make(_ id: String) {
         Hub.session.purchase(id)
         DispatchQueue.main.async {
-            app.windows.filter({ $0 is Cloud }).forEach({ $0.close() })
+            if id.contains("cloud") {
+                app.home._cloud.image.alphaValue = 1
+            }
         }
     }
     
