@@ -209,8 +209,10 @@ final class Market: Window, SKRequestDelegate, SKProductsRequestDelegate, SKPaym
     private func make(_ id: String) {
         Hub.session.purchase(id)
         DispatchQueue.main.async {
-            if id.contains("cloud") {
-                app.home._cloud.image.alphaValue = 1
+            switch id.components(separatedBy: ".").last! {
+            case "cloud": app.home._cloud.image.alphaValue = 1
+            case "timeline": app.windows.compactMap({ $0 as? File }).first?.button.image.alphaValue = 1
+            default: break
             }
         }
     }

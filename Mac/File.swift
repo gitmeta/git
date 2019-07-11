@@ -3,6 +3,7 @@ import AppKit
 
 final class File: Window {
     let url: URL
+    private(set) weak var button: Button.Image!
     private weak var slider: NSView!
     private weak var loading: NSImageView!
     private weak var middle: NSLayoutConstraint!
@@ -15,7 +16,9 @@ final class File: Window {
         
         let button = Button.Image(self, action: #selector(timeline))
         button.image.image = NSImage(named: "timeline")
+        button.image.alphaValue = Hub.session.purchase.contains(.timeline) ? 1 : 0.35
         contentView!.addSubview(button)
+        self.button = button
         
         let slider = NSView()
         slider.translatesAutoresizingMaskIntoConstraints = false
