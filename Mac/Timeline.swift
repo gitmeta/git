@@ -60,7 +60,7 @@ final class Timeline: Window {
     init(_ url: URL) {
         self.url = url
         super.init(500, 500, style: .resizable)
-        minSize = CGSize(width: 200, height: 200)
+        minSize = .init(width: 200, height: 200)
         name.attributedStringValue = {
             $0.append(NSAttributedString(string: .key("Timeline.title") + " ", attributes: [.font: NSFont.systemFont(ofSize: 12, weight: .bold)]))
             $0.append(NSAttributedString(string: url.path, attributes: [.font: NSFont.systemFont(ofSize: 12, weight: .light)]))
@@ -199,7 +199,7 @@ final class Timeline: Window {
             $0.duration = 0.5
             $0.allowsImplicitAnimation = true
             scroll.documentView!.layoutSubtreeIfNeeded()
-            scroll.contentView.scrollToVisible(CGRect(x: 0, y: node.frame.midY - scroll.bounds.midY, width: 1, height: scroll.bounds.height))
+            scroll.contentView.scrollToVisible(.init(x: 0, y: node.frame.midY - scroll.bounds.midY, width: 1, height: scroll.bounds.height))
         }) { }
     }
 }

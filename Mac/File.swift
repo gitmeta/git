@@ -11,7 +11,7 @@ final class File: Window {
     init(_ url: URL) {
         self.url = url
         super.init(700, 500, style: .resizable)
-        minSize = CGSize(width: 250, height: 250)
+        minSize = .init(width: 250, height: 250)
         name.stringValue = url.path
         
         let button = Button.Image(self, action: #selector(timeline))

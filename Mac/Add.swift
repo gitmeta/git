@@ -44,7 +44,7 @@ final class Add: Window {
             isContinuousSpellCheckingEnabled = true
             font = .light(18)
             textColor = .white
-            textContainerInset = NSSize(width: 10, height: 10)
+            textContainerInset = .init(width: 10, height: 10)
             height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
             height.isActive = true
             if #available(OSX 10.12.2, *) {

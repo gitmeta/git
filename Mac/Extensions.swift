@@ -39,16 +39,16 @@ class Window: NSWindow {
     }
     
     init(_ width: CGFloat, _ height: CGFloat, style: NSWindow.StyleMask = []) {
-        super.init(contentRect: NSRect(origin: {
-            app.windows.isEmpty ? CGPoint(x: NSScreen.main!.frame.midX - (width / 2), y: NSScreen.main!.frame.midY - (height / 2)) : {
-                CGPoint(x: $0.minX + 60, y: $0.maxY - (60 + height))
+        super.init(contentRect: CGRect(origin: {
+            app.windows.isEmpty ? .init(x: NSScreen.main!.frame.midX - (width / 2), y: NSScreen.main!.frame.midY - (height / 2)) : {
+                .init(x: $0.minX + 60, y: $0.maxY - (60 + height))
                 } (app.windows.max(by: { $0.frame.minX < $1.frame.minX })!.frame)
-        } (), size: CGSize(width: width, height: height)), styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar, .miniaturizable, style], backing: .buffered, defer: false)
+        } (), size: .init(width: width, height: height)), styleMask: [.closable, .fullSizeContentView, .titled, .unifiedTitleAndToolbar, .miniaturizable, style], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
         backgroundColor = .black
         collectionBehavior = .fullScreenNone
-        minSize = NSSize(width: 160, height: 160)
+        minSize = .init(width: 160, height: 160)
         isReleasedWhenClosed = false
         toolbar = NSToolbar(identifier: "")
         toolbar!.showsBaselineSeparator = false

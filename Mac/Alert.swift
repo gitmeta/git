@@ -4,7 +4,7 @@ final class Alert: NSWindow {
     private weak var back: NSView!
     
     init(_ title: String? = nil, message: String) {
-        super.init(contentRect: NSRect(x: app.home.frame.midX - 200, y: app.home.frame.midY - 75, width: 400, height: 150),
+        super.init(contentRect: .init(x: app.home.frame.midX - 200, y: app.home.frame.midY - 75, width: 400, height: 150),
                    styleMask: [.fullSizeContentView], backing: .buffered, defer: false)
         titlebarAppearsTransparent = true
         titleVisibility = .hidden

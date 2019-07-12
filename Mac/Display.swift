@@ -20,7 +20,7 @@ final class Display {
             font = .light(16)
             textColor = .white
             isEditable = false
-            textContainerInset = NSSize(width: 10, height: 10)
+            textContainerInset = .init(width: 10, height: 10)
             height = heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
             height.isActive = true
         }
