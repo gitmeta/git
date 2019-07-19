@@ -203,7 +203,7 @@ private(set) weak var app: App!
     
     @objc func browse() {
         if #available(iOS 11.0, *) {
-            let browse = UIDocumentBrowserViewController()
+            let browse = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: ["public.content", "public.data"])
             browse.popoverPresentationController?.sourceView = view
             browse.browserUserInterfaceStyle = .dark
             browse.delegate = self
