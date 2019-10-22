@@ -1,3 +1,5 @@
+Find git on the AppStore: https://apps.apple.com/us/app/git/id1459215293
+
 Embrace change in your workflow.
 A version control system allows you to track changes on your files and documents and edit them without fear, you will always be able to go back in time and recover a previous version or compare the differences.
 
